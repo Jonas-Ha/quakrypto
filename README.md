@@ -2,16 +2,16 @@
 Software-Projekt im Sommersemester 2023
 
 ## Team
-<br>Simon Schisslbauer (Projektleiter)</br>
-<br>Jonas Hammer (Repository Verwaltung)</br>
-<br>Leopold Bialek</br>
-<br>Dominik Greiner</br>
-<br>Daniel Hannes</br>
-<br>Erik Barthelmann</br>
-<br>Alexander Denner</br>
-<br>Dominik Mentel</br>
-<br>Siddiqui Muhammad Moeez</br>
-<br>Elias Lay</br>
+Simon Schisslbauer (Projektleiter)
+Jonas Hammer (Repository Verwaltung)
+Leopold Bialek
+Dominik Greiner
+Daniel Hannes
+Erik Barthelmann
+Alexander Denner
+Dominik Mentel
+Siddiqui Muhammad Moeez
+Elias Lay
 
 ## Initialisierung des Repository
 ```
@@ -24,10 +24,10 @@ git clone https://git.oth-aw.de/swp/sose2023/team_c/quakrypto.git
 Charles Bennett und Gilles Brassard konzipierten 1984 ein Protokoll (bekannt als BB84-Protokoll) zum sicheren geheimen Informationsaustausch auf der Basis von Erkenntnissen der Quantenphysik. Dies markierte zugleich den Beginn der Quantenkryptographie.
 Im Projekt soll eine Lern- und Experimentiersoftware entwickelt werden, welche die Grundlagen des BB84-Protokolls und die dabei verwendeten Erkenntnisse der Quanten-Physik verdeutlichen und ein hinreichend gründliches Verständnis davon fördern soll. Eine recht schöne allgemein verständliche Darlegung der Grundlagen findet man z.B. im Buch von Simon Singh (vgl. [1]). Für das genaue Verständnis des Folgenden kann etwa der Abschnitt von S. 401 bis S. 419 in diesem Buch hilfreich sein.
 
-[1] Singh Simon: Geheime Botschaften. Carl Hanser Verlag 2000
-
 ## Support
 Repository Verwaltung: Jonas Hammer (77d7), Kontakt: j.hammer2@oth-aw.de
 
 ## Roadmap
 If you have ideas for releases in the future, it is a good idea to list them in the README.
+
+[1] Singh Simon: Geheime Botschaften. Carl Hanser Verlag 2000
