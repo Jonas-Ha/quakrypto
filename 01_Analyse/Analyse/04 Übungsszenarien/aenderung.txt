@@ -1,0 +1,8 @@
+Änderungsvorschlag:
+Normaler Ablauf: Zeile 11, Alice-Eve.
+Eve ist nicht im normalen Ablauf?
+Zeile 15 Eve-Bob,
+Zeile 26: Operator fehlt?
+MITM:
+Zeile 7: Ergebnis weg
+Zeile 17: int1
