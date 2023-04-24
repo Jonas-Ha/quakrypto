@@ -1,0 +1,104 @@
+<mxfile host="app.diagrams.net" modified="2023-04-19T19:33:10.992Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36" etag="t__Ir_qo3eBvNDTT71Js" version="21.1.4" type="device">
+  <diagram id="R2lEEEUBdFMjLlhIrx00" name="Page-1">
+    <mxGraphModel dx="1218" dy="1842" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0" extFonts="Permanent Marker^https://fonts.googleapis.com/css?family=Permanent+Marker">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="CyKnKi0keePepRDeVsVg-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="CyKnKi0keePepRDeVsVg-1" target="CyKnKi0keePepRDeVsVg-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CyKnKi0keePepRDeVsVg-17" value="Lobby erstellen" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="CyKnKi0keePepRDeVsVg-12">
+          <mxGeometry x="0.3418" y="-1" relative="1" as="geometry">
+            <mxPoint x="37" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CyKnKi0keePepRDeVsVg-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="CyKnKi0keePepRDeVsVg-1" target="CyKnKi0keePepRDeVsVg-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CyKnKi0keePepRDeVsVg-18" value="netzwerkbasierter&lt;br&gt;Lobby beitreten" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="CyKnKi0keePepRDeVsVg-13">
+          <mxGeometry x="0.0732" relative="1" as="geometry">
+            <mxPoint x="-8" y="6" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CyKnKi0keePepRDeVsVg-1" value="Hauptmenü" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="460" y="-820" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="CyKnKi0keePepRDeVsVg-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="CyKnKi0keePepRDeVsVg-2" target="CyKnKi0keePepRDeVsVg-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CyKnKi0keePepRDeVsVg-2" value="Lobbykonfigurationsmenü" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="300" y="-700" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="CyKnKi0keePepRDeVsVg-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="CyKnKi0keePepRDeVsVg-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="540" y="-580" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CyKnKi0keePepRDeVsVg-3" value="Lobbyauswahlmenü" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="620" y="-700" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="CyKnKi0keePepRDeVsVg-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1.013;entryY=0.541;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="CyKnKi0keePepRDeVsVg-4" target="CyKnKi0keePepRDeVsVg-20">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CyKnKi0keePepRDeVsVg-24" value="Wiki anzeigen" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="CyKnKi0keePepRDeVsVg-23">
+          <mxGeometry x="0.0747" y="-1" relative="1" as="geometry">
+            <mxPoint x="6" y="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CyKnKi0keePepRDeVsVg-4" value="Lobby" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="460" y="-580" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="CyKnKi0keePepRDeVsVg-25" value="Wiki anzeigen" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1.013;entryY=0.74;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="CyKnKi0keePepRDeVsVg-5" target="CyKnKi0keePepRDeVsVg-20">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CyKnKi0keePepRDeVsVg-5" value="Übungsszenario" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="460" y="-480" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="CyKnKi0keePepRDeVsVg-26" value="Wiki anzeigen" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1.008;entryY=0.941;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="CyKnKi0keePepRDeVsVg-6" target="CyKnKi0keePepRDeVsVg-20">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CyKnKi0keePepRDeVsVg-6" value="Darstellung der &lt;br&gt;Aufzeichnung" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="460" y="-380" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="CyKnKi0keePepRDeVsVg-8" value="" style="endArrow=none;html=1;rounded=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="280" y="-750" as="sourcePoint" />
+            <mxPoint x="800" y="-750" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CyKnKi0keePepRDeVsVg-9" value="" style="endArrow=none;html=1;rounded=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="280" y="-600" as="sourcePoint" />
+            <mxPoint x="800" y="-600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CyKnKi0keePepRDeVsVg-10" value="Übungsszenario beendet" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="CyKnKi0keePepRDeVsVg-5" target="CyKnKi0keePepRDeVsVg-6">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="520" y="-580" as="sourcePoint" />
+            <mxPoint x="570" y="-630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CyKnKi0keePepRDeVsVg-11" value="Übungsszenario starten" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="CyKnKi0keePepRDeVsVg-4" target="CyKnKi0keePepRDeVsVg-5">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="520" y="-580" as="sourcePoint" />
+            <mxPoint x="570" y="-630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CyKnKi0keePepRDeVsVg-20" value="Wiki" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="140" y="-820" width="120" height="500" as="geometry" />
+        </mxCell>
+        <mxCell id="CyKnKi0keePepRDeVsVg-21" value="" style="endArrow=classic;html=1;rounded=0;entryX=1.004;entryY=0.06;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="CyKnKi0keePepRDeVsVg-1" target="CyKnKi0keePepRDeVsVg-20">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="480" y="-530" as="sourcePoint" />
+            <mxPoint x="530" y="-580" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CyKnKi0keePepRDeVsVg-22" value="Wiki anzeigen" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="CyKnKi0keePepRDeVsVg-21">
+          <mxGeometry x="-0.0649" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
