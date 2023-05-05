@@ -1,0 +1,16 @@
+D:\Vorlesungen\Semester VIII\Software-Projekt\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\bin\Debug\quaKrypto.exe.config
+D:\Vorlesungen\Semester VIII\Software-Projekt\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\bin\Debug\quaKrypto.exe
+D:\Vorlesungen\Semester VIII\Software-Projekt\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\bin\Debug\quaKrypto.pdb
+D:\Vorlesungen\Semester VIII\Software-Projekt\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto.csproj.AssemblyReference.cache
+D:\Vorlesungen\Semester VIII\Software-Projekt\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto.csproj.SuggestedBindingRedirects.cache
+D:\Vorlesungen\Semester VIII\Software-Projekt\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\Views\HauptMenu.g.cs
+D:\Vorlesungen\Semester VIII\Software-Projekt\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\App.g.cs
+D:\Vorlesungen\Semester VIII\Software-Projekt\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto_MarkupCompile.cache
+D:\Vorlesungen\Semester VIII\Software-Projekt\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto_MarkupCompile.lref
+D:\Vorlesungen\Semester VIII\Software-Projekt\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\Views\HauptMenu.baml
+D:\Vorlesungen\Semester VIII\Software-Projekt\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto.g.resources
+D:\Vorlesungen\Semester VIII\Software-Projekt\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto.Properties.Resources.resources
+D:\Vorlesungen\Semester VIII\Software-Projekt\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto.csproj.GenerateResource.cache
+D:\Vorlesungen\Semester VIII\Software-Projekt\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto.csproj.CoreCompileInputs.cache
+D:\Vorlesungen\Semester VIII\Software-Projekt\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto.exe
+D:\Vorlesungen\Semester VIII\Software-Projekt\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto.pdb
