@@ -6,7 +6,7 @@ stages:
   - deploy
 
 before_script:
-  - "cd 03_Implementierung"
+  - "cd 03_Implementierung/quaKrypto"
   - "dotnet restore"
 
 build:
