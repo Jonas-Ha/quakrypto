@@ -14,5 +14,6 @@ build_job:
 test_job:
   stage: test
   script:
+    - echo "Ich bin hier!"
     - echo pwd
     - '& "$env:NUNIT_PATH" "03_Implementierung\quakrypto\TestLibrary\bin\Debug\TestLibary.dll' 
