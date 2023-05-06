@@ -30,3 +30,19 @@ E:\Git\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaK
 E:\Git\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto.csproj.CoreCompileInputs.cache
 E:\Git\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto.exe
 E:\Git\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto.pdb
+C:\__DATA\__Save\OTH Studium\OTH\Semester VIII\Software Projekt\quakrypto\03_Implementierung\quaKrypto\quaKrypto\bin\Debug\quaKrypto.exe.config
+C:\__DATA\__Save\OTH Studium\OTH\Semester VIII\Software Projekt\quakrypto\03_Implementierung\quaKrypto\quaKrypto\bin\Debug\quaKrypto.exe
+C:\__DATA\__Save\OTH Studium\OTH\Semester VIII\Software Projekt\quakrypto\03_Implementierung\quaKrypto\quaKrypto\bin\Debug\quaKrypto.pdb
+C:\__DATA\__Save\OTH Studium\OTH\Semester VIII\Software Projekt\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto.csproj.AssemblyReference.cache
+C:\__DATA\__Save\OTH Studium\OTH\Semester VIII\Software Projekt\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto.csproj.SuggestedBindingRedirects.cache
+C:\__DATA\__Save\OTH Studium\OTH\Semester VIII\Software Projekt\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\Views\HauptMenu.g.cs
+C:\__DATA\__Save\OTH Studium\OTH\Semester VIII\Software Projekt\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\App.g.cs
+C:\__DATA\__Save\OTH Studium\OTH\Semester VIII\Software Projekt\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto_MarkupCompile.cache
+C:\__DATA\__Save\OTH Studium\OTH\Semester VIII\Software Projekt\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto_MarkupCompile.lref
+C:\__DATA\__Save\OTH Studium\OTH\Semester VIII\Software Projekt\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\Views\HauptMenu.baml
+C:\__DATA\__Save\OTH Studium\OTH\Semester VIII\Software Projekt\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto.g.resources
+C:\__DATA\__Save\OTH Studium\OTH\Semester VIII\Software Projekt\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto.Properties.Resources.resources
+C:\__DATA\__Save\OTH Studium\OTH\Semester VIII\Software Projekt\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto.csproj.GenerateResource.cache
+C:\__DATA\__Save\OTH Studium\OTH\Semester VIII\Software Projekt\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto.csproj.CoreCompileInputs.cache
+C:\__DATA\__Save\OTH Studium\OTH\Semester VIII\Software Projekt\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto.exe
+C:\__DATA\__Save\OTH Studium\OTH\Semester VIII\Software Projekt\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto.pdb

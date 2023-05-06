@@ -11,6 +11,7 @@ namespace TestLibrary
     [TestFixture]
     public class Summator_UnitTest
     {
+        // Alexander Denner, 06.05.2023
         [Test]
         public void Add_Two_Numbers_Success()
         {
