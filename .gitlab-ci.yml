@@ -15,3 +15,7 @@ test_job:
   stage: test
   script:
     - '& "$env:NUNIT_PATH" "03_Implementierung\quakrypto\TestLibrary\bin\Debug\TestLibary.dll'
+  artifacts:
+    when: always
+    paths:
+      - '.\TestResult.xml'  
