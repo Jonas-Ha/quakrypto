@@ -1,6 +1,6 @@
 variables:
   MSBUILD_PATH: 'C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe'
-  NUNIT_PATH: '03_Implementierung\quaKrypto\packages\NUnit.3.13.3\lib\net35\nunit.framework.dll'
+  NUNIT_PATH: 'C:\Program Files (x86)\NUnit.org\nunit-console\nunit3-console.exe'
 
 stages:
   - build
@@ -14,8 +14,4 @@ build_job:
 test_job:
   stage: test
   script:
-    - '& "$env:NUNIT_PATH" "03_Implementierung\quakrypto\TestLibrary\bin\Debug\TestLibary.dll'
-  artifacts:
-    when: always
-    paths:
-      - '.\TestResult.xml'  
+    - '& "$env:NUNIT_PATH" "03_Implementierung\quakrypto\TestLibrary\bin\Debug\TestLibary.dll' 
