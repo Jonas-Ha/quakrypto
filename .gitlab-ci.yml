@@ -1,34 +1,32 @@
-# pipeline quakrypto
-image: microsoft/dotnet:latest
+variables:
+  MSBUILD_PATH: '"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe"'
+
 stages:
   - build
   - test
-  - deploy
 
-before_script:
-  - "cd 03_Implementierung/quaKrypto"
-  - "dotnet restore"
-
-build:
+build_job:
   stage: build
   script:
-    - "dotnet build"
-    
-test:
-  stage: test
-  script:
-  - "dotnet test"
-  dependencies:
-  - build
-
-deploy:
-  stage: deploy
-  script:
-  - "dotnet build --configuration Release --output output"
+    - "$env:MSBUILD_PATH" "quakrypto\03_Implementierung\quakrypto"
   artifacts:
-    name: "Release"
+    expire_in: 1 week  # save gitlab server space, we copy the files we need to deploy folder later on
     paths:
-      - 03_Implementierung/output/*
+      - '$env:EXE_RELEASE_FOLDER\YourApp.exe'  # saving exe to copy to deploy folder
+      - '$env:MSI_RELEASE_FOLDER\YourApp Setup.msi'  # saving msi to copy to deploy folder
+      - '$env:TEST_FOLDER\'  # saving entire Test project so NUnit can run tests
+
+test_job:
+  stage: test
+  only:
+    - tags
+  script:
+    - '& "$env:NUNIT_PATH" ".\$env:TEST_FOLDER\Tests.dll"'  # running NUnit tests
+  artifacts:
+    when: always  # save test results even when the task fails
+    expire_in: 1 week  # save gitlab server space, we copy the files we need to deploy folder later on
+    paths:
+      - '.\TestResult.xml'  # saving NUnit results to copy to deploy folder
   dependencies:
-  - build
-  - test
+    - build_job
+
