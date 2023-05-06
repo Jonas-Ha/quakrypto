@@ -9,10 +9,13 @@ stages:
 build_job:
   stage: build
   script:
+    - echo "Test"
     - '& "$env:MSBUILD_PATH" "03_Implementierung\quakrypto\quakrypto.sln"'
+    - echo "Test"
 
 test_job:
   stage: test
   script:
-    - 'echo "Test"'
-    - '& "$env:NUNIT_PATH" "03_Implementierung\quakrypto\TestLibrary\bin\Debug\TestLibary.dll' 
+    - echo "Test"
+    - '& "$env:NUNIT_PATH" "03_Implementierung\quakrypto\TestLibrary\bin\Debug\TestLibary.dll'
+    - echo "Test"
