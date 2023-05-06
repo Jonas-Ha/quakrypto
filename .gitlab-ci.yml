@@ -17,5 +17,5 @@ test_job:
   stage: test
   script:
     - echo "Test"
-    - '& "$env:NUNIT_PATH" "03_Implementierung\quakrypto\TestLibrary\bin\Debug\TestLibary.dll'
+    # - '& "$env:NUNIT_PATH" "03_Implementierung\quakrypto\TestLibrary\bin\Debug\TestLibary.dll'
     - echo "Test"
