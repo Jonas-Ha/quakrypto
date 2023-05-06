@@ -14,3 +14,19 @@ D:\Vorlesungen\Semester VIII\Software-Projekt\QuaKrypto\quakrypto\03_Implementie
 D:\Vorlesungen\Semester VIII\Software-Projekt\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto.csproj.CoreCompileInputs.cache
 D:\Vorlesungen\Semester VIII\Software-Projekt\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto.exe
 D:\Vorlesungen\Semester VIII\Software-Projekt\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto.pdb
+E:\Git\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\bin\Debug\quaKrypto.exe.config
+E:\Git\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\bin\Debug\quaKrypto.exe
+E:\Git\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\bin\Debug\quaKrypto.pdb
+E:\Git\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto.csproj.AssemblyReference.cache
+E:\Git\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto.csproj.SuggestedBindingRedirects.cache
+E:\Git\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\Views\HauptMenu.g.cs
+E:\Git\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\App.g.cs
+E:\Git\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto_MarkupCompile.cache
+E:\Git\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto_MarkupCompile.lref
+E:\Git\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\Views\HauptMenu.baml
+E:\Git\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto.g.resources
+E:\Git\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto.Properties.Resources.resources
+E:\Git\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto.csproj.GenerateResource.cache
+E:\Git\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto.csproj.CoreCompileInputs.cache
+E:\Git\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto.exe
+E:\Git\QuaKrypto\quakrypto\03_Implementierung\quaKrypto\quaKrypto\obj\Debug\quaKrypto.pdb

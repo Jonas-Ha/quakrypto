@@ -5,6 +5,8 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "quaKrypto", "quaKrypto\quaKrypto.csproj", "{2EAEEFEB-7598-4C9D-9EFA-8318BE3A732E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestLibrary", "TestLibrary\TestLibrary.csproj", "{D71B98F6-5142-4129-9629-2653B70B08C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{2EAEEFEB-7598-4C9D-9EFA-8318BE3A732E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EAEEFEB-7598-4C9D-9EFA-8318BE3A732E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2EAEEFEB-7598-4C9D-9EFA-8318BE3A732E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D71B98F6-5142-4129-9629-2653B70B08C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D71B98F6-5142-4129-9629-2653B70B08C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D71B98F6-5142-4129-9629-2653B70B08C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D71B98F6-5142-4129-9629-2653B70B08C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
