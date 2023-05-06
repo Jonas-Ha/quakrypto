@@ -1,6 +1,7 @@
 variables:
   MSBUILD_PATH: 'C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe'
   NUNIT_PATH: 'C:\Program Files (x86)\NUnit.org\nunit-console\nunit3-console.exe'
+  Test: 'Test'
 
 stages:
   - build
@@ -13,8 +14,6 @@ build_job:
 
 test_job:
   stage: test
-  bash: |
-    - echo "Ich bin hier!"
-    - echo pwd
   script:
+    - 'echo $env:Test'
     - '& "$env:NUNIT_PATH" "03_Implementierung\quakrypto\TestLibrary\bin\Debug\TestLibary.dll' 
