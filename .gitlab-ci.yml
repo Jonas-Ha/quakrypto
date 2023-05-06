@@ -17,6 +17,11 @@ test_job:
   stage: test
   script:
     - echo "Test"
+    - cd 'C:'
+    - dir
+    - cd 'C:\Program Files (x86)\'
+    - dir
+    - cd 'C:\Program Files\'
     - dir
     # - '& "$env:NUNIT_PATH" "03_Implementierung\quakrypto\TestLibrary\obj\Debug\TestLibary.dll'
     - echo "Test"
