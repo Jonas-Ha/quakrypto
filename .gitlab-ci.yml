@@ -12,7 +12,7 @@ before_script:
 build:
   stage: build
   script:
-    - "dotnet build --output output"
+    - "dotnet build"
     
 test:
   stage: test
