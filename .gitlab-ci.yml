@@ -3,7 +3,7 @@ variables:
   NUNIT_PATH: 'C:\Program Files (x86)\NUnit.org\nunit-console\nunit3-console.exe'
 
 stages:
-  # - build
+  - build
   - test
 
 build_job:
