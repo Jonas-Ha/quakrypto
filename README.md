@@ -21,9 +21,9 @@ Elias Lay | -
 
 ## Initialisierung des Repository
 ```
-cd /path/to/project
+$ cd /path/to/project
 
-git clone https://git.oth-aw.de/swp/sose2023/team_c/quakrypto.git
+$ git clone https://git.oth-aw.de/swp/sose2023/team_c/quakrypto.git
 ```
 
 ## Beschreibung
