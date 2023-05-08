@@ -11,7 +11,7 @@ Namen für | beginnen mit Wort... | beginnen mit Zeichen... | Beispiele
 --- | --- | --- | ---
 Konstanten und Variablen | Substantiv oder Adjektiv | Kleinbuchstabe | version, nummer, temp
 Typen (Klassen) | Substantiv | Großbuchstabe | Lobby, Benutzergruppe
-Funktionen und Methoden | Verb | Kleinbuchstabe | summiereZahlen
+Funktionen und Methoden | Verb | Großbuchstabe | SummiereZahlen
 Namespace | Substantiv | Kleinbuchstabe | quakrypto
 
 ## Namenslänge
@@ -19,12 +19,12 @@ Namespace | Substantiv | Kleinbuchstabe | quakrypto
 - globale, persistente Variablen: aussagekräftig, so kurz wie möglich
 
 ## Sprache
-- Englisch oder Deutsch??
+- Deutsch
 
 ## Kommentare
 - kurze, aussagekräftige Kommentare
 - kommentieren, was nicht im Programm steht
-- englische oder deutsche Kommentare??
+- deutsche Kommentare
 - "Kopfkommentar" eines Files
 ```
 // **********************************************************
