@@ -1,23 +1,29 @@
 # Geheime Kommunikation mit Quantenkryptographie - eine Lernsoftware zum Verstehen der Grundlagen
 Software-Projekt im Sommersemester 2023
 
+## Links
+- [Codierungsrichtlinien](Codierungsrichtlinien.md)
+- [Git Konventionen](Git_Lab_Konventionen.md)
+
 ## Team
-<br>Simon Schisslbauer (Projektleiter)</br>
-<br>Jonas Hammer (Repository Verwaltung)</br>
-<br>Leopold Bialek</br>
-<br>Dominik Greiner</br>
-<br>Daniel Hannes</br>
-<br>Erik Barthelmann</br>
-<br>Alexander Denner</br>
-<br>Dominik Mentel</br>
-<br>Siddiqui Muhammad Moeez</br>
-<br>Elias Lay</br>
+Name | Rolle 
+--- | --- 
+Simon Schisslbauer | Projektleiter
+Jonas Hammer | Repository Verwaltung
+Leopold Bialek | -
+Dominik Greiner | -
+Daniel Hannes | -
+Erik Barthelmann | -
+Alexander Denner | -
+Dominik Mentel | -
+Siddiqui Muhammad Moeez | -
+Elias Lay | -
 
 ## Initialisierung des Repository
 ```
-cd /path/to/project
+$ cd /path/to/project
 
-git clone https://git.oth-aw.de/swp/sose2023/team_c/quakrypto.git
+$ git clone https://git.oth-aw.de/swp/sose2023/team_c/quakrypto.git
 ```
 
 ## Beschreibung
@@ -28,6 +34,3 @@ Im Projekt soll eine Lern- und Experimentiersoftware entwickelt werden, welche d
 
 ## Support
 Repository Verwaltung: Jonas Hammer (77d7), Kontakt: j.hammer2@oth-aw.de
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
