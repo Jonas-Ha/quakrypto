@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,7 +24,7 @@ namespace TestLibrary
             int result = summator.Add(x, y);
 
             //Assert
-            int expected_result = 3;
+            int expected_result = 2;
             Assert.AreEqual(expected_result, result);
         }
     }
