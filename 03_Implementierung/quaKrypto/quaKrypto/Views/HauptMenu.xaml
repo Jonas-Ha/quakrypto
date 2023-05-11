@@ -6,11 +6,26 @@
         xmlns:local="clr-namespace:quaKrypto"
         xmlns:vm="clr-namespace:quaKrypto.ViewModels"
         mc:Ignorable="d"
-        Title="Hauptmenue" Height="450" Width="800" ResizeMode="CanResize">
+        Title="Hauptmenue" Height="450" Width="800" ResizeMode="CanResize" MinHeight="450" MinWidth="800">
     <Window.DataContext>
         <vm:HauptMenuViewModel></vm:HauptMenuViewModel>
     </Window.DataContext>
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30">Willkommen bei QuaKrypto</Label>
+        <StackPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
+            <Button MinHeight="30" x:Name="LobbyErstellenButton" Margin="0, 0, 0, 10">Lobby erstellen</Button>
+            <Button MinHeight="30" x:Name="LobbyBeitrettenButton" Margin="0, 0, 0, 10">Lobby beitreten</Button>
+            <Button MinHeight="30" x:Name="Wiki">Wiki</Button>
+        </StackPanel>
     </Grid>
 </Window>
