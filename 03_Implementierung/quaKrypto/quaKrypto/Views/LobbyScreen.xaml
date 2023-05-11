@@ -1,14 +1,14 @@
-﻿<Window x:Class="quaKrypto.HauptMenu"
+﻿<Window x:Class="quaKrypto.Views.LobbyScreen"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:quaKrypto"
+        xmlns:local="clr-namespace:quaKrypto.Views"
         xmlns:vm="clr-namespace:quaKrypto.ViewModels"
         mc:Ignorable="d"
-        Title="Hauptmenue" Height="450" Width="800" ResizeMode="CanResize">
+        Title="Lobby Screen" Height="450" Width="800" ResizeMode="CanResize">
     <Window.DataContext>
-        <vm:HauptMenuViewModel></vm:HauptMenuViewModel>
+        <vm:LobbyScreenViewModel></vm:LobbyScreenViewModel>
     </Window.DataContext>
     <Grid>
         
