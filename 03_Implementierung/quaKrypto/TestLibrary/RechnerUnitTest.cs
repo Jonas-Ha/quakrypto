@@ -1,7 +1,13 @@
+//**************************
+// File: RechnerUnitTest.cs
+// Autor: TestTeam
+// erstellt am: 06.05.2023
+// Projekt: TestLibrary
+//**************************
+
 using NUnit.Framework;
 using quaKrypto.Models;
 using System;
-#pragma warning disable IDE0090
 
 namespace TestLibrary
 {
