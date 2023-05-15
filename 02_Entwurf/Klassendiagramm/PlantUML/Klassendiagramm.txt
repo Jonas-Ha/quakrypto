@@ -7,17 +7,41 @@ package Model
 {
 	enum SchwierigkeitsgradEnum
 	{
-		Gering
+		Leicht
 		Mittel
 		Schwer
 	}
 
 	enum InformationsEnum
 	{
+		Zahl
+		Bitfolge
+		Photonen
+		Polarisationsschemata
+		unscharfePhotonen
+		ASCII-Text
+		VerschluesselterText
 	}
 
 	enum OperationsEnum
 	{
+		NachrichtSenden
+		NachrichtEmpfangen
+		NachrichtAbhoeren
+		BitfolgeGenerierenZahl
+		BitfolgeGenerierenAngabe
+		PolarisationsschemataGenerierenZahl
+		PolarisationsschemataGenerierenAngabe
+		PhotonenGenerieren
+		BitmaskeGenerieren
+		PolschataVergleichen
+		BitfolgenVergleichen
+		PhotonenZuBitfolge
+		TextVerschluesseln
+		TextEntschluesseln
+		BitsStreichen
+		BitsFreiBearbeiten
+		ZugBeenden
 	}
 
 	interface IVariante
@@ -46,6 +70,7 @@ package Model
 		+ BeendeZug() : void
 		+ ErzeugeProtokoll() : void
 		
+		
 	}
 
 	class Rolle
@@ -54,7 +79,10 @@ package Model
 		+ passwort : string
 		+ informationsablage : Information[]
 		+ zug : Handlungsschritt[]
-		+ ErzeugeHandlungsschritt : void
+		+ ErzeugeHandlungsschritt() : Handlungsschritt
+		+ RolleFreigeben() : Handlungsschritte[]
+		+ RolleSperren() : void
+		+ BeendeZug() : void
 	}
 
 	class Information
@@ -70,6 +98,7 @@ package Model
 		+ operand1 : Information
 		+ operand2 : Information
 		+ ergebnis : Information
+		+ rolle : Rolle
 		+ BerechneErgebnis() : Information
 		+ ErzeugeInformation() : void
 	}
@@ -79,6 +108,7 @@ package Model
 		+ photonenKanal : Information[]
 		+ bitKanal : Information[]
 		+ SpeicherNachrichtAb() : void
+		+ LeseNachrichtAus() : void
 	}
 
 	class Aufzeichnung
