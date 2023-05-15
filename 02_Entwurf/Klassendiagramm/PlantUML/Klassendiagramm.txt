@@ -1,0 +1,267 @@
+@startuml
+/'Klassen etc. können als Anhaltspunkt in die Code-Dateien kopiert werden'/
+
+
+/'Model-Package: Beinhaltet alle Komponenten des Models'/
+package Model
+{
+	enum SchwierigkeitsgradEnum
+	{
+		Gering
+		Mittel
+		Schwer
+	}
+
+	enum InformationsEnum
+	{
+	}
+
+	enum OperationsEnum
+	{
+	}
+
+	interface IVariante
+	{
+		+ aktuellePhase : int
+		+ schwierigkeitsgrad : SchwierigkeitsgradEnum
+	}
+
+	interface ILobby
+	{
+		+ rollen : Rolle[]
+		+ variante : IVariante
+		+ ErzeugeUebungsszenario() : Uebungsszenario
+		+ VeroeffentlicheLobby() : void
+	}
+
+	class Uebungsszenario
+	{
+		+ rollen : Rolle[]
+		+ schwierigkeitsgrad : SchwierigkeitsgradEnum[]
+		+ variante : IVariante[]
+		+ startPhase : int
+		+ endPhase : int
+		+ aktuellePhase : int
+		+ uebertragungskanal : Uebertragungskanal
+		+ BeendeZug() : void
+		+ ErzeugeProtokoll() : void
+		
+	}
+
+	class Rolle
+	{
+		+ alias : string
+		+ passwort : string
+		+ informationsablage : Information[]
+		+ zug : Handlungsschritt[]
+		+ ErzeugeHandlungsschritt : void
+	}
+
+	class Information
+	{
+		+ informationsName : string
+		+ informationsTyp : InformationsEnum
+		+ informationsInhalt : string
+	}
+
+	class Handlungsschritt
+	{
+		+ operationsTyp : OperationsEnum
+		+ operand1 : Information
+		+ operand2 : Information
+		+ ergebnis : Information
+		+ BerechneErgebnis() : Information
+		+ ErzeugeInformation() : void
+	}
+
+	class Uebertragungskanal
+	{
+		+ photonenKanal : Information[]
+		+ bitKanal : Information[]
+		+ SpeicherNachrichtAb() : void
+	}
+
+	class Aufzeichnung
+	{
+		+ handlungsschritte : Handlungsschritt[]
+		+ HaengeHandlungsschrittAn() : void
+	}
+
+	class NormalerAblauf
+	{
+	}
+
+	class ManInTheMiddle
+	{
+	}
+
+	class Abhoeren
+	{
+	}
+
+	class LokaleLobby
+	{
+	}
+
+	class NetzwerkLobby
+	{
+	}
+
+	class Wiki
+	{
+		+ eintraege : Eintrag[]
+		+ ErstelleEintrag() : void
+		+ BearbeiteEintrag(Eintrag) : void
+		+ LoescheEintrag(Eintrag) : void
+	}
+
+	class Eintrag
+	{
+		+ inhalt : string
+	}
+}
+
+/'Model-Beziehungen: Definition der Beziehungen der Komponenten im Model'/
+ IVariante <|-- NormalerAblauf
+ IVariante <|-- ManInTheMiddle
+ IVariante <|-- Abhoeren
+ IVariante <-- Uebungsszenario
+ 
+ ILobby<|-- LokaleLobby
+ ILobby<|-- NetzwerkLobby
+ 
+ Rolle <-- ILobby
+ Rolle <-- Uebungsszenario
+ 
+ Eintrag <-- Wiki
+
+ InformationsEnum <-- Information
+ 
+ Information <-- Handlungsschritt
+ 
+ OperationsEnum <-- Handlungsschritt
+ 
+ Handlungsschritt <-- Rolle
+
+ Uebungsszenario <-- ILobby
+ 
+ Uebertragungskanal <-- Uebungsszenario
+ 
+ SchwierigkeitsgradEnum <-- Uebungsszenario
+ 
+ Aufzeichnung <-- Uebungsszenario
+
+/'UI-Package: Beinhaltet alle Komponenten des UI'/
+package UI
+{
+	class LobbyErstellenView
+	{
+	}
+	
+	class LobbyBeitretenView
+	{
+	}
+	
+	class HauptMenueView
+	{
+	}
+	
+	class LobbyView
+	{
+	}
+	
+	class WikiView
+	{
+	}
+	
+	class LobbyErstellenViewModel
+	{
+		 + lobbyname: string 
+		 + ausgProtokoll: int 
+		 + ausgSchwierigkeit: int 
+		 + ausgVariante: int 
+		 + ausgPhaseStart: int 
+		 + ausgPhaseEnde: int 
+		 + netzwerkbasiert: bool 
+		 + LobbyErstellenViewModel() : void
+		 + LobbyErstellen() : void
+		 # LobbyErstellenCommand() : void
+		 # ZurueckZumHauptmenueCommand() : void
+	}
+	
+	class LobbyBeitretenViewModel
+	{
+		 + ausgVariante: int 
+		 + ausgSchwierigkeit: int 
+		 + ausgRolle: int 
+		 + verfuegbareLobbys : ObservableCollection 
+		 + ausgewaehlteLobby : int 
+		 + LobbyBeitretenViewModel() : void 
+		 + SpielBeitreten() : void 
+		 # SpielBeitretenCommand() : void 
+		 # ZurueckZumHauptmenueCommand() : void 
+		 # FilterHinzufuegenCommand() : void 
+		 # FilterLoeschenCommand() : void
+	}
+	
+	class HauptMenueViewModel
+	{
+		 + HauptMenueViewModel() : void
+		 # LobbyErstellenCommand(): void
+		 # LobbyBeitretenCommand(): void
+		 # WikiOeffnenCommand(): void
+	}
+	
+	class LobbyViewModel
+	{
+		 + NameLobby : string
+		 + Variante : string
+		 + Schwierigkeitsgrad : string
+		 + Phase : string
+		 + Protokoll : string
+		 + ButtonAliceText : string
+		 + ButtonBobText : string
+		 + ButtonEveText : string
+		 + BenutzerRollenCollection : ObservableCollection()
+		 + LobbyViewModel() : void
+		 + SpielStarten() : void
+		 # SpielStartenCommand() : void
+		 # LobbyVerlassenCommand() : void
+		 # ButtonBestaetigenCommand() : void
+		 # ButtonRollenCommand() : void
+	}
+	
+	class WikiViewModel
+	{
+		 + Eintraege : ObservableCollection
+		 + WikiViewModel() : void
+		 + Umbenennen() : void
+		 + Hinzufügen() : void
+		 + Loeschen() : void
+		 + Editieren() : void
+		 # WikiVerlassenCommand() : void
+		 # ZumHauptmenueCommand() : void
+	}
+	
+	class BaseViewModel
+	{
+		 + PropertyChanged : event
+		 + BaseViewModel() : void
+		 + PropertyChangedEventHandler() : event
+		 # OnPropertyChanged() : void
+		 # RaisedPropertyChanged() : void
+	}
+}
+
+/'UI-Beziehungen: Definition der Beziehungen der Komponenten im UI'/
+LobbyErstellenView -- LobbyErstellenViewModel
+LobbyBeitretenView -- LobbyBeitretenViewModel
+HauptMenueView -- HauptMenueViewModel
+LobbyView -- LobbyViewModel
+WikiView -- WikiViewModel
+ 
+ 
+@enduml
+
+
+Lobby übergibt Informationen aus Übertragungskanal an die Rolle.
