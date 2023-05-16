@@ -60,19 +60,21 @@ package Model
 
 	class Uebungsszenario
 	{
-		+ rollen : Rolle[]
-		+ schwierigkeitsgrad : SchwierigkeitsgradEnum[]
-		+ variante : IVariante[]
-		+ startPhase : int
-		+ endPhase : int
-		+ aktuellePhase : int
-		+ uebertragungskanal : Uebertragungskanal
+		- rollen : List<Rolle>
+		- schwierigkeitsgrad : SchwierigkeitsgradEnum
+		- variante : IVariante[]
+		- startPhase : uint
+		- endPhase : uint
+		- aktuellePhase : uint
+		- uebertragungskanal : Uebertragungskanal
+		- aufzeichnung : Aufzeichnung
 		+ BeendeZug() : void
 		+ ErzeugeProtokoll() : void
 	}
 
 	class Rolle
 	{
+		- rolle : RolleEnum
 		- alias : string
 		- passwort : string
 		- informationsablage : List<Information>
@@ -89,6 +91,10 @@ package Model
 		- informationsName : string
 		- informationsTyp : InformationsEnum
 		- informationsInhalt : string
+		+ <<get, init>> InformationsID() : int
+		+ <<get, init>> InformationsName() : string
+		+ <<get, init>> InformationsTyp() : InformationsEnum
+		+ <<get, init>> InformationsInhalt() : string
 	}
 
 	class Handlungsschritt
@@ -105,9 +111,8 @@ package Model
 
 	class Uebertragungskanal
 	{
-		+ Uebertragungskanal
-		+ photonenKanal : List<Information>
-		+ bitKanal : List<Information>
+		- photonenKanal : List<Information>
+		- bitKanal : List<Information>
 		+ SpeicherNachrichtAb() : void
 		+ LeseKanalAus() : List<Information>
 		+ LoescheNachricht() : void
@@ -115,8 +120,9 @@ package Model
 
 	class Aufzeichnung
 	{
-		+ handlungsschritte : Handlungsschritt[]
+		- handlungsschritte : List<Handlungsschritt>
 		+ HaengeHandlungsschrittAn() : void
+		+ RueckgabeHandlungsschritte() : List<Handlungsschritt>
 	}
 
 	class NormalerAblauf
@@ -294,6 +300,3 @@ WikiView -- WikiViewModel
  
  
 @enduml
-
-
-Lobby übergibt Informationen aus Übertragungskanal an die Rolle.
