@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace quaKrypto.Models.Enums
+{
+    internal enum SchwierigkeitsgradEnum
+    {
+        leicht,
+        mittel,
+        schwer
+    }
+}
