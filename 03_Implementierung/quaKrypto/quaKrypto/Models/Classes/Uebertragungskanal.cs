@@ -1,4 +1,11 @@
-﻿using System;
+﻿// **********************************************************
+// File: Information.cs
+// Autor: Alexander Denner, Leopold Bialek, Jonas Hammer
+// erstellt am: 16.05.2023
+// Projekt: quakrypto
+// ********************************************************** 
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,11 +15,11 @@ namespace quaKrypto.Models.Classes
 {
     internal class Uebertragungskanal
     {
-        //Eventuell noch zu einer ObservableCollection machen
+        // Eventuell noch zu einer ObservableCollection machen - Alexander Denner
         private List<Information> photonenKanal;
         private List<Information> bitKanal;
 
-        Uebertragungskanal()
+        public Uebertragungskanal()
         {
             photonenKanal = new List<Information>();
             bitKanal = new List<Information>();
@@ -20,11 +27,11 @@ namespace quaKrypto.Models.Classes
 
         void SpeicherNachrichtAb(Information information)
         {
-            if(information.informationsTyp == Enums.InformationsEnum.unscharfePhotonen)
+            if(information.InformationsTyp == Enums.InformationsEnum.unscharfePhotonen)
             {
                 photonenKanal.Append(information);
             }
-            else if(information.informationsTyp != Enums.InformationsEnum.photonen)
+            else if(information.InformationsTyp != Enums.InformationsEnum.photonen)
             {
                 bitKanal.Append(information);
             }
@@ -49,7 +56,7 @@ namespace quaKrypto.Models.Classes
             {
                 for(int i = 0; i < photonenKanal.Count; i++)
                 {
-                    if (photonenKanal[i].informationsID == informationsID)
+                    if (photonenKanal[i].InformationsID == informationsID)
                     {
                         photonenKanal.RemoveAt(i);
                     }
@@ -59,13 +66,12 @@ namespace quaKrypto.Models.Classes
             {
                 for (int i = 0; i < bitKanal.Count; i++)
                 {
-                    if (bitKanal[i].informationsID == informationsID)
+                    if (bitKanal[i].InformationsID == informationsID)
                     {
                         bitKanal.RemoveAt(i);
                     }
                 }
             }
-
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// **********************************************************
-// File: KanalEnum.cs
+// File: RolleEnum.cs
 // Autor: Alexander Denner, Leopold Bialek, Jonas Hammer
 // erstellt am: 16.05.2023
 // Projekt: quakrypto
@@ -13,9 +13,10 @@ using System.Threading.Tasks;
 
 namespace quaKrypto.Models.Enums
 {
-    internal enum KanalEnum
+    internal enum RolleEnum
     {
-        photonenKanal,
-        bitKanal
+        Alice,
+        Bob,
+        Eve
     }
 }

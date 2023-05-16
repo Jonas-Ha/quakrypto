@@ -69,29 +69,26 @@ package Model
 		+ uebertragungskanal : Uebertragungskanal
 		+ BeendeZug() : void
 		+ ErzeugeProtokoll() : void
-		
-		
 	}
 
 	class Rolle
 	{
-		+ alias : string
-		+ passwort : string
-		+ informationsablage : Information[]
-		+ informationszaehler : uint
-		+ zug : Handlungsschritt[]
-		+ ErzeugeHandlungsschritt() : Handlungsschritt
-		+ RolleFreigeben() : Handlungsschritte[]
-		+ RolleSperren() : void
-		+ BeendeZug() : void
+		- alias : string
+		- passwort : string
+		- informationsablage : List<Information>
+		- informationszaehler : uint
+		- zug : List<Handlungsschritt>
+		+ BeginneZug() : bool
+		+ BeendeZug() : List<Handlungsschritt>
+		+ ErzeugeHandlungsschritt() : void
 	}
 
 	class Information
 	{
-		+ informationsID : int
-		+ informationsName : string
-		+ informationsTyp : InformationsEnum
-		+ informationsInhalt : string
+		- informationsID : int
+		- informationsName : string
+		- informationsTyp : InformationsEnum
+		- informationsInhalt : string
 	}
 
 	class Handlungsschritt
@@ -101,16 +98,19 @@ package Model
 		+ operand2 : Information
 		+ ergebnis : Information
 		+ rolle : Rolle
+		- aktuellePhase : uint
 		+ BerechneErgebnis() : Information
 		+ ErzeugeInformation() : void
 	}
 
 	class Uebertragungskanal
 	{
-		+ photonenKanal : Information[]
-		+ bitKanal : Information[]
+		+ Uebertragungskanal
+		+ photonenKanal : List<Information>
+		+ bitKanal : List<Information>
 		+ SpeicherNachrichtAb() : void
-		+ LeseNachrichtAus() : void
+		+ LeseKanalAus() : List<Information>
+		+ LoescheNachricht() : void
 	}
 
 	class Aufzeichnung
