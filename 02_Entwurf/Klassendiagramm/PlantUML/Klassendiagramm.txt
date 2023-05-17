@@ -225,17 +225,12 @@ package UI
 	
 	class LobbyBeitretenViewModel
 	{
-		 + ausgVariante: int 
-		 + ausgSchwierigkeit: int 
-		 + ausgRolle: int 
 		 + verfuegbareLobbys : ObservableCollection 
 		 + ausgewaehlteLobby : int 
 		 + LobbyBeitretenViewModel() : void 
 		 + SpielBeitreten() : void 
 		 # SpielBeitretenCommand() : void 
 		 # ZurueckZumHauptmenueCommand() : void 
-		 # FilterHinzufuegenCommand() : void 
-		 # FilterLoeschenCommand() : void
 	}
 	
 	class HauptMenueViewModel
@@ -253,26 +248,31 @@ package UI
 		 + Schwierigkeitsgrad : string
 		 + Phase : string
 		 + Protokoll : string
-		 + ButtonAliceText : string
-		 + ButtonBobText : string
-		 + ButtonEveText : string
+		 + AliasAliceText : string
+		 + AliasBobText : string
+		 + AliasEveText : string
+		 + PasswortAliceText : string
+		 + PasswortBobText : string
+		 + PasswortEveText : string
 		 + BenutzerRollenCollection : ObservableCollection()
 		 + LobbyViewModel() : void
 		 + SpielStarten() : void
 		 # SpielStartenCommand() : void
 		 # LobbyVerlassenCommand() : void
 		 # ButtonBestaetigenCommand() : void
-		 # ButtonRollenCommand() : void
+		 # ButtonHauptmenueCommand() : void
+		 # ButtonWikiCommand() : void
 	}
 	
 	class WikiViewModel
 	{
-		 + Eintraege : ObservableCollection
+		 + eintraege : ObservableCollection
+		 + eintragsIndex : int
 		 + WikiViewModel() : void
-		 + Umbenennen() : void
-		 + Hinzufügen() : void
-		 + Loeschen() : void
-		 + Editieren() : void
+		 # UmbenennenCommand() : void
+		 # HinzufuegenCommand() : void
+		 # LoeschenCommand() : void
+		 # SpeichernCommand() : void
 		 # WikiVerlassenCommand() : void
 		 # ZumHauptmenueCommand() : void
 	}
@@ -284,6 +284,33 @@ package UI
 		 + PropertyChangedEventHandler() : event
 		 # OnPropertyChanged() : void
 		 # RaisedPropertyChanged() : void
+	}
+
+	class AufzeichnungViewModel
+	{
+		+ Aufzeichnung : List
+		+ AufzeichnungViewModel() : void
+		# ZumHauptmenueCommand() : void
+	}
+
+	class SpielViewModel
+	{
+	}
+
+	class SpielEveViewModel
+	{
+	}
+
+	class SpielEveView
+	{
+	}
+
+	class SpielView
+	{
+	}
+
+	class AufzeichnungView
+	{
 	}
 
 	class LobbyErstellenView
