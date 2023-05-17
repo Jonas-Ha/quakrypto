@@ -192,26 +192,22 @@ package Model
 /'UI-Package: Beinhaltet alle Komponenten des UI'/
 package UI
 {
-	class LobbyErstellenView
-	{
-	}
 	
-	class LobbyBeitretenView
+
+	class MainViewModel
 	{
+		+ MainViewModel(Navigator)
+		+ CurrentViewModel : BaseViewModel
+		- OnCurrentViewModelChanged() : void
 	}
-	
-	class HauptMenueView
+
+	class Navigator
 	{
+		+ CurrentViewModel() : BaseViewModel
+		+ CurrentViewModelChanged() : Event Action
+		- OnCurrentViewModelChanged() : void
 	}
-	
-	class LobbyView
-	{
-	}
-	
-	class WikiView
-	{
-	}
-	
+
 	class LobbyErstellenViewModel
 	{
 		 + lobbyname: string 
@@ -289,14 +285,41 @@ package UI
 		 # OnPropertyChanged() : void
 		 # RaisedPropertyChanged() : void
 	}
+
+	class LobbyErstellenView
+	{
+	}
+	
+	class LobbyBeitretenView
+	{
+	}
+	
+	class HauptMenueView
+	{
+	}
+	
+	class LobbyView
+	{
+	}
+	
+	class WikiView
+	{
+	}
 }
 
 /'UI-Beziehungen: Definition der Beziehungen der Komponenten im UI'/
+BaseViewModel <|-- LobbyBeitretenViewModel
+BaseViewModel <|-- LobbyViewModel
+BaseViewModel <|-- WikiViewModel
+BaseViewModel <|-- HauptMenueViewModel
+BaseViewModel <|-- LobbyErstellenViewModel
+BaseViewModel <|-- MainViewModel
 LobbyErstellenView -- LobbyErstellenViewModel
 LobbyBeitretenView -- LobbyBeitretenViewModel
 HauptMenueView -- HauptMenueViewModel
 LobbyView -- LobbyViewModel
 WikiView -- WikiViewModel
- 
+
+
  
 @enduml
