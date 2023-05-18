@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace quaKrypto.Models.Enums
 {
-    internal enum InformationsEnum
+    public enum InformationsEnum
     {
 		zahl,
 		bitfolge,

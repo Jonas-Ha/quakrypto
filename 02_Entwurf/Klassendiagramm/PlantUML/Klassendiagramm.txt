@@ -11,6 +11,13 @@ package Model
 		Mittel
 		Schwer
 	}
+	
+	enum RolleEnum
+	{
+		Alice
+		Bob
+		Eve
+	}
 
 	enum InformationsEnum
 	{
@@ -90,23 +97,53 @@ package Model
 		- informationsID : int
 		- informationsName : string
 		- informationsTyp : InformationsEnum
+		- informationsEmpfaenger : RolleEnum
 		- informationsInhalt : string
 		+ <<get, init>> InformationsID() : int
 		+ <<get, init>> InformationsName() : string
 		+ <<get, init>> InformationsTyp() : InformationsEnum
+		+ <<get, set>> InformationsEmpfaenger() : RolleEnum
 		+ <<get, init>> InformationsInhalt() : string
 	}
 
 	class Handlungsschritt
 	{
-		+ operationsTyp : OperationsEnum
-		+ operand1 : Information
-		+ operand2 : Information
-		+ ergebnis : Information
-		+ rolle : Rolle
+		- operationsTyp : OperationsEnum
+		- operand1 : Information
+		- operand2 : Information
+		- ergebnis : Information
+		- rolle : RolleEnum
 		- aktuellePhase : uint
-		+ BerechneErgebnis() : Information
-		+ ErzeugeInformation() : void
+		- {static} op : Operationen
+		- {static} HandlungsschrittKommando : Dictionary
+		+ <<get, init>> OperationsTyp() : OperationsEnum
+		+ <<get, init>> Operand1() : Information
+		+ <<get, init>> Operand2() : Information
+		+ <<get, set>> Ergebnis() : Information
+		+ <<get, init>> Rolle() : RolleEnum
+		+ <<get, set>> AktuellePhase() : uint
+		+ HandlungsschrittAusfuehren() : void
+	}
+	
+	class Operationen
+	{
+		+ NachrichtSenden() : Information
+		+ NachrichtEmpfangen() : Information 
+		+ NachrichtAbhoeren() : Information 
+		+ BitfolgeGenerierenZahl() : Information 
+		+ BitfolgeGenerierenAngabe() : Information 
+		+ PolarisationsschemataGenerierenZahl() : Information 
+		+ PolarisationsschemataGenerierenAngabe() : Information 
+		+ PhotonenGenerieren() : Information 
+		+ BitmaskeGenerieren() : Information 
+		+ PolschataVergleichen() : Information 
+		+ BitfolgenVergleichen() : Information 
+		+ PhotonenZuBitfolge() : Information 
+		+ TextVerschluesseln() : Information 
+		+ TextEntschluesseln() : Information 
+		+ BitsStreichen() : Information 
+		+ BitsFreiBearbeiten() : Information 
+		+ ZugBeenden() : bool 
 	}
 
 	class Uebertragungskanal
@@ -188,6 +225,11 @@ package Model
  SchwierigkeitsgradEnum <-- Uebungsszenario
  
  Aufzeichnung <-- Uebungsszenario
+ 
+ RolleEnum <-- Rolle
+ RolleEnum <-- Information
+ 
+ Operationen <-- Handlungsschritt
 
 /'UI-Package: Beinhaltet alle Komponenten des UI'/
 package UI
