@@ -50,12 +50,12 @@ namespace quaKrypto.Models.Classes
 
         void ErzeugeHandlungsschritt(Enums.OperationsEnum operationsTyp, Information operand1, String ergebnisInformationsName, Enums.RolleEnum rolle)
         {
-            zug.Add(new Handlungsschritt(operationsTyp, operand1, ergebnisInformationsName, rolle));
+           // zug.Add(new Handlungsschritt(operationsTyp, operand1, ergebnisInformationsName, rolle));
         }
 
         void ErzeugeHandlungsschritt(Enums.OperationsEnum operationsTyp, Information operand1, Information operand2, String ergebnisInformationsName, Enums.RolleEnum rolle)
         {
-            zug.Add(new Handlungsschritt(operationsTyp, operand1, operand2, ergebnisInformationsName, rolle));
+           // zug.Add(new Handlungsschritt(operationsTyp, operand1, operand2, ergebnisInformationsName, rolle));
         }
     }
 }

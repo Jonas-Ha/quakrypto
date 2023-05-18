@@ -14,12 +14,23 @@ using System.Threading.Tasks;
 
 namespace quaKrypto.Models.Classes
 {
-    internal class Information
+    public class Information
     {
         private int informationsID;
+        private RolleEnum informationsEmpfaenger;
         private string informationsName;
         private Enums.InformationsEnum informationsTyp;
         private string informationsInhalt;
+
+        public Information(int informationsID, string informationsName, InformationsEnum informationsTyp, string informationsInhalt, RolleEnum informationsEmpfaenger)
+        {
+            InformationsID = informationsID;
+            InformationsName = informationsName;
+            InformationsTyp = informationsTyp;
+            InformationsInhalt = informationsInhalt;
+            InformationsEmpfaenger = informationsEmpfaenger;
+            InformationsEmpfaenger = informationsEmpfaenger;
+        }
 
         public int InformationsID
         {
@@ -43,6 +54,12 @@ namespace quaKrypto.Models.Classes
         {
             get { return informationsInhalt; }
             init { informationsInhalt = value; }
+        }
+
+        public RolleEnum InformationsEmpfaenger
+        {
+            get { return informationsEmpfaenger; }
+            init { informationsEmpfaenger = value; }
         }
     }
 }

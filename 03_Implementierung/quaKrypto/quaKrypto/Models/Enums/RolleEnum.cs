@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace quaKrypto.Models.Enums
 {
-    internal enum RolleEnum
+    public enum RolleEnum
     {
         Alice,
         Bob,
