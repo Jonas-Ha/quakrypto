@@ -192,6 +192,127 @@ package Model
 /'UI-Package: Beinhaltet alle Komponenten des UI'/
 package UI
 {
+	
+
+	class MainViewModel
+	{
+		+ MainViewModel(Navigator)
+		+ CurrentViewModel : BaseViewModel
+		- OnCurrentViewModelChanged() : void
+	}
+
+	class Navigator
+	{
+		+ CurrentViewModel() : BaseViewModel
+		+ CurrentViewModelChanged() : Event Action
+		- OnCurrentViewModelChanged() : void
+	}
+
+	class LobbyErstellenViewModel
+	{
+		 + lobbyname: string 
+		 + ausgProtokoll: int 
+		 + ausgSchwierigkeit: int 
+		 + ausgVariante: int 
+		 + ausgPhaseStart: int 
+		 + ausgPhaseEnde: int 
+		 + netzwerkbasiert: bool 
+		 + LobbyErstellenViewModel() : void
+		 + LobbyErstellen() : void
+		 # LobbyErstellenCommand() : void
+		 # ZurueckZumHauptmenueCommand() : void
+	}
+	
+	class LobbyBeitretenViewModel
+	{
+		 + verfuegbareLobbys : ObservableCollection 
+		 + ausgewaehlteLobby : int 
+		 + LobbyBeitretenViewModel() : void 
+		 + SpielBeitreten() : void 
+		 # SpielBeitretenCommand() : void 
+		 # ZurueckZumHauptmenueCommand() : void 
+	}
+	
+	class HauptMenueViewModel
+	{
+		 + HauptMenueViewModel() : void
+		 # LobbyErstellenCommand(): void
+		 # LobbyBeitretenCommand(): void
+		 # WikiOeffnenCommand(): void
+	}
+	
+	class LobbyViewModel
+	{
+		 + NameLobby : string
+		 + Variante : string
+		 + Schwierigkeitsgrad : string
+		 + Phase : string
+		 + Protokoll : string
+		 + AliasAliceText : string
+		 + AliasBobText : string
+		 + AliasEveText : string
+		 + PasswortAliceText : string
+		 + PasswortBobText : string
+		 + PasswortEveText : string
+		 + BenutzerRollenCollection : ObservableCollection()
+		 + LobbyViewModel() : void
+		 + SpielStarten() : void
+		 # SpielStartenCommand() : void
+		 # LobbyVerlassenCommand() : void
+		 # ButtonBestaetigenCommand() : void
+		 # ButtonHauptmenueCommand() : void
+		 # ButtonWikiCommand() : void
+	}
+	
+	class WikiViewModel
+	{
+		 + eintraege : ObservableCollection
+		 + eintragsIndex : int
+		 + WikiViewModel() : void
+		 # UmbenennenCommand() : void
+		 # HinzufuegenCommand() : void
+		 # LoeschenCommand() : void
+		 # SpeichernCommand() : void
+		 # WikiVerlassenCommand() : void
+		 # ZumHauptmenueCommand() : void
+	}
+	
+	class BaseViewModel
+	{
+		 + PropertyChanged : event
+		 + BaseViewModel() : void
+		 + PropertyChangedEventHandler() : event
+		 # OnPropertyChanged() : void
+		 # RaisedPropertyChanged() : void
+	}
+
+	class AufzeichnungViewModel
+	{
+		+ Aufzeichnung : List
+		+ AufzeichnungViewModel() : void
+		# ZumHauptmenueCommand() : void
+	}
+
+	class SpielViewModel
+	{
+	}
+
+	class SpielEveViewModel
+	{
+	}
+
+	class SpielEveView
+	{
+	}
+
+	class SpielView
+	{
+	}
+
+	class AufzeichnungView
+	{
+	}
+
 	class LobbyErstellenView
 	{
 	}
@@ -211,92 +332,21 @@ package UI
 	class WikiView
 	{
 	}
-	
-	class LobbyErstellenViewModel
-	{
-		 + lobbyname: string 
-		 + ausgProtokoll: int 
-		 + ausgSchwierigkeit: int 
-		 + ausgVariante: int 
-		 + ausgPhaseStart: int 
-		 + ausgPhaseEnde: int 
-		 + netzwerkbasiert: bool 
-		 + LobbyErstellenViewModel() : void
-		 + LobbyErstellen() : void
-		 # LobbyErstellenCommand() : void
-		 # ZurueckZumHauptmenueCommand() : void
-	}
-	
-	class LobbyBeitretenViewModel
-	{
-		 + ausgVariante: int 
-		 + ausgSchwierigkeit: int 
-		 + ausgRolle: int 
-		 + verfuegbareLobbys : ObservableCollection 
-		 + ausgewaehlteLobby : int 
-		 + LobbyBeitretenViewModel() : void 
-		 + SpielBeitreten() : void 
-		 # SpielBeitretenCommand() : void 
-		 # ZurueckZumHauptmenueCommand() : void 
-		 # FilterHinzufuegenCommand() : void 
-		 # FilterLoeschenCommand() : void
-	}
-	
-	class HauptMenueViewModel
-	{
-		 + HauptMenueViewModel() : void
-		 # LobbyErstellenCommand(): void
-		 # LobbyBeitretenCommand(): void
-		 # WikiOeffnenCommand(): void
-	}
-	
-	class LobbyViewModel
-	{
-		 + NameLobby : string
-		 + Variante : string
-		 + Schwierigkeitsgrad : string
-		 + Phase : string
-		 + Protokoll : string
-		 + ButtonAliceText : string
-		 + ButtonBobText : string
-		 + ButtonEveText : string
-		 + BenutzerRollenCollection : ObservableCollection()
-		 + LobbyViewModel() : void
-		 + SpielStarten() : void
-		 # SpielStartenCommand() : void
-		 # LobbyVerlassenCommand() : void
-		 # ButtonBestaetigenCommand() : void
-		 # ButtonRollenCommand() : void
-	}
-	
-	class WikiViewModel
-	{
-		 + Eintraege : ObservableCollection
-		 + WikiViewModel() : void
-		 + Umbenennen() : void
-		 + Hinzufügen() : void
-		 + Loeschen() : void
-		 + Editieren() : void
-		 # WikiVerlassenCommand() : void
-		 # ZumHauptmenueCommand() : void
-	}
-	
-	class BaseViewModel
-	{
-		 + PropertyChanged : event
-		 + BaseViewModel() : void
-		 + PropertyChangedEventHandler() : event
-		 # OnPropertyChanged() : void
-		 # RaisedPropertyChanged() : void
-	}
 }
 
 /'UI-Beziehungen: Definition der Beziehungen der Komponenten im UI'/
+BaseViewModel <|-- LobbyBeitretenViewModel
+BaseViewModel <|-- LobbyViewModel
+BaseViewModel <|-- WikiViewModel
+BaseViewModel <|-- HauptMenueViewModel
+BaseViewModel <|-- LobbyErstellenViewModel
+BaseViewModel <|-- MainViewModel
 LobbyErstellenView -- LobbyErstellenViewModel
 LobbyBeitretenView -- LobbyBeitretenViewModel
 HauptMenueView -- HauptMenueViewModel
 LobbyView -- LobbyViewModel
 WikiView -- WikiViewModel
- 
+
+
  
 @enduml
