@@ -9,8 +9,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Icons\bearbeiten.png" />
+    <None Remove="Icons\entfernen.png" />
+    <None Remove="Icons\erweitern.png" />
+    <None Remove="Icons\seite.png" />
+    <None Remove="Icons\test.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="ViewModels\" />
     <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Icons\Wiki\bearbeiten.png" />
+    <Resource Include="Icons\Wiki\entfernen.png" />
+    <Resource Include="Icons\Wiki\erweitern.png" />
+    <Resource Include="Icons\Wiki\seite.png" />
   </ItemGroup>
 
 </Project>

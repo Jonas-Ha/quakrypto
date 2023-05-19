@@ -1,0 +1,65 @@
+<Window x:Class="quaKrypto.Models.Classes.Wiki"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:classes="clr-namespace:quaKrypto.Models.Classes"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+        mc:Ignorable="d"
+        Title="Wiki" Height="450" Width="800"
+        Closing="Window_Closing">
+
+
+    <DockPanel Margin="10">
+
+        <GroupBox DockPanel.Dock="Left" Margin="0,0,10,0" MaxWidth="202">
+            <GroupBox.Header>
+                <Label Content="Wiki Seiten" FontSize="19" FontWeight="Thin"/>
+            </GroupBox.Header>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding Source={x:Static classes:Wiki.WikiSeiten}}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderThickness="5" BorderBrush="{Binding BorderBrush}" >
+                                    <StackPanel Orientation="Horizontal" PreviewMouseDown="WikiSeiteSelektiert">
+                                        <Label Content="{Binding Identifier}" Visibility="Collapsed"/>
+                                        <Image Source="../../Icons/Wiki/seite.png" Width="30" Height="30"/>
+                                        <Label Content="{Binding WikiSeiteName}" FontWeight="Thin" FontSize="23" Opacity="{Binding Durchschein}"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+                <GroupBox VerticalAlignment="Bottom" Grid.Row="1" Header="Optionen">
+                    <StackPanel Orientation="Horizontal" Margin="10">
+                        <Image Source="../../Icons/Wiki/erweitern.png" ToolTip="Das Wiki durch eine neue Seite Erweitern" PreviewMouseDown="SeitenErweitern_Click" Focusable="True"/>
+                        <Image Source="../../Icons/Wiki/bearbeiten.png" Margin="10,0" ToolTip="Die Aktive Seite des Wikis Bearbeiten" PreviewMouseDown="SeiteBearbeiten_Click" Focusable="True"/>
+                        <Image Source="../../Icons/Wiki/entfernen.png" ToolTip="Entfernen der Aktiven Seite des Wikis" PreviewMouseDown="SeiteEntfernen_Click" Focusable="True"/>
+                    </StackPanel>
+                </GroupBox>
+            </Grid>
+
+        </GroupBox>
+
+        <TextBox Margin="0,4,0,0"  DockPanel.Dock="Top" Text="{Binding SelektierteWikiSeite.WikiSeiteName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="39" FontWeight="Thin" Visibility="{Binding TextBoxSichtbar}" MouseDoubleClick="SeiteBearbeiten_Click"/>
+        <Label Margin="0,0,0,-4" DockPanel.Dock="Top" Content="{Binding SelektierteWikiSeite.WikiSeiteName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="39" FontWeight="Thin" Visibility="{Binding LabelSichtbar}" MouseDoubleClick="SeiteBearbeiten_Click"/>
+
+        <GroupBox Header="Inhalt">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                <StackPanel Orientation="Vertical">
+                    <TextBox Margin="2,4,0,0" Text="{Binding SelektierteWikiSeite.Inhalt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontWeight="Thin" Visibility="{Binding TextBoxSichtbar}" MouseDoubleClick="SeiteBearbeiten_Click" AcceptsReturn="True" AcceptsTab="True"/>
+                    <Label Content="{Binding SelektierteWikiSeite.Inhalt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontWeight="Thin" Visibility="{Binding LabelSichtbar}" MouseDoubleClick="SeiteBearbeiten_Click"/>
+                </StackPanel>
+            </ScrollViewer>
+        </GroupBox>
+
+    </DockPanel>
+
+</Window>
