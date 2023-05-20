@@ -1,5 +1,5 @@
 ﻿// **********************************************************
-// File: InformationsEnum.cs
+// File: Information.cs
 // Autor: Alexander Denner, Leopold Bialek, Jonas Hammer
 // erstellt am: 16.05.2023
 // Projekt: quakrypto

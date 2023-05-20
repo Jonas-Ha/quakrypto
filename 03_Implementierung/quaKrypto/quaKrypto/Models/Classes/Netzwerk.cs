@@ -1,4 +1,10 @@
-﻿using quaKrypto.Models.Interfaces;
+﻿// **********************************************************
+// File: Netzwerk.cs
+// Autor: Daniel Hannes
+// erstellt am: 16.05.2023
+// Projekt: quakrypto
+// ********************************************************** 
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,6 +14,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using quaKrypto.Models.Interfaces;
 
 namespace quaKrypto.Models.Classes
 {
@@ -36,7 +43,7 @@ namespace quaKrypto.Models.Classes
         private static bool SENDEN_UDP_AKTIV = false;
         private static bool EMPFANGEN_UDP_AKTIV = false;
 
-        private static ILobby? AKTUELLE_LOBBY;
+        private static IUebungsszenario? AKTUELLES_UEBUNGSSZENARIO;
 
 
         private static void SendeNachrichtUDP(byte identifier, string nachricht)
@@ -89,12 +96,12 @@ namespace quaKrypto.Models.Classes
             }
         }
 
-        public static async void BeginneZyklischesSendenVonLobbyinformation(ILobby lobby)
+        public static async void BeginneZyklischesSendenVonLobbyinformation(IUebungsszenario uebungsszenario)
         {
             if (!SENDEN_UDP_AKTIV)
             {
                 SENDEN_UDP_AKTIV = true;
-                AKTUELLE_LOBBY = lobby;
+                AKTUELLES_UEBUNGSSZENARIO = uebungsszenario;
                 periodicTimer = new PeriodicTimer(TimeSpan.FromMilliseconds(ZEIT_ZWISCHEN_LOBBYINFORMATION_SENDEN_IN_MS));
                 while (await periodicTimer.WaitForNextTickAsync())
                 {

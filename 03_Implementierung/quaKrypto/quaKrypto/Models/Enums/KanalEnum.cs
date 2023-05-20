@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace quaKrypto.Models.Enums
 {
-    internal enum KanalEnum
+    public enum KanalEnum
     {
         photonenKanal,
         bitKanal

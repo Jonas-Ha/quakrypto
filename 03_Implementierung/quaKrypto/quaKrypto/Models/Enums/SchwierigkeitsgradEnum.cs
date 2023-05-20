@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace quaKrypto.Models.Enums
 {
-    internal enum SchwierigkeitsgradEnum
+    public enum SchwierigkeitsgradEnum
     {
         leicht,
         mittel,

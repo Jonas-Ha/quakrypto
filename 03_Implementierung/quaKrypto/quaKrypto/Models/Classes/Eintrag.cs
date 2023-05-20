@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace quaKrypto.Models.Classes
 {
-    internal class Eintrag
+    public class Eintrag
     {
     }
 }

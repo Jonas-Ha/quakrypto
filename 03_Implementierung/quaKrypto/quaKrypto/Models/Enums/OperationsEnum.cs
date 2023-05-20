@@ -27,10 +27,12 @@ namespace quaKrypto.Models.Enums
 		polschataVergleichen,
 		bitfolgenVergleichen,
 		photonenZuBitfolge,
-		textVerschluesseln,
+        textGenerieren,
+        textVerschluesseln,
 		textEntschluesseln,
 		bitsStreichen,
 		bitsFreiBearbeiten,
+		zahlGenerieren,
 		zugBeenden
 	}
 }

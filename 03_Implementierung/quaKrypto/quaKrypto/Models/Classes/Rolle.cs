@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace quaKrypto.Models.Classes
 {
-    internal class Rolle
+    public class Rolle
     {
         private Enums.RolleEnum rolle;
         private string alias;
@@ -23,7 +23,7 @@ namespace quaKrypto.Models.Classes
         private uint informationszaehler;
         private List<Handlungsschritt> zug;
 
-        Rolle(Enums.RolleEnum rolle, string alias, string passwort)
+        public Rolle(Enums.RolleEnum rolle, string alias, string passwort)
         {
             this.rolle = rolle;
             this.alias = alias;
@@ -31,7 +31,12 @@ namespace quaKrypto.Models.Classes
             informationsablage = new List<Information>();
         }
 
-        bool BeginneZug(string passwort)
+        public Enums.RolleEnum RolleTyp
+        {
+            get { return rolle; }
+        }
+        
+        public bool BeginneZug(string passwort)
         {
             if (this.passwort == passwort)
             {
@@ -41,19 +46,19 @@ namespace quaKrypto.Models.Classes
             }
             else return false;
         }
-
-        List<Handlungsschritt>? BeendeZug()
+        
+        public List<Handlungsschritt>? BeendeZug()
         {
             if (zug != null) return zug;
             else return null;
         }
 
-        void ErzeugeHandlungsschritt(Enums.OperationsEnum operationsTyp, Information operand1, String ergebnisInformationsName, Enums.RolleEnum rolle)
+        public void ErzeugeHandlungsschritt(Enums.OperationsEnum operationsTyp, Information operand1, String ergebnisInformationsName, Enums.RolleEnum rolle)
         {
            // zug.Add(new Handlungsschritt(operationsTyp, operand1, ergebnisInformationsName, rolle));
         }
 
-        void ErzeugeHandlungsschritt(Enums.OperationsEnum operationsTyp, Information operand1, Information operand2, String ergebnisInformationsName, Enums.RolleEnum rolle)
+        public void ErzeugeHandlungsschritt(Enums.OperationsEnum operationsTyp, Information operand1, Information operand2, String ergebnisInformationsName, Enums.RolleEnum rolle)
         {
            // zug.Add(new Handlungsschritt(operationsTyp, operand1, operand2, ergebnisInformationsName, rolle));
         }
