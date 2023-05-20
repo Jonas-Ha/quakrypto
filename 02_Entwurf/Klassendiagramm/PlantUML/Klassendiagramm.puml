@@ -1,207 +1,223 @@
 @startuml name
+
+/'************************************************************'/
+/'PACKAGE Model												  '/
+/'************************************************************'/
 package Model
 {
-	enum SchwierigkeitsgradEnum
-	{
-		Leicht
-		Mittel
-		Schwer
+	together {
+		interface IUebungsszenario
+		{
+			+ <<get, set>> Rollen() : List<Rolle>
+			+ <<get, set>> Schwierigkeitsgrad() : SchwierigkeitsgradEnum
+			+ <<get, set>> Variante() : IVariante
+			+ <<get, set>> StartPhase() : uint
+			+ <<get, set>> EndPhase() : uint
+			+ <<get, set>> Uebertragungskanal() : Uebertragungskanal
+			+ <<get, set>> Aufzeichnung() : Aufzeichnung
+			+ VeroeffentlicheLobby() : void
+			+ RolleHinzufuegen() : bool
+			+ RolleEntfernen() : bool
+			+ NaechsterZug() : void
+			+ ErzeugeProtokoll() : void
+		}
+
+		class UebungsszenarioLokal
+		{
+		}
+
+		class UebungsszenarioNetzwerk
+		{
+		}
+	}
+
+	together {
+		class Aufzeichnung
+		{
+			- handlungsschritte : List<Handlungsschritt>
+			+ HaengeHandlungsschrittAn() : void
+			+ HaengeListeHandlungsschritteAn() : void
+		}
+
+		class Uebertragungskanal
+		{
+			- photonenKanal : List<Information>
+			- bitKanal : List<Information>
+			+ SpeicherNachrichtAb() : void
+			+ LeseKanalAus() : List<Information>
+			+ LoescheNachricht() : void
+		}
+
+		enum SchwierigkeitsgradEnum
+		{
+			Leicht
+			Mittel
+			Schwer
+		}
 	}
 	
-	enum RolleEnum
-	{
-		Alice
-		Bob
-		Eve
+	together {
+		class Operationen
+		{
+			+ NachrichtSenden() : Information
+			+ NachrichtEmpfangen() : Information 
+			+ NachrichtAbhoeren() : Information 
+			+ BitfolgeGenerierenZahl() : Information 
+			+ BitfolgeGenerierenAngabe() : Information 
+			+ PolarisationsschemataGenerierenZahl() : Information 
+			+ PolarisationsschemataGenerierenAngabe() : Information 
+			+ PhotonenGenerieren() : Information 
+			+ BitmaskeGenerieren() : Information 
+			+ PolschataVergleichen() : Information 
+			+ BitfolgenVergleichen() : Information 
+			+ PhotonenZuBitfolge() : Information 
+			+ TextVerschluesseln() : Information 
+			+ TextEntschluesseln() : Information 
+			+ BitsStreichen() : Information 
+			+ BitsFreiBearbeiten() : Information 
+			+ ZugBeenden() : bool 
+		}
+
+		enum OperationsEnum
+		{
+			NachrichtSenden
+			NachrichtEmpfangen
+			NachrichtAbhoeren
+			BitfolgeGenerierenZahl
+			BitfolgeGenerierenAngabe
+			PolarisationsschemataGenerierenZahl
+			PolarisationsschemataGenerierenAngabe
+			PhotonenGenerieren
+			BitmaskeGenerieren
+			PolschataVergleichen
+			BitfolgenVergleichen
+			PhotonenZuBitfolge
+			TextVerschluesseln
+			TextEntschluesseln
+			BitsStreichen
+			BitsFreiBearbeiten
+			TexGenerieren
+			ZahlGenerieren
+			ZugBeenden
+		}
 	}
 
-	enum InformationsEnum
-	{
-		Zahl
-		Bitfolge
-		Photonen
-		Polarisationsschemata
-		unscharfePhotonen
-		ASCII-Text
-		VerschluesselterText
+	together {
+		class Information
+		{
+			- informationsID : int
+			- informationsName : string
+			- informationsTyp : InformationsEnum
+			- informationsEmpfaenger : RolleEnum
+			- informationsInhalt : string
+			+ <<get, init>> InformationsID() : int
+			+ <<get, init>> InformationsName() : string
+			+ <<get, init>> InformationsTyp() : InformationsEnum
+			+ <<get, set>> InformationsEmpfaenger() : RolleEnum
+			+ <<get, init>> InformationsInhalt() : string
+		}
+
+		class Handlungsschritt
+		{
+			- operationsTyp : OperationsEnum
+			- operand1 : Information
+			- operand2 : Information
+			- ergebnis : Information
+			- rolle : RolleEnum
+			- aktuellePhase : uint
+			- {static} op : Operationen
+			- {static} HandlungsschrittKommando : Dictionary
+			+ <<get, init>> OperationsTyp() : OperationsEnum
+			+ <<get, init>> Operand1() : Information
+			+ <<get, init>> Operand2() : Information
+			+ <<get, set>> Ergebnis() : Information
+			+ <<get, init>> Rolle() : RolleEnum
+			+ <<get, set>> AktuellePhase() : uint
+			+ HandlungsschrittAusfuehren() : void
+		}
+
+		class Rolle
+		{
+			- rolle : RolleEnum
+			- alias : string
+			- passwort : string
+			- informationsablage : List<Information>
+			- informationszaehler : uint
+			- zug : List<Handlungsschritt>
+			+ BeginneZug() : bool
+			+ BeendeZug() : List<Handlungsschritt>
+			+ ErzeugeHandlungsschritt() : void
+		}
+
+		enum InformationsEnum
+		{
+			Zahl
+			Bitfolge
+			Photonen
+			Polarisationsschemata
+			unscharfePhotonen
+			ASCII-Text
+			VerschluesselterText
+		}
+
+		enum RolleEnum
+		{
+			Alice
+			Bob
+			Eve
+		}
 	}
 
-	enum OperationsEnum
-	{
-		NachrichtSenden
-		NachrichtEmpfangen
-		NachrichtAbhoeren
-		BitfolgeGenerierenZahl
-		BitfolgeGenerierenAngabe
-		PolarisationsschemataGenerierenZahl
-		PolarisationsschemataGenerierenAngabe
-		PhotonenGenerieren
-		BitmaskeGenerieren
-		PolschataVergleichen
-		BitfolgenVergleichen
-		PhotonenZuBitfolge
-		TextVerschluesseln
-		TextEntschluesseln
-		BitsStreichen
-		BitsFreiBearbeiten
-		TexGenerieren
-		ZahlGenerieren
-		ZugBeenden
+	together {
+		interface IVariante
+		{
+			+ <<get>> AktuellePhase() : uint
+			+ <<get>> Schwierigkeitsgrad() : SchwierigkeitsgradEnum
+			+ <<get>> VarianteName() : string
+			+ <<get>> MoeglicheRollen() : List<RolleEnum>
+			+ NaechsteRolle() : RolleEnum
+			+ GebeHilfestellung() : List<OperationsEnum>
+		}
+
+		class VarianteNormalerAblauf
+		{
+		}
+
+		class VarianteAbhoeren
+		{
+		}
+
+		class VarianteManInTheMiddle
+		{
+		}
 	}
 
-	interface IVariante
-	{
-		+ <<get>> AktuellePhase() : uint
-		+ <<get>> Schwierigkeitsgrad() : SchwierigkeitsgradEnum
-		+ <<get>> VarianteName() : string
-		+ NaechsteRolle() : RolleEnum
-		+ GebeHilfestellung() : List<OperationsEnum>
-	}
+	together {
+		class Wiki
+		{
+			+ eintraege : Eintrag[]
+			+ ErstelleEintrag() : void
+			+ BearbeiteEintrag(Eintrag) : void
+			+ LoescheEintrag(Eintrag) : void
+		}
 
-	interface IUebungsszenario
-	{
-		+ <<get, set>> Rollen() : List<Rolle>
-		+ <<get, set>> Schwierigkeitsgrad() : SchwierigkeitsgradEnum
-		+ <<get, set>> Variante() : IVariante
-		+ <<get, set>> StartPhase() : uint
-		+ <<get, set>> EndPhase() : uint
-		+ <<get, set>> Uebertragungskanal() : Uebertragungskanal
-		+ <<get, set>> Aufzeichnung() : Aufzeichnung
-		+ VeroeffentlicheLobby() : void
-		+ RolleHinzufuegen() : bool
-		+ RolleEntfernen() : bool
-		+ NaechsterZug() : void
-		+ ErzeugeProtokoll() : void
-	}
-
-	class Rolle
-	{
-		- rolle : RolleEnum
-		- alias : string
-		- passwort : string
-		- informationsablage : List<Information>
-		- informationszaehler : uint
-		- zug : List<Handlungsschritt>
-		+ BeginneZug() : bool
-		+ BeendeZug() : List<Handlungsschritt>
-		+ ErzeugeHandlungsschritt() : void
-	}
-
-	class Information
-	{
-		- informationsID : int
-		- informationsName : string
-		- informationsTyp : InformationsEnum
-		- informationsEmpfaenger : RolleEnum
-		- informationsInhalt : string
-		+ <<get, init>> InformationsID() : int
-		+ <<get, init>> InformationsName() : string
-		+ <<get, init>> InformationsTyp() : InformationsEnum
-		+ <<get, set>> InformationsEmpfaenger() : RolleEnum
-		+ <<get, init>> InformationsInhalt() : string
-	}
-
-	class Handlungsschritt
-	{
-		- operationsTyp : OperationsEnum
-		- operand1 : Information
-		- operand2 : Information
-		- ergebnis : Information
-		- rolle : RolleEnum
-		- aktuellePhase : uint
-		- {static} op : Operationen
-		- {static} HandlungsschrittKommando : Dictionary
-		+ <<get, init>> OperationsTyp() : OperationsEnum
-		+ <<get, init>> Operand1() : Information
-		+ <<get, init>> Operand2() : Information
-		+ <<get, set>> Ergebnis() : Information
-		+ <<get, init>> Rolle() : RolleEnum
-		+ <<get, set>> AktuellePhase() : uint
-		+ HandlungsschrittAusfuehren() : void
-	}
-	
-	class Operationen
-	{
-		+ NachrichtSenden() : Information
-		+ NachrichtEmpfangen() : Information 
-		+ NachrichtAbhoeren() : Information 
-		+ BitfolgeGenerierenZahl() : Information 
-		+ BitfolgeGenerierenAngabe() : Information 
-		+ PolarisationsschemataGenerierenZahl() : Information 
-		+ PolarisationsschemataGenerierenAngabe() : Information 
-		+ PhotonenGenerieren() : Information 
-		+ BitmaskeGenerieren() : Information 
-		+ PolschataVergleichen() : Information 
-		+ BitfolgenVergleichen() : Information 
-		+ PhotonenZuBitfolge() : Information 
-		+ TextVerschluesseln() : Information 
-		+ TextEntschluesseln() : Information 
-		+ BitsStreichen() : Information 
-		+ BitsFreiBearbeiten() : Information 
-		+ ZugBeenden() : bool 
-	}
-
-	class Uebertragungskanal
-	{
-		- photonenKanal : List<Information>
-		- bitKanal : List<Information>
-		+ SpeicherNachrichtAb() : void
-		+ LeseKanalAus() : List<Information>
-		+ LoescheNachricht() : void
-	}
-
-	class Aufzeichnung
-	{
-		- handlungsschritte : List<Handlungsschritt>
-		+ HaengeHandlungsschrittAn() : void
-		+ RueckgabeHandlungsschritte() : List<Handlungsschritt>
-	}
-
-	class NormalerAblauf
-	{
-	}
-
-	class ManInTheMiddle
-	{
-	}
-
-	class Abhoeren
-	{
-	}
-
-	class LokaleLobby
-	{
-	}
-
-	class NetzwerkLobby
-	{
-	}
-
-	class Wiki
-	{
-		+ eintraege : Eintrag[]
-		+ ErstelleEintrag() : void
-		+ BearbeiteEintrag(Eintrag) : void
-		+ LoescheEintrag(Eintrag) : void
-	}
-
-	class Eintrag
-	{
-		+ inhalt : string
+		class Eintrag
+		{
+			+ inhalt : string
+		}
 	}
 }
 
 /'Model-Beziehungen: Definition der Beziehungen der Komponenten im Model'/
- IVariante <|-- NormalerAblauf
- IVariante <|-- ManInTheMiddle
- IVariante <|-- Abhoeren
- IVariante <-- Uebungsszenario
+ IVariante <|-- VarianteNormalerAblauf
+ IVariante <|-- VarianteManInTheMiddle
+ IVariante <|-- VarianteAbhoeren
+ IVariante <-- IUebungsszenario
  
- ILobby<|-- LokaleLobby
- ILobby<|-- NetzwerkLobby
+ IUebungsszenario <|-- UebungsszenarioLokal
+ IUebungsszenario <|-- UebungsszenarioNetzwerk
  
- Rolle <-- ILobby
- Rolle <-- Uebungsszenario
+ Rolle <-- IUebungsszenario
  
  Eintrag <-- Wiki
 
@@ -212,25 +228,23 @@ package Model
  OperationsEnum <-- Handlungsschritt
  
  Handlungsschritt <-- Rolle
-
- Uebungsszenario <-- ILobby
  
- Uebertragungskanal <-- Uebungsszenario
+ Uebertragungskanal <-- IUebungsszenario
  
- SchwierigkeitsgradEnum <-- Uebungsszenario
+ SchwierigkeitsgradEnum <-- IUebungsszenario
  
- Aufzeichnung <-- Uebungsszenario
+ Aufzeichnung <-- IUebungsszenario
  
  RolleEnum <-- Rolle
  RolleEnum <-- Information
  
  Operationen <-- Handlungsschritt
 
-/'UI-Package: Beinhaltet alle Komponenten des UI'/
+/'************************************************************'/
+/'PACKAGE UI												  '/
+/'************************************************************'/
 package UI
 {
-	
-
 	class MainViewModel
 	{
 		+ MainViewModel(Navigator)
@@ -371,7 +385,6 @@ package UI
 	}
 }
 
-/'UI-Beziehungen: Definition der Beziehungen der Komponenten im UI'/
 BaseViewModel <|-- LobbyBeitretenViewModel
 BaseViewModel <|-- LobbyViewModel
 BaseViewModel <|-- WikiViewModel
@@ -384,6 +397,4 @@ HauptMenueView -- HauptMenueViewModel
 LobbyView -- LobbyViewModel
 WikiView -- WikiViewModel
 
-
- 
 @enduml
