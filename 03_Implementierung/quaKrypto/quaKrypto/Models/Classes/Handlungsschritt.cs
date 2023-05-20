@@ -45,6 +45,14 @@ namespace quaKrypto.Models.Classes
                 { OperationsEnum.zugBeenden, op.ZugBeenden },
             };
 
+        public Handlungsschritt(Enums.OperationsEnum operationsTyp, Information operand1, Information operand2, RolleEnum rolle)
+        {
+            this.OperationsTyp = operationsTyp;
+            this.Operand1 = operand1;
+            this.Operand2 = operand2;
+            this.Rolle = rolle;
+        }
+
         public OperationsEnum OperationsTyp
         {
             get { return operationsTyp; }
@@ -79,14 +87,6 @@ namespace quaKrypto.Models.Classes
         {
             get { return aktuellePhase; }
             set { aktuellePhase = value; }
-        }
-
-        public Handlungsschritt(Enums.OperationsEnum operationsTyp, Information operand1, Information operand2, RolleEnum rolle)
-        {
-            this.OperationsTyp = operationsTyp;
-            this.Operand1 = operand1;
-            this.Operand2 = operand2;
-            this.Rolle = rolle;
         }
 
         public void HandlungsschrittAusfuehren()
