@@ -26,7 +26,7 @@ namespace quaKrypto.Models.Classes
         private Uebertragungskanal uebertragungskanal;
         private Aufzeichnung aufzeichnung;
 
-        UebungsszenarioLokal(SchwierigkeitsgradEnum schwierigkeitsgrad, IVariante variante, uint startPhase, uint endPhase)
+        public UebungsszenarioLokal(SchwierigkeitsgradEnum schwierigkeitsgrad, IVariante variante, uint startPhase, uint endPhase)
         {
             this.rollen = new List<Rolle>();
             this.aktuelleRolle = null;
