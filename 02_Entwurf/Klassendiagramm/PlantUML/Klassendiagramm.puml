@@ -1,8 +1,4 @@
-@startuml
-/'Klassen etc. können als Anhaltspunkt in die Code-Dateien kopiert werden'/
-
-
-/'Model-Package: Beinhaltet alle Komponenten des Models'/
+@startuml name
 package Model
 {
 	enum SchwierigkeitsgradEnum

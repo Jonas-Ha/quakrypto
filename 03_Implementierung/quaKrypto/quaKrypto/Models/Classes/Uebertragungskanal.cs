@@ -1,5 +1,5 @@
 ﻿// **********************************************************
-// File: Information.cs
+// File: Uebertragungskanal.cs
 // Autor: Alexander Denner, Leopold Bialek, Jonas Hammer
 // erstellt am: 16.05.2023
 // Projekt: quakrypto
@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace quaKrypto.Models.Classes
 {
-    internal class Uebertragungskanal
+    public class Uebertragungskanal
     {
         // Eventuell noch zu einer ObservableCollection machen - Alexander Denner
         private List<Information> photonenKanal;
@@ -25,7 +25,7 @@ namespace quaKrypto.Models.Classes
             bitKanal = new List<Information>();
         }
 
-        void SpeicherNachrichtAb(Information information)
+        public void SpeicherNachrichtAb(Information information)
         {
             if(information.InformationsTyp == Enums.InformationsEnum.unscharfePhotonen)
             {
@@ -37,7 +37,7 @@ namespace quaKrypto.Models.Classes
             }
         }
 
-        List<Information>? LeseKanalAus(Enums.KanalEnum kanal)
+        public List<Information>? LeseKanalAus(Enums.KanalEnum kanal)
         {
             if(kanal == Enums.KanalEnum.photonenKanal)
             {
@@ -50,7 +50,7 @@ namespace quaKrypto.Models.Classes
             else return null;
         }
 
-        void LoescheNachricht(Enums.KanalEnum kanal, uint informationsID)
+        public void LoescheNachricht(Enums.KanalEnum kanal, uint informationsID)
         {
             if(kanal == Enums.KanalEnum.photonenKanal)
             {

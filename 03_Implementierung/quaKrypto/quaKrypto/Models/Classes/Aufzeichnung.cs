@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace quaKrypto.Models.Classes
 {
-    internal class Aufzeichnung
+    public class Aufzeichnung
     {
         private List<Handlungsschritt> handlungsschritte;
 
@@ -25,6 +25,11 @@ namespace quaKrypto.Models.Classes
         public void HaengeHandlungsschrittAn(Handlungsschritt handlungsschritt)
         {
             this.handlungsschritte.Add(handlungsschritt);
+        }
+
+        public void HaengeListeHandlungsschritteAn(List<Handlungsschritt> handlungsschritte)
+        {
+            this.handlungsschritte.AddRange(handlungsschritte);
         }
     }
 }
