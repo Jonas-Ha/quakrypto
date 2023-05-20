@@ -110,10 +110,76 @@ package UI
 
 	class SpielViewModel
 	{
+		# BitfolgeErzeugenCommand() : void /'Bitzahlen Icon'/
+		# Ver_EntschluesselnCommand() : void /'Schluessel Icon'/
+		# PhotonenErzeugenCommand() : void /'P Icon'/
+		# PolschaErzeugenCommand() : void /'Filter Icon'/
+		# StreichenCommand() : void /'Radiergummi Icon'/
+		# TextEditierenCommand() : void /'Editieren Icon'/
+		# VergleichenCommand() : void /'Waage Icon'/
+		# ZahlErzeugenCommand() : void /'Raute Icon'/
+		# ZufaelligGenerierenCommand() : void /'Wuerfel Icon'/
+		# FragezeichenCommand() : void /'Fragezeichen Icon'/
+		# ZugBeendenCommand() : void
+		# HauptmenueCommand() : void
+		# OperationAusfuhrenCommand() : void
+		# InformationLoeschenCommand() : void
 	}
 
+	note right of SpielViewModel
+	 Bitzahlen Icon : BitfolgeErzeugenCommand()
+	 Schluessel Icon : Ver_EntschluesselnCommand()
+	 P Icon : PhotonenErzeugenCommand()
+	 Filter Icon : PolschaErzeugenCommand()
+	 Radiergummi Icon : StreichenCommand()
+	 Editieren Icon : TextEditierenCommand()
+	 Waage Icon : VergleichenCommand()
+	 Raute Icon : ZahlErzeugenCommand()
+	 Wuerfel Icon : ZufaelligGenerierenCommand()
+	 Fragezeichen Icon : FragezeichenCommand()
+	end note
+	
 	class SpielEveViewModel
 	{
+		# BitfolgeErzeugenCommand() : void /'Bitzahlen Icon'/
+		# Ver_EntschluesselnCommand() : void /'Schluessel Icon'/
+		# PhotonenErzeugenCommand() : void /'P Icon'/
+		# PolschaErzeugenCommand() : void /'Filter Icon'/
+		# StreichenCommand() : void /'Radiergummi Icon'/
+		# TextEditierenCommand() : void /'Editieren Icon'/
+		# VergleichenCommand() : void /'Waage Icon'/
+		# ZahlErzeugenCommand() : void /'Raute Icon'/
+		# ZufaelligGenerierenCommand() : void /'Wuerfel Icon'/
+		# FragezeichenCommand() : void /'Fragezeichen Icon'/
+		# ZugBeendenCommand() : void
+		# HauptmenueCommand() : void
+		# OperationAusfuhrenCommand() : void
+		# InformationLoeschenCommand() : void
+	}
+
+	note right of SpielEveViewModel
+	 Bitzahlen Icon : BitfolgeErzeugenCommand() : void
+	 Schluessel Icon : Ver_EntschluesselnCommand() : void
+	 P Icon : PhotonenErzeugenCommand() : void
+	 Filter Icon : PolschaErzeugenCommand() : void
+	 Radiergummi Icon : StreichenCommand() : void
+	 Editieren Icon : TextEditierenCommand() : void
+	 Waage Icon : VergleichenCommand() : void
+	 Raute Icon : ZahlErzeugenCommand() : void
+	 Wuerfel Icon : ZufaelligGenerierenCommand() : void
+	 Fragezeichen Icon : FragezeichenCommand() : void
+	end note
+
+	class RolleEntsperrenViewModel
+	{
+		- passwort : string
+		# RolleEntsperrenCommand() : void 
+		# ZumHauptmenueCommand() : void
+	}
+
+	class RolleEntsperrenView
+	{
+		
 	}
 
 	class SpielEveView
