@@ -1,0 +1,104 @@
+﻿<Window x:Class="quaKrypto.Views.LobbyScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:quaKrypto.Views"
+        xmlns:vm="clr-namespace:quaKrypto.ViewModels"
+        mc:Ignorable="d"
+        Title="Lobby Screen" Height="450" Width="800" ResizeMode="CanResize">
+    <Window.DataContext>
+        <vm:LobbyScreenViewModel></vm:LobbyScreenViewModel>
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="1.5*"></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="0.5*"></ColumnDefinition>
+            <ColumnDefinition Width="1.5*"></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="5*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
+            <Button MinHeight="30" x:Name="WikiButton" Margin="0, 0, 0, 10">Wiki</Button>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
+            <Button MinHeight="30" x:Name="LobbyVerlassenButton" Margin="0, 0, 0, 10">Lobby verlassen</Button>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
+            <Border BorderBrush="Black" BorderThickness="1">
+                <Label>Name</Label>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="1">
+                <Label>Variante</Label>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="1">
+                <Label>Schwierigkeitsgrad</Label>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="1">
+                <Label>Phase</Label>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="1">
+                <Label>Protokoll</Label>
+            </Border>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+            <Border BorderBrush="Black" BorderThickness="1">
+                <Label x:Name="LabelSpiel">Bob's Hackerparadies</Label>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="1">
+                <Label x:Name="LabelVariante">Lauschangriff</Label>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="1">
+                <Label x:Name="LabelSchwierigkeitsgrad">schwer</Label>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="1">
+                <Label x:Name="LabelPhase">0-5</Label>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="1">
+                <Label x:Name="LabelProtokoll">BB84</Label>
+            </Border>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="5" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+            <Border BorderBrush="Black" BorderThickness="1">
+                <Label>Alice</Label>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="1">
+                <Label>Bob</Label>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="1">
+                <Label>Eve</Label>
+            </Border>
+        </StackPanel>
+        <!--<StackPanel Grid.Row="1" Grid.Column="6" HorizontalAlignment="Stretch" VerticalAlignment="Center">-->
+        <!--<Button x:Name="AliceAuswaehlen" Height="25" Style="{StaticResource {x:Type Button}}">Auswählen</Button>-->
+        <!--<Button x:Name="BobAuswaehlen" Height="25">Auswählen</Button>-->
+        <!--<Button x:Name="EveAuswaehlen" Height="25">Auswählen</Button>-->
+        <!--</StackPanel>-->
+        <DataGrid HeadersVisibility="None" Grid.Row="1" Grid.Column="6">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Rolle">
+
+                </DataGridTextColumn>
+                <DataGridTemplateColumn Header="Buttons">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button></Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Grid.Row="2" Grid.Column="6" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
+            <Button MinHeight="30" x:Name="Spielstarten" Margin="0, 0, 0, 10">Spiel starten</Button>
+        </StackPanel>
+    </Grid>
+</Window>
