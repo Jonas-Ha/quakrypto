@@ -18,7 +18,8 @@ namespace quaKrypto.Models.Classes
     {
         public Information NachrichtSenden()
         {
-            return new Information(2, "Mende", InformationsEnum.asciiText, "Chris", RolleEnum.Alice);
+            return new Information(1, "Name_asciiText", InformationsEnum.asciiText,
+                "Inhalt_asciiText", RolleEnum.Bob);
         }
 
         public Information NachrichtEmpfangen()
