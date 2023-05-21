@@ -25,15 +25,25 @@ namespace quaKrypto.Models.Classes
             bitKanal = new List<Information>();
         }
 
+        public List<Information> PhotonenKanal
+        {
+            get { return photonenKanal; }
+        }
+
+        public List<Information> BitKanal
+        {
+            get { return bitKanal; }
+        }
+
         public void SpeicherNachrichtAb(Information information)
         {
             if(information.InformationsTyp == Enums.InformationsEnum.unscharfePhotonen)
             {
-                photonenKanal.Append(information);
+                photonenKanal.Add(information);
             }
             else if(information.InformationsTyp != Enums.InformationsEnum.photonen)
             {
-                bitKanal.Append(information);
+                bitKanal.Add(information);
             }
         }
 
