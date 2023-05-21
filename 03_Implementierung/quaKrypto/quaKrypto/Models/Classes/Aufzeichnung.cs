@@ -22,6 +22,11 @@ namespace quaKrypto.Models.Classes
             this.handlungsschritte = new List<Handlungsschritt>();
         }
 
+        public List<Handlungsschritt>? Handlungsschritte
+        {
+            get { return handlungsschritte; }
+        }
+
         public void HaengeHandlungsschrittAn(Handlungsschritt handlungsschritt)
         {
             this.handlungsschritte.Add(handlungsschritt);
