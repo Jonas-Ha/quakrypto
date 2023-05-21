@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace quaKrypto
+namespace quaKrypto.Views
 {
     /// <summary>
-    /// Interaction logic for HauptMenu.xaml
+    /// Interaction logic for RolleEntsperrenView.xaml
     /// </summary>
-    public partial class HauptMenu : Window
+    public partial class RolleEntsperrenView : UserControl
     {
-        public HauptMenu()
+        public RolleEntsperrenView()
         {
             InitializeComponent();
         }

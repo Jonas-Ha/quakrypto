@@ -10,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace quaKrypto.Views
 {
     /// <summary>
-    /// Interaction logic for BenutzerFestlegen.xaml
+    /// Interaction logic for WikiView.xaml
     /// </summary>
-    public partial class BenutzerFestlegen : Window
+    public partial class WikiView : UserControl
     {
-        public BenutzerFestlegen()
+        public WikiView()
         {
             InitializeComponent();
         }

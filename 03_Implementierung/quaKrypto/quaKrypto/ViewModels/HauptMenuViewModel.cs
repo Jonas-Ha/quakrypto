@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace quaKrypto.ViewModels
 {
-    public class HauptMenuViewModel
+    public class HauptMenuViewModel : BaseViewModel
     {
     }
 }

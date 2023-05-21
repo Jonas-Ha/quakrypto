@@ -9,220 +9,249 @@ skinparam pageBorderColor black
 /'************************************************************'/
 package UI
 {
-	class MainViewModel
-	{
-		+ MainViewModel(Navigator)
-		+ CurrentViewModel : BaseViewModel
-		- OnCurrentViewModelChanged() : void
+	together{
+		class MainViewModel
+		{
+			+ MainViewModel(Navigator)
+			+ CurrentViewModel : BaseViewModel
+			- OnCurrentViewModelChanged() : void
+		}
+
+		class Navigator
+		{
+			+ CurrentViewModel() : BaseViewModel
+			+ CurrentViewModelChanged() : Event Action
+			- OnCurrentViewModelChanged() : void
+		}
+
+		class BaseViewModel
+		{
+			+ PropertyChanged : event
+			+ BaseViewModel() : void
+			+ PropertyChangedEventHandler() : event
+			# OnPropertyChanged() : void
+			# RaisedPropertyChanged() : void
+		}
 	}
 
-	class Navigator
-	{
-		+ CurrentViewModel() : BaseViewModel
-		+ CurrentViewModelChanged() : Event Action
-		- OnCurrentViewModelChanged() : void
-	}
+	together{
+		class LobbyErstellenViewModel
+		{
+			+ lobbyname: string 
+			+ ausgProtokoll: int 
+			+ ausgSchwierigkeit: int 
+			+ ausgVariante: int 
+			+ ausgPhaseStart: int 
+			+ ausgPhaseEnde: int 
+			+ netzwerkbasiert: bool 
+			+ LobbyErstellenViewModel() : void
+			+ LobbyErstellen() : void
+			# LobbyErstellenCommand() : void
+			# ZurueckZumHauptmenueCommand() : void
+		}
 
-	class LobbyErstellenViewModel
-	{
-		 + lobbyname: string 
-		 + ausgProtokoll: int 
-		 + ausgSchwierigkeit: int 
-		 + ausgVariante: int 
-		 + ausgPhaseStart: int 
-		 + ausgPhaseEnde: int 
-		 + netzwerkbasiert: bool 
-		 + LobbyErstellenViewModel() : void
-		 + LobbyErstellen() : void
-		 # LobbyErstellenCommand() : void
-		 # ZurueckZumHauptmenueCommand() : void
+		class LobbyErstellenView
+		{
+		}
 	}
 	
-	class LobbyBeitretenViewModel
-	{
-		 + verfuegbareLobbys : ObservableCollection 
-		 + ausgewaehlteLobby : int 
-		 + LobbyBeitretenViewModel() : void 
-		 + SpielBeitreten() : void 
-		 # SpielBeitretenCommand() : void 
-		 # ZurueckZumHauptmenueCommand() : void 
+	together{
+		class LobbyBeitretenViewModel
+		{
+			+ verfuegbareLobbys : ObservableCollection 
+			+ ausgewaehlteLobby : int 
+			+ LobbyBeitretenViewModel() : void 
+			+ SpielBeitreten() : void 
+			# SpielBeitretenCommand() : void 
+			# ZurueckZumHauptmenueCommand() : void 
+		}
+
+		class LobbyBeitretenView
+		{
+		}
 	}
 	
-	class HauptMenueViewModel
-	{
-		 + HauptMenueViewModel() : void
-		 # LobbyErstellenCommand(): void
-		 # LobbyBeitretenCommand(): void
-		 # WikiOeffnenCommand(): void
+	together{
+		class HauptMenueViewModel
+		{
+			+ HauptMenueViewModel() : void
+			# LobbyErstellenCommand(): void
+			# LobbyBeitretenCommand(): void
+			# WikiOeffnenCommand(): void
+		}
+			
+		class HauptMenueView
+		{
+		}
 	}
 	
-	class LobbyViewModel
-	{
-		 + NameLobby : string
-		 + Variante : string
-		 + Schwierigkeitsgrad : string
-		 + Phase : string
-		 + Protokoll : string
-		 + AliasAliceText : string
-		 + AliasBobText : string
-		 + AliasEveText : string
-		 + PasswortAliceText : string
-		 + PasswortBobText : string
-		 + PasswortEveText : string
-		 + BenutzerRollenCollection : ObservableCollection()
-		 + LobbyViewModel() : void
-		 + SpielStarten() : void
-		 # SpielStartenCommand() : void
-		 # LobbyVerlassenCommand() : void
-		 # ButtonBestaetigenCommand() : void
-		 # ButtonHauptmenueCommand() : void
-		 # ButtonWikiCommand() : void
+	together{
+		class LobbyViewModel
+		{
+			+ NameLobby : string
+			+ Variante : string
+			+ Schwierigkeitsgrad : string
+			+ Phase : string
+			+ Protokoll : string
+			+ AliasAliceText : string
+			+ AliasBobText : string
+			+ AliasEveText : string
+			+ PasswortAliceText : string
+			+ PasswortBobText : string
+			+ PasswortEveText : string
+			+ BenutzerRollenCollection : ObservableCollection()
+			+ LobbyViewModel() : void
+			+ SpielStarten() : void
+			# SpielStartenCommand() : void
+			# LobbyVerlassenCommand() : void
+			# ButtonBestaetigenCommand() : void
+			# ButtonHauptmenueCommand() : void
+			# ButtonWikiCommand() : void
+		}
+
+		class LobbyView
+		{
+		}
 	}
 	
-	class WikiViewModel
-	{
-		 + eintraege : ObservableCollection
-		 + eintragsIndex : int
-		 + WikiViewModel() : void
-		 # UmbenennenCommand() : void
-		 # HinzufuegenCommand() : void
-		 # LoeschenCommand() : void
-		 # SpeichernCommand() : void
-		 # WikiVerlassenCommand() : void
-		 # ZumHauptmenueCommand() : void
+	together{
+		class WikiViewModel
+		{
+			+ eintraege : ObservableCollection
+			+ eintragsIndex : int
+			+ WikiViewModel() : void
+			# UmbenennenCommand() : void
+			# HinzufuegenCommand() : void
+			# LoeschenCommand() : void
+			# SpeichernCommand() : void
+			# WikiVerlassenCommand() : void
+			# ZumHauptmenueCommand() : void
+		}
+
+		class WikiView
+		{
+		}
 	}
 	
-	class BaseViewModel
-	{
-		 + PropertyChanged : event
-		 + BaseViewModel() : void
-		 + PropertyChangedEventHandler() : event
-		 # OnPropertyChanged() : void
-		 # RaisedPropertyChanged() : void
+
+	together{
+		class AufzeichnungViewModel
+		{
+			+ Aufzeichnung : List
+			+ AufzeichnungViewModel() : void
+			# ZumHauptmenueCommand() : void
+		}
+
+		class AufzeichnungView
+		{
+		}
 	}
 
-	class AufzeichnungViewModel
-	{
-		+ Aufzeichnung : List
-		+ AufzeichnungViewModel() : void
-		# ZumHauptmenueCommand() : void
-	}
-
-	class SpielViewModel
-	{
-		# BitfolgeErzeugenCommand() : void /'Bitzahlen Icon'/
-		# Ver_EntschluesselnCommand() : void /'Schluessel Icon'/
-		# PhotonenErzeugenCommand() : void /'P Icon'/
-		# PolschaErzeugenCommand() : void /'Filter Icon'/
-		# StreichenCommand() : void /'Radiergummi Icon'/
-		# TextEditierenCommand() : void /'Editieren Icon'/
-		# VergleichenCommand() : void /'Waage Icon'/
-		# ZahlErzeugenCommand() : void /'Raute Icon'/
-		# ZufaelligGenerierenCommand() : void /'Wuerfel Icon'/
-		# FragezeichenCommand() : void /'Fragezeichen Icon'/
-		# ZugBeendenCommand() : void
-		# HauptmenueCommand() : void
-		# OperationAusfuhrenCommand() : void
-		# InformationLoeschenCommand() : void
-	}
-
-	note right of SpielViewModel
-	 Bitzahlen Icon : BitfolgeErzeugenCommand()
-	 Schluessel Icon : Ver_EntschluesselnCommand()
-	 P Icon : PhotonenErzeugenCommand()
-	 Filter Icon : PolschaErzeugenCommand()
-	 Radiergummi Icon : StreichenCommand()
-	 Editieren Icon : TextEditierenCommand()
-	 Waage Icon : VergleichenCommand()
-	 Raute Icon : ZahlErzeugenCommand()
-	 Wuerfel Icon : ZufaelligGenerierenCommand()
-	 Fragezeichen Icon : FragezeichenCommand()
-	end note
-	
-	class SpielEveViewModel
-	{
-		# BitfolgeErzeugenCommand() : void /'Bitzahlen Icon'/
-		# Ver_EntschluesselnCommand() : void /'Schluessel Icon'/
-		# PhotonenErzeugenCommand() : void /'P Icon'/
-		# PolschaErzeugenCommand() : void /'Filter Icon'/
-		# StreichenCommand() : void /'Radiergummi Icon'/
-		# TextEditierenCommand() : void /'Editieren Icon'/
-		# VergleichenCommand() : void /'Waage Icon'/
-		# ZahlErzeugenCommand() : void /'Raute Icon'/
-		# ZufaelligGenerierenCommand() : void /'Wuerfel Icon'/
-		# FragezeichenCommand() : void /'Fragezeichen Icon'/
-		# ZugBeendenCommand() : void
-		# HauptmenueCommand() : void
-		# OperationAusfuhrenCommand() : void
-		# InformationLoeschenCommand() : void
-	}
-
-	note right of SpielEveViewModel
-	 Bitzahlen Icon : BitfolgeErzeugenCommand() : void
-	 Schluessel Icon : Ver_EntschluesselnCommand() : void
-	 P Icon : PhotonenErzeugenCommand() : void
-	 Filter Icon : PolschaErzeugenCommand() : void
-	 Radiergummi Icon : StreichenCommand() : void
-	 Editieren Icon : TextEditierenCommand() : void
-	 Waage Icon : VergleichenCommand() : void
-	 Raute Icon : ZahlErzeugenCommand() : void
-	 Wuerfel Icon : ZufaelligGenerierenCommand() : void
-	 Fragezeichen Icon : FragezeichenCommand() : void
-	end note
-
-	class RolleEntsperrenViewModel
-	{
-		- passwort : string
-		# RolleEntsperrenCommand() : void 
-		# ZumHauptmenueCommand() : void
-	}
-
-	class RolleEntsperrenView
-	{
+	together{
+		class SpielViewModel
+		{
+			# BitfolgeErzeugenCommand() : void /'Bitzahlen Icon'/
+			# Ver_EntschluesselnCommand() : void /'Schluessel Icon'/
+			# PhotonenErzeugenCommand() : void /'P Icon'/
+			# PolschaErzeugenCommand() : void /'Filter Icon'/
+			# StreichenCommand() : void /'Radiergummi Icon'/
+			# TextEditierenCommand() : void /'Editieren Icon'/
+			# VergleichenCommand() : void /'Waage Icon'/
+			# ZahlErzeugenCommand() : void /'Raute Icon'/
+			# ZufaelligGenerierenCommand() : void /'Wuerfel Icon'/
+			# FragezeichenCommand() : void /'Fragezeichen Icon'/
+			# ZugBeendenCommand() : void
+			# HauptmenueCommand() : void
+			# OperationAusfuhrenCommand() : void
+			# InformationLoeschenCommand() : void
+		}
 		
+		class SpielView
+		{
+		}
+
+		note right of SpielViewModel
+		Bitzahlen Icon : BitfolgeErzeugenCommand()
+		Schluessel Icon : Ver_EntschluesselnCommand()
+		P Icon : PhotonenErzeugenCommand()
+		Filter Icon : PolschaErzeugenCommand()
+		Radiergummi Icon : StreichenCommand()
+		Editieren Icon : TextEditierenCommand()
+		Waage Icon : VergleichenCommand()
+		Raute Icon : ZahlErzeugenCommand()
+		Wuerfel Icon : ZufaelligGenerierenCommand()
+		Fragezeichen Icon : FragezeichenCommand()
+		end note
 	}
 
-	class SpielEveView
-	{
-	}
+	together{
+		class SpielEveViewModel
+		{
+			# BitfolgeErzeugenCommand() : void /'Bitzahlen Icon'/
+			# Ver_EntschluesselnCommand() : void /'Schluessel Icon'/
+			# PhotonenErzeugenCommand() : void /'P Icon'/
+			# PolschaErzeugenCommand() : void /'Filter Icon'/
+			# StreichenCommand() : void /'Radiergummi Icon'/
+			# TextEditierenCommand() : void /'Editieren Icon'/
+			# VergleichenCommand() : void /'Waage Icon'/
+			# ZahlErzeugenCommand() : void /'Raute Icon'/
+			# ZufaelligGenerierenCommand() : void /'Wuerfel Icon'/
+			# FragezeichenCommand() : void /'Fragezeichen Icon'/
+			# ZugBeendenCommand() : void
+			# HauptmenueCommand() : void
+			# OperationAusfuhrenCommand() : void
+			# InformationLoeschenCommand() : void
+		}
 
-	class SpielView
-	{
-	}
+		class SpielEveView
+		{
+		}
 
-	class AufzeichnungView
-	{
+		note right of SpielEveViewModel
+		Bitzahlen Icon : BitfolgeErzeugenCommand() : void
+		Schluessel Icon : Ver_EntschluesselnCommand() : void
+		P Icon : PhotonenErzeugenCommand() : void
+		Filter Icon : PolschaErzeugenCommand() : void
+		Radiergummi Icon : StreichenCommand() : void
+		Editieren Icon : TextEditierenCommand() : void
+		Waage Icon : VergleichenCommand() : void
+		Raute Icon : ZahlErzeugenCommand() : void
+		Wuerfel Icon : ZufaelligGenerierenCommand() : void
+		Fragezeichen Icon : FragezeichenCommand() : void
+		end note
 	}
+	
+	together{
+		class RolleEntsperrenViewModel
+		{
+			- passwort : string
+			# RolleEntsperrenCommand() : void 
+			# ZumHauptmenueCommand() : void
+		}
 
-	class LobbyErstellenView
-	{
-	}
-	
-	class LobbyBeitretenView
-	{
-	}
-	
-	class HauptMenueView
-	{
-	}
-	
-	class LobbyView
-	{
-	}
-	
-	class WikiView
-	{
+		class RolleEntsperrenView
+		{
+		}
 	}
 }
 
+BaseViewModel <|-- RolleEntsperrenViewModel
+BaseViewModel <|-- AufzeichnungViewModel
+BaseViewModel <|-- SpielEveViewModel
+BaseViewModel <|-- SpielViewModel
 BaseViewModel <|-- LobbyBeitretenViewModel
 BaseViewModel <|-- LobbyViewModel
 BaseViewModel <|-- WikiViewModel
 BaseViewModel <|-- HauptMenueViewModel
 BaseViewModel <|-- LobbyErstellenViewModel
 BaseViewModel <|-- MainViewModel
+Navigator -- MainViewModel
+SpielView -- SpielViewModel
+SpielEveView -- SpielEveViewModel
+RolleEntsperrenView -- RolleEntsperrenViewModel
 LobbyErstellenView -- LobbyErstellenViewModel
 LobbyBeitretenView -- LobbyBeitretenViewModel
+AufzeichnungView -- AufzeichnungViewModel
 HauptMenueView -- HauptMenueViewModel
 LobbyView -- LobbyViewModel
 WikiView -- WikiViewModel

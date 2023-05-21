@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace quaKrypto.ViewModels
 {
-    internal class SpielViewModel
+    internal class SpielViewModel : BaseViewModel
     {
     }
 }

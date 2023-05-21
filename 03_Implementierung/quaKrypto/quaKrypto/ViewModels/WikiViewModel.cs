@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace quaKrypto.ViewModels
 {
-    internal class WikiViewModel
+    internal class WikiViewModel : BaseViewModel
     {
     }
 }
