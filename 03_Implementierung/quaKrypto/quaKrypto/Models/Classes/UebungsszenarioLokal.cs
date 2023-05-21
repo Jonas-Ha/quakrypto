@@ -44,6 +44,11 @@ namespace quaKrypto.Models.Classes
             set { rollen = value; }
         }
 
+        public Rolle AktuelleRolle
+        {
+            get { return aktuelleRolle; }
+        }
+
         public Enums.SchwierigkeitsgradEnum Schwierigkeitsgrad
         {
             get { return schwierigkeitsgrad; }
