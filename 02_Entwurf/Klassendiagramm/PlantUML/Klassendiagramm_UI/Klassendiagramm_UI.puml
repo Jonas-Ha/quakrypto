@@ -117,13 +117,19 @@ package UI
 	together{
 		class WikiViewModel
 		{
-			+ eintraege : ObservableCollection
-			+ eintragsIndex : int
+			+ WikiSeiten : ObservableCollection<WikiSeite>
+			+ SelektierteWikiSeite : WikiSeite
+			- editierModus : bool
+			+ <<get, set>> EditierModus : bool
+			+ LabelSichtbar : Visibility
+			+ TextBoxSichtbar : Visibility
+			+ SeitenErweitern : DelegateCommand
+			+ SeitenBearbeiten : DelegateCommand
+			+ SeiteEntfernen : DelegateCommand
+			+ SeiteSelektiert : DelegateCommand
 			+ WikiViewModel() : void
+
 			# UmbenennenCommand() : void
-			# HinzufuegenCommand() : void
-			# LoeschenCommand() : void
-			# SpeichernCommand() : void
 			# WikiVerlassenCommand() : void
 			# ZumHauptmenueCommand() : void
 		}
@@ -232,6 +238,17 @@ package UI
 		class RolleEntsperrenView
 		{
 		}
+	}
+
+	class DelegateCommand
+	{
+		+ CanExecuteChanged : event Eventhandler
+		+ execute : Action<object>
+		+ canExecute : Predicate<object>?
+		+ DelegateCommand()
+		+ CanExecute() : bool
+		+ Execute(): void
+		+ RaiseCanExecuteChanged(): void
 	}
 }
 
