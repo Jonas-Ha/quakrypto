@@ -1,0 +1,19 @@
+@startuml MVVM
+
+skinparam pageMargin 10
+skinparam pageExternalColor gray
+skinparam pageBorderColor black
+
+agent Model
+
+agent ViewModel
+
+agent View
+
+View -> ViewModel : Data Bindings and Commands
+View <-[dashed] ViewModel : Send notifications
+
+ViewModel -> Model : ViewModel updates the Model
+ViewModel <-[dashed] Model : Send notifications
+
+@enduml
