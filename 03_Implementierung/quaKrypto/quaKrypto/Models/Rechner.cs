@@ -6,6 +6,7 @@
 //**************************
 
 using System;
+
 namespace quaKrypto.Models
 {
     public class Rechner
@@ -18,4 +19,4 @@ namespace quaKrypto.Models
             return x + y;
         }
     }
-}}
+}
