@@ -37,6 +37,8 @@ namespace quaKrypto.Models.Classes
         {
             istAktiv = aktiv;
             PropertyHasChanged(nameof(BorderBrush));
+            PropertyHasChanged(nameof(WikiSeiteName));
+            PropertyHasChanged(nameof(Inhalt));
         }
         public void SetzeEditierModus(bool neuerEditierModus)
         {

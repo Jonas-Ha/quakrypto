@@ -9,14 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Icons\bearbeiten.png" />
-    <None Remove="Icons\entfernen.png" />
-    <None Remove="Icons\erweitern.png" />
-    <None Remove="Icons\seite.png" />
-    <None Remove="Icons\test.png" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="ViewModels\" />
     <Folder Include="Services\" />
   </ItemGroup>

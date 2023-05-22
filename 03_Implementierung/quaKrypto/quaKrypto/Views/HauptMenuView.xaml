@@ -7,21 +7,45 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30">Willkommen bei QuaKrypto</Label>
-        <StackPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
-            <Button MinHeight="30" x:Name="LobbyErstellenButton" Margin="0, 0, 0, 10">Lobby erstellen</Button>
-            <Button MinHeight="30" x:Name="LobbyBeitrettenButton" Margin="0, 0, 0, 10">Lobby beitreten</Button>
-            <Button MinHeight="30" x:Name="Wiki">Wiki</Button>
-        </StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30">Willkommen bei QuaKrypto</Label>
+            <StackPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
+                <Button MinHeight="30" x:Name="LobbyErstellenButton" Margin="0, 0, 0, 10">Lobby erstellen</Button>
+                <Button MinHeight="30" x:Name="LobbyBeitrettenButton" Margin="0, 0, 0, 10">Lobby beitreten</Button>
+                <Button MinHeight="30" x:Name="Wiki">Wiki</Button>
+            </StackPanel>
+
+
+        </Grid>
+        <!-- 
+        Das ist der Wiki-Button
+        Bitte schauen, dass er das letzte Element in dem Ganz Großen Grid ist
+        Ich weiß nicht, wie es sonst geht, müsste ich mir mal anschauen ._. 
+        - Daniel Hannes
+        -->
+        <Button Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left"
+              PreviewMouseDown="WikiButton_PreviewMouseDown" PreviewMouseUp="WikiButton_PreviewMouseUp" PreviewMouseMove="WikiButton_PreviewMouseMove"
+              BorderBrush="Orange" BorderThickness="25">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="25"/>
+                </Style>
+            </Button.Resources>
+            <Button.Content>
+                <Label Margin="-27,-23,-25,-25" Content="Wiki" FontSize="24" FontWeight="Thin"/>
+            </Button.Content>
+        </Button>
+        <!-- Ende Wiki-Button-->
     </Grid>
+
 </UserControl>
