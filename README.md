@@ -4,6 +4,7 @@ Software-Projekt im Sommersemester 2023
 ## Links
 - [Codierungsrichtlinien](Codierungsrichtlinien.md)
 - [Git Konventionen](Git_Lab_Konventionen.md)
+- [Testingguidlines](04_Test/Testingguidelines.md)
 
 ## Team
 Name | Rolle 

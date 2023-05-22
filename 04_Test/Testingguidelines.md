@@ -1,4 +1,3 @@
-
 # Testing Guidelines
 Wir haben ein paar grundlegende Testrichtlinien zusammengestellt, die das Erstellen von Tests vereinheitlichen soll, damit sich jeder schnell und besser in dem Testprojekt zurechtfindet und die Tests versteht.
 
