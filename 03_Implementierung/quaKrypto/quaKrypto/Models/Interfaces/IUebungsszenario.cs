@@ -16,6 +16,9 @@ namespace quaKrypto.Models.Interfaces
 {
     public interface IUebungsszenario
     {
+        public Rolle AktuelleRolle
+        { get; set; }
+
         public List<Rolle> Rollen
         { get; set; }
 
@@ -40,7 +43,7 @@ namespace quaKrypto.Models.Interfaces
         public void VeroeffentlicheLobby();
         public bool RolleHinzufuegen(Rolle rolle);
         public bool RolleEntfernen(Rolle rolle);
-        public void NaechsterZug();
+        public bool NaechsterZug(String passwort);
         public void ErzeugeProtokoll();
     }
 }

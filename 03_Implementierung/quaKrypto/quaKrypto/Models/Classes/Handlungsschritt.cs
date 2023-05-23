@@ -19,6 +19,7 @@ namespace quaKrypto.Models.Classes
         private OperationsEnum operationsTyp;
         private Information operand1;
         private Information operand2;
+        private String ergebnisName;
         private Information ergebnis;
         private RolleEnum rolle;
         private uint aktuellePhase;
@@ -45,12 +46,21 @@ namespace quaKrypto.Models.Classes
                 { OperationsEnum.zugBeenden, op.ZugBeenden },
             };
 
-        public Handlungsschritt(Enums.OperationsEnum operationsTyp, Information operand1, Information operand2, RolleEnum rolle)
+        public Handlungsschritt(uint informationsID, Enums.OperationsEnum operationsTyp, Information operand1, Information operand2, String ergebnisName, RolleEnum rolle)
         {
             this.OperationsTyp = operationsTyp;
             this.Operand1 = operand1;
             this.Operand2 = operand2;
+            this.ErgebnisName = ergebnisName;
             this.Rolle = rolle;
+
+            Delegate del = null;
+
+            if (HandlungsschrittKommando.TryGetValue(OperationsTyp, out del))
+            {
+                var Ergebnis = del.DynamicInvoke(informationsID, OperationsTyp, Operand1, Operand2, ErgebnisName) as Information;
+                if ((Ergebnis != null)) this.Ergebnis = Ergebnis;  
+            }
         }
 
         public OperationsEnum OperationsTyp
@@ -69,6 +79,12 @@ namespace quaKrypto.Models.Classes
         {
             get { return operand2; }
             init { operand2 = value; }
+        }
+
+        public String ErgebnisName
+        {
+            get { return ergebnisName; }
+            set { ergebnisName = value; }
         }
 
         public Information Ergebnis
@@ -92,13 +108,7 @@ namespace quaKrypto.Models.Classes
         public void HandlungsschrittAusfuehren()
         {
 
-            Delegate del = null;
-
-            if (HandlungsschrittKommando.TryGetValue(OperationsTyp, out del))
-            {
-                var Ergebnis = del.DynamicInvoke() as Information;
-                 if ((Ergebnis != null)) Ergebnis = Ergebnis;
-            }
+            
         }
     }
 }

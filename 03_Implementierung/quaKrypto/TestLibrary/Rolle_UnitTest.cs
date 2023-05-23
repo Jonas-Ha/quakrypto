@@ -62,7 +62,7 @@ namespace TestLibrary
             Assert.IsFalse(result);
         }
 
-        // Leopold Bialek, 20.05.2023
+        /*// Leopold Bialek, 20.05.2023
         [Test]
         public void Rolle_Beende_Zug_Erfolg()
         {
@@ -89,7 +89,7 @@ namespace TestLibrary
 
             // Assert
             Assert.IsNull(zug);
-        }
+        }*/
 
         // Leopold Bialek, 20.05.2023
         [Test]

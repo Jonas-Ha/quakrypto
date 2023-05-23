@@ -17,18 +17,24 @@ namespace quaKrypto.Models.Classes
     public class Rolle
     {
         private Enums.RolleEnum rolle;
-        private string alias;
-        private string passwort;
+        private String alias;
+        private String passwort;
         private List<Information> informationsablage;
         private uint informationszaehler;
-        private List<Handlungsschritt> zug;
+        public event EventHandler handlungsschrittVerfuegbar;
 
         public Rolle(Enums.RolleEnum rolle, string alias, string passwort)
         {
+            this.informationszaehler = 0;
             this.rolle = rolle;
             this.alias = alias;
             this.passwort = passwort;
             informationsablage = new List<Information>();
+        }
+        public String Alias 
+        { 
+            get { return alias; }
+            init { alias = value; }
         }
 
         public Enums.RolleEnum RolleTyp
@@ -38,29 +44,28 @@ namespace quaKrypto.Models.Classes
         
         public bool BeginneZug(string passwort)
         {
-            if (this.passwort == passwort)
-            {
-                zug = new List<Handlungsschritt>();
-
-                return true;
-            }
+            if (this.passwort == passwort)return true;
             else return false;
         }
         
-        public List<Handlungsschritt>? BeendeZug()
+        public Handlungsschritt ErzeugeHandlungsschritt(Enums.OperationsEnum operationsTyp, Information operand1, Information operand2, String ergebnisInformationsName, Enums.RolleEnum rolle)
         {
-            if (zug != null) return zug;
-            else return null;
+           return new Handlungsschritt(informationszaehler++, operationsTyp, operand1, operand2, ergebnisInformationsName, rolle);
         }
 
-        public void ErzeugeHandlungsschritt(Enums.OperationsEnum operationsTyp, Information operand1, String ergebnisInformationsName, Enums.RolleEnum rolle)
+        public void SpeicherInformationAb(Information information)
         {
-           // zug.Add(new Handlungsschritt(operationsTyp, operand1, ergebnisInformationsName, rolle));
+            informationsablage.Add(information);   
         }
 
-        public void ErzeugeHandlungsschritt(Enums.OperationsEnum operationsTyp, Information operand1, Information operand2, String ergebnisInformationsName, Enums.RolleEnum rolle)
+        public void LoescheInformation(Information information)
         {
-           // zug.Add(new Handlungsschritt(operationsTyp, operand1, operand2, ergebnisInformationsName, rolle));
+            informationsablage.Remove(information);
+        }
+
+        public void AktualisiereInformationszaehler(uint informationszaehler)
+        {
+            this.informationszaehler = informationszaehler;
         }
     }
 }

@@ -59,24 +59,17 @@ namespace quaKrypto.Models.Classes
         {
             if (this.aktuelleRolle == RolleEnum.Alice)
             {
-                if ((aktuellePhase != 2 || aktuellePhase != 3) || warAliceInPhaseAktiv)
-                {
-                    // Phase "5" für Ende? - Jonas Hammer
-                    aktuellePhase += 1;
-
-                    this.warAliceInPhaseAktiv = false;
-                }
-
-                this.warAliceInPhaseAktiv = true;
-
-                this.aktuelleRolle = RolleEnum.Bob;
+                return RolleEnum.Bob;
             }
             else
             {
-                this.aktuelleRolle = RolleEnum.Alice;
+                return RolleEnum.Alice;
             }
+        }
 
-            return this.aktuelleRolle;
+        public void AktuelleRolleAktualisieren(RolleEnum aktuelleRolle)
+        {
+            this.aktuelleRolle = aktuelleRolle;
         }
 
         public List<OperationsEnum> GebeHilfestellung()
