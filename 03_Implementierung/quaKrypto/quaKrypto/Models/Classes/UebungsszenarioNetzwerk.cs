@@ -15,7 +15,7 @@ using quaKrypto.Models.Interfaces;
 
 namespace quaKrypto.Models.Classes
 {
-    public class UebungsszenarioNetzwerk
+    public class UebungsszenarioNetzwerk : IUebungsszenario
     {
         private List<Rolle> rollen;
         private Rolle aktuelleRolle;
@@ -36,6 +36,11 @@ namespace quaKrypto.Models.Classes
             this.endPhase = endPhase;
             this.uebertragungskanal = new Uebertragungskanal();
             this.aufzeichnung = new Aufzeichnung();
+        }
+        public Rolle AktuelleRolle
+        {
+            get { return aktuelleRolle; }
+            set { aktuelleRolle = value; }
         }
 
         public List<Rolle> Rollen
@@ -108,19 +113,21 @@ namespace quaKrypto.Models.Classes
             else { return false; }
         }
 
-        public void NaechsterZug()
+        public bool NaechsterZug(String passwort)
         {
             if (this.aktuelleRolle != null)
             {
-                List<Handlungsschritt> handlungsschritte = this.aktuelleRolle.BeendeZug();
-
-                aufzeichnung.HaengeListeHandlungsschritteAn(handlungsschritte);
-
                 RolleEnum naechsteRolle = variante.NaechsteRolle();
-                this.aktuelleRolle = rollen.Find(Rolle => Rolle.RolleTyp == naechsteRolle);
-
-                // vielleicht dann Passwort abfragen für die nächste Rolle, ...
+                Rolle pruefendeRolle = rollen.Find(Rolle => Rolle.RolleTyp == naechsteRolle);
+                bool check = pruefendeRolle.BeginneZug(passwort);
+                if (check)
+                {
+                    aktuelleRolle = pruefendeRolle;
+                    return true;
+                }
+                return false;
             }
+            return false; //TODO WAS HIER PASSIEREN MUSS - Denner 23.05.23
         }
 
         // Was ist damit gemeint, soll das für das Anzeigen des Protokolls sein?

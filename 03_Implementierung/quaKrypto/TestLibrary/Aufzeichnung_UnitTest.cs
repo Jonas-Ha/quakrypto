@@ -30,7 +30,7 @@ namespace TestLibrary
             Information information = new Information(1, "Name_asciiText", InformationsEnum.asciiText,
                 "Inhalt_asciiText", RolleEnum.Bob);
             Handlungsschritt handlungsschritt =
-                new Handlungsschritt(OperationsEnum.nachrichtSenden, information, null, RolleEnum.Alice);
+                new Handlungsschritt(information.InformationsID, OperationsEnum.nachrichtSenden, information, null, information.InformationsName, RolleEnum.Alice);
 
             // Act
             aufzeichnung.HaengeHandlungsschrittAn(handlungsschritt);
@@ -48,9 +48,9 @@ namespace TestLibrary
             Information information = new Information(1, "Name_asciiText", InformationsEnum.asciiText,
                 "Inhalt_asciiText", RolleEnum.Bob);
             Handlungsschritt handlungsschritt_1 =
-                new Handlungsschritt(OperationsEnum.nachrichtSenden, information, null, RolleEnum.Alice);
+                new Handlungsschritt(information.InformationsID, OperationsEnum.nachrichtSenden, information, null, information.InformationsName, RolleEnum.Alice);
             Handlungsschritt handlungsschritt_2 =
-                new Handlungsschritt(OperationsEnum.nachrichtSenden, information, null, RolleEnum.Alice);
+                new Handlungsschritt(information.InformationsID, OperationsEnum.nachrichtSenden, information, null, information.InformationsName, RolleEnum.Alice);
             List<Handlungsschritt> listeHandlungsschritte = new List<Handlungsschritt>();
             listeHandlungsschritte.Add(handlungsschritt_1);
             listeHandlungsschritte.Add(handlungsschritt_2);

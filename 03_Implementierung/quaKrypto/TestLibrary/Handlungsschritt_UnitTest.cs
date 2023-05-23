@@ -33,7 +33,7 @@ namespace TestLibrary
 
             // Act
             Handlungsschritt handlungsschritt =
-                new Handlungsschritt(OperationsEnum.nachrichtSenden, information, null, RolleEnum.Alice);
+                new Handlungsschritt(information.InformationsID, OperationsEnum.nachrichtSenden, information, null, information.InformationsName,RolleEnum.Alice);
 
             // Assert
             Assert.AreEqual(handlungsschritt.OperationsTyp, OperationsEnum.nachrichtSenden);

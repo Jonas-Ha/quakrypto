@@ -12,6 +12,7 @@ package Model
 	together {
 		interface IUebungsszenario
 		{
+			+ <<get, set>> AktuelleRolle() : Rolle
 			+ <<get, set>> Rollen() : List<Rolle>
 			+ <<get, set>> Schwierigkeitsgrad() : SchwierigkeitsgradEnum
 			+ <<get, set>> Variante() : IVariante
@@ -29,7 +30,7 @@ package Model
 		class UebungsszenarioLokal
 		{
 			- rollen : List<Rolle>
-			- aktelleRolle : Rolle
+			- aktuelleRolle : Rolle
 			- schwierigkeitsgrad : SchwierigkeitsgradEnum
 			- variante : IVariante
 			- startPhase : uint
@@ -42,7 +43,7 @@ package Model
 		class UebungsszenarioNetzwerk
 		{
 			- rollen : List<Rolle>
-			- aktelleRolle : Rolle
+			- aktuelleRolle : Rolle
 			- schwierigkeitsgrad : SchwierigkeitsgradEnum
 			- variante : IVariante
 			- startPhase : uint

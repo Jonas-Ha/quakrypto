@@ -81,7 +81,7 @@ namespace TestLibrary
             uebungsszenarioLokal.RolleHinzufuegen(bob);
 
             // Act
-            uebungsszenarioLokal.NaechsterZug();
+            uebungsszenarioLokal.NaechsterZug("passwort_bob");
 
             // Assert
             //Assert.AreEqual(uebungsszenarioLokal.AktuelleRolle, bob);
