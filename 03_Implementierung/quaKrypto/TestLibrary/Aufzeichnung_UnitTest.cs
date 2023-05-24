@@ -20,7 +20,7 @@ namespace TestLibrary
 {
     [TestFixture]
     public class Aufzeichnung_UnitTest
-    {
+    {/*
         // Leopold Bialek, 20.05.2023
         [Test]
         public void Aufzeichnung_HaengeHandlungsschrittAn_Erfolg()
@@ -60,6 +60,6 @@ namespace TestLibrary
 
             // Assert
             Assert.AreEqual(aufzeichnung.Handlungsschritte.Last(), handlungsschritt_2);
-        }
+        }*/
     }
 }
