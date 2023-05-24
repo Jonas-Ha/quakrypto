@@ -37,103 +37,58 @@ namespace quaKrypto.Models.Classes
             this.uebertragungskanal = new Uebertragungskanal();
             this.aufzeichnung = new Aufzeichnung();
         }
-        public Rolle AktuelleRolle
-        {
-            get { return aktuelleRolle; }
-            set { aktuelleRolle = value; }
-        }
 
-        public List<Rolle> Rollen
-        {
-            get { return rollen; }
-            set { rollen = value; }
-        }
-
-        public Enums.SchwierigkeitsgradEnum Schwierigkeitsgrad
-        {
-            get { return schwierigkeitsgrad; }
-            set { schwierigkeitsgrad = value; }
-        }
-
-        public IVariante Variante
-        {
-            get { return variante; }
-            set { variante = value; }
-        }
-
-        public uint StartPhase
-        {
-            get { return startPhase; }
-            set { startPhase = value; }
-        }
-
-        public uint EndPhase
-        {
-            get { return endPhase; }
-            set { endPhase = value; }
-        }
-
-        public Uebertragungskanal Uebertragungskanal
-        {
-            get { return uebertragungskanal; }
-            set { uebertragungskanal = value; }
-        }
-
-        public Aufzeichnung Aufzeichnung
-        {
-            get { return aufzeichnung; }
-            set { aufzeichnung = value; }
-        }
-
-        // wird erstmal nicht implementiert, da ???
-        public void VeroeffentlicheLobby()
-        {
-
-        }
-
+        public List<Rolle> Rollen { get; }
+        public SchwierigkeitsgradEnum Schwierigkeitsgrad { get; }
+        public IVariante Variante { get; }
+        public uint StartPhase { get; }
+        public uint EndPhase { get; }
+        public Uebertragungskanal Uebertragungskanal { get; }
+        public Aufzeichnung Aufzeichnung { get; }
+        public string Name { get; }
         public bool RolleHinzufuegen(Rolle rolle)
         {
-            var moeglicheRollen = variante.MoeglicheRollen;
-
-            if (moeglicheRollen.Contains(rolle.RolleTyp) && !this.rollen.Contains(rolle))
-            {
-                this.rollen.Add(rolle);
-                return true;
-            }
-            else { return false; }
+            throw new NotImplementedException();
         }
 
-        public bool RolleEntfernen(Rolle rolle)
+        public void GebeRolleFrei(RolleEnum rolle)
         {
-            if (this.rollen.Contains(rolle))
-            {
-                this.rollen.Remove(rolle);
-                return true;
-            }
-            else { return false; }
+            throw new NotImplementedException();
         }
 
-        public bool NaechsterZug(String passwort)
+        public void Starten()
         {
-            if (this.aktuelleRolle != null)
-            {
-                RolleEnum naechsteRolle = variante.NaechsteRolle();
-                Rolle pruefendeRolle = rollen.Find(Rolle => Rolle.RolleTyp == naechsteRolle);
-                bool check = pruefendeRolle.BeginneZug(passwort);
-                if (check)
-                {
-                    aktuelleRolle = pruefendeRolle;
-                    return true;
-                }
-                return false;
-            }
-            return false; //TODO WAS HIER PASSIEREN MUSS - Denner 23.05.23
+            throw new NotImplementedException();
         }
 
-        // Was ist damit gemeint, soll das für das Anzeigen des Protokolls sein?
-        public void ErzeugeProtokoll()
+        public bool NaechsterZug()
         {
+            throw new NotImplementedException();
+        }
 
+        public bool GebeBildschirmFrei(string Passwort)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Information HandlungsschrittAusführenLassen(Handlungsschritt handlungsschritt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SpeichereInformationenAb(uint informationID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void LoescheInformation(uint informationID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Beenden()
+        {
+            throw new NotImplementedException();
         }
     }
 }
