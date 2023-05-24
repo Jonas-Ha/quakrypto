@@ -12,33 +12,36 @@ using System.Text;
 using System.Threading.Tasks;
 using quaKrypto.Models.Interfaces;
 using quaKrypto.Models.Enums;
+using System.Collections.Specialized;
 
 namespace quaKrypto.Models.Classes
 {
     public class VarianteAbhoeren : IVariante
     {
         private uint aktuellePhase;
-        private SchwierigkeitsgradEnum schwierigkeitsgrad;
-        private List<RolleEnum> moeglicheRollen = new List<RolleEnum> { RolleEnum.Alice, RolleEnum.Bob, RolleEnum.Eve };
-        
+        private List<RolleEnum> moeglicheRollen = new List<RolleEnum> { RolleEnum.Alice, RolleEnum.Bob };
+
         private RolleEnum vorherigeRolle;
         private RolleEnum aktuelleRolle;
-        private bool warAliceInPhaseAktiv;
 
         public uint AktuellePhase
         {
             get { return aktuellePhase; }
-            set { aktuellePhase = value; }
         }
 
-        public SchwierigkeitsgradEnum Schwierigkeitsgrad
+        public RolleEnum AktuelleRolle
         {
-            get { return schwierigkeitsgrad; }
+            get { return aktuelleRolle; }
         }
 
         public string VariantenName
         {
-            get { return "Normaler Ablauf"; }
+            get { return "Lauschangriff"; }
+        }
+
+        public string ProtokollName
+        {
+            get { return "BB84"; }
         }
 
         public List<RolleEnum> MoeglicheRollen
@@ -46,33 +49,50 @@ namespace quaKrypto.Models.Classes
             get { return moeglicheRollen; }
         }
 
-        public VarianteAbhoeren(uint startPhase, SchwierigkeitsgradEnum schwierigkeitsgrad)
+        public VarianteAbhoeren(uint startPhase)
         {
             this.aktuellePhase = startPhase;
-            this.schwierigkeitsgrad = schwierigkeitsgrad;
 
             // Alice fängt jedesmal in einer Phase an, daher ist Bob immer als letztes dran gewesen
-            this.aktuelleRolle = RolleEnum.Bob;
-            this.warAliceInPhaseAktiv = false;
+            vorherigeRolle = RolleEnum.Bob;
+            this.aktuelleRolle = RolleEnum.Eve;
+
         }
 
         public RolleEnum NaechsteRolle()
         {
-            if (aktuelleRolle == RolleEnum.Alice) return RolleEnum.Eve;
-            else if (aktuelleRolle == RolleEnum.Bob) return RolleEnum.Eve;
-            else if (vorherigeRolle == RolleEnum.Alice) return RolleEnum.Bob;
-            else return RolleEnum.Alice;
+            if (this.aktuelleRolle == RolleEnum.Eve)
+            {
+                if (vorherigeRolle == RolleEnum.Bob) this.aktuelleRolle = RolleEnum.Alice;
+                else if (vorherigeRolle == RolleEnum.Alice) this.aktuelleRolle = RolleEnum.Bob;
+            }
+            else this.aktuelleRolle = RolleEnum.Eve;
+
+            return this.aktuelleRolle;
         }
 
-        public void AktuelleRolleAktualisieren(RolleEnum aktuelleRolle)
+        public void BerechneAktuellePhase(object? sender, NotifyCollectionChangedEventArgs e)
         {
-            this.vorherigeRolle = this.aktuelleRolle;
-            this.aktuelleRolle = aktuelleRolle;
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                if (e.NewItems != null && e.NewItems!.Count == 1)
+                {
+                    Handlungsschritt neusterHandlungsschritt = (Handlungsschritt)e.NewItems[0]!;
+                    if (aktuellePhase is 0 or 1 && neusterHandlungsschritt.OperationsTyp is OperationsEnum.zugBeenden &&
+                        aktuelleRolle == RolleEnum.Eve) aktuellePhase += 1;
+                    if (aktuellePhase == 2 && neusterHandlungsschritt.OperationsTyp == OperationsEnum.bitsStreichen &&
+                        aktuelleRolle == RolleEnum.Alice) aktuellePhase += 1;
+                    if (aktuellePhase == 3 && neusterHandlungsschritt.OperationsTyp == OperationsEnum.bitfolgenVergleichen && aktuelleRolle == RolleEnum.Alice) aktuellePhase += 1;
+                    if (aktuellePhase == 4 &&
+                        neusterHandlungsschritt.OperationsTyp == OperationsEnum.textEntschluesseln &&
+                        aktuelleRolle == RolleEnum.Bob) aktuellePhase += 1;
+                }
+            }
         }
 
-        public List<OperationsEnum> GebeHilfestellung()
+        public List<OperationsEnum> GebeHilfestellung(SchwierigkeitsgradEnum schwierigkeitsgrad)
         {
-            switch (this.schwierigkeitsgrad)
+            switch (schwierigkeitsgrad)
             {
                 case SchwierigkeitsgradEnum.leicht: return GebeHilfestellungLeicht();
                 case SchwierigkeitsgradEnum.mittel: return GebeHilfestellungMittel();

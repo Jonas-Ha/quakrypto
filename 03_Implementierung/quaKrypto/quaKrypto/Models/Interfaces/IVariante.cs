@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,19 +21,22 @@ namespace quaKrypto.Models.Interfaces
         public uint AktuellePhase
         { get; }
 
-        // Macht es überhaupt Sinn den Schwierigkeitsgrad abzuspeichern, wenn dieser schon in Uebungsszenario vorhanden ist? - Jonas Hammer
-        public SchwierigkeitsgradEnum Schwierigkeitsgrad 
+        public RolleEnum AktuelleRolle
         { get; }
 
+
         public string VariantenName
+        { get; }
+
+        public string ProtokollName 
         { get; }
 
         public List<RolleEnum> MoeglicheRollen
         { get; }
 
-        // 1. Möglichkeit: Anpassen der Phasen!?
-        // 2. Möglichkeit: Nach jedem Handlungsschritt wird eine Operation aufgerufen, die die aktuelle Phase berechnet.
         public RolleEnum NaechsteRolle();
-        public List<OperationsEnum> GebeHilfestellung();  
+        public List<OperationsEnum> GebeHilfestellung(SchwierigkeitsgradEnum schwierigkeitsgrad);
+
+        public void BerechneAktuellePhase(object? sender, NotifyCollectionChangedEventArgs e);
     }
 }
