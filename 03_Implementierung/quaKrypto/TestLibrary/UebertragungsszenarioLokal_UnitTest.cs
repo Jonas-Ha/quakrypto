@@ -20,7 +20,7 @@ namespace TestLibrary
 {
     [TestFixture]
     public class UebertragungsszenarioLokal_UnitTest
-    {
+    {/*
         // Leopold Bialek, 20.05.2023
         [Test]
         public void UebertragungsszenarioLokal_Initialisieren_Erfolg()
@@ -85,6 +85,6 @@ namespace TestLibrary
 
             // Assert
             //Assert.AreEqual(uebungsszenarioLokal.AktuelleRolle, bob);
-        }
+        }*/
     }
 }

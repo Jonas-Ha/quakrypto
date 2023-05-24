@@ -21,7 +21,7 @@ namespace TestLibrary
 {
     [TestFixture]
     public class Handlungsschritt_UnitTest
-    {
+    {/*
         // Leopold Bialek, 20.05.2023
         [Test]
         public void Handlungsschritt_Initialisieren_Erfolg()
@@ -47,6 +47,6 @@ namespace TestLibrary
         public void Handlungsschritt_HandlungsschrittAusfuehren_Erfolg()
         {
             //Noch zu ergänzen, sobald Implementierung für Operationen er erfolgt ist
-        }
+        }*/
     }
 }

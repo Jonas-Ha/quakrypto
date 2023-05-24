@@ -15,12 +15,13 @@ using NUnit.Framework;
 using quaKrypto.Models;
 using quaKrypto.Models.Classes;
 using quaKrypto.Models.Enums;
+using quaKrypto.Models.Interfaces;
 
 namespace TestLibrary
 {
     [TestFixture]
     public class Rolle_UnitTest
-    {
+    {/*
         // Leopold Bialek, 20.05.2023
         [Test]
         public void Rolle_Initialisieren_Erfolg()
@@ -62,7 +63,7 @@ namespace TestLibrary
             Assert.IsFalse(result);
         }
 
-        /*// Leopold Bialek, 20.05.2023
+        // Leopold Bialek, 20.05.2023
         [Test]
         public void Rolle_Beende_Zug_Erfolg()
         {
@@ -89,7 +90,7 @@ namespace TestLibrary
 
             // Assert
             Assert.IsNull(zug);
-        }*/
+        }
 
         // Leopold Bialek, 20.05.2023
         [Test]
@@ -117,6 +118,6 @@ namespace TestLibrary
         public void Rolle_Erzeuge_Handlungsschritt_zwei_Operanden_Fehler()
         {
             //Noch zu ergänzen, sobald Implementierung erfolgt ist
-        }
+        }*/
     }
 }

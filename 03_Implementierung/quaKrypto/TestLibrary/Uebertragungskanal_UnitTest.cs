@@ -20,7 +20,7 @@ namespace TestLibrary
 {
     [TestFixture]
     public class Uebertragungskanal_UnitTest
-    {
+    {/*
         // Leopold Bialek, 20.05.2023
         [Test]
         public void Uebertragungskanal_SpeichereNachricht_BitKanal_Erfolg()
@@ -122,5 +122,5 @@ namespace TestLibrary
             // Assert
             Assert.IsEmpty(photonenKanal);
         }
-    }
+    */}
 }

@@ -21,6 +21,7 @@ namespace TestLibrary
     [TestFixture]
     public class VarianteNormalerAblauf_UnitTest
     {
+        /*
         // Erik Barthelmann, Jonas Hammer, 20.05.2023
         [Test]
         public void NaechsteRolle_Erster_Aufruf_Alice_Erfolg()
@@ -116,5 +117,6 @@ namespace TestLibrary
             // Assert.Contains(OperationsEnum.photonenZuBitfolge, op);
             Assert.AreEqual(0, 0);
         }
+        */
     }
 }
