@@ -7,10 +7,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using quaKrypto.Models.Interfaces;
 
 namespace quaKrypto.Models.Classes
 {
@@ -21,15 +23,18 @@ namespace quaKrypto.Models.Classes
         private String passwort;
         private List<Information> informationsablage;
         private uint informationszaehler;
+        public ObservableCollection<Handlungsschritt> handlungsschritte;
         public event EventHandler handlungsschrittVerfuegbar;
 
-        public Rolle(Enums.RolleEnum rolle, string alias, string passwort)
+        public Rolle(Enums.RolleEnum rolle, string alias, string passwort, IVariante variante)
         {
             this.informationszaehler = 0;
             this.rolle = rolle;
             this.alias = alias;
             this.passwort = passwort;
             informationsablage = new List<Information>();
+            handlungsschritte = new ObservableCollection<Handlungsschritt>();
+            handlungsschritte.CollectionChanged += variante.BerechneAktuellePhase;
         }
         public String Alias 
         { 
@@ -63,7 +68,7 @@ namespace quaKrypto.Models.Classes
             informationsablage.Remove(information);
         }
 
-        public void AktualisiereInformationszaehler(uint informationszaehler)
+        public void AktualisiereInformationsZaehler(uint informationszaehler)
         {
             this.informationszaehler = informationszaehler;
         }
