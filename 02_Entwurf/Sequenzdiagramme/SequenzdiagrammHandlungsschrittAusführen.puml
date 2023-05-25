@@ -1,0 +1,50 @@
+
+@startuml Handlungsschritt
+title Sequenzdiagramm Handlungsschritt ausführen
+
+actor Benutzer
+participant "SpielView" as G
+participant "SpielViewModel" as A
+Participant "Übungszenario" as B
+Participant "Information" as H
+participant "Aufzeichnung" as C
+
+participant "Handlungsschritt" as D
+participant "Operationen" as F
+
+
+Benutzer -> G: '=' gedrückt
+activate G
+
+G->A:HandlungsschrittAusführen(operation1, operation2,operatonsTyp)
+activate A
+
+A-> B: HandlungsschrittAusführenLassen(Operand1, Operand2, OperationsTyp)
+activate B
+
+B -> D: ErzeugeHandlungsschritt(Rolle,Operand1, Operand2, OperationsTyp)
+activate D
+
+
+D -> F: Führe Operation durch
+activate F
+
+F->D: set:Ergebnis(Information)
+deactivate F
+
+D -> B: get:Ergebnis(Information)
+deactivate D
+
+B -> C: HaengeHandlungsschrittAn(Handlungsschritt handlungsschritt)
+activate C
+
+C->B:
+deactivate C
+
+B->A: Information Ergebnis
+deactivate B
+
+A -> G: Information Ergebnis
+deactivate A
+
+@enduml
