@@ -8,5 +8,19 @@ namespace quaKrypto.ViewModels
 {
     internal class MainViewModel : BaseViewModel
     {
+        private readonly Navigator _navigator;
+        public BaseViewModel AktuellesViewModel => _navigator.aktuellesViewModel;
+
+        public MainViewModel(Navigator navigator)
+        {
+            _navigator = navigator;
+
+            navigator.aktuellesViewModelGeaendert += aktuellesViewModelGeandert;
+        }
+
+        private void aktuellesViewModelGeandert()
+        {
+            EigenschaftWurdeGeändert(nameof(AktuellesViewModel));
+        }
     }
 }

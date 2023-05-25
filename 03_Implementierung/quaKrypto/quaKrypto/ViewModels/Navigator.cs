@@ -6,7 +6,26 @@ using System.Threading.Tasks;
 
 namespace quaKrypto.ViewModels
 {
-    internal class Navigator
+    public class Navigator
     {
+        public event Action aktuellesViewModelGeaendert;
+
+        private BaseViewModel _aktuellesviewModel;
+
+
+        public BaseViewModel aktuellesViewModel 
+        {
+            get => _aktuellesviewModel;
+            set
+            {
+                _aktuellesviewModel = value;
+                ViewModelWurdeGeändert();
+            }
+        }
+
+        private void ViewModelWurdeGeändert()
+        {
+            aktuellesViewModelGeaendert?.Invoke();
+        }
     }
 }

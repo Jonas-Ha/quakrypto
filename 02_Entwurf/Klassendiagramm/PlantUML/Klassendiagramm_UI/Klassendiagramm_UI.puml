@@ -19,6 +19,8 @@ package UI
 
 		class Navigator
 		{
+			- uebungsszenario : Uebungsszenario
+			+ <<get, set>> Uebungsszenario() : Uebungsszenario
 			+ CurrentViewModel() : BaseViewModel
 			+ CurrentViewModelChanged() : Event Action
 			- OnCurrentViewModelChanged() : void
@@ -213,7 +215,7 @@ package UI
 		{
 		}
 
-		note right of SpielEveViewModel
+		note left of SpielEveViewModel
 		Bitzahlen Icon : BitfolgeErzeugenCommand() : void
 		Schluessel Icon : Ver_EntschluesselnCommand() : void
 		P Icon : PhotonenErzeugenCommand() : void
@@ -252,12 +254,12 @@ package UI
 	}
 }
 
-BaseViewModel <|-- RolleEntsperrenViewModel
-BaseViewModel <|-- AufzeichnungViewModel
-BaseViewModel <|-- SpielEveViewModel
-BaseViewModel <|-- SpielViewModel
-BaseViewModel <|-- LobbyBeitretenViewModel
-BaseViewModel <|-- LobbyViewModel
+BaseViewModel <|-u- RolleEntsperrenViewModel
+BaseViewModel <|-u- AufzeichnungViewModel
+BaseViewModel <|-u- SpielEveViewModel
+BaseViewModel <|-u- SpielViewModel
+BaseViewModel <|-u- LobbyBeitretenViewModel
+BaseViewModel <|-u- LobbyViewModel
 BaseViewModel <|-- WikiViewModel
 BaseViewModel <|-- HauptMenueViewModel
 BaseViewModel <|-- LobbyErstellenViewModel

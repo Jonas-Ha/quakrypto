@@ -3,11 +3,42 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:quaKrypto.Views"
-        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+        xmlns:viewmodels="clr-namespace:quaKrypto.ViewModels"
+        xmlns:views="clr-namespace:quaKrypto.Views"
+        
         mc:Ignorable="d"
         Title="MainView" Height="450" Width="800">
+    <ContentControl Content="{Binding AktuellesViewModel}">
+        <ContentControl.Resources>
+            <DataTemplate DataType="{x:Type viewmodels:HauptMenuViewModel}">
+                <views:HauptMenuView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:AufzeichnungViewModel}">
+                <views:AufzeichnungView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:BenutzerFestlegenViewModel}">
+                <views:BenutzerFestlegenView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:LobbyBeitrittViewModel}">
+                <views:LobbyBeitrittView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:LobbyErstellenViewModel}">
+                <views:LobbyErstellenView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:LobbyScreenViewModel}">
+                <views:LobbyScreenView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:RolleEntsperrenViewModel}">
+                <views:RolleEntsperrenView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:SpielEveViewModel}">
+                <views:SpielEveView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:SpielViewModel}">
+                <views:SpielView/>
+            </DataTemplate>
+        </ContentControl.Resources>
+    </ContentControl>
 
-    <local:HauptMenuView/>
-
+    <!--="{Binding RelativeSource={RelativeSource Mode=Self}}"-->
 </Window>
