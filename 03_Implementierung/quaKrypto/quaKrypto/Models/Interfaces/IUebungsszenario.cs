@@ -17,7 +17,6 @@ namespace quaKrypto.Models.Interfaces
 {
     public interface IUebungsszenario
     {
-
         public List<Rolle> Rollen
         { get; }
 

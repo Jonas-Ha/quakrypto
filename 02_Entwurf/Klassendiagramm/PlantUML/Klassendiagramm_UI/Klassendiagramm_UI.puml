@@ -4,26 +4,52 @@ skinparam pageMargin 10
 skinparam pageExternalColor gray
 skinparam pageBorderColor black
 
+
+class App
+{
+	- navigator : Navigator
+	- MainWindow : MainView
+}
+
+package Commands
+{
+	class DelegateCommand
+	{
+		+ CanExecuteChanged : event Eventhandler
+		+ execute : Action<object>
+		+ canExecute : Predicate<object>?
+		+ DelegateCommand()
+		+ CanExecute() : bool
+		+ Execute(): void
+		+ RaiseCanExecuteChanged(): void
+	}
+}
+
 /'************************************************************'/
 /'PACKAGE UI												  '/
 /'************************************************************'/
 package UI
 {
 	together{
+		class MainView
+		{
+		}
+
 		class MainViewModel
 		{
+			- _navigator : Navigator
+			<< get, >> AktuellesViewModel : BaseViewModel
 			+ MainViewModel(Navigator)
-			+ CurrentViewModel : BaseViewModel
-			- OnCurrentViewModelChanged() : void
+			- aktuellesViewModelGeaendert() : void
 		}
 
 		class Navigator
 		{
-			- uebungsszenario : Uebungsszenario
-			+ <<get, set>> Uebungsszenario() : Uebungsszenario
-			+ CurrentViewModel() : BaseViewModel
-			+ CurrentViewModelChanged() : Event Action
-			- OnCurrentViewModelChanged() : void
+			+ aktuellesViewModelGeaendert : event Action
+			- _aktuellesviewModel : BaseViewModel
+			+ aktuellesViewModel() : BaseViewModel
+			<< get, set >> aktuellesViewModel() : BaseViewModel
+			- ViewModelWurdeGeändert() : void
 		}
 
 		class BaseViewModel
@@ -242,18 +268,11 @@ package UI
 		}
 	}
 
-	class DelegateCommand
-	{
-		+ CanExecuteChanged : event Eventhandler
-		+ execute : Action<object>
-		+ canExecute : Predicate<object>?
-		+ DelegateCommand()
-		+ CanExecute() : bool
-		+ Execute(): void
-		+ RaiseCanExecuteChanged(): void
-	}
+	
 }
-
+App -- MainView
+App -- Navigator
+MainView -- MainViewModel
 BaseViewModel <|-u- RolleEntsperrenViewModel
 BaseViewModel <|-u- AufzeichnungViewModel
 BaseViewModel <|-u- SpielEveViewModel

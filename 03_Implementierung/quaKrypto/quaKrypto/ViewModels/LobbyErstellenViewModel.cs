@@ -11,6 +11,8 @@ namespace quaKrypto.ViewModels
     {
         public DelegateCommand HauptMenu { get; set; }
 
+        
+
         public DelegateCommand LobbyErstellen { get; set; }
         public LobbyErstellenViewModel(Navigator navigator)
         {
