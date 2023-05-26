@@ -13,8 +13,8 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="10*"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="380"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Button x:Name="WikiButton" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" MinWidth="80">Wiki</Button>
@@ -25,6 +25,7 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
@@ -48,6 +49,9 @@
 
             <Label Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,10,30,10">Auswahl des Verbindungstyps:</Label>
             <ComboBox x:Name="LobbyartTextBox" Grid.Row="5" Grid.Column="1" Margin="10,10,10,10"></ComboBox>
+
+            <Button x:Name="HauptMenuButton" Grid.Row="6" Grid.Column="0" Margin="10,10,10,10" Command="{Binding HauptMenu}">Hauptmenu</Button>
+            <Button x:Name="LobbyErstellenButton" Grid.Row="6" Grid.Column="1" Margin="10,10,10,10" Command="{Binding LobbyErstellen}">Lobby erstellen</Button>
         </Grid>
     </Grid>
 </UserControl>

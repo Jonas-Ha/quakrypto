@@ -43,7 +43,7 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
-        <Button x:Name="HauptmenueButton" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10,0,10,0" MinWidth="80" Grid.Row="3" >Zurück zum Hauptmenue</Button>
-        <Button x:Name="BeitretenButton" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10,0,10,0" MinWidth="80" Grid.Row="3" Grid.Column="2">Spiel beitreten</Button>
+        <Button x:Name="HauptmenueButton" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10,0,10,0" MinWidth="80" Grid.Row="3" Command="{Binding HauptMenu}">Zurück zum Hauptmenue</Button>
+        <Button x:Name="BeitretenButton" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10,0,10,0" MinWidth="80" Grid.Row="3" Grid.Column="2" Command="{Binding LobbyBeitreten}">Spiel beitreten</Button>
     </Grid>
 </UserControl>

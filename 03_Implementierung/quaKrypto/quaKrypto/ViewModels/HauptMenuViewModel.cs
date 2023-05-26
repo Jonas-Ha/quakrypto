@@ -13,6 +13,7 @@ namespace quaKrypto.ViewModels
     public class HauptMenuViewModel : BaseViewModel
     {
         public DelegateCommand LobbyBeitritt { get; set; }
+        public DelegateCommand LobbyErstellen { get; set; }
 
         public HauptMenuViewModel(Navigator navigator)
         {
@@ -21,6 +22,11 @@ namespace quaKrypto.ViewModels
             {
                 navigator.aktuellesViewModel = new LobbyBeitrittViewModel(navigator);
                 
+            }, null);
+        LobbyErstellen = new((o) =>
+            {
+                navigator.aktuellesViewModel = new LobbyErstellenViewModel(navigator);
+
             }, null);
         }
 

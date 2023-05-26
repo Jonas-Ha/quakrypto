@@ -20,7 +20,7 @@
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30">Willkommen bei QuaKrypto</Label>
             <StackPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
-                <Button MinHeight="30" x:Name="LobbyErstellenButton" Margin="0, 0, 0, 10" >Lobby erstellen</Button>
+                <Button MinHeight="30" x:Name="LobbyErstellenButton" Margin="0, 0, 0, 10" Command="{Binding LobbyErstellen}">Lobby erstellen</Button>
                 <Button MinHeight="30" x:Name="LobbyBeitrettenButton" Margin="0, 0, 0, 10" Command="{Binding LobbyBeitritt}" >Lobby beitreten</Button>
                 <Button MinHeight="30" x:Name="Wiki">Wiki</Button>
             </StackPanel>
