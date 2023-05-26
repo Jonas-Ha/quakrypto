@@ -10,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace quaKrypto.Views
 {
     /// <summary>
-    /// Interaction logic for Aufzeichnung.xaml
+    /// Interaction logic for LobbyBeitrittView.xaml
     /// </summary>
-    public partial class Aufzeichnung : Window
+    public partial class LobbyBeitrittView : UserControl
     {
-        public Aufzeichnung()
+        public LobbyBeitrittView()
         {
             InitializeComponent();
         }

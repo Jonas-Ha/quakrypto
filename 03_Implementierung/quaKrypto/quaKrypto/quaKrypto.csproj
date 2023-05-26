@@ -15,4 +15,11 @@
     <Folder Include="Views\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Resource Include="Icons\Wiki\bearbeiten.png" />
+    <Resource Include="Icons\Wiki\entfernen.png" />
+    <Resource Include="Icons\Wiki\erweitern.png" />
+    <Resource Include="Icons\Wiki\seite.png" />
+  </ItemGroup>
+
 </Project>

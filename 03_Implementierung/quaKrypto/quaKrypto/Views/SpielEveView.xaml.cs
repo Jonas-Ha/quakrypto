@@ -10,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace quaKrypto.Views
 {
     /// <summary>
-    /// Interaction logic for Wiki.xaml
+    /// Interaction logic for SpielEveView.xaml
     /// </summary>
-    public partial class Wiki : Window
+    public partial class SpielEveView : UserControl
     {
-        public Wiki()
+        public SpielEveView()
         {
             InitializeComponent();
         }

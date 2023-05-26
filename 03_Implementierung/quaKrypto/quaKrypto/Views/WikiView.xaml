@@ -1,0 +1,97 @@
+<Window x:Class="quaKrypto.Views.WikiView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:classes="clr-namespace:quaKrypto.Models.Classes"
+        xmlns:viewmodel="clr-namespace:quaKrypto.ViewModels"
+        mc:Ignorable="d"
+        Title="Wiki" Height="450" Width="800"
+        Closing="WikiWirdBeendet">
+    <Window.DataContext>
+        <viewmodel:WikiViewModel x:Name="model"/>
+    </Window.DataContext>
+
+    <DockPanel Margin="10">
+
+        <GroupBox DockPanel.Dock="Left" Margin="0,0,10,0" MaxWidth="202">
+            <GroupBox.Header>
+                <Label Content="Wiki Seiten" FontSize="19" FontWeight="Thin"/>
+            </GroupBox.Header>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding Source={x:Static viewmodel:WikiViewModel.WikiSeiten}}" Tag="{Binding .}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderThickness="5" BorderBrush="{Binding BorderBrush}" >
+                                    <StackPanel Orientation="Horizontal">
+                                        <StackPanel.InputBindings>
+                                            <MouseBinding Gesture="LeftClick" Command="{Binding SeiteSelektiert, Source={x:Reference Name=model}}" CommandParameter="{Binding Identifier}"/>
+                                        </StackPanel.InputBindings>
+                                        <Label Content="{Binding Identifier}" Visibility="Collapsed"/>
+                                        <Image Source="../Icons/Wiki/seite.png" Width="30" Height="30"/>
+                                        <Label Content="{Binding WikiSeiteName}" FontWeight="Thin" FontSize="23" Opacity="{Binding Durchschein}"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+                <GroupBox VerticalAlignment="Bottom" Grid.Row="1" Header="Optionen">
+                    <StackPanel Orientation="Horizontal" Margin="10">
+                        <Image Source="../Icons/Wiki/erweitern.png" ToolTip="Das Wiki durch eine neue Seite Erweitern" Focusable="True">
+                            <Image.InputBindings>
+                                <MouseBinding Gesture="LeftClick" Command="{Binding SeitenErweitern}"/>
+                            </Image.InputBindings>
+                        </Image>
+                        <Image Source="../Icons/Wiki/bearbeiten.png" Margin="10,0" ToolTip="Die Aktive Seite des Wikis Bearbeiten" Focusable="True">
+                            <Image.InputBindings>
+                                <MouseBinding Gesture="LeftClick" Command="{Binding SeiteBearbeiten}"/>
+                            </Image.InputBindings>
+                        </Image>
+                        <Image Source="../Icons/Wiki/entfernen.png" ToolTip="Entfernen der Aktiven Seite des Wikis" Focusable="True">
+                            <Image.InputBindings>
+                                <MouseBinding Gesture="LeftClick" Command="{Binding SeiteEntfernen}"/>
+                            </Image.InputBindings>
+                        </Image>
+                    </StackPanel>
+                </GroupBox>
+            </Grid>
+
+        </GroupBox>
+
+        <TextBox Margin="0,4,0,0"  DockPanel.Dock="Top" Text="{Binding SelektierteWikiSeite.WikiSeiteName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="39" FontWeight="Thin" Visibility="{Binding TextBoxSichtbar}">
+            <TextBox.InputBindings>
+                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding SeiteBearbeiten}"/>
+            </TextBox.InputBindings>
+        </TextBox>
+        <Label Margin="0,0,0,-4" DockPanel.Dock="Top" Content="{Binding SelektierteWikiSeite.WikiSeiteName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="39" FontWeight="Thin" Visibility="{Binding LabelSichtbar}">
+            <Label.InputBindings>
+                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding SeiteBearbeiten}"/>
+            </Label.InputBindings>
+        </Label>
+        <GroupBox Header="Inhalt">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                <StackPanel Orientation="Vertical">
+                    <TextBox Margin="2,4,0,0" Text="{Binding SelektierteWikiSeite.Inhalt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontWeight="Thin" Visibility="{Binding TextBoxSichtbar}" AcceptsReturn="True" AcceptsTab="True">
+                        <TextBox.InputBindings>
+                            <MouseBinding Gesture="LeftDoubleClick" Command="{Binding SeiteBearbeiten}"/>
+                        </TextBox.InputBindings>
+                    </TextBox>
+                    <Label Content="{Binding SelektierteWikiSeite.Inhalt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontWeight="Thin" Visibility="{Binding LabelSichtbar}" >
+                        <Label.InputBindings>
+                            <MouseBinding Gesture="LeftDoubleClick" Command="{Binding SeiteBearbeiten}"/>
+                        </Label.InputBindings>
+                    </Label>
+                </StackPanel>
+            </ScrollViewer>
+        </GroupBox>
+
+    </DockPanel>
+
+</Window>

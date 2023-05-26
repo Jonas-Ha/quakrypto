@@ -10,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace quaKrypto.Views
 {
     /// <summary>
-    /// Interaction logic for Spiel.xaml
+    /// Interaction logic for LobbyErstellenView.xaml
     /// </summary>
-    public partial class Spiel : Window
+    public partial class LobbyErstellenView : UserControl
     {
-        public Spiel()
+        public LobbyErstellenView()
         {
             InitializeComponent();
         }
