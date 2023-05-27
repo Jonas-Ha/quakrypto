@@ -7,6 +7,24 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="6*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="380"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Label Grid.Row ="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18">Aufzeichnung</Label>
+
+        <!-- DataGrid -->
+        <DataGrid Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding TableData}" AutoGenerateColumns="True" Margin="10" />
+
+        <!-- Button -->
+        <Button Grid.Row="2" Grid.Column="1" x:Name="ZurueckZumHauptMenuButton" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,0,0" MinWidth="80">Zurück zum Hauptmenu</Button>
     </Grid>
 </UserControl>
