@@ -9,11 +9,44 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Icons\Spiel\Alice\Alice_128px.png" />
+    <None Remove="Icons\Spiel\Alice\Alice_256px.png" />
+    <None Remove="Icons\Spiel\Alice\Alice_32px.png" />
+    <None Remove="Icons\Spiel\Alice\Alice_512px.png" />
+    <None Remove="Icons\Spiel\Alice\Alice_64px.png" />
+    <None Remove="Icons\Spiel\Bob\Bob_128px.png" />
+    <None Remove="Icons\Spiel\Bob\Bob_256px.png" />
+    <None Remove="Icons\Spiel\Bob\Bob_32px.png" />
+    <None Remove="Icons\Spiel\Bob\Bob_512px.png" />
+    <None Remove="Icons\Spiel\Bob\Bob_64px.png" />
+    <None Remove="Icons\Spiel\Eve\Eve_128px.png" />
+    <None Remove="Icons\Spiel\Eve\Eve_256px.png" />
+    <None Remove="Icons\Spiel\Eve\Eve_32px.png" />
+    <None Remove="Icons\Spiel\Eve\Eve_512px.png" />
+    <None Remove="Icons\Spiel\Eve\Eve_64px.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Services\" />
     <Folder Include="ViewModels\" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Icons\Spiel\Alice\Alice_128px.png" />
+    <Resource Include="Icons\Spiel\Alice\Alice_256px.png" />
+    <Resource Include="Icons\Spiel\Alice\Alice_32px.png" />
+    <Resource Include="Icons\Spiel\Alice\Alice_512px.png" />
+    <Resource Include="Icons\Spiel\Alice\Alice_64px.png" />
+    <Resource Include="Icons\Spiel\Bob\Bob_128px.png" />
+    <Resource Include="Icons\Spiel\Bob\Bob_256px.png" />
+    <Resource Include="Icons\Spiel\Bob\Bob_32px.png" />
+    <Resource Include="Icons\Spiel\Bob\Bob_512px.png" />
+    <Resource Include="Icons\Spiel\Bob\Bob_64px.png" />
+    <Resource Include="Icons\Spiel\Eve\Eve_128px.png" />
+    <Resource Include="Icons\Spiel\Eve\Eve_256px.png" />
+    <Resource Include="Icons\Spiel\Eve\Eve_32px.png" />
+    <Resource Include="Icons\Spiel\Eve\Eve_512px.png" />
+    <Resource Include="Icons\Spiel\Eve\Eve_64px.png" />
     <Resource Include="Icons\Wiki\bearbeiten.png" />
     <Resource Include="Icons\Wiki\entfernen.png" />
     <Resource Include="Icons\Wiki\erweitern.png" />
