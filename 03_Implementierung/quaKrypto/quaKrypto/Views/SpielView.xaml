@@ -5,8 +5,197 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:quaKrypto.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+             d:DesignHeight="800" d:DesignWidth="1600">
+    
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+
+        <StackPanel Grid.Row="0" Grid.Column="0"  Orientation="Vertical">
+            <Label Content="Spiel"/>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Hauptmenü" Margin="5" />
+                <Button Content="Wiki" Margin="5"/>
+            </StackPanel>
+
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+            <Image Source="../Icons/Spiel/BitfolgeErzeugen/icons8-binary-code-24.png" Margin="5"/>
+            <StackPanel Orientation="Vertical">
+                <Label FontWeight="Bold" Content="Alice" FontSize="24"/>
+                <Label Content="Phase: 1"/>
+            </StackPanel>
+        </StackPanel>
+        <Button Content="Zug beenden" Grid.Column="3" Grid.Row="0"  Height="30" Width="120"/>
+
+        <Border Grid.Row="1" Grid.Column="0" BorderBrush="Black" BorderThickness="1">
+            <StackPanel>
+                <Label Content="Bitübertragungskanal Eingang:" />
+                <ListView Background="AliceBlue">
+                    <ListView.View>
+                        <GridView>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="2" Grid.Column="0" BorderBrush="Black" BorderThickness="1">
+            <StackPanel>
+                <Label Content="Photonenübertragungskanal Eingang:" />
+
+                <Border BorderBrush="Black" BorderThickness="1">
+                    <DockPanel Background="LightYellow">
+                        <Label Content="Photonen: "/>
+                        <PasswordBox Background="LightYellow" VerticalContentAlignment="Center"/>
+                    </DockPanel>
+                </Border>
+            </StackPanel>
+        </Border>
+
+        <Border BorderBrush="Black" BorderThickness="1"  Grid.Row="1" Grid.Column="2">
+            <StackPanel Grid.Row="1" Grid.Column="2">
+                <Label Content="Bitübertragungskanal Ausgang:" />
+                <Border BorderBrush="Black" BorderThickness="1" Margin="0,20,0,0">
+                    <DockPanel Background="Pink">
+                        <Label Content="Photonen: "/>
+                        <PasswordBox Background="Pink" VerticalContentAlignment="Center"/>
+                    </DockPanel>
+                </Border>
+            </StackPanel>
+        </Border>
+
+        <Border BorderBrush="Black" BorderThickness="1"  Grid.Row="2" Grid.Column="2">
+            <StackPanel>
+                <Label Content="Photonenübertragungskanal Ausgang:" />
+            </StackPanel>
+        </Border>
+
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2">
+            <DockPanel>
+                <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" DockPanel.Dock="Top">
+                    <Label Content="Crafting-Feld: "/>
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
+                        <Label Content="Photonen:"/>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
+                        <TextBox></TextBox>
+                    </Border>
+
+                    <Button Width="50" Height="50" Margin="10">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="../Icons/Spiel/PolschaErzeugen/icons8-filter-96.png" Width="50" Height="50"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
+                        <Label Content="Polarisationsschemata:"/>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
+                        <TextBox></TextBox>
+                    </Border>
+
+                    <Label Content="=" HorizontalAlignment="Center" FontSize="40" FontWeight="Bold"/>
+
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
+                        <Label Content="Polarisationsschemata:"/>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
+                        <TextBox></TextBox>
+                    </Border>
+
+                </StackPanel>
+
+                <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom" Height="55" VerticalAlignment="Bottom" Margin="0,-10000,0,0">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" >
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Button Width="50" Height="50">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="../Icons/Spiel/BitfolgeErzeugen/icons8-binary-code-96.png" Width="50" Height="50"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Width="50" Height="50">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="../Icons/Spiel/EntVerschluesseln/icons8-key-96.png" Width="50" Height="50"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Width="50" Height="50">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="../Icons/Spiel/PhotonenErzeugen/icons8-p-96.png" Width="50" Height="50"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Width="50" Height="50">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="../Icons/Spiel/PolschaErzeugen/icons8-filter-96.png" Width="50" Height="50"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Width="50" Height="50">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="../Icons/Spiel/Streichen/icons8-erase-96.png" Width="50" Height="50"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Width="50" Height="50">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="../Icons/Spiel/SeiteHinzufuegen/icons8-add-file-96.png" Width="50" Height="50"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Width="50" Height="50">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="../Icons/Spiel/Vergleichen/icons8-scale-96.png" Width="50" Height="50"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Width="50" Height="50">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="../Icons/Spiel/ZahlErzeugen/icons8-hashtag-96.png" Width="50" Height="50"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Width="50" Height="50">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="../Icons/Spiel/Zufall/icons8-dice-96.png" Width="50" Height="50"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Width="50" Height="50">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="Icons/Spiel/BItfolge Erzeugen/icons8-binary-code-96.png" Width="50" Height="50"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+            </DockPanel>
+
+        </Border>
+
+
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3">
+
+            <StackPanel Orientation="Vertical">
+                <Label Content="Informations-Ablage: "/>
+                <Image Source="/Icons/trash.png" Height="40"/>
+
+                <StackPanel Orientation="Horizontal">
+
+
+                    <Border BorderBrush="Black" BorderThickness="1">
+                        <DockPanel Background="LightYellow">
+                            <Label Content="Photonen: "/>
+                            <PasswordBox Background="LightYellow" VerticalContentAlignment="Center"/>
+                        </DockPanel>
+                    </Border>
+                </StackPanel>
+
+            </StackPanel>
+        </Border>
     </Grid>
 </UserControl>
