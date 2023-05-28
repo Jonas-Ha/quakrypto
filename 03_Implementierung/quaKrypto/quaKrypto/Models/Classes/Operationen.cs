@@ -37,7 +37,7 @@ namespace quaKrypto.Models.Classes
         public Information BitfolgeGenerierenZahl(uint informationsID, string informationsname, object informationsInhalt, RolleEnum informationsEmpfaenger)
         {
             var rand = new Random();
-            int zufallszahl = rand.Next();
+            int zufallszahl = rand.Next(1, 1024);
 
             // Anlegen eines Bit-Arrays der Länge von Zufallszahl
             BitArray bitArray = new BitArray(zufallszahl, false);

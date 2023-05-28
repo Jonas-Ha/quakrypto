@@ -32,7 +32,7 @@ namespace TestLibrary
             Operationen operationen = new Operationen();
 
             // Act
-            quaKrypto.Models.Classes.Information information = operationen.BitfolgeGenerierenZahl();
+            quaKrypto.Models.Classes.Information information = operationen.BitfolgeGenerierenZahl(0, "Bitfolge", null, RolleEnum.Alice);
 
             // Assert
             Assert.IsNotNull(information);
