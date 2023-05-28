@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using System.Windows.Controls;
+using System.Windows.Documents;
 
 namespace quaKrypto.Models.Classes
 {
@@ -44,6 +46,10 @@ namespace quaKrypto.Models.Classes
         {
             editierModus = neuerEditierModus;
             PropertyHasChanged(nameof(Durchschein));
+            if(istAktiv == true && neuerEditierModus == false)
+            {
+            }
+
         }
         private void PropertyHasChanged(string nameOfProperty)
         {

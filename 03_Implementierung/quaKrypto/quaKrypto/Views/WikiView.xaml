@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:classes="clr-namespace:quaKrypto.Models.Classes"
+        xmlns:services="clr-namespace:quaKrypto.Services"
         xmlns:viewmodel="clr-namespace:quaKrypto.ViewModels"
         mc:Ignorable="d"
         Title="Wiki" Height="450" Width="800"
@@ -78,16 +79,17 @@
         <GroupBox Header="Inhalt">
             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                 <StackPanel Orientation="Vertical">
-                    <TextBox Margin="2,4,0,0" Text="{Binding SelektierteWikiSeite.Inhalt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontWeight="Thin" Visibility="{Binding TextBoxSichtbar}" AcceptsReturn="True" AcceptsTab="True">
+                    <TextBox Text="{Binding SelektierteWikiSeite.Inhalt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontWeight="Thin" Visibility="{Binding TextBoxSichtbar}" AcceptsReturn="True" AcceptsTab="True">
                         <TextBox.InputBindings>
                             <MouseBinding Gesture="LeftDoubleClick" Command="{Binding SeiteBearbeiten}"/>
                         </TextBox.InputBindings>
                     </TextBox>
-                    <Label Content="{Binding SelektierteWikiSeite.Inhalt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontWeight="Thin" Visibility="{Binding LabelSichtbar}" >
-                        <Label.InputBindings>
+                <!--    <TextBlock Margin="3,1,0,0" Text="{Binding SelektierteWikiSeite.NURZUMTEST, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontWeight="Thin" Visibility="{Binding LabelSichtbar}" > -->
+                    <TextBlock Text="{Binding SelektierteWikiSeite.Inhalt, UpdateSourceTrigger=PropertyChanged}" Margin="3,1,0,0" FontWeight="Thin" Visibility="{Binding LabelSichtbar}" >
+                        <TextBlock.InputBindings>
                             <MouseBinding Gesture="LeftDoubleClick" Command="{Binding SeiteBearbeiten}"/>
-                        </Label.InputBindings>
-                    </Label>
+                        </TextBlock.InputBindings>
+                    </TextBlock>
                 </StackPanel>
             </ScrollViewer>
         </GroupBox>

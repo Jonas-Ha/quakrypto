@@ -19,6 +19,7 @@ namespace quaKrypto.Views
         private void WikiWirdBeendet(object sender, CancelEventArgs e)
         {
             Wiki.SpeichereAlleWikiSeiten();
+            Wiki.WikiIstOffen = false;
         }
     }
 }

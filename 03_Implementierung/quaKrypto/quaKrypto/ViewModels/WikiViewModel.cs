@@ -29,10 +29,11 @@ namespace quaKrypto.ViewModels
 
         public WikiViewModel()
         {
+
             SeitenErweitern = new((o) =>
             {
                 Wiki.SeitenErweitern();
-                EigenschaftWurdeGeändert(nameof(ViewModels.WikiViewModel.SelektierteWikiSeite));
+                EigenschaftWurdeGeändert(nameof(SelektierteWikiSeite));
             }, (o) => !EditierModus);
 
             SeiteBearbeiten = new((o) =>
@@ -42,19 +43,19 @@ namespace quaKrypto.ViewModels
                 {
                     wikiSeite.SetzeEditierModus(EditierModus);
                 }
-                EigenschaftWurdeGeändert(nameof(ViewModels.WikiViewModel.SelektierteWikiSeite));
+                EigenschaftWurdeGeändert(nameof(SelektierteWikiSeite));
             }, (o) => true);
 
             SeiteEntfernen = new((o) =>
             {
                 Wiki.SeiteEntfernen();
-                EigenschaftWurdeGeändert(nameof(ViewModels.WikiViewModel.SelektierteWikiSeite));
+                EigenschaftWurdeGeändert(nameof(SelektierteWikiSeite));
             }, (o) => !EditierModus);
 
             SeiteSelektiert = new((o) =>
             {
                 Wiki.SeiteSelektieren(o.ToString() ?? "0");
-                EigenschaftWurdeGeändert(nameof(ViewModels.WikiViewModel.SelektierteWikiSeite));
+                EigenschaftWurdeGeändert(nameof(SelektierteWikiSeite));
             }, (o) => !EditierModus);
         }
     }
