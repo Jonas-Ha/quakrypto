@@ -89,7 +89,7 @@ package UI
 			+ SpielBeitreten() : void 
 		}
 
-		class LobbyViewModel
+		class LobbyScreenViewModel
 		{
 			+ NameLobby : string
 			+ Variante : string
@@ -144,7 +144,7 @@ package UI
 	}
 }
 
-LobbyViewModel-->IUebungsszenario
+LobbyScreenViewModel-->IUebungsszenario
 AufzeichnungViewModel-->IUebungsszenario
 SpielViewModel-->IUebungsszenario
 SpielEveViewModel-->IUebungsszenario
