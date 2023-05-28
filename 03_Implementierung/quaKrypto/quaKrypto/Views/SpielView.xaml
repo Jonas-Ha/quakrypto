@@ -168,7 +168,7 @@
                             </Button>
                             <Button Width="50" Height="50">
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Source="Icons/Spiel/BItfolge Erzeugen/icons8-binary-code-96.png" Width="50" Height="50"/>
+                                    <Label Content="?" FontSize="20" FontWeight="Black"/>
                                 </StackPanel>
                             </Button>
                         </StackPanel>
@@ -180,8 +180,10 @@
 
         <Border BorderBrush="Black" BorderThickness="1" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="1">
             <DockPanel>
-                <Label DockPanel.Dock="Top" Content="Mülleimer:" />
-                <Image DockPanel.Dock="Bottom" HorizontalAlignment="Center" VerticalAlignment="Center" Source="../Icons/Spiel/Muelleimer/icons8-trash-144.png" glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true"/>
+                <Image DockPanel.Dock="Top" Source="../Icons/Spiel/Muelleimer/icons8-trash-96.png" Width="40" Height="50"/>
+                <ListView DockPanel.Dock="Top"  Background="LightGray" ItemsSource="{Binding Path=Muelleimer}" FontSize="20"
+                          glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                </ListView>
             </DockPanel>
         </Border>
 
