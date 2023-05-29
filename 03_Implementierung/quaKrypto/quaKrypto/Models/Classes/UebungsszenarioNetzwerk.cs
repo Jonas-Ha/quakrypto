@@ -90,5 +90,47 @@ namespace quaKrypto.Models.Classes
         {
             throw new NotImplementedException();
         }
+
+        /**
+         * Schnittstelle für Befehle von Netzwerkklasse Host
+         */
+        public void ZugWurdeBeendet(List<Handlungsschritt> handlungsschritte)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UebungsszenarioWurdeBeendetHost()
+        {
+            throw new NotImplementedException();
+        }
+
+        /**
+         * Schnittstelle für Befehle von  Netzwerkklasse Client
+         */
+        public void UebungsszenarioWurdeBeendetClient()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AufzeichnungUpdate(List<Handlungsschritt> handlungsschritte)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void KontrolleErhalten()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UebungsszenarioWurdeGestartet()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void NeueRollenInformation(Rolle? rolleAlice, Rolle? rolleBob, Rolle? rolleEve)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

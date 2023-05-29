@@ -12,6 +12,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using quaKrypto.Models.Enums;
 using quaKrypto.Models.Interfaces;
 
 namespace quaKrypto.Models.Classes
@@ -26,7 +27,14 @@ namespace quaKrypto.Models.Classes
         public ObservableCollection<Handlungsschritt> handlungsschritte;
         public event EventHandler handlungsschrittVerfuegbar;
 
-        public Rolle(Enums.RolleEnum rolle, string alias, string passwort, IVariante variante)
+        //Dieser Konstruktor ist nur für die View zum Anzeigen in der LobbyView
+        public Rolle(RolleEnum rolle, string alias)
+        {
+            this.rolle = rolle;
+            this.alias = alias;
+        }
+
+        public Rolle(RolleEnum rolle, string alias, string passwort, IVariante variante)
         {
             this.informationszaehler = 0;
             this.rolle = rolle;
