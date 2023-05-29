@@ -4,9 +4,235 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:quaKrypto.Views"
+             xmlns:glob="clr-namespace:quaKrypto"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+             d:DesignHeight="800" d:DesignWidth="1600">
+    
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Vertical">
+            <Label Content="Spiel"/>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Hauptmenü" Margin="5" />
+                <Button Content="Wiki" Margin="5"/>
+            </StackPanel>
+
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+            <Image Source="../Icons/Spiel/Eve/Eve_128px.png" Margin="5"/>
+            <StackPanel Orientation="Vertical">
+                <Label FontWeight="Bold" Content="Eve" FontSize="24"/>
+                <Label Content="Phase: 1"/>
+            </StackPanel>
+        </StackPanel>
+        <Button Content="Zug beenden" Grid.Column="3" Grid.Row="0"  Height="30" Width="120"/>
+
+        <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1">
+            <DockPanel>
+                <Label DockPanel.Dock="Top" Content="Bitübertragungskanal Eingang Alice:" />
+                <ListView Background="LightGray" ItemsSource="{Binding Path=BituebertragungEingangAlice}" FontSize="20"
+                          glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" MinHeight="125">
+                </ListView>
+            </DockPanel>
+        </Border>
+
+        <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1">
+            <DockPanel>
+                <Label DockPanel.Dock="Top" Content="Bitübertragungskanal Eingang Bob:" />
+                <ListView Background="LightGray" ItemsSource="{Binding Path=BituebertragungEingangBob}" FontSize="20"
+                          glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                </ListView>
+            </DockPanel>
+        </Border>
+
+        <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1">
+            <DockPanel>
+                <Label DockPanel.Dock="Top" Content="Photonenübertragungskanal Eingang Alice:" />
+                <ListView Background="LightGray" ItemsSource="{Binding Path=PhotonenuebertragungEingangAlice}" FontSize="20"
+                          glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                </ListView>
+            </DockPanel>
+        </Border>
+
+        <Border Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1">
+            <DockPanel>
+                <Label DockPanel.Dock="Top" Content="Photonenübertragungskanal Eingang Bob:" />
+                <ListView Background="LightGray" ItemsSource="{Binding Path=PhotonenuebertragungEingangBob}" FontSize="20"
+                          glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                </ListView>
+            </DockPanel>
+        </Border>
+        
+        <Border BorderBrush="Black" BorderThickness="1"  Grid.Row="1" Grid.Column="3">
+            <DockPanel Grid.Row="1" Grid.Column="2">
+                <Label DockPanel.Dock="Top" Content="Bitübertragungskanal Ausgang Alice:" />
+                <ListView Background="LightGray" ItemsSource="{Binding Path=BituebertragungAusgangAlice}" FontSize="20"
+                          glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                </ListView>
+            </DockPanel>
+        </Border>
+
+        <Border BorderBrush="Black" BorderThickness="1"  Grid.Row="2" Grid.Column="3">
+            <DockPanel>
+                <Label DockPanel.Dock="Top" Content="Bitübertragungskanal Ausgang Bob:" />
+                <ListView Background="LightGray" ItemsSource="{Binding Path=BituebertragungAusgangBob}" FontSize="20"
+                          glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                </ListView>
+            </DockPanel>
+        </Border>
+
+        <Border BorderBrush="Black" BorderThickness="1"  Grid.Row="3" Grid.Column="3">
+            <DockPanel>
+                <Label DockPanel.Dock="Top" Content="Photonenübertragungskanal Ausgang Alice:" />
+                <ListView Background="LightGray" ItemsSource="{Binding Path=PhotonenuebertragungAusgangAlice}" FontSize="20"
+                          glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                </ListView>
+            </DockPanel>
+        </Border>
+
+        <Border BorderBrush="Black" BorderThickness="1"  Grid.Row="4" Grid.Column="3">
+            <DockPanel>
+                <Label DockPanel.Dock="Top" Content="Photonenübertragungskanal Ausgang Bob:" />
+                <ListView Background="LightGray" ItemsSource="{Binding Path=PhotonenuebertragungAusgangBob}" FontSize="20"
+                          glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                </ListView>
+            </DockPanel>
+        </Border>
+
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Grid.Column="2" Grid.RowSpan="4">
+            <DockPanel>
+                <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" DockPanel.Dock="Top">
+                    <Label Content="Crafting-Feld: "/>
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
+                        <Label Content="Photonen:"/>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
+                        <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldPhotonen}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                          glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                        </ListView>
+                    </Border>
+
+                    <Border Width="50" Height="50" Margin="10"  BorderBrush="Black" BorderThickness="1">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="../Icons/Spiel/PolschaErzeugen/icons8-filter-96.png" Width="50" Height="50"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
+                        <Label Content="Polarisationsschemata:"/>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
+                        <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldPolarisation}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                          glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                        </ListView>
+                    </Border>
+
+                    <Button Content="=" HorizontalAlignment="Center" FontSize="40" FontWeight="Bold" Width="50"/>
+
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
+                        <Label Content="Polarisationsschemata:"/>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
+                        <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldErgebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                          glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                        </ListView>
+                    </Border>
+
+                </StackPanel>
+
+                <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom" Height="55" VerticalAlignment="Bottom" Margin="0,-10000,0,0">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" >
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Button Width="50" Height="50">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="../Icons/Spiel/BitfolgeErzeugen/icons8-binary-code-96.png"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Width="50" Height="50">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="../Icons/Spiel/EntVerschluesseln/icons8-key-96.png" Width="40" Height="50"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Width="50" Height="50">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="../Icons/Spiel/PhotonenErzeugen/icons8-p-96.png" Width="40" Height="50"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Width="50" Height="50">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="../Icons/Spiel/PolschaErzeugen/icons8-filter-96.png" Width="40" Height="50"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Width="50" Height="50">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="../Icons/Spiel/Streichen/icons8-erase-96.png" Width="40" Height="50"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Width="50" Height="50">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="../Icons/Spiel/SeiteHinzufuegen/icons8-add-file-96.png" Width="40" Height="50"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Width="50" Height="50">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="../Icons/Spiel/Vergleichen/icons8-scale-96.png" Width="40" Height="50"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Width="50" Height="50">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="../Icons/Spiel/ZahlErzeugen/icons8-hashtag-96.png" Width="40" Height="50"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Width="50" Height="50">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="../Icons/Spiel/Zufall/icons8-dice-96.png" Width="40" Height="50"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Width="50" Height="50">
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="?" FontSize="20" FontWeight="Black"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+            </DockPanel>
+
+        </Border>
+
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="1">
+            <DockPanel>
+                <Image DockPanel.Dock="Top" Source="../Icons/Spiel/Muelleimer/icons8-trash-96.png" Width="40" Height="50"/>
+                <ListView DockPanel.Dock="Top"  Background="LightGray" ItemsSource="{Binding Path=Muelleimer}" FontSize="20"
+                          glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                </ListView>
+            </DockPanel>
+        </Border>
+
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3">
+
+            <DockPanel>
+                <Label DockPanel.Dock="Top" Content="Informations-Ablage: "/>
+                <ListView Background="LightGray" ItemsSource="{Binding Path=Informationsablage}" FontSize="20"
+                          glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" MinHeight="125">
+                </ListView>
+            </DockPanel>
+        </Border>
     </Grid>
 </UserControl>

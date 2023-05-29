@@ -26,6 +26,9 @@ namespace quaKrypto.Models.Classes
         }
         public static WikiSeite SelektierteWikiSeite { get { return wikiSeiten.ElementAt(indexDerSelektiertenSeite); } }
 
+        private static bool wikiIstOffen = false;
+        public static bool WikiIstOffen { get { return wikiIstOffen; } set { wikiIstOffen = value; } }
+
         static Wiki()
         {
             if (!Directory.Exists(WIKI_ORDNERNAME)) _ = Directory.CreateDirectory(WIKI_ORDNERNAME);
