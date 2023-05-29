@@ -10,10 +10,8 @@ namespace quaKrypto.ViewModels
     public class LobbyErstellenViewModel : BaseViewModel
     {
         public DelegateCommand HauptMenu { get; set; }
-
-        
-
         public DelegateCommand LobbyErstellen { get; set; }
+
         public LobbyErstellenViewModel(Navigator navigator)
         {
 

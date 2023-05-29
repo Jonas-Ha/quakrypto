@@ -21,6 +21,10 @@ namespace quaKrypto.ViewModels
         private DispatcherTimer timer;
         public DelegateCommand HauptMenu { get; set; }
         public DelegateCommand LobbyBeitreten { get; set; }
+
+        private int _ausgewaehlteLobby = -1;
+        private ObservableCollection<UebungsszenarioNetzwerkBeitrittInfo> _verfuegbarLobbys = new ObservableCollection<UebungsszenarioNetzwerkBeitrittInfo>();
+        public int AusgewaehlteLobby { get { return _ausgewaehlteLobby; } set { _ausgewaehlteLobby = value; this.EigenschaftWurdeGeändert(); this.LobbyBeitreten.RaiseCanExecuteChanged(); } }
         public ObservableCollection<UebungsszenarioNetzwerkBeitrittInfo> VerfuegbarLobbys { get {return _verfuegbarLobbys; } set { _verfuegbarLobbys = value; } }
         private VarianteAbhoeren va = new VarianteAbhoeren(1);
         public LobbyBeitrittViewModel(Navigator navigator)
@@ -56,9 +60,7 @@ namespace quaKrypto.ViewModels
             //hier zyklischer erhalt der Daten der Netzwerklobbys
         }
 
-        private int _ausgewaehlteLobby = -1;
-        private ObservableCollection<UebungsszenarioNetzwerkBeitrittInfo> _verfuegbarLobbys = new ObservableCollection<UebungsszenarioNetzwerkBeitrittInfo>();
-        public int AusgewaehlteLobby { get { return _ausgewaehlteLobby; } set { _ausgewaehlteLobby = value; this.EigenschaftWurdeGeändert(); this.LobbyBeitreten.RaiseCanExecuteChanged(); } }
+       
         
 
     }
