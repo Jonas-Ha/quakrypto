@@ -1,0 +1,23 @@
+
+@startuml WikiSeite Selektieren
+title Sequenzdiagramm Wiki Seite Selektieren
+
+actor Benutzer
+participant "WikiView" as WikiView
+participant "WikiViewModel" as WikiViewModel
+participant "Wiki" as Wiki
+
+Benutzer -> WikiView: Seite Ausgewählt
+activate WikiView
+
+WikiView -> WikiViewModel: SeiteSelektiert(object)
+activate WikiViewModel
+
+WikiViewModel -> Wiki: SeiteSelektieren(string)
+activate Wiki
+
+Wiki -> WikiViewModel:
+
+WikiViewModel -> WikiView: EigenschaftWurdeGeändert(string)
+
+@enduml
