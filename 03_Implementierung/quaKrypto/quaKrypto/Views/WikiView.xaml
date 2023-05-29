@@ -25,18 +25,18 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" SnapsToDevicePixels="True">
                     <ItemsControl ItemsSource="{Binding Source={x:Static viewmodel:WikiViewModel.WikiSeiten}}" Tag="{Binding .}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border BorderThickness="5" BorderBrush="{Binding BorderBrush}" >
+                                <Border BorderThickness="2" BorderBrush="{Binding BorderBrush}" CornerRadius="10">
                                     <StackPanel Orientation="Horizontal">
                                         <StackPanel.InputBindings>
                                             <MouseBinding Gesture="LeftClick" Command="{Binding SeiteSelektiert, Source={x:Reference Name=model}}" CommandParameter="{Binding Identifier}"/>
                                         </StackPanel.InputBindings>
                                         <Label Content="{Binding Identifier}" Visibility="Collapsed"/>
                                         <Image Source="../Icons/Wiki/seite.png" Width="30" Height="30"/>
-                                        <Label Content="{Binding WikiSeiteName}" FontWeight="Thin" FontSize="23" Opacity="{Binding Durchschein}"/>
+                                        <Label Content="{Binding WikiSeiteName}" FontWeight="Thin"  FontSize="20" Opacity="{Binding Durchschein}"/>
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>
@@ -79,17 +79,16 @@
         <GroupBox Header="Inhalt">
             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                 <StackPanel Orientation="Vertical">
-                    <TextBox Text="{Binding SelektierteWikiSeite.Inhalt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontWeight="Thin" Visibility="{Binding TextBoxSichtbar}" AcceptsReturn="True" AcceptsTab="True">
+                    <TextBox Text="{Binding SelektierteWikiSeite.Inhalt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding TextBoxSichtbar}" AcceptsReturn="True" AcceptsTab="True" FontSize="15">
                         <TextBox.InputBindings>
                             <MouseBinding Gesture="LeftDoubleClick" Command="{Binding SeiteBearbeiten}"/>
                         </TextBox.InputBindings>
                     </TextBox>
-                <!--    <TextBlock Margin="3,1,0,0" Text="{Binding SelektierteWikiSeite.NURZUMTEST, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontWeight="Thin" Visibility="{Binding LabelSichtbar}" > -->
-                    <TextBlock Text="{Binding SelektierteWikiSeite.Inhalt, UpdateSourceTrigger=PropertyChanged}" Margin="3,1,0,0" FontWeight="Thin" Visibility="{Binding LabelSichtbar}" >
+                    <services:EigenerTextBlock InlineList="{Binding SelektierteWikiSeite.InlineList}"  Margin="3,1,0,0" Visibility="{Binding LabelSichtbar}" FontSize="15" >
                         <TextBlock.InputBindings>
                             <MouseBinding Gesture="LeftDoubleClick" Command="{Binding SeiteBearbeiten}"/>
                         </TextBlock.InputBindings>
-                    </TextBlock>
+                    </services:EigenerTextBlock>
                 </StackPanel>
             </ScrollViewer>
         </GroupBox>

@@ -36,16 +36,6 @@ namespace quaKrypto.ViewModels
                 EigenschaftWurdeGeändert(nameof(SelektierteWikiSeite));
             }, (o) => !EditierModus);
 
-            SeiteBearbeiten = new((o) =>
-            {
-                EditierModus = !EditierModus;
-                foreach (WikiSeite wikiSeite in WikiSeiten)
-                {
-                    wikiSeite.SetzeEditierModus(EditierModus);
-                }
-                EigenschaftWurdeGeändert(nameof(SelektierteWikiSeite));
-            }, (o) => true);
-
             SeiteEntfernen = new((o) =>
             {
                 Wiki.SeiteEntfernen();
@@ -57,6 +47,16 @@ namespace quaKrypto.ViewModels
                 Wiki.SeiteSelektieren(o.ToString() ?? "0");
                 EigenschaftWurdeGeändert(nameof(SelektierteWikiSeite));
             }, (o) => !EditierModus);
+
+            SeiteBearbeiten = new((o) =>
+            {
+                EditierModus = !EditierModus;
+                foreach (WikiSeite wikiSeite in WikiSeiten)
+                {
+                    wikiSeite.SetzeEditierModus(EditierModus);
+                }
+                EigenschaftWurdeGeändert(nameof(SelektierteWikiSeite));
+            }, (o) => true);
         }
     }
 }
