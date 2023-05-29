@@ -1,0 +1,22 @@
+@startuml Zug Wechsel
+title Zug Wechseln im Netzwerkmodus
+
+actor Benutzer
+participant "SpielView" as SV
+participant "SpielViewModel" as SVM
+participant "UebungsszenarioNetzwerk" as U
+participant "Netzwerk" as N
+activate SV
+activate SVM
+activate U
+activate N
+
+Benutzer -> SV: Klick auf "Zug beenden"
+SV -> SVM:ZugBeendenCommand()
+SVM -> U:NaechsterZug()
+U -> N:BeendeZug()
+N ->U
+U -> SVM
+SVM -> SV:Sperrt View
+
+@enduml
