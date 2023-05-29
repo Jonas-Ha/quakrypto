@@ -25,6 +25,93 @@ package Commands
 	}
 }
 
+class InsertionAdorner
+{
+ 	- isSeparatorHorizontal : bool
+	+ <<get, set>> IsInFirstHalf : bool
+	- adornerLayer : AdornerLayer
+	- pen : Pen
+	- triangle : PathGeometry
+	+ InsertionAdorner() : void
+	# OnRender() : void
+	- DrawTriangle() : void
+	- CalculateStartAndEndPoint() : void
+	+ Detach() : void
+}
+
+class DraggedAdorner
+{
+	- contentPresenter : ContentPresenter
+	- left : double
+	- top : double
+	- adornerLayer : AdornerLayer
+	+ DraggedAdorner() : void
+	+ SetPosition() : void
+	# MeasureOverride() : Size
+	# ArrangeOverride() : Size
+	# GetVisualChild() : Visual
+	# VisualChildrenCount() : int
+	# GetDesiredTransform() : GeneralTransform
+	+ Detach() : void
+}
+
+class DragDropHelper
+{
+	- format : DataFormat
+	- initialMousePosition : Point
+	- initialMouseOffset : Vector
+	- draggedData : object
+	- draggedAdorner : DraggedAdorner
+	- insertionAdorner : InsertionAdorner
+	- topWindow : Window
+	- sourceItemsControl : ItemsControl
+	- sourceItemContainer : FrameworkElement
+	- targetItemsControl : ItemsControl
+	- targetItemContainer : FrameworkElement
+	- hasVerticalOrientation : bool
+	- insertionIndex : int
+	- isInFirstHalf : bool
+	- instance : DragDropHelper
+	- <<get, >> Instance : DragDropHelper
+	+ GetIsDragSource() : bool
+	+ SetIsDragSource() : void
+	+ IsDragSourceProperty : DependencyProperty
+	+ GetIsDropTarget() : bool
+	+ SetIsDropTarget() :void
+	+ IsDropTargetProperty :DependencyProperty
+	+ GetDragDropTemplate() : DataTemplate
+	+ SetDragDropTemplate() :void
+	+ DragDropTemplateProperty :DependencyProperty
+	- IsDragSourceChanged() :void
+	- IsDropTargetChanged() :void
+	- DragSource_PreviewMouseLeftButtonDown() :void
+	- DragSource_PreviewMouseMove() :void
+	- DragSource_PreviewMouseLeftButtonUp() :void
+	- DropTarget_PreviewDragEnter() :void
+	- DropTarget_PreviewDragOver() :void
+	- DropTarget_PreviewDrop() :void
+	- DropTarget_PreviewDragLeave() :void
+	- DecideDropTarget() :void
+	- IsDropDataTypeAllowed() : bool
+	- TopWindow_DragEnter() :void
+	- TopWindow_DragOver() :void
+	- TopWindow_DragLeave() :void
+	- ShowDraggedAdorner() :void
+	- RemoveDraggedAdorner() :void
+	- CreateInsertionAdorner() :void
+	- UpdateInsertionAdornerPosition() :void
+	- RemoveInsertionAdorner() :void
+}
+
+class Utilities
+{
+	+ HasVerticalOrientation() : bool
+	+ InsertItemInItemsControl() : void
+	+ RemoveItemFromItemsControl() : int
+	+ IsInFirstHalf() : bool
+	+ IsMovementBigEnough() : bool
+}
+
 /'************************************************************'/
 /'PACKAGE UI												  '/
 /'************************************************************'/
@@ -92,10 +179,10 @@ package UI
 	together{
 		class LobbyBeitrittViewModel
 		{
-			- timer : DispatcherTimer
 			+ HauptMenu : DelegateCommand
 			+ LobbyBeitreten : DelegateCommand
 			- _ausgewaehlteLobby : int
+
 
 
 			+ verfuegbareLobbys : ObservableCollection 
@@ -176,6 +263,10 @@ package UI
 		class WikiView
 		{
 		}
+		
+		class WikiButton
+		{
+		}
 	}
 	
 
@@ -197,19 +288,15 @@ package UI
 		{
 			- uebungsszenario : IUebungsszenario
 			+ HauptMenu : DelegateCommand
-			+ <<get, set>> BituebertragungEingangAlice : ObservableCollection<string> 
-			+ <<get, set>> BituebertragungEingangBob : ObservableCollection<string>
-			+ <<get, set>> PhotonenuebertragungEingangAlice : ObservableCollection<string>
-			+ <<get, set>> PhotonenuebertragungEingangBob : ObservableCollection<string>  
-			+ <<get, set>> BituebertragungAusgangAlice : ObservableCollection<string>
-			+ <<get, set>> BituebertragungAusgangBob : ObservableCollection<string>
-			+ <<get, set>> PhotonenuebertragungAusgangAlice : ObservableCollection<string>
-			+ <<get, set>> PhotonenuebertragungAusgangBob : ObservableCollection<string>  
-			+ <<get, set>> CraftingFeldPhotonen : string
-			+ <<get, set>> CraftingFeldPolarisation : string 
-			+ <<get, set>> CraftingFeldErgebnis : string
-			+ <<get, set>> Muelleimer : string 
-			+ <<get, set>> Informationsablage : string 
+			+ <<get, set>> BituebertragungEingang: ObservableCollection<Information>
+			+ <<get, set>> PhotonenuebertragungEingang : ObservableCollection<Information>  
+			+ <<get, set>> BituebertragungAusgang : ObservableCollection<Information>
+			+ <<get, set>> PhotonenuebertragungAusgang : ObservableCollection<Information>  
+			+ <<get, set>> CraftingFeldPhotonen : Information
+			+ <<get, set>> CraftingFeldPolarisation : Information
+			+ <<get, set>> CraftingFeldErgebnis : Information
+			+ <<get, set>> Muelleimer : Information
+			+ <<get, set>> Informationsablage : Information 
 			+ SpielEveViewModel() : void
 			# BitfolgeErzeugenCommand() : void /'Bitzahlen Icon'/
 			# Ver_EntschluesselnCommand() : void /'Schluessel Icon'/
@@ -248,6 +335,22 @@ package UI
 	together{
 		class SpielEveViewModel
 		{
+			- uebungsszenario : IUebungsszenario
+			+ HauptMenu : DelegateCommand
+			+ <<get, set>> BituebertragungEingangAlice : ObservableCollection<Information> 
+			+ <<get, set>> BituebertragungEingangBob : ObservableCollection<Information>
+			+ <<get, set>> PhotonenuebertragungEingangAlice : ObservableCollection<Information>
+			+ <<get, set>> PhotonenuebertragungEingangBob : ObservableCollection<Information>  
+			+ <<get, set>> BituebertragungAusgangAlice : ObservableCollection<Information>
+			+ <<get, set>> BituebertragungAusgangBob : ObservableCollection<Information>
+			+ <<get, set>> PhotonenuebertragungAusgangAlice : ObservableCollection<Information>
+			+ <<get, set>> PhotonenuebertragungAusgangBob : ObservableCollection<Information>  
+			+ <<get, set>> CraftingFeldPhotonen : Information
+			+ <<get, set>> CraftingFeldPolarisation : Information
+			+ <<get, set>> CraftingFeldErgebnis : Information
+			+ <<get, set>> Muelleimer : Information
+			+ <<get, set>> Informationsablage : Information 
+			+ SpielEveViewModel() : void
 			# BitfolgeErzeugenCommand() : void /'Bitzahlen Icon'/
 			# Ver_EntschluesselnCommand() : void /'Schluessel Icon'/
 			# PhotonenErzeugenCommand() : void /'P Icon'/
@@ -304,8 +407,8 @@ BaseViewModel <|-u- RolleEntsperrenViewModel
 BaseViewModel <|-u- AufzeichnungViewModel
 BaseViewModel <|-u- SpielEveViewModel
 BaseViewModel <|-u- SpielViewModel
-BaseViewModel <|-u- LobbyBeitretenViewModel
-BaseViewModel <|-u- LobbyViewModel
+BaseViewModel <|-u- LobbyBeitrittViewModel
+BaseViewModel <|-u- LobbyScreenViewModel
 BaseViewModel <|-- WikiViewModel
 BaseViewModel <|-- HauptMenueViewModel
 BaseViewModel <|-- LobbyErstellenViewModel
@@ -315,10 +418,10 @@ SpielView -- SpielViewModel
 SpielEveView -- SpielEveViewModel
 RolleEntsperrenView -- RolleEntsperrenViewModel
 LobbyErstellenView -- LobbyErstellenViewModel
-LobbyBeitretenView -- LobbyBeitretenViewModel
+LobbyBeitrittView -- LobbyBeitrittViewModel
 AufzeichnungView -- AufzeichnungViewModel
 HauptMenueView -- HauptMenueViewModel
-LobbyView -- LobbyViewModel
+LobbyScreenView -- LobbyScreenViewModel
 WikiView -- WikiViewModel
 
 @enduml
