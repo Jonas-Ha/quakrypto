@@ -6,6 +6,7 @@
 // ********************************************************** 
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,9 +33,23 @@ namespace quaKrypto.Models.Classes
             return new Information(2, "Mende", InformationsEnum.asciiText, "Chris", RolleEnum.Alice);
         }
 
-        public Information BitfolgeGenerierenZahl()
+        // Rückgabe einer zufälligen Bitfolge aus einer Zufallszahl generiert
+        public Information BitfolgeGenerierenZahl(uint informationsID, string informationsname, object informationsInhalt, RolleEnum informationsEmpfaenger)
         {
-            return new Information(2, "Mende", InformationsEnum.asciiText, "Chris", RolleEnum.Alice);
+            var rand = new Random();
+            int zufallszahl = rand.Next(1, 1024);
+
+            // Anlegen eines Bit-Arrays der Länge von Zufallszahl
+            BitArray bitArray = new BitArray(zufallszahl, false);
+
+            for (int i = 0; i < zufallszahl; i++)
+            {
+                // NextDouble gibt einen double s
+                if (rand.NextDouble() < 0.5) bitArray[i] = false;
+                else bitArray[i] = true;
+            }
+
+            return new Information(informationsID, informationsname, InformationsEnum.bitfolge, informationsInhalt, informationsEmpfaenger);
         }
 
         public Information BitfolgeGenerierenAngabe()
