@@ -1,0 +1,76 @@
+﻿using quaKrypto.Views;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using quaKrypto.Models.Classes;
+
+namespace quaKrypto.Views
+{
+    public partial class WikiButton : UserControl
+    {
+        //Wiki-Button Zeug Anfang
+        private readonly int zeitInMsBisWikiButtonBewegtWird = 100;
+        private long zeitStempelLetztesMalWikiButtonAngeklickt = 0;
+        private bool letzterClickWarNachUnten = false;
+        private Point positionDesWikiButton = new(25, 25);
+        //Wiki-Button Zeug Ende
+
+        public WikiButton()
+        {
+            InitializeComponent();
+        }
+
+        //Das sind die Wiki-Button Funktionen. Minimierbar mit dem Minuszeichen vor #region
+        #region Wiki-Button Funktionen
+        private void WikiButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            letzterClickWarNachUnten = true;
+            zeitStempelLetztesMalWikiButtonAngeklickt = new DateTimeOffset(DateTime.Now).ToUnixTimeMilliseconds();
+        }
+        private void WikiButton_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            letzterClickWarNachUnten = false;
+            if (new DateTimeOffset(DateTime.Now).ToUnixTimeMilliseconds() - zeitStempelLetztesMalWikiButtonAngeklickt < zeitInMsBisWikiButtonBewegtWird && IstMausAufWikiButton(e.GetPosition(this)))
+            {
+                if (!Wiki.WikiIstOffen)
+                {
+                    new WikiView().Show();
+                    Wiki.WikiIstOffen = true;
+                }
+            }
+        }
+        private void WikiButton_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if (letzterClickWarNachUnten)
+            {
+                Point mousePosition = e.GetPosition(this);
+                if (new DateTimeOffset(DateTime.Now).ToUnixTimeMilliseconds() - zeitStempelLetztesMalWikiButtonAngeklickt >= zeitInMsBisWikiButtonBewegtWird)
+                {
+                    ((Button)sender).Margin = new Thickness(mousePosition.X - 25, mousePosition.Y - 25, 0, 0);
+                    positionDesWikiButton = mousePosition;
+                }
+                else
+                {
+                    if (!IstMausAufWikiButton(mousePosition)) letzterClickWarNachUnten = false;
+                }
+            }
+        }
+        private bool IstMausAufWikiButton(Point mousePosition)
+        {
+            double realXX = mousePosition.X - positionDesWikiButton.X; double realYY = mousePosition.Y - positionDesWikiButton.Y;
+            return !(realXX >= 26 || realXX <= -26 || realYY >= 26 || realYY <= -26);
+        }
+        #endregion
+    }
+}

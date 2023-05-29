@@ -4,26 +4,52 @@ skinparam pageMargin 10
 skinparam pageExternalColor gray
 skinparam pageBorderColor black
 
+
+class App
+{
+	- navigator : Navigator
+	- MainWindow : MainView
+}
+
+package Commands
+{
+	class DelegateCommand
+	{
+		+ CanExecuteChanged : event Eventhandler
+		+ execute : Action<object>
+		+ canExecute : Predicate<object>?
+		+ DelegateCommand()
+		+ CanExecute() : bool
+		+ Execute(): void
+		+ RaiseCanExecuteChanged(): void
+	}
+}
+
 /'************************************************************'/
 /'PACKAGE UI												  '/
 /'************************************************************'/
 package UI
 {
 	together{
+		class MainView
+		{
+		}
+
 		class MainViewModel
 		{
+			- _navigator : Navigator
+			+ << get, >> AktuellesViewModel : BaseViewModel
 			+ MainViewModel(Navigator)
-			+ CurrentViewModel : BaseViewModel
-			- OnCurrentViewModelChanged() : void
+			- aktuellesViewModelGeaendert() : void
 		}
 
 		class Navigator
 		{
-			- uebungsszenario : Uebungsszenario
-			+ <<get, set>> Uebungsszenario() : Uebungsszenario
-			+ CurrentViewModel() : BaseViewModel
-			+ CurrentViewModelChanged() : Event Action
-			- OnCurrentViewModelChanged() : void
+			+ aktuellesViewModelGeaendert : event Action
+			- _aktuellesviewModel : BaseViewModel
+			+ aktuellesViewModel() : BaseViewModel
+			+ << get, set >> aktuellesViewModel() : BaseViewModel
+			- ViewModelWurdeGeändert() : void
 		}
 
 		class BaseViewModel
@@ -39,17 +65,23 @@ package UI
 	together{
 		class LobbyErstellenViewModel
 		{
-			+ lobbyname: string 
-			+ ausgProtokoll: int 
-			+ ausgSchwierigkeit: int 
-			+ ausgVariante: int 
-			+ ausgPhaseStart: int 
-			+ ausgPhaseEnde: int 
-			+ netzwerkbasiert: bool 
-			+ LobbyErstellenViewModel() : void
-			+ LobbyErstellen() : void
-			# LobbyErstellenCommand() : void
-			# ZurueckZumHauptmenueCommand() : void
+			- _lobbyname: string 
+			- _ausgProtokoll: int 
+			- _ausgSchwierigkeit: int 
+			- _ausgVariante: int 
+			- _ausgPhaseStart: int 
+			- _ausgPhaseEnde: int 
+			- _netzwerkbasiert: bool 
+			+ <<get, set>> Lobbyname: string 
+			+ <<get, set>> AusgProtokoll: int 
+			+ <<get, set>> AusgSchwierigkeit: int 
+			+ <<get, set>> AusgVariante: int 
+			+ <<get, set>> AusgPhaseStart: int 
+			+ <<get, set>> AusgPhaseEnde: int 
+			+ <<get, set>> Netzwerkbasiert: bool 
+			+ LobbyErstellen : DelegateCommand
+			+ HauptMenu : DelegateCommand
+			+ LobbyErstellenViewModel() : void	
 		}
 
 		class LobbyErstellenView
@@ -58,8 +90,14 @@ package UI
 	}
 	
 	together{
-		class LobbyBeitretenViewModel
+		class LobbyBeitrittViewModel
 		{
+			- timer : DispatcherTimer
+			+ HauptMenu : DelegateCommand
+			+ LobbyBeitreten : DelegateCommand
+			- _ausgewaehlteLobby : int
+
+
 			+ verfuegbareLobbys : ObservableCollection 
 			+ ausgewaehlteLobby : int 
 			+ LobbyBeitretenViewModel() : void 
@@ -68,7 +106,7 @@ package UI
 			# ZurueckZumHauptmenueCommand() : void 
 		}
 
-		class LobbyBeitretenView
+		class LobbyBeitrittView
 		{
 		}
 	}
@@ -77,9 +115,8 @@ package UI
 		class HauptMenueViewModel
 		{
 			+ HauptMenueViewModel() : void
-			# LobbyErstellenCommand(): void
-			# LobbyBeitretenCommand(): void
-			# WikiOeffnenCommand(): void
+			+ LobbyErstellen : DelegateCommand
+			# LobbyBeitreten : DelegateCommand
 		}
 			
 		class HauptMenueView
@@ -88,7 +125,7 @@ package UI
 	}
 	
 	together{
-		class LobbyViewModel
+		class LobbyScreenViewModel
 		{
 			+ NameLobby : string
 			+ Variante : string
@@ -111,7 +148,7 @@ package UI
 			# ButtonWikiCommand() : void
 		}
 
-		class LobbyView
+		class LobbyScreenView
 		{
 		}
 	}
@@ -145,9 +182,9 @@ package UI
 	together{
 		class AufzeichnungViewModel
 		{
-			+ Aufzeichnung : List
+			- uebungsszenario : IUebungsszenario
+			+ HauptMenu : DelegateCommand
 			+ AufzeichnungViewModel() : void
-			# ZumHauptmenueCommand() : void
 		}
 
 		class AufzeichnungView
@@ -158,6 +195,22 @@ package UI
 	together{
 		class SpielViewModel
 		{
+			- uebungsszenario : IUebungsszenario
+			+ HauptMenu : DelegateCommand
+			+ <<get, set>> BituebertragungEingangAlice : ObservableCollection<string> 
+			+ <<get, set>> BituebertragungEingangBob : ObservableCollection<string>
+			+ <<get, set>> PhotonenuebertragungEingangAlice : ObservableCollection<string>
+			+ <<get, set>> PhotonenuebertragungEingangBob : ObservableCollection<string>  
+			+ <<get, set>> BituebertragungAusgangAlice : ObservableCollection<string>
+			+ <<get, set>> BituebertragungAusgangBob : ObservableCollection<string>
+			+ <<get, set>> PhotonenuebertragungAusgangAlice : ObservableCollection<string>
+			+ <<get, set>> PhotonenuebertragungAusgangBob : ObservableCollection<string>  
+			+ <<get, set>> CraftingFeldPhotonen : string
+			+ <<get, set>> CraftingFeldPolarisation : string 
+			+ <<get, set>> CraftingFeldErgebnis : string
+			+ <<get, set>> Muelleimer : string 
+			+ <<get, set>> Informationsablage : string 
+			+ SpielEveViewModel() : void
 			# BitfolgeErzeugenCommand() : void /'Bitzahlen Icon'/
 			# Ver_EntschluesselnCommand() : void /'Schluessel Icon'/
 			# PhotonenErzeugenCommand() : void /'P Icon'/
@@ -242,18 +295,11 @@ package UI
 		}
 	}
 
-	class DelegateCommand
-	{
-		+ CanExecuteChanged : event Eventhandler
-		+ execute : Action<object>
-		+ canExecute : Predicate<object>?
-		+ DelegateCommand()
-		+ CanExecute() : bool
-		+ Execute(): void
-		+ RaiseCanExecuteChanged(): void
-	}
+	
 }
-
+App -- MainView
+App -- Navigator
+MainView -- MainViewModel
 BaseViewModel <|-u- RolleEntsperrenViewModel
 BaseViewModel <|-u- AufzeichnungViewModel
 BaseViewModel <|-u- SpielEveViewModel

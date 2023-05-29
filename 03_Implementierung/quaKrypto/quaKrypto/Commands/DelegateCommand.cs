@@ -23,8 +23,7 @@ namespace quaKrypto.Commands
 
         public bool CanExecute(object? parameter)
         {
-            canExecute?.Invoke(parameter ?? new object());
-            return CanExecute != null;
+            return canExecute?.Invoke(parameter ?? new object()) ?? false;
         }
 
         public void Execute(object? parameter)
