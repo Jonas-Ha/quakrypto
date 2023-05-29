@@ -45,8 +45,8 @@ namespace quaKrypto.ViewModels
             LobbyBeitreten = new((o) =>
             {
                 timer.Stop();
-                //navigator.aktuellesViewModel = new LobbyScreenViewModel(navigator, null);
-                navigator.aktuellesViewModel = new SpielViewModel(navigator, null);
+                navigator.aktuellesViewModel = new LobbyScreenViewModel(navigator, null);
+                //navigator.aktuellesViewModel = new SpielViewModel(navigator, null);
 
             }, (o) => _ausgewaehlteLobby != -1);
 
