@@ -8,9 +8,9 @@ namespace quaKrypto.ViewModels
 {
     public class Navigator
     {
-        public event Action aktuellesViewModelGeaendert;
+        public event Action? aktuellesViewModelGeaendert;
 
-        private BaseViewModel _aktuellesviewModel;
+        private BaseViewModel? _aktuellesviewModel;
 
 
         public BaseViewModel aktuellesViewModel 
