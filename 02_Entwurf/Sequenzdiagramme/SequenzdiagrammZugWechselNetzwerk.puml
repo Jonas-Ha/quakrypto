@@ -6,17 +6,19 @@ participant "SpielView" as SV
 participant "SpielViewModel" as SVM
 participant "UebungsszenarioNetzwerk" as U
 participant "Netzwerk" as N
-activate SV
-activate SVM
-activate U
-activate N
 
 Benutzer -> SV: Klick auf "Zug beenden"
+activate SV
 SV -> SVM:ZugBeendenCommand()
+activate SVM
 SVM -> U:NaechsterZug()
+activate U
 U -> N:BeendeZug()
+activate N
 N ->U
+deactivate N
 U -> SVM
+deactivate U
 SVM -> SV:Sperrt View
-
+deactivate SVM
 @enduml

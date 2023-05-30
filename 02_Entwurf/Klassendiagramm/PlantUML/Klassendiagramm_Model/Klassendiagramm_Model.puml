@@ -214,7 +214,7 @@ package Model
 			+ {static} GebeRolleFrei(freizugebendeRolle: RolleEnum)
 			+ {static} BeendeZug(handlundsschritte: List<Handlungsschritt>)
 			+ {static} BeendeUebungsszenario()
-			+ {static} Uebungsszenario: UebungsszenarioNetzwerk
+			+ {static} Uebungsszenario: UebungsszenarioNetzwerk {writeOnly}
 		}
 
 		class NetzwerkHost {
@@ -228,7 +228,7 @@ package Model
 			+ {static} SendeAufzeichnungsUpdate(empfänger: Rolle, neueHandlungsschritte: List<Handlungsschritt>)
 			+ {static} BeginneZyklischesSendenVonLobbyinformation(netzwerkBeitrittInfo: UebungsszenarioNetzwerkBeitritt)
 			+ {static} BeendeUebungsszenario()
-			+ {static} Uebungsszenario: UebungsszenarioNetzwerk
+			+ {static} Uebungsszenario: UebungsszenarioNetzwerk {writeOnly}
 		}
 
 		class UebungsszeanrioNetzwerkBeitrittInfo {
@@ -245,7 +245,7 @@ package Model
 	}
 
 	together {
-		interface IVariante
+		interface IVariante <<interface>>
 		{
 			+ AktuellePhase: uint {readOnly}
 			+ AktuelleRolle: RolleEnum {readOnly}
