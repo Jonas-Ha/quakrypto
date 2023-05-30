@@ -1,4 +1,4 @@
-@startuml Klassen_Modell
+@startuml Klassen_Modell_old_style
 
 skinparam pageMargin 10
 skinparam pageExternalColor gray
@@ -12,14 +12,14 @@ package Model
 	together {
 		interface IUebungsszenario <<interface>>
 		{
-			+ Rollen: List<Rolle> {readOnly}
-			+ Schwierigkeitsgrad: SchwierigkeitsgradEnum {readOnly}
-			+ Variante: IVariante {readOnly}
-			+ StartPhase: uint {readOnly}
-			+ EndPhase: uint {readOnly}
-			+ Uebertragungskanal: Uebertragungskanal {readOnly}
-			+ Aufzeichnung: Aufzeichnung {readOnly}
-			+ Name: string {readOnly}
+			+ <<get>> Rollen(): List<Rolle> 
+			+ <<get>> Schwierigkeitsgrad(): SchwierigkeitsgradEnum 
+			+ <<get>> Variante(): IVariante 
+			+ <<get>> StartPhase(): uint
+			+ <<get>> EndPhase(): uint 
+			+ <<get>> Uebertragungskanal(): Uebertragungskanal 
+			+ <<get>> Aufzeichnung(): Aufzeichnung 
+			+ <<get>> Name(): string 
 			+ RolleHinzufuegen(rolle: Rolle): bool
 			+ GebeRolleFrei(rolle: RolleEnum)
 			+ Starten()
@@ -70,7 +70,7 @@ package Model
 	together {
 		class Aufzeichnung
 		{
-			+ Handlungsschritte : List<Handlungsschritt> {readOnly}
+			+ <<get>> Handlungsschritte(): List<Handlungsschritt>
 			+ Aufzeichnung() <<create>>
 			+ HaengeHandlungsschrittAn(Handlungsschritt: Handlungsschritt)
 			+ HaengeListeHandlungsschritteAn(Handlungsschritte: List<Handlungsschritt>)
@@ -78,8 +78,8 @@ package Model
 
 		class Uebertragungskanal
 		{
-			+ photonenKanal : List<Information> {readOnly}
-			+ bitKanal : List<Information> {readOnly}
+			+ <<get>> photonenKanal(): List<Information> 
+			+ <<get>> bitKanal(): List<Information>
 			+ Uebertragungskanal() <<create>>
 			+ SpeicherNachrichtAb(informartion: Information)
 			+ LeseKanalAus(kanal: KanalEnum): List<Information>
@@ -150,12 +150,12 @@ package Model
 	together {
 		class Information
 		{
-			+ Information(informationID: uint, informartionsName: string, informartionsTyp: InformationsEnum, informartionsEmpfaenger: RolleEnum, informartionsInhalt: object) <<create>>
-			+ InformationsID: uint {readOnly}
-			+ InformationsName: string {readOnly}
-			+ InformationsTyp: InformationsEnum {readOnly}
-			+ InformationsEmpfaenger: RolleEnum {readOnly}
-			+ InformationsInhalt: object {readOnly}
+			+ <<get>> Information(informationID: uint, informartionsName: string, informartionsTyp: InformationsEnum, informartionsEmpfaenger: RolleEnum, informartionsInhalt: object) <<create>>
+			+ <<get>> InformationsID(): uint
+			+ <<get>> InformationsName(): string
+			+ <<get>> InformationsTyp(): InformationsEnum
+			+ <<get>> InformationsEmpfaenger(): RolleEnum
+			+ <<get>> InformationsInhalt(): object
 		}
 
 		class Handlungsschritt
@@ -163,20 +163,20 @@ package Model
 			- {static} op : Operationen
 			- {static} HandlungsschrittKommando : Dictionary<OperationsEnum, Delegate>
 			+ Handlungsschritt(informationsID: uint, operationsTyp: OperationsEnum, operand1: Information, operand2: Information, ergebnisName: String, rolle: RolleEnum) <<create>>
-			+ OperationsTyp: OperationsEnum {readOnly}
-			+ Operand1: Information {readOnly}
-			+ Operand2: Information {readOnly}
+			+ <<get>> OperationsTyp(): OperationsEnum
+			+ <<get>> Operand1(): Information
+			+ <<get>> Operand2(): Information
 			+ Ergebnis: Information
 			+ ErgebnisName: string
-			+ Rolle: RolleEnum {readOnly}
-			+ AktuellePhase: uint
+			+ <<get>> Rolle(): RolleEnum
+			+ <<get, set>> AktuellePhase(): uint
 			+ HandlungsschrittAusfuehren()
 		}
 
 		class Rolle
 		{
 			+ Rolle(rolle: RolleEnum, alias: string, passwort: string) <<create>>
-			+ RolleTyp: Rolle {readOnly}
+			+ <<get>> RolleTyp(): Rolle
 			+ BeginneZug(passwort: string): bool
 			+ ErzeugeHandlungsschritt(operationsTyp: OperationsEnum, operand1: Information, operand2: Information, ergebnisInformationsName: String, rolle: RolleEnum): Handlungsschritt
 			+ SpeichereInformationenAb(informartion: Information)
@@ -206,7 +206,7 @@ package Model
 	together {
 
 		class NetzwerkClient {
-			+ {static} VerfuegbareLobbys: ObservableCollection<Lobby> {readOnly}
+			+ <<get>> {static} VerfuegbareLobbys(): ObservableCollection<Lobby>
 			+ {static} BeginneSucheNachLobbys()
 			+ {static} BeendeSucheNachLobbys()
 			+ {static} VerbindeMitUebungsszenario(netzwerkBeitrittInfo: UebungsszenarioNetzwerkBeitritt)
@@ -218,9 +218,9 @@ package Model
 		}
 
 		class NetzwerkHost {
-			+ {static} AliceRolle: Rolle {readOnly}
-			+ {static} BobRolle: Rolle {readOnly}
-			+ {static} EveRolle: Rolle {readOnly}
+			+ <<get>> {static} AliceRolle(): Rolle
+			+ <<get>> {static} BobRolle(): Rolle
+			+ <<get>> {static} EveRolle(): Rolle
 			+ {static} BeendeTCPLobby()
 			+ {static} SendeRollenInformation()
 			+ {static} StarteUebungsszenario()
@@ -232,14 +232,14 @@ package Model
 		}
 
 		class UebungsszeanrioNetzwerkBeitrittInfo {
-			+ IPAdresse: IPAddress
-			+ Lobbyname: string
-			+ Protokoll: string
-			+ Variante: string
-			+ Schwierigkeitsgrad: SchwierigkeitsgradEnum
-			+ AliceIcon: BitmapImage
-			+ BobIcon: BitmapImage
-			+ EveIcon: BitmapImage
+			+ <<get, set>> IPAdress(): IPAddress
+			+ <<get, set>> Lobbyname(): string
+			+ <<get, set>> Protokoll(): string
+			+ <<get, set>> Variante(): string
+			+ <<get, set>> Schwierigkeitsgrad(): SchwierigkeitsgradEnum
+			+ <<get, set>> AliceIcon(): BitmapImage
+			+ <<get, set>> BobIcon(): BitmapImage
+			+ <<get, set>> EveIcon(): BitmapImage
 			+ UebungsszeanrioNetzwerkBeitrittInfo(address: IPAddress, lobbyname: string, protokoll: string, variante: string, schwierigkeitsgrad: SchwierigkeitsgradEnum, aliceIcon: BitmapImage, bobIcon: BitmapImage, eveIcon: BitmapImage) <<create>>
 		}
 	}
@@ -247,14 +247,14 @@ package Model
 	together {
 		interface IVariante
 		{
-			+ AktuellePhase: uint {readOnly}
-			+ AktuelleRolle: RolleEnum {readOnly}
-			+ VarianteName: string {readOnly}
-			+ ProtokollName: string {readOnly}
-			+ MoeglicheRollen: List<RolleEnum> {readOnly}
+			+ <<get>> AktuellePhase(): uint
+			+ <<get>> AktuelleRolle(): RolleEnum
+			+ <<get>> VarianteName(): string
+			+ <<get>> ProtokollName(): string
+			+ <<get>> MoeglicheRollen(): List<RolleEnum>
 			+ NaechsteRolle(): RolleEnum
 			+ GebeHilfestellung(schwierigkeitsgrad: SchwierigkeitsgradEnum) : List<OperationsEnum>
-			+ BerechneAktuellePhase(sender: object, e: NotifyCollectionChangedEventArgs)
+			+ erechneAktuellePhase(sender: object, e: NotifyCollectionChangedEventArgs)
 		}
 
 		class VarianteNormalerAblauf implements IVariante
@@ -285,8 +285,8 @@ package Model
 	together {
 		class Wiki
 		{
-			+ {static} WikiSeiten: ObservableCollection<WikiSeite> {readOnly}
-			+ {static} WikiIstOffen: bool {readOnly}
+			+ <<get>> {static} WikiSeiten(): ObservableCollection<WikiSeite>
+			+ <<get>> {static} WikiIstOffen(): bool
 			+ Wiki() <<create>>
 			+ SpeichereAlleWikiSeiten()
 			+ SeitenErweitern()
@@ -295,8 +295,8 @@ package Model
 		}
 
 		class WikiSeite {
-			+ {static} InlineList: ObservableCollection<Inline> {readOnly}
-			+ Identifier: string {readOnly}
+			+ <<get>> {static} InlineList(): ObservableCollection<Inline>
+			+ <<get>> Identifier(): string
 			+ WikiSeiteName: string
 			+ Inhalt: string
 			+ WikiSeite(wikiSeiteName: string, inhalt: string) <<create>>
