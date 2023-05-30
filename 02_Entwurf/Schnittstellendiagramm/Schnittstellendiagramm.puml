@@ -32,6 +32,24 @@ package Model
 		+ NaechsteRolle() : RolleEnum
 		+ GebeHilfestellung() : List<OperationsEnum>
 	}
+	
+	together {
+		class UebungsszenarioNetzwerk implements IUebungsszenario
+		{
+
+		} 
+
+			class UebungsszenarioNetzwerkBeitrittInfo
+		{
+			+ <<get, set>> Lobbyname : string
+			+ <<get, set>> Protokoll : string
+			+ <<get, set>> Variante : string
+			+ <<get, set>> Schwierigkeitsgrad : string
+			+ <<get, set>> AliceIcon : BitMapImage
+			+ <<get, set>> BobIcon : BitMapImage
+			+ <<get, set>> EveIcon : BitMapImage
+		}
+	}
 
 	class Netzwerk
 	{
@@ -40,17 +58,6 @@ package Model
 		+ BeendeSucheNachLobbys() : void
 		+ BeginneZyklischesSendenVonLobbyinformation() : void
 		+ BeendeZyklischesSendenVonLobbyinformation() : void
-	}
-
-	class UebungsszenarioNetzwerkBeitrittInfo
-	{
-		+ <<get, set>> Lobbyname : string
-		+ <<get, set>> Protokoll : string
-		+ <<get, set>> Variante : string
-		+ <<get, set>> Schwierigkeitsgrad : string
-		+ <<get, set>> AliceIcon : BitMapImage
-		+ <<get, set>> BobIcon : BitMapImage
-		+ <<get, set>> EveIcon : BitMapImage
 	}
 
 	class Wiki
@@ -153,4 +160,7 @@ WikiViewModel --> Wiki
 IUebungsszenario --> IVariante
 LobbyBeitretenViewModel --> Netzwerk
 LobbyErstellenViewModel --> Netzwerk
+Netzwerk <--> UebungsszenarioNetzwerk
+UebungsszenarioNetzwerkBeitrittInfo <-- Netzwerk
+Netzwerk <-- LobbyScreenViewModel
 @enduml
