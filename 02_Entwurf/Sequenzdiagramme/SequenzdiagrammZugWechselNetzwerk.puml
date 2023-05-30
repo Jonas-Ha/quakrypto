@@ -1,22 +1,36 @@
 @startuml Zug Wechsel
-title Zug Wechseln im Netzwerkmodus
+title Zug Wechseln im Netzwerkmodus Clientseite
 
 actor Benutzer
-participant "SpielView" as SV
-participant "SpielViewModel" as SVM
-participant "UebungsszenarioNetzwerk" as U
-participant "Netzwerk" as N
+participant "SpielView:Client" as SV
+participant "SpielViewModel:Client" as SVM
+participant "UebungsszenarioNetzwerk:Client" as U
+participant "Rolle:Client" as R
+participant "NetzwerkClient:Client" as N
+boundary Netzwerk
+
 activate SV
 activate SVM
 activate U
 activate N
+activate R
+
+loop x times
+    Benutzer -> SV: Handlungsschritte Ausfuehren \n(vgl. SeqDia Handlungsschritt)
+end
 
 Benutzer -> SV: Klick auf "Zug beenden"
 SV -> SVM:ZugBeendenCommand()
+SVM -> SVM:UeberpruefeKanaele()
+SVM -> SV:Sperrt View
+SVM -> U:ErzeugeHandlungsschritt(ZugBeenden)\n(vgl. SeqDia Handlungsschritt)
 SVM -> U:NaechsterZug()
-U -> N:BeendeZug()
+U -> R:BekommeZug()
+R -> U: List<Handlungsschritt>
+U -> N:BeendeZug(List<Handlungsschritt>)
+N -> Netzwerk : List<Handlungsschritt>
 N ->U
 U -> SVM
-SVM -> SV:Sperrt View
+
 
 @enduml
