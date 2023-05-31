@@ -1,4 +1,4 @@
-@startuml Zug Wechsel
+@startuml SequenzdiagrammZugWechselNetzwerk
 title Zug Wechseln im Netzwerkmodus Clientseite
 
 actor Benutzer

@@ -1,5 +1,5 @@
 
-@startuml Handlungsschritt
+@startuml SequenzdiagrammHandlungsschrittAusführen
 title Sequenzdiagramm Handlungsschritt ausfuehren
 
 actor Benutzer

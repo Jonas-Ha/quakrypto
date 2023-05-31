@@ -1,4 +1,4 @@
-@startuml name
+@startuml Paketdiagramm
 
 skinparam pageMargin 10
 skinparam pageExternalColor gray

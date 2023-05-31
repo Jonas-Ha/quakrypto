@@ -1,4 +1,4 @@
-@startuml Zug Wechsel Host
+@startuml SequenzdiagrammZugWechselHost
 title Zug Wechseln im Netzwerkmodus
 
 boundary Netzwerk

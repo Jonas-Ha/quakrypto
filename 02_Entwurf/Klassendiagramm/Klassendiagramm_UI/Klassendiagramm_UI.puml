@@ -1,4 +1,4 @@
-@startuml name
+@startuml Klassendiagramm_UI
 
 skinparam pageMargin 10
 skinparam pageExternalColor gray
