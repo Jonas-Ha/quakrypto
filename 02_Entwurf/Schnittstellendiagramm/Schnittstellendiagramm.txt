@@ -1,0 +1,195 @@
+@startuml name
+
+skinparam pageMargin 10
+skinparam pageExternalColor gray
+skinparam pageBorderColor black
+
+/'************************************************************'/
+/'PACKAGE Model												  '/
+/'************************************************************'/
+package Model
+{
+	together {
+
+	}
+	
+	together {
+
+		class NetzwerkClient {
+			+ {static} VerfuegbareLobbys: ObservableCollection<Lobby> {readOnly}
+			+ {static} BeginneSucheNachLobbys()
+			+ {static} BeendeSucheNachLobbys()
+			+ {static} VerbindeMitUebungsszenario(netzwerkBeitrittInfo: UebungsszenarioNetzwerkBeitritt)
+			+ {static} WaehleRolle(gewählteRolle: RolleEnum, alias: string)
+			+ {static} GebeRolleFrei(freizugebendeRolle: RolleEnum)
+			+ {static} BeendeZug(handlundsschritte: List<Handlungsschritt>)
+			+ {static} BeendeUebungsszenario()
+			+ {static} Uebungsszenario: UebungsszenarioNetzwerk {writeOnly}
+		}
+
+		class NetzwerkHost {
+			+ {static} AliceRolle: Rolle {readOnly}
+			+ {static} BobRolle: Rolle {readOnly}
+			+ {static} EveRolle: Rolle {readOnly}
+			+ {static} BeendeTCPLobby()
+			+ {static} SendeRollenInformation()
+			+ {static} StarteUebungsszenario()
+			+ {static} UebergebeKontrolle(nächsteRolle: Rolle)
+			+ {static} SendeAufzeichnungsUpdate(empfänger: Rolle, neueHandlungsschritte: List<Handlungsschritt>)
+			+ {static} BeginneZyklischesSendenVonLobbyinformation(netzwerkBeitrittInfo: UebungsszenarioNetzwerkBeitritt)
+			+ {static} BeendeUebungsszenario()
+			+ {static} Uebungsszenario: UebungsszenarioNetzwerk {writeOnly}
+		}
+		
+		interface IUebungsszenario
+		{
+			+ <<get, set>> AktuelleRolle() : Rolle
+			+ <<get, set>> Rollen() : List<Rolle>
+			+ <<get, set>> Schwierigkeitsgrad() : SchwierigkeitsgradEnum
+			+ <<get, set>> Variante() : IVariante
+			+ <<get, set>> StartPhase() : uint
+			+ <<get, set>> EndPhase() : uint
+			+ <<get, set>> Uebertragungskanal() : Uebertragungskanal
+			+ <<get, set>> Aufzeichnung() : Aufzeichnung
+			+ VeroeffentlicheLobby() : void
+			+ RolleHinzufuegen() : bool
+			+ RolleEntfernen() : bool
+			+ NaechsterZug() : void
+			+ ErzeugeProtokoll() : void
+		}
+
+		
+
+	}
+	
+	class UebungsszenarioLokal
+		{
+			+ UebungsszenarioLokal()
+		}
+
+		class UebungsszenarioNetzwerk
+		{
+			+ UebungsszenarioNetzwerk()
+		}
+	
+	together {
+		class Wiki
+		{
+			+ {static} WikiSeiten: ObservableCollection<WikiSeite> {readOnly}
+			+ {static} WikiIstOffen: bool {readOnly}
+			+ Wiki() <<create>>
+			+ SpeichereAlleWikiSeiten()
+			+ SeitenErweitern()
+			+ SeiteEntfernen()
+			+ SeiteSelektieren(identifier: string)
+		}
+	}
+}
+
+package UI
+{
+	together{
+		class WikiViewModel
+		{
+			+ WikiSeiten : ObservableCollection<WikiSeite>
+			+ SelektierteWikiSeite : WikiSeite
+			+ <<get, set>> EditierModus : bool
+			+ LabelSichtbar : Visibility
+			+ TextBoxSichtbar : Visibility
+			+ SeitenErweitern : DelegateCommand
+			+ SeitenBearbeiten : DelegateCommand
+			+ SeiteEntfernen : DelegateCommand
+			+ SeiteSelektiert : DelegateCommand
+			+ WikiViewModel() : void
+		}
+		
+		class SpielEveViewModel
+		{
+		}
+	}
+	
+		
+		class LobbyErstellenViewModel
+		{
+			+ <<get, set>> Lobbyname: string 
+			+ <<get, set>> AusgProtokoll: int 
+			+ <<get, set>> AusgSchwierigkeit: int 
+			+ <<get, set>> AusgVariante: int 
+			+ <<get, set>> AusgPhaseStart: int 
+			+ <<get, set>> AusgPhaseEnde: int 
+			+ <<get, set>> Netzwerkbasiert: bool 
+			+ LobbyErstellen : DelegateCommand
+			+ HauptMenu : DelegateCommand
+			+ LobbyErstellenViewModel() : void	
+		}
+		
+		class LobbyBeitrittViewModel
+		{
+			+ HauptMenu : DelegateCommand
+			+ LobbyBeitreten : DelegateCommand
+
+
+			+ verfuegbareLobbys : ObservableCollection 
+			+ ausgewaehlteLobby : int 
+			+ LobbyBeitretenViewModel() : void 
+			+ SpielBeitreten() : void 
+		}
+		
+		class AufzeichnungViewModel
+		{
+			+ HauptMenu : DelegateCommand
+			+ AufzeichnungViewModel() : void
+		}
+		
+		class LobbyScreenViewModel
+		{
+			+ NameLobby : string
+			+ Variante : string
+			+ Schwierigkeitsgrad : string
+			+ Phase : string
+			+ Protokoll : string
+			+ AliasAliceText : string
+			+ AliasBobText : string
+			+ AliasEveText : string
+			+ PasswortAliceText : string
+			+ PasswortBobText : string
+			+ PasswortEveText : string
+			+ BenutzerRollenCollection : ObservableCollection()
+			+ LobbyViewModel() : void
+			+ SpielStarten() : void
+		}
+		
+		
+		
+		class SpielViewModel
+		{
+			+ HauptMenu : DelegateCommand
+			+ <<get, set>> BituebertragungEingangAlice : ObservableCollection<string> 
+			+ <<get, set>> BituebertragungEingangBob : ObservableCollection<string>
+			+ <<get, set>> PhotonenuebertragungEingangAlice : ObservableCollection<string>
+			+ <<get, set>> PhotonenuebertragungEingangBob : ObservableCollection<string>  
+			+ <<get, set>> BituebertragungAusgangAlice : ObservableCollection<string>
+			+ <<get, set>> BituebertragungAusgangBob : ObservableCollection<string>
+			+ <<get, set>> PhotonenuebertragungAusgangAlice : ObservableCollection<string>
+			+ <<get, set>> PhotonenuebertragungAusgangBob : ObservableCollection<string>  
+			+ <<get, set>> CraftingFeldPhotonen : string
+			+ <<get, set>> CraftingFeldPolarisation : string 
+			+ <<get, set>> CraftingFeldErgebnis : string
+			+ <<get, set>> Muelleimer : string 
+			+ <<get, set>> Informationsablage : string 
+			+ SpielEveViewModel() : void
+		}
+}
+
+WikiViewModel --> Wiki
+LobbyErstellenViewModel --> NetzwerkHost
+LobbyErstellenViewModel --> UebungsszenarioLokal
+LobbyErstellenViewModel --> UebungsszenarioNetzwerk
+LobbyBeitrittViewModel --> NetzwerkClient
+LobbyBeitrittViewModel --> IUebungsszenario
+AufzeichnungViewModel --> IUebungsszenario
+LobbyScreenViewModel --> IUebungsszenario
+SpielEveViewModel --> IUebungsszenario
+SpielViewModel --> IUebungsszenario
+
+@enduml
