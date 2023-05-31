@@ -28,7 +28,7 @@ package Commands
 class InsertionAdorner
 {
  	- isSeparatorHorizontal : bool
-	+ <<get, set>> IsInFirstHalf : bool
+	+ IsInFirstHalf : bool
 	- adornerLayer : AdornerLayer
 	- pen : Pen
 	- triangle : PathGeometry
@@ -72,7 +72,7 @@ class DragDropHelper
 	- insertionIndex : int
 	- isInFirstHalf : bool
 	- instance : DragDropHelper
-	- <<get, >> Instance : DragDropHelper
+	- Instance : DragDropHelper {readOnly}
 	+ GetIsDragSource() : bool
 	+ SetIsDragSource() : void
 	+ IsDragSourceProperty : DependencyProperty
@@ -125,7 +125,7 @@ package UI
 		class MainViewModel
 		{
 			- _navigator : Navigator
-			+ << get, >> AktuellesViewModel : BaseViewModel
+			+ AktuellesViewModel : BaseViewModel {readOnly}
 			+ MainViewModel(Navigator)
 			- aktuellesViewModelGeaendert() : void
 		}
@@ -135,7 +135,7 @@ package UI
 			+ aktuellesViewModelGeaendert : event Action
 			- _aktuellesviewModel : BaseViewModel
 			+ aktuellesViewModel() : BaseViewModel
-			+ << get, set >> aktuellesViewModel() : BaseViewModel
+			+ aktuellesViewModel() : BaseViewModel
 			- ViewModelWurdeGeändert() : void
 		}
 
@@ -159,13 +159,13 @@ package UI
 			- _ausgPhaseStart: int 
 			- _ausgPhaseEnde: int 
 			- _netzwerkbasiert: bool 
-			+ <<get, set>> Lobbyname: string 
-			+ <<get, set>> AusgProtokoll: int 
-			+ <<get, set>> AusgSchwierigkeit: int 
-			+ <<get, set>> AusgVariante: int 
-			+ <<get, set>> AusgPhaseStart: int 
-			+ <<get, set>> AusgPhaseEnde: int 
-			+ <<get, set>> Netzwerkbasiert: bool 
+			+ Lobbyname: string 
+			+ AusgProtokoll: int 
+			+ AusgSchwierigkeit: int 
+			+ AusgVariante: int 
+			+ AusgPhaseStart: int 
+			+ AusgPhaseEnde: int 
+			+ Netzwerkbasiert: bool 
 			+ LobbyErstellen : DelegateCommand
 			+ HauptMenu : DelegateCommand
 			+ LobbyErstellenViewModel() : void	
@@ -182,15 +182,12 @@ package UI
 			+ HauptMenu : DelegateCommand
 			+ LobbyBeitreten : DelegateCommand
 			- _ausgewaehlteLobby : int
-
-
-
 			+ verfuegbareLobbys : ObservableCollection 
 			+ ausgewaehlteLobby : int 
 			+ LobbyBeitretenViewModel() : void 
 			+ SpielBeitreten() : void 
-			# SpielBeitretenCommand() : void 
-			# ZurueckZumHauptmenueCommand() : void 
+			+ SpielBeitreten : DelegateCommand 
+			+ ZurueckZumHauptmenue : DelegateCommand 
 		}
 
 		class LobbyBeitrittView
@@ -228,11 +225,11 @@ package UI
 			+ BenutzerRollenCollection : ObservableCollection()
 			+ LobbyViewModel() : void
 			+ SpielStarten() : void
-			# SpielStartenCommand() : void
-			# LobbyVerlassenCommand() : void
-			# ButtonBestaetigenCommand() : void
-			# ButtonHauptmenueCommand() : void
-			# ButtonWikiCommand() : void
+			+ SpielStarten : DelegateCommand
+			+ LobbyVerlassen : DelegateCommand
+			+ ButtonBestaetigen : DelegateCommand
+			+ ButtonHauptmenue : DelegateCommand
+			+ ButtonWiki : DelegateCommand
 		}
 
 		class LobbyScreenView
@@ -246,7 +243,7 @@ package UI
 			+ WikiSeiten : ObservableCollection<WikiSeite>
 			+ SelektierteWikiSeite : WikiSeite
 			- editierModus : bool
-			+ <<get, set>> EditierModus : bool
+			+ EditierModus : bool
 			+ LabelSichtbar : Visibility
 			+ TextBoxSichtbar : Visibility
 			+ SeitenErweitern : DelegateCommand
@@ -254,10 +251,9 @@ package UI
 			+ SeiteEntfernen : DelegateCommand
 			+ SeiteSelektiert : DelegateCommand
 			+ WikiViewModel() : void
-
-			# UmbenennenCommand() : void
-			# WikiVerlassenCommand() : void
-			# ZumHauptmenueCommand() : void
+			+ Umbenennen : DelegateCommand
+			+ WikiVerlassen : DelegateCommand
+			+ ZumHauptmenue : DelegateCommand
 		}
 
 		class WikiView
@@ -288,30 +284,30 @@ package UI
 		{
 			- uebungsszenario : IUebungsszenario
 			+ HauptMenu : DelegateCommand
-			+ <<get, set>> BituebertragungEingang: ObservableCollection<Information>
-			+ <<get, set>> PhotonenuebertragungEingang : ObservableCollection<Information>  
-			+ <<get, set>> BituebertragungAusgang : ObservableCollection<Information>
-			+ <<get, set>> PhotonenuebertragungAusgang : ObservableCollection<Information>  
-			+ <<get, set>> CraftingFeldPhotonen : Information
-			+ <<get, set>> CraftingFeldPolarisation : Information
-			+ <<get, set>> CraftingFeldErgebnis : Information
-			+ <<get, set>> Muelleimer : Information
-			+ <<get, set>> Informationsablage : Information 
+			+ BituebertragungEingang: ObservableCollection<Information>
+			+ PhotonenuebertragungEingang : ObservableCollection<Information>  
+			+ BituebertragungAusgang : ObservableCollection<Information>
+			+ PhotonenuebertragungAusgang : ObservableCollection<Information>  
+			+ CraftingFeldPhotonen : Information
+			+ CraftingFeldPolarisation : Information
+			+ CraftingFeldErgebnis : Information
+			+ Muelleimer : Information
+			+ Informationsablage : Information 
 			+ SpielEveViewModel() : void
-			# BitfolgeErzeugenCommand() : void /'Bitzahlen Icon'/
-			# Ver_EntschluesselnCommand() : void /'Schluessel Icon'/
-			# PhotonenErzeugenCommand() : void /'P Icon'/
-			# PolschaErzeugenCommand() : void /'Filter Icon'/
-			# StreichenCommand() : void /'Radiergummi Icon'/
-			# TextEditierenCommand() : void /'Editieren Icon'/
-			# VergleichenCommand() : void /'Waage Icon'/
-			# ZahlErzeugenCommand() : void /'Raute Icon'/
-			# ZufaelligGenerierenCommand() : void /'Wuerfel Icon'/
-			# FragezeichenCommand() : void /'Fragezeichen Icon'/
-			# ZugBeendenCommand() : void
-			# HauptmenueCommand() : void
-			# OperationAusfuhrenCommand() : void
-			# InformationLoeschenCommand() : void
+			+ BitfolgeErzeugen : DelegateCommand /'Bitzahlen Icon'/
+			+ Ver_Entschluesseln : DelegateCommand /'Schluessel Icon'/
+			+ PhotonenErzeugen : DelegateCommand /'P Icon'/
+			+ PolschaErzeugen : DelegateCommand /'Filter Icon'/
+			+ Streichen : DelegateCommand /'Radiergummi Icon'/
+			+ TextEditieren : DelegateCommand /'Editieren Icon'/
+			+ Vergleichen : DelegateCommand /'Waage Icon'/
+			+ ZahlErzeugen : DelegateCommand /'Raute Icon'/
+			+ ZufaelligGenerieren : DelegateCommand /'Wuerfel Icon'/
+			+ Fragezeichen : DelegateCommand /'Fragezeichen Icon'/
+			+ ZugBeenden : DelegateCommand
+			+ Hauptmenue : DelegateCommand
+			+ OperationAusfuhren : DelegateCommand
+			+ InformationLoeschen : DelegateCommand
 		}
 		
 		class SpielView
@@ -337,34 +333,34 @@ package UI
 		{
 			- uebungsszenario : IUebungsszenario
 			+ HauptMenu : DelegateCommand
-			+ <<get, set>> BituebertragungEingangAlice : ObservableCollection<Information> 
-			+ <<get, set>> BituebertragungEingangBob : ObservableCollection<Information>
-			+ <<get, set>> PhotonenuebertragungEingangAlice : ObservableCollection<Information>
-			+ <<get, set>> PhotonenuebertragungEingangBob : ObservableCollection<Information>  
-			+ <<get, set>> BituebertragungAusgangAlice : ObservableCollection<Information>
-			+ <<get, set>> BituebertragungAusgangBob : ObservableCollection<Information>
-			+ <<get, set>> PhotonenuebertragungAusgangAlice : ObservableCollection<Information>
-			+ <<get, set>> PhotonenuebertragungAusgangBob : ObservableCollection<Information>  
-			+ <<get, set>> CraftingFeldPhotonen : Information
-			+ <<get, set>> CraftingFeldPolarisation : Information
-			+ <<get, set>> CraftingFeldErgebnis : Information
-			+ <<get, set>> Muelleimer : Information
-			+ <<get, set>> Informationsablage : Information 
+			+ BituebertragungEingangAlice : ObservableCollection<Information> 
+			+ BituebertragungEingangBob : ObservableCollection<Information>
+			+ PhotonenuebertragungEingangAlice : ObservableCollection<Information>
+			+ PhotonenuebertragungEingangBob : ObservableCollection<Information>  
+			+ BituebertragungAusgangAlice : ObservableCollection<Information>
+			+ BituebertragungAusgangBob : ObservableCollection<Information>
+			+ PhotonenuebertragungAusgangAlice : ObservableCollection<Information>
+			+ PhotonenuebertragungAusgangBob : ObservableCollection<Information>  
+			+ CraftingFeldPhotonen : Information
+			+ CraftingFeldPolarisation : Information
+			+ CraftingFeldErgebnis : Information
+			+ Muelleimer : Information
+			+ Informationsablage : Information 
 			+ SpielEveViewModel() : void
-			# BitfolgeErzeugenCommand() : void /'Bitzahlen Icon'/
-			# Ver_EntschluesselnCommand() : void /'Schluessel Icon'/
-			# PhotonenErzeugenCommand() : void /'P Icon'/
-			# PolschaErzeugenCommand() : void /'Filter Icon'/
-			# StreichenCommand() : void /'Radiergummi Icon'/
-			# TextEditierenCommand() : void /'Editieren Icon'/
-			# VergleichenCommand() : void /'Waage Icon'/
-			# ZahlErzeugenCommand() : void /'Raute Icon'/
-			# ZufaelligGenerierenCommand() : void /'Wuerfel Icon'/
-			# FragezeichenCommand() : void /'Fragezeichen Icon'/
-			# ZugBeendenCommand() : void
-			# HauptmenueCommand() : void
-			# OperationAusfuhrenCommand() : void
-			# InformationLoeschenCommand() : void
+			+ BitfolgeErzeugen : DelegateCommand /'Bitzahlen Icon'/
+			+ Ver_Entschluesseln : DelegateCommand /'Schluessel Icon'/
+			+ PhotonenErzeugen : DelegateCommand /'P Icon'/
+			+ PolschaErzeugen : DelegateCommand /'Filter Icon'/
+			+ Streichen : DelegateCommand /'Radiergummi Icon'/
+			+ TextEditieren : DelegateCommand /'Editieren Icon'/
+			+ Vergleichen : DelegateCommand /'Waage Icon'/
+			+ ZahlErzeugen : DelegateCommand /'Raute Icon'/
+			+ ZufaelligGenerieren : DelegateCommand /'Wuerfel Icon'/
+			+ Fragezeichen : DelegateCommand /'Fragezeichen Icon'/
+			+ ZugBeenden : DelegateCommand
+			+ Hauptmenue : DelegateCommand
+			+ OperationAusfuhren : DelegateCommand
+			+ InformationLoeschen : DelegateCommand
 		}
 
 		class SpielEveView
@@ -389,8 +385,8 @@ package UI
 		class RolleEntsperrenViewModel
 		{
 			- passwort : string
-			# RolleEntsperrenCommand() : void 
-			# ZumHauptmenueCommand() : void
+			+ RolleEntsperren : DelegateCommand 
+			+ ZumHauptmenue : DelegateCommand
 		}
 
 		class RolleEntsperrenView
