@@ -1,0 +1,49 @@
+@startuml Factory
+
+skinparam pageMargin 10
+skinparam pageExternalColor gray
+skinparam pageBorderColor black
+
+class Dialog
+{
+	...
+	+ render()
+	+ createButton() : Button
+}
+
+note top of Dialog: Button okButton = createButton()\nokButton.onClick(closeDialog)\nokButton.render()
+
+class WindowsDialog
+{
+	...
+	+ createButton() : Button
+}
+
+class WebDialog
+{
+	...
+	+ createButton() : Button
+}
+
+interface Button
+{
+	+ render()
+	+ onClick()
+}
+
+class WindowsButton
+
+note bottom of WindowsDialog: <b>return new</b> WindowsButton()
+
+class HTMLButton
+
+Button <|-[dashed]- WindowsButton
+Button <|-[dashed]- HTMLButton
+
+Button <-[dashed] Dialog
+
+Dialog <|-- WindowsDialog
+Dialog <|-- WebDialog
+
+
+@enduml

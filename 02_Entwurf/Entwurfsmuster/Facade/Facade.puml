@@ -1,0 +1,40 @@
+@startuml Facade
+
+skinparam pageMargin 10
+skinparam pageExternalColor gray
+skinparam pageBorderColor black
+
+class Client
+
+class Facade
+{
+	- linksToSubsystemObjects
+	- optionalAdditionalFacade
+	+ subsystemOperation()
+}
+
+class AdditionalFacade
+{
+	...
+	+ anotherOperation()
+}
+
+package Subsystem <<Cloud>> {
+class SubsystemClass1
+class SubsystemClass2
+class SubsystemClass3
+class SubsystemClass4
+}
+
+Client -> Facade
+Facade -> AdditionalFacade
+
+Facade --[dashed]-> SubsystemClass1
+Facade --[dashed]-> SubsystemClass2
+Facade --[dashed]-> SubsystemClass3
+
+AdditionalFacade --[dashed]-> SubsystemClass1
+
+
+
+@enduml
