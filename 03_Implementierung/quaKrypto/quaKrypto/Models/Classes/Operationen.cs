@@ -34,7 +34,7 @@ namespace quaKrypto.Models.Classes
             return new Information(informationsID, ergebnisName,operand1.InformationsTyp, operand1.InformationsInhalt, empfaenger);
         }
 
-        public Information NachrichtEmpfangen(uint informationsID, OperationsEnum operationsTyp, Information operand1, Information operand2, String ergebnisName)
+        public Information NachrichtEmpfangen(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
             if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
             {
@@ -45,7 +45,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Überlegung: Streichen der Funktion NachrichtAbhoeren, da identisch zu NachrichtEmpfangen (Leopold Bialek, Alexander Dennner)
-        public  Information NachrichtAbhoeren(uint informationsID, OperationsEnum operationsTyp, Information operand1, Information operand2, String ergebnisName)
+        public  Information NachrichtAbhoeren(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
             if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
             {
@@ -56,7 +56,7 @@ namespace quaKrypto.Models.Classes
         }
 
         // Rückgabe einer zufälligen Bitfolge aus einer Zufallszahl generiert
-        public Information BitfolgeGenerierenZahl(uint informationsID, OperationsEnum operationsTyp, Information operand1, Information operand2, String ergebnisName)
+        public Information BitfolgeGenerierenZahl(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
             if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
             {
@@ -84,7 +84,7 @@ namespace quaKrypto.Models.Classes
             return new Information(informationsID, ergebnisName, InformationsEnum.bitfolge, bitArray, null);
         }
 
-        public Information BitfolgeGenerierenAngabe(uint informationsID, OperationsEnum operationsTyp, Information operand1, Information operand2, String ergebnisName)
+        public Information BitfolgeGenerierenAngabe(uint informationsID,  Information operand1, Information operand2, String ergebnisName)
         {
             if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
             {
@@ -116,7 +116,7 @@ namespace quaKrypto.Models.Classes
             return new Information(informationsID, ergebnisName, InformationsEnum.bitfolge, bitArray, null);
         }
 
-        public Information PolarisationsschemataGenerierenZahl(uint informationsID, OperationsEnum operationsTyp, Information operand1, Information operand2, String ergebnisName)
+        public Information PolarisationsschemataGenerierenZahl(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
             if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
             {
@@ -144,7 +144,7 @@ namespace quaKrypto.Models.Classes
             return new Information(informationsID, ergebnisName, InformationsEnum.polarisationsschemata, bitArray, null);
         }
 
-        public Information PolarisationsschemataGenerierenAngabe(uint informationsID, OperationsEnum operationsTyp, Information operand1, Information operand2, String ergebnisName)
+        public Information PolarisationsschemataGenerierenAngabe(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
             if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
             {
@@ -176,7 +176,8 @@ namespace quaKrypto.Models.Classes
             return new Information(informationsID, ergebnisName, InformationsEnum.polarisationsschemata, bitArray, null);
         }
 
-        public Information PhotonenGenerieren(uint informationsID, OperationsEnum operationsTyp, Information operand1, Information operand2, String ergebnisName)
+        //Operand 1 = polarisationsschemata, Operand2 = Schlüssel
+        public Information PhotonenGenerieren(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
             if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
             {
@@ -203,6 +204,8 @@ namespace quaKrypto.Models.Classes
 
             byte[] photonenArray = new byte[op1Inhalt.Length];
 
+            //21 (Photonen)
+            //XX 1.Bit = Polarisationsschmata, 2.Bit = Schlüssel
             for (int i = 0; i < photonenArray.Length; i++)
             {
                 photonenArray[i] = (byte)((op1Inhalt[i] ? (byte)1 : (byte)0) + (byte)2*(op2Inhalt[i]? (byte)1 : (byte)0));
@@ -211,7 +214,7 @@ namespace quaKrypto.Models.Classes
             return new Information(informationsID, ergebnisName, InformationsEnum.photonen, photonenArray, null);
         }
 
-        public Information BitmaskeGenerieren(uint informationsID, OperationsEnum operationsTyp, Information operand1, Information operand2, String ergebnisName)
+        public Information BitmaskeGenerieren(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
 
             if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
@@ -251,44 +254,260 @@ namespace quaKrypto.Models.Classes
             return new Information(informationsID, ergebnisName, InformationsEnum.bitfolge, bitArray, null);
         }
 
-        public Information PolschataVergleichen(uint informationsID, OperationsEnum operationsTyp, Information operand1, Information operand2, String ergebnisName)
+        public Information PolschataVergleichen(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
+            if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (!(operand1.InformationsTyp.Equals(InformationsEnum.polarisationsschemata)) || !((operand1.InformationsInhalt.GetType().Equals(typeof(BitArray)))))
+            {
+                throw new Exception("operand1 nicht vom Typ Polarisationsschemata oder ist kein Bitarray");
+            }
+
+            if (!(operand2.InformationsTyp.Equals(InformationsEnum.polarisationsschemata)) || !((operand2.InformationsInhalt.GetType().Equals(typeof(BitArray)))))
+            {
+                throw new Exception("operand2 nicht vom Typ Polarisationsschemata oder ist kein Bitarray");
+            }
             
+            BitArray op1 = (BitArray)operand1.InformationsInhalt;
+            BitArray op2 = (BitArray)operand2.InformationsInhalt;
+
+            if(op1.Length != op2.Length) 
+            {
+                throw new Exception("operand1 und operand2 sind nicht gleich lang");
+            }
+
+            BitArray erg = new BitArray(op1.Length);
+
+            for (int i = 0; i < op1.Length; i++) 
+            {
+                erg[i] = op1[i] ^ op2[i];
+            }
+            return new Information(informationsID, ergebnisName, InformationsEnum.bitfolge, erg, null);
         }
 
-        public Information BitfolgenVergleichen(uint informationsID, OperationsEnum operationsTyp, Information operand1, Information operand2, String ergebnisName)
+        public Information BitfolgenVergleichen(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
+            if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (!(operand1.InformationsTyp.Equals(InformationsEnum.bitfolge)) || !((operand1.InformationsInhalt.GetType().Equals(typeof(BitArray)))))
+            {
+                throw new Exception("operand1 nicht vom Typ Bitfolge oder ist kein Bitarray");
+            }
+
+            if (!(operand2.InformationsTyp.Equals(InformationsEnum.bitfolge)) || !((operand2.InformationsInhalt.GetType().Equals(typeof(BitArray)))))
+            {
+                throw new Exception("operand2 nicht vom Typ Bitfolge oder ist kein Bitarray");
+            }
+
+            BitArray op1 = (BitArray)operand1.InformationsInhalt;
+            BitArray op2 = (BitArray)operand2.InformationsInhalt;
+
+            if (op1.Length != op2.Length)
+            {
+                throw new Exception("operand1 und operand2 sind nicht gleich lang");
+            }
+
+            BitArray erg = new BitArray(op1.Length);
+
+            for (int i = 0; i < op1.Length; i++)
+            {
+                erg[i] = op1[i] ^ op2[i];
+            }
+            return new Information(informationsID, ergebnisName, InformationsEnum.bitfolge, erg, null);
+        }
+
+        //Operand1 = Polarisationsschemata, Operand2 = unscharfePhotonen
+        public Information PhotonenZuBitfolge(uint informationsID, Information operand1, Information operand2, String ergebnisName)
+        {
+            if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (!(operand1.InformationsTyp.Equals(InformationsEnum.polarisationsschemata)) || !((operand1.InformationsInhalt.GetType().Equals(typeof(BitArray)))))
+            {
+                throw new Exception("operand1 nicht vom Typ polarisationsschmata oder ist kein Bitarray");
+            }
+
+            if (!(operand2.InformationsTyp.Equals(InformationsEnum.unscharfePhotonen)) || !((operand2.InformationsInhalt.GetType().Equals(typeof(byte[])))))
+            {
+                throw new Exception("operand2 nicht vom Typ unscharfePhotonen oder ist kein byte[]");
+            }
+
+            BitArray op1 = (BitArray)operand1.InformationsInhalt;
+            byte[] op2 = (byte[])operand2.InformationsInhalt;
+
+            if (op1.Length != op2.Length)
+            {
+                throw new Exception("operand1 und operand2 sind nicht gleich lang");
+            }
+
+            var rand = new Random();
+
+            BitArray erg = new BitArray(op1.Length);
+
+            //21 (Photonen)
+            //XX 1.Bit = Polarisationsschmata, 2.Bit = Schlüssel
+            for (int i = 0; i < op1.Length; i++)
+            {
+                if ((op1[i] ? 1 : 0) == (op2[i] & 1))
+                {
+                    //Polarisationsschemata waren gleich => es kommt das wahre Bit raus
+                    erg[i] = (op2[i] & 1) > 0;
+                }
+                else
+                {
+                    //Polarisationsschemata waren ungleich => zufälliges Bit
+                    erg[i] = rand.NextDouble() > 0.5;
+                }
+            }
+            return new Information(informationsID, ergebnisName, InformationsEnum.bitfolge, erg, null);
+
+        }
+
+        //Operand1 = Text, Operand2 = Schlüssel
+        public Information TextVerschluesseln(uint informationsID, Information operand1, Information operand2, String ergebnisName)
+        {
+            if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (!(operand1.InformationsTyp.Equals(InformationsEnum.asciiText)) || !((operand1.InformationsInhalt.GetType().Equals(typeof(string)))))
+            {
+                throw new Exception("operand1 nicht vom Typ Text oder ist kein String");
+            }
+
+            if (!(operand2.InformationsTyp.Equals(InformationsEnum.bitfolge)) || !((operand2.InformationsInhalt.GetType().Equals(typeof(BitArray)))))
+            {
+                throw new Exception("operand2 nicht vom Typ bitfolge oder ist kein BitArray");
+            }
+
+            string text = (string)operand1.InformationsInhalt;
+            BitArray schluessel = (BitArray)operand2.InformationsInhalt;
+            var bytes = System.Text.Encoding.UTF8.GetBytes(text);
+            var bits = new BitArray(bytes);
+            BitArray schluesselgekuerzt = new BitArray(bits.Length);
+            if (bits.Length > schluessel.Length)
+            {
+                throw new Exception("Der Schlüssel ist zu kurz zum Entschlüsseln");
+            }
+
+            for (int i = 0; i < bits.Length; i++)
+            {
+                schluesselgekuerzt[i] = schluessel[i];
+            }
+            BitArray encryptedbits = bits.Xor(schluesselgekuerzt);
+            byte[] encbyte = new byte[(((encryptedbits.Length - 1) / 8) + 1)];
+            encryptedbits.CopyTo(encbyte, 0);
+            string encryptedText = Convert.ToBase64String(encbyte);
+
+            return new Information(informationsID, ergebnisName, InformationsEnum.verschluesselterText, encryptedText, null);
+        }
+
+        public Information TextEntschluesseln(uint informationsID, Information operand1, Information operand2, String ergebnisName)
+        {
+            if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (!(operand1.InformationsTyp.Equals(InformationsEnum.asciiText)) || !((operand1.InformationsInhalt.GetType().Equals(typeof(string)))))
+            {
+                throw new Exception("operand1 nicht vom Typ Text oder ist kein String");
+            }
+
+            if (!(operand2.InformationsTyp.Equals(InformationsEnum.bitfolge)) || !((operand2.InformationsInhalt.GetType().Equals(typeof(BitArray)))))
+            {
+                throw new Exception("operand2 nicht vom Typ bitfolge oder ist kein BitArray");
+            }
+
+            string text = (string)operand1.InformationsInhalt;
+            BitArray schluessel = (BitArray)operand2.InformationsInhalt;
+            var bytes = Convert.FromBase64String(text);
+            var bits = new BitArray(bytes);
+            BitArray schluesselgekuerzt = new BitArray(bits.Length);
+            if (bits.Length > schluessel.Length)
+            {
+                throw new Exception("Der Schlüssel ist zu kurz zum Entschlüsseln");
+            }
+            for (int i = 0; i < bits.Length; i++) 
+            { 
+                schluesselgekuerzt[i] = schluessel[i]; 
+            }
+            BitArray decryptedbits = bits.Xor(schluesselgekuerzt);
+            byte[] decbyte = new byte[(((decryptedbits.Length - 1) / 8) + 1)];
+            decryptedbits.CopyTo(decbyte, 0);
+            Decoder d = Encoding.UTF8.GetDecoder();
+            string dectext = Encoding.UTF8.GetString(decbyte);
+
+            return new Information(informationsID, ergebnisName, InformationsEnum.verschluesselterText, dectext, null);
+        }
+
+        public Information BitsStreichen(uint informationsID, Information operand1, Information operand2, String ergebnisName)
+        {
+            if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (!(operand1.InformationsTyp.Equals(InformationsEnum.bitfolge)) || !((operand1.InformationsInhalt.GetType().Equals(typeof(BitArray)))))
+            {
+                throw new Exception("operand1 nicht vom Typ bitfolge oder ist kein BitArray");
+            }
+
+            if (!(operand2.InformationsTyp.Equals(InformationsEnum.bitfolge)) || !((operand2.InformationsInhalt.GetType().Equals(typeof(BitArray)))))
+            {
+                throw new Exception("operand1 nicht vom Typ bitfolge oder ist kein BitArray");
+            }
+
+            BitArray op1 = (BitArray)operand1.InformationsInhalt;
+            BitArray op2 = (BitArray)operand2.InformationsInhalt;
+
+            int zahl1er = 0;
+            for(int i = 0; i<op2.Length; i++)
+            {
+                if (op2[i]) zahl1er++;
+            }
+
+            BitArray erg = new BitArray(op1.Length-zahl1er);
+
+            int counter = 0;
+            for (int i = 0; i < op1.Length; i++)
+            {
+                if (!op2[i])
+                {
+                    erg[counter++] = op1[i];
+                }
+            }
+
             return new Information(2, "Mende", InformationsEnum.asciiText, "Chris", RolleEnum.Alice);
         }
 
-        public Information PhotonenZuBitfolge(uint informationsID, OperationsEnum operationsTyp, Information operand1, Information operand2, String ergebnisName)
+        public Information BitsFreiBearbeiten(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
-            return new Information(2, "Mende", InformationsEnum.asciiText, "Chris", RolleEnum.Alice);
+            if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (!(operand1.InformationsTyp.Equals(InformationsEnum.bitfolge)) || !((operand1.InformationsInhalt.GetType().Equals(typeof(BitArray)))))
+            {
+                throw new Exception("operand1 nicht vom Typ Text oder ist kein String");
+            }
+
+            return new Information(informationsID, ergebnisName, InformationsEnum.bitfolge, operand1.InformationsInhalt, null);
         }
 
-        public Information TextVerschluesseln(uint informationsID, OperationsEnum operationsTyp, Information operand1, Information operand2, String ergebnisName)
+        public Information? ZugBeenden(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
-            return new Information(2, "Mende", InformationsEnum.asciiText, "Chris", RolleEnum.Alice);
-        }
-
-        public Information TextEntschluesseln(uint informationsID, OperationsEnum operationsTyp, Information operand1, Information operand2, String ergebnisName)
-        {
-            return new Information(2, "Mende", InformationsEnum.asciiText, "Chris", RolleEnum.Alice);
-        }
-
-        public Information BitsStreichen(uint informationsID, OperationsEnum operationsTyp, Information operand1, Information operand2, String ergebnisName)
-        {
-            return new Information(2, "Mende", InformationsEnum.asciiText, "Chris", RolleEnum.Alice);
-        }
-
-        public Information BitsFreiBearbeiten(uint informationsID, OperationsEnum operationsTyp, Information operand1, Information operand2, String ergebnisName)
-        {
-            return new Information(2, "Mende", InformationsEnum.asciiText, "Chris", RolleEnum.Alice);
-        }
-
-        public Information ZugBeenden(uint informationsID, OperationsEnum operationsTyp, Information operand1, Information operand2, String ergebnisName)
-        {
-            return new Information(2, "Mende", InformationsEnum.asciiText, "Chris", RolleEnum.Alice);
+            return null;
         }
     }
 }
