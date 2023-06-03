@@ -76,7 +76,8 @@ namespace quaKrypto.Models.Classes
                             if (Enum.TryParse(empfangeneNachrichtTeile[3], out SchwierigkeitsgradEnum schwierigkeit))
                             {
                                 //Rollen noch klären
-                                UebungsszenarioNetzwerkBeitrittInfo netzwerkBeitrittInfo = new(senderAdresse.Address, empfangeneNachrichtTeile[0], empfangeneNachrichtTeile[1], empfangeneNachrichtTeile[2], schwierigkeit);
+                                //MENTEL: HABE FÜR DIE STATES FALSE HINZUGEFÜGT SONST LÄUFT ES NICHT. BITTE ANPASSEn
+                                UebungsszenarioNetzwerkBeitrittInfo netzwerkBeitrittInfo = new(senderAdresse.Address, empfangeneNachrichtTeile[0], empfangeneNachrichtTeile[1], empfangeneNachrichtTeile[2], schwierigkeit, false, false, false);
                                 verfügbareLobbys.Add(senderAdresse.Address, netzwerkBeitrittInfo);
                                 //NOTIFY CHANGED?
                             }

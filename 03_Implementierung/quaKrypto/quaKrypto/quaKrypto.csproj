@@ -50,6 +50,11 @@
     <None Remove="Icons\Spiel\Eve\Eve_512px_grey.png" />
     <None Remove="Icons\Spiel\Eve\Eve_64px.png" />
     <None Remove="Icons\Spiel\Eve\Eve_64px_grey.png" />
+    <None Remove="Icons\Spiel\Eve\Eve_dg_128px.png" />
+    <None Remove="Icons\Spiel\Eve\Eve_dg_256px.png" />
+    <None Remove="Icons\Spiel\Eve\Eve_dg_32px.png" />
+    <None Remove="Icons\Spiel\Eve\Eve_dg_512px.png" />
+    <None Remove="Icons\Spiel\Eve\Eve_dg_64px.png" />
     <None Remove="Icons\Spiel\Muelleimer\icons8-trash-144.png" />
     <None Remove="Icons\Spiel\Muelleimer\icons8-trash-144.svg" />
     <None Remove="Icons\Spiel\Muelleimer\icons8-trash-24.png" />
@@ -129,6 +134,11 @@
     <Resource Include="Icons\Spiel\Eve\Eve_512px_grey.png" />
     <Resource Include="Icons\Spiel\Eve\Eve_64px.png" />
     <Resource Include="Icons\Spiel\Eve\Eve_64px_grey.png" />
+    <Resource Include="Icons\Spiel\Eve\Eve_dg_128px.png" />
+    <Resource Include="Icons\Spiel\Eve\Eve_dg_256px.png" />
+    <Resource Include="Icons\Spiel\Eve\Eve_dg_32px.png" />
+    <Resource Include="Icons\Spiel\Eve\Eve_dg_512px.png" />
+    <Resource Include="Icons\Spiel\Eve\Eve_dg_64px.png" />
     <Resource Include="Icons\Spiel\Muelleimer\icons8-trash-144.png" />
     <Resource Include="Icons\Spiel\Muelleimer\icons8-trash-144.svg" />
     <Resource Include="Icons\Spiel\Muelleimer\icons8-trash-24.png" />
