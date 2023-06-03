@@ -84,7 +84,7 @@
                             <MouseBinding Gesture="LeftDoubleClick" Command="{Binding SeiteBearbeiten}"/>
                         </TextBox.InputBindings>
                     </TextBox>
-                    <services:EigenerTextBlock InlineList="{Binding SelektierteWikiSeite.InlineList}"  Margin="3,1,0,0" Visibility="{Binding LabelSichtbar}" FontSize="15" >
+                    <services:EigenerTextBlock InlineList="{Binding SelektierteWikiSeite.InlineList, UpdateSourceTrigger=PropertyChanged}" Margin="3,1,0,0" Visibility="{Binding LabelSichtbar}" FontSize="15" >
                         <TextBlock.InputBindings>
                             <MouseBinding Gesture="LeftDoubleClick" Command="{Binding SeiteBearbeiten}"/>
                         </TextBlock.InputBindings>
