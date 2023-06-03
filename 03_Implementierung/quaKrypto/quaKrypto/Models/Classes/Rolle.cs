@@ -17,9 +17,10 @@ using quaKrypto.Models.Interfaces;
 
 namespace quaKrypto.Models.Classes
 {
+    [Serializable]
     public class Rolle
     {
-        private Enums.RolleEnum rolle;
+        private RolleEnum rolle;
         private String alias;
         private String passwort;
         private List<Information> informationsablage;

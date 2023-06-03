@@ -3,11 +3,13 @@ using quaKrypto.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Security;
 using System.Text;
 using System.Threading;
+using System.Xml.Serialization;
 
 namespace quaKrypto.Models.Classes
 {
@@ -36,8 +38,8 @@ namespace quaKrypto.Models.Classes
 
         private const int TCP_RECEIVE_BUFFER_SIZE = 8192;
 
-        private static Dictionary<Rolle, NetworkStream> rolleNetworkStreams = new();
-        private static List<NetworkStream> networkStreams = new();
+        private static readonly Dictionary<Rolle, NetworkStream> rolleNetworkStreams = new();
+        private static readonly List<NetworkStream> networkStreams = new();
 
         private static Rolle? aliceRolle, bobRolle, eveRolle;
 
@@ -60,14 +62,12 @@ namespace quaKrypto.Models.Classes
             while (await periodicTimer.WaitForNextTickAsync())
             {
                 string netzwerkBeitrittInfoAsString = netzwerkBeitrittInfo.Lobbyname.Replace("\t", "") + '\t'
-                    + netzwerkBeitrittInfo.Protokoll.Replace("\t", "") + '\t'
-                    + netzwerkBeitrittInfo.Variante.Replace("\t", "") + '\t'
-                    + netzwerkBeitrittInfo.Schwierigkeitsgrad.ToString().Replace("\t", "") + '\t';
-                //TODO hier noch die Rollen hinzufügen
-                /*
-                + netzwerkBeitrittInfo.Protokoll.Replace("\t", "") + '\t'
-                + netzwerkBeitrittInfo.Protokoll.Replace("\t", "") + '\t'
-                + netzwerkBeitrittInfo.Protokoll.Replace("\t", "");*/
+                    + netzwerkBeitrittInfo.Protokoll + '\t'
+                    + netzwerkBeitrittInfo.Variante + '\t'
+                    + netzwerkBeitrittInfo.Schwierigkeitsgrad.ToString() + '\t'
+                    + netzwerkBeitrittInfo.AliceState.ToString() + '\t'
+                    + netzwerkBeitrittInfo.BobState.ToString() + '\t'
+                    + netzwerkBeitrittInfo.EveState.ToString();
 
                 byte[] nachrichtAlsByteArray = Encoding.UTF8.GetBytes(netzwerkBeitrittInfoAsString);
                 byte[] nachrichtZumSenden = new byte[nachrichtAlsByteArray.Length + 1];
@@ -103,7 +103,7 @@ namespace quaKrypto.Models.Classes
             Array.Copy(nachrichtAlsByteArray, 0, nachrichtZumSenden, 1, nachrichtAlsByteArray.Length);
             if (empfänger == null)
             {
-                foreach(NetworkStream networkStream in networkStreams)
+                foreach (NetworkStream networkStream in networkStreams)
                 {
                     networkStream.Write(nachrichtZumSenden, 0, nachrichtZumSenden.Length);
                 }
@@ -155,35 +155,61 @@ namespace quaKrypto.Models.Classes
         //Schnittstelle fürs Übungsszenario (Wenn du selber eine Rolle wählst)
         public static void SendeRollenInformation()
         {
-            //Hier ist man Server und man muss die neue Information an alle seine aktiven Verbindungen schicken
+            string serializedRollen = new("");
+            XmlSerializer xmlSerializer = new(typeof(Rolle));
+            using (StringWriter stringWriter = new())
+            {
+                xmlSerializer.Serialize(stringWriter, aliceRolle);
+                serializedRollen += stringWriter.ToString() + '\t';
+            }
+            using (StringWriter stringWriter = new())
+            {
+                xmlSerializer.Serialize(stringWriter, bobRolle);
+                serializedRollen += stringWriter.ToString() + '\t';
+            }
+            using (StringWriter stringWriter = new())
+            {
+                xmlSerializer.Serialize(stringWriter, eveRolle);
+                serializedRollen += stringWriter.ToString();
+            }
+            SendeNachrichtTCP(ROLLENINFORMATION, serializedRollen);
         }
 
         //Schnittstelle für LobbyScreenView
         public static void StarteUebungsszenario()
         {
-            //Hier ist man Server und man muss die Information an alle seine aktiven Verbindungen schicken
-            //Hier zyklisches Senden Beenden
+            SendeNachrichtTCP(UEBUNGSSZENARIO_STARTEN, "");
+            BeendeZyklischesSendenVonLobbyinformation();
         }
 
         //Schnittstelle fürs Übungsszenario
         public static void UebergebeKontrolle(Rolle nächsteRolle)
         {
-            //Hier ist man Server und man muss die Information an eine gezielte Verbindung schicken
+            SendeNachrichtTCP(KONTROLLE_UEBERGEBEN, "", nächsteRolle);
         }
 
         //Schnittstelle fürs Übungsszenario
         public static void SendeAufzeichnungsUpdate(Rolle empfänger, List<Handlungsschritt> neueHandlungsschritte)
         {
-            //Hier ist man Server und man muss die Informationen an eine gezielte Verbindung schicken
+            string serializedHandlungsschritte = new("");
+            XmlSerializer xmlSerializer = new(typeof(Handlungsschritt));
+            for (int i = 0; i < neueHandlungsschritte.Count; i++)
+            {
+                if (i != 0) serializedHandlungsschritte += '\t';
+                using StringWriter stringWriter = new();
+                xmlSerializer.Serialize(stringWriter, neueHandlungsschritte[i]);
+                serializedHandlungsschritte += stringWriter.ToString();
+            }
+            SendeNachrichtTCP(AUFZEICHNUNG_UPDATE, serializedHandlungsschritte, empfänger);
         }
 
         //Schnittstelle fürs Übungsszenario
         public static void BeendeUebungsszenario()
         {
-            //Hier kann man beides sein und je nachdem muss man:
-            //Als Server: - gezielt an die andere Verbindung die Info schicken
-            //Als Client: - nix mehr machen
-            //Als beide: - Die Aufzeichnung anzeigen?
+            foreach (Rolle rolle in rolleNetworkStreams.Keys)
+            {
+                SendeNachrichtTCP(UEBUNGSSZENARIO_ENDE, "", rolle);
+            }
         }
 
         private static void StarteTCPListeningThread(NetworkStream networkStream)
@@ -191,7 +217,6 @@ namespace quaKrypto.Models.Classes
             new Thread(() =>
             {
                 byte[] kompletteNachrichtAlsBytes = new byte[TCP_RECEIVE_BUFFER_SIZE];
-                //Network Streams in irgendeine Listenform bringen um sie schön wieder schließen zu können?
                 while (true)
                 {
                     try
@@ -238,10 +263,18 @@ namespace quaKrypto.Models.Classes
                                 }
                                 break;
                             case ZUG_BEENDEN:
-                                //Hier ist man Server und man hat von einem Client in seiner Lobby die Information erhalten, dass dieser fertig ist
-                                //Handlungsschritte zum Übungsszenario weitergeben
-                                //TODO implementieren
-                                uebungsszenario?.ZugWurdeBeendet(new List<Handlungsschritt>());
+                                List<Handlungsschritt> listeEmpfangenerHandlungsschritte = new();
+                                XmlSerializer xmlSerializer = new(typeof(Handlungsschritt));
+                                foreach (string handlungsschritt in empfangeneNachrichtTeile)
+                                {
+                                    using StringReader stringReader = new StringReader(handlungsschritt);
+                                    object? deserialisiertesObjekt = xmlSerializer.Deserialize(stringReader);
+                                    if (deserialisiertesObjekt != null)
+                                    {
+                                        listeEmpfangenerHandlungsschritte.Add((Handlungsschritt)deserialisiertesObjekt);
+                                    }
+                                }
+                                uebungsszenario?.ZugWurdeBeendet(listeEmpfangenerHandlungsschritte);
                                 break;
                             case UEBUNGSSZENARIO_ENDE:
                                 uebungsszenario?.UebungsszenarioWurdeBeendetClient();
