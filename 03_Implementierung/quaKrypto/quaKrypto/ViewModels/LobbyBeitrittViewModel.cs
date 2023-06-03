@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.DirectoryServices.ActiveDirectory;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,7 +53,7 @@ namespace quaKrypto.ViewModels
 
             //LobbyBeitreten = new DelegateCommand((o) => { navigator.aktuellesViewModel = new LobbyScreenViewModel(navigator, null); }, (o) => _selectedIndex != -1); //canExcute funktioniert noch nicht
             //BeispielDaten
-            _verfuegbarLobbys.Add(new UebungsszenarioNetzwerkBeitrittInfo { Lobbyname = "GreinerTraumwelt",Protokoll="BB84" ,Schwierigkeitsgrad = SchwierigkeitsgradEnum.leicht.ToString(), Variante = va.VariantenName, AliceIcon = aliceIcon, BobIcon = bobIcon, EveIcon = eveIcon});
+            _verfuegbarLobbys.Add(new UebungsszenarioNetzwerkBeitrittInfo(IPAddress.Any, "GreinersTraumwelt", "BB84",  va.VariantenName, SchwierigkeitsgradEnum.leicht) { AliceIcon = aliceIcon, BobIcon = bobIcon, EveIcon = eveIcon});
             timer.Start();
         }
 
