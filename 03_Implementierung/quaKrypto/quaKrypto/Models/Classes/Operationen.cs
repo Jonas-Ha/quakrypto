@@ -30,13 +30,18 @@ namespace quaKrypto.Models.Classes
             }
 
             RolleEnum empfaenger = (RolleEnum)operand2;
+            
+            if(operand1.InformationsTyp == InformationsEnum.photonen)
+            {
+                return new Information(informationsID, ergebnisName, InformationsEnum.unscharfePhotonen, operand1.InformationsInhalt, empfaenger);
+            }
 
             return new Information(informationsID, ergebnisName,operand1.InformationsTyp, operand1.InformationsInhalt, empfaenger);
         }
 
         public Information NachrichtEmpfangen(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
-            if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
+            if (informationsID.Equals(null) || operand1.Equals(null) || ergebnisName.Equals(null))
             {
                 throw new ArgumentNullException();
             }
@@ -47,7 +52,7 @@ namespace quaKrypto.Models.Classes
         //Überlegung: Streichen der Funktion NachrichtAbhoeren, da identisch zu NachrichtEmpfangen (Leopold Bialek, Alexander Dennner)
         public  Information NachrichtAbhoeren(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
-            if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
+            if (informationsID.Equals(null) || operand1.Equals(null) || ergebnisName.Equals(null))
             {
                 throw new ArgumentNullException();
             }
@@ -58,7 +63,7 @@ namespace quaKrypto.Models.Classes
         // Rückgabe einer zufälligen Bitfolge aus einer Zufallszahl generiert
         public Information BitfolgeGenerierenZahl(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
-            if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
+            if (informationsID.Equals(null) || operand1.Equals(null) || ergebnisName.Equals(null))
             {
                 throw new ArgumentNullException();
             }
@@ -70,6 +75,11 @@ namespace quaKrypto.Models.Classes
 
             var rand = new Random();
             int zufallszahl = (int)operand1.InformationsInhalt;
+
+            if(zufallszahl<=0)
+            {
+                throw new Exception("operand1 darf nicht negativ sein");
+            }
 
             // Anlegen eines Bit-Arrays der Länge von Zufallszahl
             BitArray bitArray = new BitArray(zufallszahl, false);
@@ -118,7 +128,7 @@ namespace quaKrypto.Models.Classes
 
         public Information PolarisationsschemataGenerierenZahl(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
-            if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
+            if (informationsID.Equals(null) || operand1.Equals(null) || ergebnisName.Equals(null))
             {
                 throw new ArgumentNullException();
             }
@@ -130,6 +140,11 @@ namespace quaKrypto.Models.Classes
 
             var rand = new Random();
             int zufallszahl = (int)operand1.InformationsInhalt;
+
+            if (zufallszahl <= 0)
+            {
+                throw new Exception("operand1 darf nicht negativ sein");
+            }
 
             // Anlegen eines Bit-Arrays der Länge von Zufallszahl
             BitArray bitArray = new BitArray(zufallszahl, false);
@@ -222,14 +237,14 @@ namespace quaKrypto.Models.Classes
                 throw new ArgumentNullException();
             }
 
-            if (!(operand1.InformationsTyp.Equals(InformationsEnum.zahl)) || !((operand1.InformationsInhalt.GetType().Equals(typeof(int)) || (((int)operand1.InformationsInhalt <= 0)))))
+            if (!operand1.InformationsTyp.Equals(InformationsEnum.zahl) || !operand1.InformationsInhalt.GetType().Equals(typeof(int)) || (int)operand1.InformationsInhalt <= 0)
             {
                 throw new Exception("operand1 nicht vom Typ Zahl oder ist kein int oder ist <= null");
             }
 
-            if (!(operand2.InformationsTyp.Equals(InformationsEnum.zahl)) || !((operand2.InformationsInhalt.GetType().Equals(typeof(int)))) || ((int)operand2.InformationsInhalt > (int)operand1.InformationsInhalt))
+            if (!operand2.InformationsTyp.Equals(InformationsEnum.zahl) || !operand2.InformationsInhalt.GetType().Equals(typeof(int)) || ((int)operand2.InformationsInhalt > (int)operand1.InformationsInhalt))
             {
-                throw new Exception("operand1 nicht vom Typ Zahl oder ist kein int");
+                throw new Exception("operand2 nicht vom Typ Zahl oder ist kein int oder anzahlEinser > LängeBitmaske");
             }
 
             var rand = new Random();
@@ -464,7 +479,7 @@ namespace quaKrypto.Models.Classes
 
             if (!(operand2.InformationsTyp.Equals(InformationsEnum.bitfolge)) || !((operand2.InformationsInhalt.GetType().Equals(typeof(BitArray)))))
             {
-                throw new Exception("operand1 nicht vom Typ bitfolge oder ist kein BitArray");
+                throw new Exception("operand2 nicht vom Typ bitfolge oder ist kein BitArray");
             }
 
             BitArray op1 = (BitArray)operand1.InformationsInhalt;
@@ -487,12 +502,12 @@ namespace quaKrypto.Models.Classes
                 }
             }
 
-            return new Information(2, "Mende", InformationsEnum.asciiText, "Chris", RolleEnum.Alice);
+            return new Information(informationsID, ergebnisName, InformationsEnum.bitfolge, erg, null);
         }
 
         public Information BitsFreiBearbeiten(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
-            if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
+            if (informationsID.Equals(null) || operand1.Equals(null) || ergebnisName.Equals(null))
             {
                 throw new ArgumentNullException();
             }
