@@ -1,50 +1,37 @@
-
-@startuml Handlungsschritt
-title Sequenzdiagramm Handlungsschritt ausführen
+@startuml SequenzdiagrammZugWechselNetzwerk
+title Zug Wechseln im Netzwerkmodus Clientseite
 
 actor Benutzer
-participant "SpielView" as G
-participant "SpielViewModel" as A
-Participant "Übungszenario" as B
-Participant "Information" as H
-participant "Aufzeichnung" as C
+participant "SpielView:Client" as SV
+participant "SpielViewModel:Client" as SVM
+participant "UebungsszenarioNetzwerk:Client" as U
+participant "Rolle:Client" as R
+participant "NetzwerkClient:Client" as N
+boundary Netzwerk
 
-participant "Handlungsschritt" as D
-participant "Operationen" as F
+activate SV
+activate SVM
+activate U
+activate N
+activate R
 
+loop x times
+    Benutzer -> SV: Handlungsschritte Ausfuehren \n(vgl. SeqDia Handlungsschritt)
+end
 
-Benutzer -> G: '=' gedrückt
-activate G
+Benutzer -> SV: Klick auf "Zug beenden"
+SV -> SVM:ZugBeendenCommand()
+SVM -> SVM:UeberpruefeKanaele()
+SVM -> SV:Sperrt View
+SVM -> U:ErzeugeHandlungsschritt(ZugBeenden)\n(vgl. SeqDia Handlungsschritt)
+SVM -> U:NaechsterZug()
+U -> R:BekommeZug()
+R -> U: List<Handlungsschritt>
+U -> N:BeendeZug(List<Handlungsschritt>)
+N -> Netzwerk : List<Handlungsschritt>
+N ->U
+U -> SVM
 
-G->A:HandlungsschrittAusführen(operation1, operation2,operatonsTyp)
-activate A
-
-A-> B: HandlungsschrittAusführenLassen(Operand1, Operand2, OperationsTyp)
-activate B
-
-B -> D: ErzeugeHandlungsschritt(Rolle,Operand1, Operand2, OperationsTyp)
-activate D
-
-
-D -> F: Führe Operation durch
-activate F
-
-F->D: set:Ergebnis(Information)
-deactivate F
-
-D -> B: get:Ergebnis(Information)
-deactivate D
-
-B -> C: HaengeHandlungsschrittAn(Handlungsschritt handlungsschritt)
-activate C
-
-C->B:
-deactivate C
-
-B->A: Information Ergebnis
-deactivate B
-
-A -> G: Information Ergebnis
-deactivate A
 
 @enduml
+
