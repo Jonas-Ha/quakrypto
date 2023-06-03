@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -8,6 +8,11 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="Xceed.Wpf.Toolkit.NET5">
+      <HintPath>..\..\..\quakrypto\03_Implementierung\quaKrypto\quaKrypto\bin\Debug\net6.0-windows.Wpf.Toolkit.NET5.dll</HintPath>
+    </Reference>
+  </ItemGroup>
   <ItemGroup>
     <None Remove="Icons\Spiel\Alice\Alice_128px.png" />
     <None Remove="Icons\Spiel\Alice\Alice_128px_grey.png" />
@@ -81,6 +86,10 @@
 
   <ItemGroup>
     <Folder Include="ViewModels\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup>
