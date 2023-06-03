@@ -910,6 +910,358 @@ namespace TestLibrary
             }
         }
 
+        [Test]
+        public void TextVerEntschluesseln_Erfolg()
+        {
+            //Arrange
+            string text = "Hällo";
+            int length = 50;
+            BitArray schluessel = new BitArray(length, false);
+            for(int i = 0; i < length; i++) 
+            {
+                schluessel[i] = (i % 2)==1? true:false;
+            }
+            Information information1 = new Information(1, "Text", InformationsEnum.asciiText, text, null);
+            Information information2 = new Information(2, "schluessel", InformationsEnum.bitfolge, schluessel, null);
+
+            //Act
+            Information empfangeneInformation = operationen.TextVerschluesseln(2, information1, information2, "VerschlüsselterText");
+            Information entschluesseltInfo = operationen.TextEntschluesseln(2, empfangeneInformation, information2, "EntschlüsselterText");
+
+            //Assert
+            Assert.AreEqual(entschluesseltInfo.InformationsTyp, information1.InformationsTyp);
+            Assert.AreEqual(entschluesseltInfo.InformationsInhalt, information1.InformationsInhalt);
+        }
+
+        [Test]
+        public void TextVerschluesseln_Failed_KeinText()
+        {
+            //Arrange
+            int length = 50;
+            BitArray schluessel = new BitArray(length, false);
+            for (int i = 0; i < length; i++)
+            {
+                schluessel[i] = (i % 2) == 1 ? true : false;
+            }
+            Information information1 = new Information(1, "Text", InformationsEnum.asciiText, 4, null);
+            Information information2 = new Information(2, "schluessel", InformationsEnum.bitfolge, schluessel, null);
+
+            //Act
+            try
+            {
+                Information empfangeneInformation = operationen.TextVerschluesseln(2, information1, information2, "VerschlüsselterText");
+            }
+            //Assert
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Equals("operand1 nicht vom Typ Text oder ist kein String"));
+            }
+        }
+
+        [Test]
+        public void TextVerschluesseln_Failed_KeinKey()
+        {
+            //Arrange
+            string text = "Hällo";
+            Information information1 = new Information(1, "Text", InformationsEnum.asciiText, text, null);
+            Information information2 = new Information(2, "schluessel", InformationsEnum.bitfolge, 4, null);
+
+            //Act
+            try
+            {
+                Information empfangeneInformation = operationen.TextVerschluesseln(2, information1, information2, "VerschlüsselterText");
+            }
+            //Assert
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Equals("operand2 nicht vom Typ bitfolge oder ist kein BitArray"));
+            }
+        }
+
+        [Test]
+        public void TextVerschluesseln_Failed_KurzerKey()
+        {
+            //Arrange
+            string text = "Hällo";
+            int length = 10;
+            BitArray schluessel = new BitArray(length, false);
+            for (int i = 0; i < length; i++)
+            {
+                schluessel[i] = (i % 2) == 1 ? true : false;
+            }
+            Information information1 = new Information(1, "Text", InformationsEnum.asciiText, text, null);
+            Information information2 = new Information(2, "schluessel", InformationsEnum.bitfolge, schluessel, null);
+
+            //Act
+            try
+            {
+                Information empfangeneInformation = operationen.TextVerschluesseln(2, information1, information2, "VerschlüsselterText");
+            }
+            //Assert
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Equals("Der Schlüssel ist zu kurz zum Verschlüsseln"));
+            }
+        }
+
+        [Test]
+        public void TextEntschluesseln_Failed_KeinText()
+        {
+            //Arrange
+            int length = 50;
+            BitArray schluessel = new BitArray(length, false);
+            for (int i = 0; i < length; i++)
+            {
+                schluessel[i] = (i % 2) == 1 ? true : false;
+            }
+            Information information1 = new Information(1, "Text", InformationsEnum.verschluesselterText, 4, null);
+            Information information2 = new Information(2, "schluessel", InformationsEnum.bitfolge, schluessel, null);
+
+            //Act
+            try
+            {
+                Information empfangeneInformation = operationen.TextEntschluesseln(2, information1, information2, "VerschlüsselterText");
+            }
+            //Assert
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Equals("operand1 nicht vom Typ VerschlüsselterText oder ist kein String"));
+            }
+        }
+
+        [Test]
+        public void TextEntschluesseln_Failed_KeinKey()
+        {
+            //Arrange
+            string text = "Hällo";
+            int length = 50;
+            BitArray schluessel = new BitArray(length, false);
+            for (int i = 0; i < length; i++)
+            {
+                schluessel[i] = (i % 2) == 1 ? true : false;
+            }
+            Information information1 = new Information(1, "Text", InformationsEnum.asciiText, text, null);
+            Information information2 = new Information(2, "schluessel", InformationsEnum.bitfolge, schluessel, null);
+            Information empfangeneInformation = operationen.TextVerschluesseln(2, information1, information2, "VerschlüsselterText");
+            Information KeinKey = new Information(2, "schluessel", InformationsEnum.bitfolge, 4, null);
+
+            //Act
+            try
+            {
+                Information entschluesselterInfo = operationen.TextEntschluesseln(2, empfangeneInformation, KeinKey, "VerschlüsselterText");
+            }
+            //Assert
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Equals("operand2 nicht vom Typ bitfolge oder ist kein BitArray"));
+            }
+        }
+
+        [Test]
+        public void TextEntschluesseln_Failed_KurzerKey()
+        {
+            //Arrange
+            string text = "Hällo";
+            int length = 50;
+            BitArray schluessel = new BitArray(length, false);
+            for (int i = 0; i < length; i++)
+            {
+                schluessel[i] = (i % 2) == 1 ? true : false;
+            }
+            Information information1 = new Information(1, "Text", InformationsEnum.asciiText, text, null);
+            Information information2 = new Information(2, "schluessel", InformationsEnum.bitfolge, schluessel, null);
+            Information empfangeneInformation = operationen.TextVerschluesseln(2, information1, information2, "VerschlüsselterText");
+            int length2 = 10;
+            BitArray schluessel2 = new BitArray(length, false);
+            for (int i = 0; i < length2; i++)
+            {
+                schluessel2[i] = (i % 2) == 1 ? true : false;
+            }
+            Information KurzerKey = new Information(2, "schluessel", InformationsEnum.bitfolge, schluessel2, null);
+
+            //Act
+            try
+            {
+                Information entschluesselterInfo = operationen.TextEntschluesseln(2, empfangeneInformation, KurzerKey, "VerschlüsselterText");
+            }
+            //Assert
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Equals("Der Schlüssel ist zu kurz zum Entschlüsseln"));
+            }
+        }
+
+        [Test]
+        public void BitsStreichen_Erfolg()
+        {
+            //Arrange
+            BitArray zielArray = new BitArray(10, false);
+            for(int i = 0; i < 10; i++) zielArray[i] = (i % 2) == 1; //0101010101
+            BitArray zustreichen = new BitArray(10, false);
+            zustreichen[1] = true;
+            zustreichen[3] = true;
+            Information information1 = new Information(1, "zielArray", InformationsEnum.bitfolge, zielArray, null);
+            Information information2 = new Information(2, "zustreichen", InformationsEnum.bitfolge, zustreichen, null);
+
+            //Act
+            Information empfangeneInformation = operationen.BitsStreichen(2, information1, information2, "GekürzteFolge");
+
+
+            //Assert
+            BitArray erwartetArr = new BitArray(8, false); //00010101
+            erwartetArr[3] = true;
+            erwartetArr[5] = true;
+            erwartetArr[7] = true;
+            Information erwarteteInformation = new Information(2, "GekürzteFolge", InformationsEnum.bitfolge, erwartetArr, null);
+            Assert.AreEqual(erwarteteInformation.InformationsID, empfangeneInformation.InformationsID);
+            Assert.AreEqual(erwarteteInformation.InformationsName, empfangeneInformation.InformationsName);
+            Assert.AreEqual(erwarteteInformation.InformationsTyp, empfangeneInformation.InformationsTyp);
+            Assert.AreEqual(erwarteteInformation.InformationsInhalt, empfangeneInformation.InformationsInhalt);
+            Assert.AreEqual(erwarteteInformation.InformationsEmpfaenger, empfangeneInformation.InformationsEmpfaenger);
+        }
+
+        [Test]
+        public void BitsStreichen_Failed_keinZielarr()
+        {
+            //Arrange
+            BitArray zustreichen = new BitArray(10, false);
+            zustreichen[1] = true;
+            zustreichen[3] = true;
+            Information information1 = new Information(1, "zielArray", InformationsEnum.bitfolge, 4, null);
+            Information information2 = new Information(2, "zustreichen", InformationsEnum.bitfolge, zustreichen, null);
+
+            //Act
+            try
+            {
+                Information empfangeneInformation = operationen.BitsStreichen(2, information1, information2, "GekürzteFolge");
+            }
+            //Assert
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Equals("operand1 nicht vom Typ bitfolge oder ist kein BitArray"));
+            }
+        }
+
+        [Test]
+        public void BitsStreichen_Failed_falscherTyp()
+        {
+            //Arrange
+            BitArray zielArray = new BitArray(10, false);
+            for (int i = 0; i < 10; i++) zielArray[i] = (i % 2) == 1; //0101010101
+            BitArray zustreichen = new BitArray(10, false);
+            zustreichen[1] = true;
+            zustreichen[3] = true;
+            Information information1 = new Information(1, "zielArray", InformationsEnum.photonen, zielArray, null);
+            Information information2 = new Information(2, "zustreichen", InformationsEnum.bitfolge, zustreichen, null);
+
+            //Act
+            try
+            {
+                Information empfangeneInformation = operationen.BitsStreichen(2, information1, information2, "GekürzteFolge");
+            }
+            //Assert
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Equals("operand1 nicht vom Typ bitfolge oder ist kein BitArray"));
+            }
+        }
+
+        [Test]
+        public void BitsStreichen_Failed_ungleicheLaenge()
+        {
+            //Arrange
+            BitArray zielArray = new BitArray(11, false);
+            for (int i = 0; i < 10; i++) zielArray[i] = (i % 2) == 1; //0101010101
+            BitArray zustreichen = new BitArray(10, false);
+            zustreichen[1] = true;
+            zustreichen[3] = true;
+            Information information1 = new Information(1, "zielArray", InformationsEnum.bitfolge, zielArray, null);
+            Information information2 = new Information(2, "zustreichen", InformationsEnum.bitfolge, zustreichen, null);
+
+            //Act
+            try
+            {
+                Information empfangeneInformation = operationen.BitsStreichen(2, information1, information2, "GekürzteFolge");
+            }
+            //Assert
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Equals("operand1 und operand2 sind nicht gleich lang"));
+            }
+        }
+
+        [Test]
+        public void BitsFreiBearbeiten_Erfolg()
+        {
+            //Arrange
+            BitArray zielArray = new BitArray(10, false);
+            for (int i = 0; i < 10; i++) zielArray[i] = (i % 2) == 1; //0101010101
+            
+            Information information1 = new Information(1, "zielArray", InformationsEnum.bitfolge, zielArray, null);
+            
+            //Act
+            Information empfangeneInformation = operationen.BitsFreiBearbeiten(2, information1, null, "BearbeiteteBits");
+
+            //Assert
+            BitArray erwartetArr = new BitArray(10, false);
+            for (int i = 0; i < 10; i++) erwartetArr[i] = (i % 2) == 1;
+            Information erwarteteInformation = new Information(2, "BearbeiteteBits", InformationsEnum.bitfolge, erwartetArr, null);
+            Assert.AreEqual(erwarteteInformation.InformationsID, empfangeneInformation.InformationsID);
+            Assert.AreEqual(erwarteteInformation.InformationsName, empfangeneInformation.InformationsName);
+            Assert.AreEqual(erwarteteInformation.InformationsTyp, empfangeneInformation.InformationsTyp);
+            Assert.AreEqual(erwarteteInformation.InformationsInhalt, empfangeneInformation.InformationsInhalt);
+            Assert.AreEqual(erwarteteInformation.InformationsEmpfaenger, empfangeneInformation.InformationsEmpfaenger);
+        }
+
+        [Test]
+        public void BitsFreiBearbeiten_Failed_falscherTyp()
+        {
+            //Arrange
+            BitArray zielArray = new BitArray(10, false);
+            for (int i = 0; i < 10; i++) zielArray[i] = (i % 2) == 1; //0101010101
+
+            Information information1 = new Information(1, "zielArray", InformationsEnum.asciiText, zielArray, null);
+
+            //Act
+            try
+            {
+                Information empfangeneInformation = operationen.BitsFreiBearbeiten(2, information1, null, "BearbeiteteBits");
+            }
+            //Assert
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Equals("operand1 nicht vom Typ bitfolge oder ist kein BitArray"));
+            }
+        }
+
+        [Test]
+        public void BitsFreiBearbeiten_Failed_keinArr()
+        {
+            //Arrange
+            Information information1 = new Information(1, "zielArray", InformationsEnum.bitfolge, 4, null);
+
+            //Act
+            try
+            {
+                Information empfangeneInformation = operationen.BitsFreiBearbeiten(2, information1, null, "BearbeiteteBits");
+            }
+            //Assert
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Equals("operand1 nicht vom Typ bitfolge oder ist kein BitArray"));
+            }
+        }
+
+        [Test]
+        public void ZugBeenden_Erfolg()
+        {
+            //Arrange
+            //Act
+            Information empfangeneInformation = operationen.ZugBeenden(null, null, null, null);
+
+            //Assert
+            Assert.AreEqual(empfangeneInformation, null);
+        }
 
         // Jonas Hammer, 28.05.2023
         [Test]

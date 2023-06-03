@@ -411,7 +411,7 @@ namespace quaKrypto.Models.Classes
             BitArray schluesselgekuerzt = new BitArray(bits.Length);
             if (bits.Length > schluessel.Length)
             {
-                throw new Exception("Der Schlüssel ist zu kurz zum Entschlüsseln");
+                throw new Exception("Der Schlüssel ist zu kurz zum Verschlüsseln");
             }
 
             for (int i = 0; i < bits.Length; i++)
@@ -433,9 +433,9 @@ namespace quaKrypto.Models.Classes
                 throw new ArgumentNullException();
             }
 
-            if (!(operand1.InformationsTyp.Equals(InformationsEnum.asciiText)) || !((operand1.InformationsInhalt.GetType().Equals(typeof(string)))))
+            if (!(operand1.InformationsTyp.Equals(InformationsEnum.verschluesselterText)) || !((operand1.InformationsInhalt.GetType().Equals(typeof(string)))))
             {
-                throw new Exception("operand1 nicht vom Typ Text oder ist kein String");
+                throw new Exception("operand1 nicht vom Typ VerschlüsselterText oder ist kein String");
             }
 
             if (!(operand2.InformationsTyp.Equals(InformationsEnum.bitfolge)) || !((operand2.InformationsInhalt.GetType().Equals(typeof(BitArray)))))
@@ -462,7 +462,7 @@ namespace quaKrypto.Models.Classes
             Decoder d = Encoding.UTF8.GetDecoder();
             string dectext = Encoding.UTF8.GetString(decbyte);
 
-            return new Information(informationsID, ergebnisName, InformationsEnum.verschluesselterText, dectext, null);
+            return new Information(informationsID, ergebnisName, InformationsEnum.asciiText, dectext, null);
         }
 
         public Information BitsStreichen(uint informationsID, Information operand1, Information operand2, String ergebnisName)
@@ -485,6 +485,11 @@ namespace quaKrypto.Models.Classes
             BitArray op1 = (BitArray)operand1.InformationsInhalt;
             BitArray op2 = (BitArray)operand2.InformationsInhalt;
 
+            if (op1.Length != op2.Length)
+            {
+                throw new Exception("operand1 und operand2 sind nicht gleich lang");
+            }
+
             int zahl1er = 0;
             for(int i = 0; i<op2.Length; i++)
             {
@@ -505,7 +510,7 @@ namespace quaKrypto.Models.Classes
             return new Information(informationsID, ergebnisName, InformationsEnum.bitfolge, erg, null);
         }
 
-        public Information BitsFreiBearbeiten(uint informationsID, Information operand1, Information operand2, String ergebnisName)
+        public Information BitsFreiBearbeiten(uint informationsID, Information operand1, Information? operand2, String ergebnisName)
         {
             if (informationsID.Equals(null) || operand1.Equals(null) || ergebnisName.Equals(null))
             {
@@ -514,13 +519,13 @@ namespace quaKrypto.Models.Classes
 
             if (!(operand1.InformationsTyp.Equals(InformationsEnum.bitfolge)) || !((operand1.InformationsInhalt.GetType().Equals(typeof(BitArray)))))
             {
-                throw new Exception("operand1 nicht vom Typ Text oder ist kein String");
+                throw new Exception("operand1 nicht vom Typ bitfolge oder ist kein BitArray");
             }
 
             return new Information(informationsID, ergebnisName, InformationsEnum.bitfolge, operand1.InformationsInhalt, null);
         }
 
-        public Information? ZugBeenden(uint informationsID, Information operand1, Information operand2, String ergebnisName)
+        public Information? ZugBeenden(uint? informationsID, Information operand1, Information operand2, String ergebnisName)
         {
             return null;
         }
