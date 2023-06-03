@@ -1,0 +1,63 @@
+@startuml SequenzdiagrammZugWechselHost
+title Zug Wechseln im Netzwerkmodus
+
+boundary Netzwerk
+
+participant "NetzwerkHost:Host" as NH
+participant "UebungsszenarioNetzwerk:Host" as UH
+participant "Rolle" as R
+participant "Aufzeichnung:Host" as AH
+participant "Uebertragungskanal:Host" as UBH
+participant "IVariante" as IV
+participant "SpielViewModel:Host" as SVMH
+participant "SpielView:Host" as SVH
+
+
+actor Benutzer
+
+activate AH
+activate UBH
+activate NH
+activate UH
+activate SVMH
+activate SVH
+activate IV
+activate R
+
+
+Netzwerk -> NH : List<Handlungsschritt>
+NH -> UH : ZugWurdeBeendet\n(List<Handlungsschritt>)
+opt mehr als 2 Netzwerkteilnehmer
+    UH -> NH : SendeAufzeichnungsupdate(Rolle, List<Handlungsschritt>)
+end
+loop x times
+    UH -> UH : HandlungsschrittAuswerten(Handlungsschritt)
+    UH -> AH : HaengeHandlungsschrittAn(Handlungsschritt)
+    opt
+        UH -> UBH : SpeichereNachrichtAb(Information)
+    end
+end
+UH -> IV : NaechsteRolle()
+IV -> UH : RolleEnum
+opt Wenn naechsteRolle != Host
+    UH -> NH : UebergebeKontrolle(Rolle)
+end
+UH -> SVMH : PropertyChanged(nameof(RolleEnum))
+opt naechsteRolle == Rolle of Host
+SVMH -> SVH : PropertyChanged()
+Benutzer -> SVH : Passwort
+SVMH -> UH : GebeBildschrimFrei(Passwort)
+UH -> R : BeginneZug(Passwort)
+R -> UH : bool
+UH -> SVMH : bool
+SVMH -> SVH : PropertyChanged()
+end
+
+
+
+
+
+
+
+
+@enduml

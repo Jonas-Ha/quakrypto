@@ -1,0 +1,45 @@
+@startuml Memento
+
+skinparam pageMargin 10
+skinparam pageExternalColor gray
+skinparam pageBorderColor black
+
+class Context
+{
+	- state
+	+ Context(initialState)
+	+ changeState(state)
+	+ doThis()
+	+ doThat()
+}
+
+class Client
+{
+}
+
+
+interface State
+{
+	+ doThis()
+	+ doThat()
+}
+
+class ConcreteStates
+{
+	- context
+	+ setContext(context)
+	+ doThis()
+	+ doThat()
+}
+
+note bottom of ConcreteStates: //A state may issue state \n//transition in context. \nstate = new OtherState() \ncontext.changeState(state) 
+note top of Context: this.state = state \nstate.setContext(this)
+note top of Context: state.doThis()
+note left of Client: initialState = new ConcreteState() \ncontext = new Context(initialState) \ncontext.doThis()\n//Current state may have been \n//changed by context or the state \n//object itself. 
+
+State <|-[dashed]- ConcreteStates
+Context <-- ConcreteStates
+Context o-> State
+Client -> Context
+Client -[dashed]-> ConcreteStates
+@enduml

@@ -1,5 +1,5 @@
 
-@startuml WikiSeite Selektieren
+@startuml WikiSeiteSelektieren
 title Sequenzdiagramm Wiki Seite Selektieren
 
 actor Benutzer
