@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -23,7 +24,8 @@ namespace quaKrypto.Models.Classes
         private RolleEnum rolle;
         private String alias;
         private String passwort;
-        private List<Information> informationsablage;
+        private ObservableCollection<Information> informationsablage;
+        public  ReadOnlyObservableCollection<Information> Informationsablage;
         private uint informationszaehler;
         public ObservableCollection<Handlungsschritt> handlungsschritte;
         public event EventHandler handlungsschrittVerfuegbar;
@@ -41,7 +43,8 @@ namespace quaKrypto.Models.Classes
             this.rolle = rolle;
             this.alias = alias;
             this.passwort = passwort;
-            informationsablage = new List<Information>();
+            informationsablage = new ObservableCollection<Information>();
+            Informationsablage = new ReadOnlyObservableCollection<Information>(informationsablage);
             handlungsschritte = new ObservableCollection<Handlungsschritt>();
             handlungsschritte.CollectionChanged += variante.BerechneAktuellePhase;
         }
@@ -55,6 +58,11 @@ namespace quaKrypto.Models.Classes
         {
             get { return rolle; }
         }
+
+        public uint InformationsZaehler
+        {
+            get { return informationszaehler; }
+        }
         
         public bool BeginneZug(string passwort)
         {
@@ -62,19 +70,20 @@ namespace quaKrypto.Models.Classes
             else return false;
         }
         
-        public Handlungsschritt ErzeugeHandlungsschritt(Enums.OperationsEnum operationsTyp, Information operand1, Information operand2, String ergebnisInformationsName, Enums.RolleEnum rolle)
+        public Handlungsschritt ErzeugeHandlungsschritt(Enums.OperationsEnum operationsTyp, Information operand1, object operand2, String ergebnisInformationsName, Enums.RolleEnum rolle)
         {
            return new Handlungsschritt(informationszaehler++, operationsTyp, operand1, operand2, ergebnisInformationsName, rolle);
         }
 
         public void SpeicherInformationAb(Information information)
         {
+            if(information == null) throw new NoNullAllowedException("Abzuspeichernde Information darf nicht null sein");
             informationsablage.Add(information);   
         }
 
-        public void LoescheInformation(Information information)
+        public bool LoescheInformation(Information information)
         {
-            informationsablage.Remove(information);
+            return informationsablage.Remove(information);
         }
 
         public void AktualisiereInformationsZaehler(uint informationszaehler)

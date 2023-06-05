@@ -19,7 +19,7 @@ namespace quaKrypto.Models.Classes
     {
         private OperationsEnum operationsTyp;
         private Information operand1;
-        private Information operand2;
+        private object operand2;
         private String ergebnisName;
         private Information ergebnis;
         private RolleEnum rolle;
@@ -47,7 +47,7 @@ namespace quaKrypto.Models.Classes
                 { OperationsEnum.zugBeenden, op.ZugBeenden },
             };
 
-        public Handlungsschritt(uint informationsID, Enums.OperationsEnum operationsTyp, Information operand1, Information operand2, String ergebnisName, RolleEnum rolle)
+        public Handlungsschritt(uint informationsID, Enums.OperationsEnum operationsTyp, Information operand1, object operand2, String ergebnisName, RolleEnum rolle)
         {
             this.OperationsTyp = operationsTyp;
             this.Operand1 = operand1;
@@ -59,9 +59,10 @@ namespace quaKrypto.Models.Classes
 
             if (HandlungsschrittKommando.TryGetValue(OperationsTyp, out del))
             {
-                var Ergebnis = del.DynamicInvoke(informationsID, OperationsTyp, Operand1, Operand2, ErgebnisName) as Information;
-                if ((Ergebnis != null)) this.Ergebnis = Ergebnis;  
+                var Ergebnis = del.DynamicInvoke(informationsID, Operand1, Operand2, ErgebnisName) as Information;
+                if ((Ergebnis != null)) this.Ergebnis = Ergebnis;
             }
+            else throw new InvalidOperationException("Für diesen Operationstypen wurde keine Operation gefunden");
         }
 
         public OperationsEnum OperationsTyp
@@ -76,7 +77,7 @@ namespace quaKrypto.Models.Classes
             init { operand1 = value; }
         }
 
-        public Information Operand2
+        public object Operand2
         {
             get { return operand2; }
             init { operand2 = value; }
@@ -104,12 +105,6 @@ namespace quaKrypto.Models.Classes
         {
             get { return aktuellePhase; }
             set { aktuellePhase = value; }
-        }
-
-        public void HandlungsschrittAusfuehren()
-        {
-
-            
         }
     }
 }
