@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net;
+using quaKrypto.Models.Interfaces;
 
 namespace quaKrypto.ViewModels
 {
@@ -31,14 +32,45 @@ namespace quaKrypto.ViewModels
                 {
                     UebungsszenarioNetzwerkBeitrittInfo ErstelltesSzenarioInfo = new UebungsszenarioNetzwerkBeitrittInfo(IPAddress.Any, LobbyName, Protokoll[AusgProtokoll], VarianteAuswahl[AusgVariante], AusgSchwierigkeit == 0 ? SchwierigkeitsgradEnum.leicht : AusgSchwierigkeit == 1 ? SchwierigkeitsgradEnum.mittel : SchwierigkeitsgradEnum.schwer, false, false, false);
                     NetzwerkHost.BeginneZyklischesSendenVonLobbyinformation(ErstelltesSzenarioInfo);
+
+                    IVariante ausgewaehlteVariante;
+                    if (AusgVariante == 0)
+                    {
+                        ausgewaehlteVariante = new VarianteNormalerAblauf((uint)AusgPhaseStart);
+                    }
+                    else if (AusgVariante == 1)
+                    {
+                        ausgewaehlteVariante = new VarianteAbhoeren((uint)AusgPhaseStart);
+                    }
+                    else
+                    {
+                        ausgewaehlteVariante = new VarianteManInTheMiddle((uint)AusgPhaseStart);
+                    }
+                    UebungsszenarioNetzwerk uebungsszenarioNetzwerk = new UebungsszenarioNetzwerk(AusgSchwierigkeit == 0 ? SchwierigkeitsgradEnum.leicht : AusgSchwierigkeit == 1 ? SchwierigkeitsgradEnum.mittel : SchwierigkeitsgradEnum.schwer, ausgewaehlteVariante, (uint)AusgPhaseStart, (uint)AusgPhaseEnd);
+                    navigator.aktuellesViewModel = new LobbyScreenViewModel(navigator, uebungsszenarioNetzwerk);
                 }
                 else
                 {
-                    //TO-DO: LOKAL
+                    
+                    IVariante ausgewaehlteVariante;
+                    if (AusgVariante == 0)
+                    {
+                        ausgewaehlteVariante = new VarianteNormalerAblauf((uint)AusgPhaseStart);
+                    }
+                    else if (AusgVariante == 1)
+                    {
+                        ausgewaehlteVariante = new VarianteAbhoeren((uint)AusgPhaseStart);
+                    }
+                    else
+                    {
+                        ausgewaehlteVariante = new VarianteManInTheMiddle((uint)AusgPhaseStart);
+                    }
+                    UebungsszenarioLokal uebungsszenarioLokal = new UebungsszenarioLokal(AusgSchwierigkeit == 0 ? SchwierigkeitsgradEnum.leicht : AusgSchwierigkeit == 1 ? SchwierigkeitsgradEnum.mittel : SchwierigkeitsgradEnum.schwer, ausgewaehlteVariante, (uint)AusgPhaseStart, (uint)AusgPhaseEnd);
+                    navigator.aktuellesViewModel = new LobbyScreenViewModel(navigator, uebungsszenarioLokal);
                 }
-                navigator.aktuellesViewModel = new LobbyScreenViewModel(navigator, null);
 
-            }, null);
+
+            }, (o) => LobbyName != "" && AusgProtokoll != -1 && AusgSchwierigkeit != -1 && AusgVariante != -1) ;
             AusgPhaseStart = 0;
             AusgPhaseEnd = 5;
             SchwierigkeitsgradAuswahl = new ObservableCollection<string>();
@@ -63,10 +95,10 @@ namespace quaKrypto.ViewModels
         private int _ausgPhaseEnde;
         private bool _netzwerkbasiert = false;
         
-        public string LobbyName { get { return _lobbyName; } set { _lobbyName = value; this.EigenschaftWurdeGeändert(); } }
-        public int AusgProtokoll { get {  return _ausgProtokoll; } set { _ausgProtokoll = value; this.EigenschaftWurdeGeändert(); } }
-        public int AusgSchwierigkeit { get { return _ausgSchwierigkeit; } set { _ausgSchwierigkeit = value; this.EigenschaftWurdeGeändert(); } }
-        public int AusgVariante { get { return _ausgVariante; } set { _ausgVariante = value; this.EigenschaftWurdeGeändert(); } }
+        public string LobbyName { get { return _lobbyName; } set { _lobbyName = value; this.EigenschaftWurdeGeändert(); this.LobbyErstellen.RaiseCanExecuteChanged(); } }
+        public int AusgProtokoll { get {  return _ausgProtokoll; } set { _ausgProtokoll = value; this.EigenschaftWurdeGeändert(); this.LobbyErstellen.RaiseCanExecuteChanged(); } }
+        public int AusgSchwierigkeit { get { return _ausgSchwierigkeit; } set { _ausgSchwierigkeit = value; this.EigenschaftWurdeGeändert(); this.LobbyErstellen.RaiseCanExecuteChanged(); } }
+        public int AusgVariante { get { return _ausgVariante; } set { _ausgVariante = value; this.EigenschaftWurdeGeändert(); this.LobbyErstellen.RaiseCanExecuteChanged(); } }
         public int AusgPhaseStart { get { return _ausgPhaseStart; } set { _ausgPhaseStart = value; this.EigenschaftWurdeGeändert(); } }
         public int AusgPhaseEnd { 
             get { return _ausgPhaseEnde; }
