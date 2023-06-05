@@ -29,6 +29,7 @@ namespace quaKrypto.Views
 
         private void WikiButton_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+            if (positionDesWikiButton.X == 25 && positionDesWikiButton.Y == 25) return;
             myButton.Margin = new Thickness(0, 0, 0, 0);
             positionDesWikiButton = new(25, 25);
         }

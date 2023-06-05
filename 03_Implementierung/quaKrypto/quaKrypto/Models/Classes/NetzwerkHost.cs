@@ -129,6 +129,7 @@ namespace quaKrypto.Models.Classes
                         TcpClient tcpClient = tcpListener.AcceptTcpClient();
                         NetworkStream networkStream = tcpClient.GetStream();
                         networkStreams.Add(networkStream);
+                        //Client schicken 
                         StarteTCPListeningThread(networkStream);
                     }
                 }
