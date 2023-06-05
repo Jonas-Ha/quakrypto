@@ -1262,19 +1262,5 @@ namespace TestLibrary
             //Assert
             Assert.AreEqual(empfangeneInformation, null);
         }
-
-        // Jonas Hammer, 28.05.2023
-        [Test]
-        public void Rolle_Beende_Zug_Erfolg()
-        {
-            // Arrange 
-       
-            
-            // Act
-            //quaKrypto.Models.Classes.Information information = operationen.BitfolgeGenerierenZahl(0, "Bitfolge", null, RolleEnum.Alice);
-
-            // Assert
-            //Assert.IsNotNull(information);
-        }
     }
 }
