@@ -19,31 +19,41 @@ namespace quaKrypto.Services
             set { SetValue(InlineListProperty, value); }
         }
 
-        public static readonly DependencyProperty InlineListProperty =
-            DependencyProperty.Register("InlineList", typeof(ObservableCollection<Inline>), typeof(EigenerTextBlock), new UIPropertyMetadata(null, OnPropertyChanged));
+        public static readonly DependencyProperty InlineListProperty = DependencyProperty.Register("InlineList", typeof(ObservableCollection<Inline>), typeof(EigenerTextBlock), new UIPropertyMetadata(null, OnPropertyChanged));
 
-        private static void OnPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        private void InlineCollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            Trace.WriteLine("OnPropertyChanged");
-            EigenerTextBlock? textBlock = sender as EigenerTextBlock;
-            ObservableCollection<Inline>? list = e.NewValue as ObservableCollection<Inline>;
-            list.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(textBlock.InlineCollectionChanged);
-        }
-
-        private void InlineCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
             {
                 Trace.WriteLine("InlineCollectionChanged");
-                int idx = e.NewItems.Count - 1;
-                Inline inline = e.NewItems[idx] as Inline;
-                this.Inlines.Add(inline);
+                if (e.NewItems != null)
+                {
+                    int indexOfNewItem = e.NewItems.Count - 1;
+                    if (e.NewItems[indexOfNewItem] != null)
+                    {
+                        Inlines.Add(e.NewItems[indexOfNewItem] as Inline);
+                    }
+                }
             }
             else if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
             {
                 Trace.WriteLine("InlineCollectionResetz");
                 Inlines.Clear();
+            }
+        }
+
+        private static void OnPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            Trace.WriteLine("OnPropertyChanged");
+            if (sender is not EigenerTextBlock textBlock) return;
+            if (e.NewValue is ObservableCollection<Inline> list)
+            {
+                list.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(textBlock.InlineCollectionChanged);
+                textBlock.InlineCollectionChanged(sender, new System.Collections.Specialized.NotifyCollectionChangedEventArgs(System.Collections.Specialized.NotifyCollectionChangedAction.Reset));
+                foreach (Inline inline in list)
+                {
+                    textBlock.InlineCollectionChanged(sender, new System.Collections.Specialized.NotifyCollectionChangedEventArgs(System.Collections.Specialized.NotifyCollectionChangedAction.Add, inline));
+                }
             }
         }
     }

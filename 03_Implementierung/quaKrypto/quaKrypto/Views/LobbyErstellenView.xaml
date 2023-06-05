@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit.NET5"
              xmlns:local="clr-namespace:quaKrypto.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -20,6 +21,7 @@
             <RowDefinition Height="380"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
+        
         <Button x:Name="WikiButton" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" MinWidth="80">Wiki</Button>
         <Label Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18">Lobby erstellen</Label>
         <Grid Grid.Row="1" Grid.Column="1">
@@ -39,58 +41,23 @@
             <TextBox x:Name="LobbyNameTextBox" Text="{Binding LobbyName}" Grid.Row="0" Grid.Column="1" Margin="10,10,10,10"></TextBox>
 
             <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,10,30,10">Auswahl des Protokolls:</Label>
-            <ComboBox x:Name="ProtokollComboBox" Grid.Row="1" Grid.Column="1" Margin="10,10,10,10" ItemsSource="{Binding}" SelectedIndex="{Binding AusgProtokoll}"></ComboBox>
+            <ComboBox x:Name="ProtokollComboBox" Grid.Row="1" Grid.Column="1" Margin="10,10,10,10" ItemsSource="{Binding Protokoll}" SelectedIndex="{Binding AusgProtokoll}"></ComboBox>
 
             <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,10,30,10">Auswahl der Ablaufvariante:</Label>
-            <ComboBox x:Name="VarianteCreateComboBox" Grid.Row="2" Grid.Column="1" Margin="10,10,10,10" ItemsSource="{Binding}" SelectedIndex="{Binding AusgVariante}"></ComboBox>
+            <ComboBox x:Name="VarianteCreateComboBox" Grid.Row="2" Grid.Column="1" Margin="10,10,10,10" ItemsSource="{Binding VarianteAuswahl}" SelectedIndex="{Binding AusgVariante}"></ComboBox>
 
             <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,10,30,10">Auswahl des Schwierigkeitsgrades:</Label>
-            <ComboBox x:Name="SchwierigkeitTextBox" Grid.Row="3" Grid.Column="1" Margin="10,10,10,10" ItemsSource="{Binding}" SelectedIndex="{Binding AusgSchwierigkeit}"></ComboBox>
+            <ComboBox x:Name="SchwierigkeitTextBox" Grid.Row="3" Grid.Column="1" Margin="10,10,10,10" ItemsSource="{Binding SchwierigkeitsgradAuswahl}" SelectedIndex="{Binding AusgSchwierigkeit}"></ComboBox>
 
             <Label Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,10,30,10">Auswahl der Phasen:</Label>
+            <xctk:RangeSlider Grid.Column="1" Grid.Row="4" LowerValue="{Binding AusgPhaseStart}" HigherValue="{Binding AusgPhaseEnd}" Maximum="5" TickFrequency="1" IsSnapToTickEnabled="True"  Minimum="0" VerticalAlignment="Center" Margin="10,10,10,10"></xctk:RangeSlider>
             <!--<TextBox x:Name="ScalerTextBox" Grid.Row="4" Grid.Column="1" Margin="10,10,10,10"></TextBox>-->
-            <Slider x:Name="slider" VerticalAlignment="Center" Minimum="0" Maximum="5" TickPlacement="BottomRight" Margin="10,10,10,10"
-        TickFrequency="1" IsSelectionRangeEnabled="True" AutoToolTipPrecision="0" Grid.Row="4" Grid.Column="1" IsSnapToTickEnabled="True"  >
-                <Slider.Template>
-                    <ControlTemplate TargetType="Slider">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <TickBar x:Name="TopTick" Visibility="Collapsed" Fill="{TemplateBinding Foreground}" 
-                         Height="4" Placement="Top"/>
-                            <Border Grid.Row="1" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
-                        BorderThickness="{TemplateBinding BorderThickness}" Margin="0,5"/>
-                            <TickBar x:Name="BottomTick" Visibility="Collapsed" Fill="{TemplateBinding Foreground}" 
-                         Height="4" Placement="Bottom"/>
-                            <Track x:Name="PART_Track" Grid.Row="1">
-                                <Track.DecreaseRepeatButton>
-                                    <RepeatButton Command="Slider.DecreaseLarge"/>
-                                </Track.DecreaseRepeatButton>
-                                <Track.IncreaseRepeatButton>
-                                    <RepeatButton Command="Slider.IncreaseLarge"/>
-                                </Track.IncreaseRepeatButton>
-                                <Track.Thumb>
-                                    <Thumb x:Name="Thumb" Background="{TemplateBinding Foreground}" Width="10" Height="20"/>
-                                </Track.Thumb>
-                            </Track>
-                            <Grid Grid.Row="1">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Thumb x:Name="Thumb2" Background="{TemplateBinding Foreground}" Width="10" Height="20"
-                           Grid.Column="2"/>
-                            </Grid>
-                        </Grid>
-                    </ControlTemplate>
-                </Slider.Template>
-            </Slider>
             <Label Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,10,30,10">Auswahl des Verbindungstyps:</Label>
-            <ComboBox x:Name="LobbyartTextBox" Grid.Row="5" Grid.Column="1" Margin="10,10,10,10"></ComboBox>
+            <!--<ComboBox x:Name="LobbyartTextBox" Grid.Row="5" Grid.Column="1" Margin="10,10,10,10" ItemsSource="{Binding Verbindungstyp}"></ComboBox>-->
+            <StackPanel Grid.Row="5" Grid.Column="1" VerticalAlignment="Center">
+                <RadioButton Content="Lokal" IsChecked="True"></RadioButton>
+                <RadioButton Content="Netzwerkbasiert" IsChecked="{Binding NetzwerkBasiert}"></RadioButton>
+            </StackPanel>
 
             <Button x:Name="HauptMenuButton" Grid.Row="6" Grid.Column="0" Margin="10,10,10,10" Command="{Binding HauptMenu}">Hauptmenu</Button>
             <Button x:Name="LobbyErstellenButton" Grid.Row="6" Grid.Column="1" Margin="10,10,10,10" Command="{Binding LobbyErstellen}">Lobby erstellen</Button>

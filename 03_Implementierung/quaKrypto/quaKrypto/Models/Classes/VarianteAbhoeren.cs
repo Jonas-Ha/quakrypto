@@ -34,7 +34,7 @@ namespace quaKrypto.Models.Classes
             get { return aktuelleRolle; }
         }
 
-        public string VariantenName
+        public static string VariantenName
         {
             get { return "Lauschangriff"; }
         }

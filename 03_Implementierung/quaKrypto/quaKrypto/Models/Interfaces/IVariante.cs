@@ -25,7 +25,7 @@ namespace quaKrypto.Models.Interfaces
         { get; }
 
 
-        public string VariantenName
+        public static string VariantenName
         { get; }
 
         public string ProtokollName 

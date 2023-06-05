@@ -14,6 +14,7 @@ using quaKrypto.Models.Enums;
 
 namespace quaKrypto.Models.Classes
 {
+    [Serializable]
     public class Handlungsschritt
     {
         private OperationsEnum operationsTyp;

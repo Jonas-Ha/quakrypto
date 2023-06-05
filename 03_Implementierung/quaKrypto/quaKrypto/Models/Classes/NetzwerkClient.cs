@@ -10,6 +10,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using quaKrypto.Models.Enums;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Xml.Serialization;
+using System.IO;
 
 namespace quaKrypto.Models.Classes
 {
@@ -75,8 +79,10 @@ namespace quaKrypto.Models.Classes
                             string[] empfangeneNachrichtTeile = Encoding.UTF8.GetString(kompletteNachrichtAlsBytes[1..]).Split('\t');
                             if (Enum.TryParse(empfangeneNachrichtTeile[3], out SchwierigkeitsgradEnum schwierigkeit))
                             {
-                                //Rollen noch klären
-                                UebungsszenarioNetzwerkBeitrittInfo netzwerkBeitrittInfo = new(senderAdresse.Address, empfangeneNachrichtTeile[0], empfangeneNachrichtTeile[1], empfangeneNachrichtTeile[2], schwierigkeit);
+                                bool aliceBesetzt = bool.Parse(empfangeneNachrichtTeile[4]);
+                                bool bobBesetzt = bool.Parse(empfangeneNachrichtTeile[5]);
+                                bool eveBesetzt = bool.Parse(empfangeneNachrichtTeile[6]);
+                                UebungsszenarioNetzwerkBeitrittInfo netzwerkBeitrittInfo = new(senderAdresse.Address, empfangeneNachrichtTeile[0], empfangeneNachrichtTeile[1], empfangeneNachrichtTeile[2], schwierigkeit, aliceBesetzt, bobBesetzt, eveBesetzt);
                                 verfügbareLobbys.Add(senderAdresse.Address, netzwerkBeitrittInfo);
                                 //NOTIFY CHANGED?
                             }
@@ -134,7 +140,7 @@ namespace quaKrypto.Models.Classes
         //Schnittstelle LobbyScreenView
         public static void WaehleRolle(RolleEnum gewählteRolle, string alias)
         {
-            SendeNachrichtTCP(ROLLE_WAEHLEN, gewählteRolle.ToString() + '\t' + alias.Replace("\t",""));
+            SendeNachrichtTCP(ROLLE_WAEHLEN, gewählteRolle.ToString() + '\t' + alias.Replace("\t", ""));
         }
 
         //Schnittstelle LobbyScreenView
@@ -146,8 +152,16 @@ namespace quaKrypto.Models.Classes
         //Schnittstelle für Übungsszenario
         public static void BeendeZug(List<Handlungsschritt> handlungsschritte)
         {
-            //TODO noch zu implementieren
-            SendeNachrichtTCP(ZUG_BEENDEN, "TODO");
+            string serializedHandlungsschritte = new("");
+            XmlSerializer xmlSerializer = new(typeof(Handlungsschritt));
+            for (int i = 0; i < handlungsschritte.Count; i++)
+            {
+                if (i != 0) serializedHandlungsschritte += '\t';
+                using StringWriter stringWriter = new();
+                xmlSerializer.Serialize(stringWriter, handlungsschritte[i]);
+                serializedHandlungsschritte += stringWriter.ToString();
+            }
+            SendeNachrichtTCP(ZUG_BEENDEN, serializedHandlungsschritte);
         }
 
         //Schnittstelle fürs Übungsszenario
@@ -172,22 +186,48 @@ namespace quaKrypto.Models.Classes
                         switch (commandIdentifier)
                         {
                             case ROLLENINFORMATION:
-                                //Hier ist man Client und muss die neue Information Irgendwie nach außen an die View tragen
-                                //An das Übungsszenario die neuen Rolleninformationen übergeben
+                                Rolle? rolleAlice, rolleBob, rolleEve;
+                                XmlSerializer xmlRollenSerializer = new(typeof(Rolle));
+                                using (StringReader stringReader = new(empfangeneNachrichtTeile[0]))
+                                {
+                                    object? deserialisiertesObjekt = xmlRollenSerializer.Deserialize(stringReader);
+                                    rolleAlice = (Rolle?)deserialisiertesObjekt;
+                                }
+                                using (StringReader stringReader = new(empfangeneNachrichtTeile[1]))
+                                {
+                                    object? deserialisiertesObjekt = xmlRollenSerializer.Deserialize(stringReader);
+                                    rolleBob = (Rolle?)deserialisiertesObjekt;
+                                }
+                                using (StringReader stringReader = new(empfangeneNachrichtTeile[2]))
+                                {
+                                    object? deserialisiertesObjekt = xmlRollenSerializer.Deserialize(stringReader);
+                                    rolleEve = (Rolle?)deserialisiertesObjekt;
+                                }
+                                uebungsszenario?.NeueRollenInformation(rolleAlice, rolleBob, rolleEve);
                                 break;
                             case UEBUNGSSZENARIO_STARTEN:
-                                //Hier ist man Client und man muss nach Außen tragen, dass das Übungsszenario beginnt
+                                uebungsszenario?.UebungsszenarioWurdeGestartet();
                                 break;
                             case KONTROLLE_UEBERGEBEN:
-                                //Hier ist man Client und man muss nach Außen tragen, dass man nun an der Reihe ist
+                                uebungsszenario?.KontrolleErhalten();
                                 break;
                             case AUFZEICHNUNG_UPDATE:
-                                //Hier ist man Client und man muss seine Aufzeichnung mit den neuesten Handlungsschritten updaten
+                                List<Handlungsschritt> listeEmpfangenerHandlungsschritte = new();
+                                XmlSerializer xmlHandlungsschrittSerializer = new(typeof(Handlungsschritt));
+                                foreach (string handlungsschritt in empfangeneNachrichtTeile)
+                                {
+                                    using StringReader stringReader = new StringReader(handlungsschritt);
+                                    object? deserialisiertesObjekt = xmlHandlungsschrittSerializer.Deserialize(stringReader);
+                                    if (deserialisiertesObjekt != null)
+                                    {
+                                        listeEmpfangenerHandlungsschritte.Add((Handlungsschritt)deserialisiertesObjekt);
+                                    }
+                                }
+                                uebungsszenario?.AufzeichnungUpdate(listeEmpfangenerHandlungsschritte);
                                 break;
                             case UEBUNGSSZENARIO_ENDE:
-                                //An das Uebungsszenario weitergeben
-                                //TrenneVerbindungMitUebungsszenario()
-                                //Aufzeichnung anzeigen
+                                uebungsszenario?.UebungsszenarioWurdeBeendetClient();
+                                TrenneVerbindungMitUebungsszenario();
                                 break;
                         }
                         kompletteNachrichtAlsBytes = new byte[TCP_RECEIVE_BUFFER_SIZE];
