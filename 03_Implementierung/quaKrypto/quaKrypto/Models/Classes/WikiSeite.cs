@@ -77,6 +77,7 @@ namespace quaKrypto.Models.Classes
             PropertyHasChanged(nameof(BorderBrush));
             PropertyHasChanged(nameof(WikiSeiteName));
             PropertyHasChanged(nameof(Inhalt));
+            PropertyHasChanged(nameof(InlineList));
         }
         public void SetzeEditierModus(bool neuerEditierModus)
         {
