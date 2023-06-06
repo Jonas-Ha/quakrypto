@@ -39,11 +39,15 @@ namespace quaKrypto.Models.Classes
                 { OperationsEnum.bitmaskeGenerieren, op.BitmaskeGenerieren },
                 { OperationsEnum.polschataVergleichen, op.PolschataVergleichen },
                 { OperationsEnum.bitfolgenVergleichen, op.BitfolgenVergleichen },
+                { OperationsEnum.bitfolgeNegieren, op.BitfolgeNegieren },
                 { OperationsEnum.photonenZuBitfolge, op.PhotonenZuBitfolge },
+                { OperationsEnum.textGenerieren, op.TextGenerieren },
+                { OperationsEnum.textLaengeBestimmen, op.TextLaengeBestimmen },
                 { OperationsEnum.textVerschluesseln, op.TextVerschluesseln },
                 { OperationsEnum.textEntschluesseln, op.TextEntschluesseln },
                 { OperationsEnum.bitsStreichen, op.BitsStreichen },
                 { OperationsEnum.bitsFreiBearbeiten, op.BitsFreiBearbeiten },
+                { OperationsEnum.zahlGenerieren, op.ZahlGenerieren },
                 { OperationsEnum.zugBeenden, op.ZugBeenden },
             };
 

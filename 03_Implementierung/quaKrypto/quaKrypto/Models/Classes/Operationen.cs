@@ -337,6 +337,25 @@ namespace quaKrypto.Models.Classes
             return new Information(informationsID, ergebnisName, InformationsEnum.bitfolge, erg, null);
         }
 
+        public Information BitfolgeNegieren(uint informationsID, Information operand1, Information? operand2, String ergebnisName)
+        {
+            if (informationsID.Equals(null) || operand1.Equals(null) || ergebnisName.Equals(null))
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (!(operand1.InformationsTyp.Equals(InformationsEnum.bitfolge)) || !((operand1.InformationsInhalt.GetType().Equals(typeof(BitArray)))))
+            {
+                throw new Exception("operand1 nicht vom Typ Bitfolge oder ist kein Bitarray");
+            }
+
+            BitArray op1 = (BitArray)operand1.InformationsInhalt;
+
+            BitArray erg = op1.Not();
+
+            return new Information(informationsID, ergebnisName, InformationsEnum.bitfolge, erg, null);
+        }
+
         //Operand1 = Polarisationsschemata, Operand2 = unscharfePhotonen
         public Information PhotonenZuBitfolge(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
@@ -384,6 +403,40 @@ namespace quaKrypto.Models.Classes
             }
             return new Information(informationsID, ergebnisName, InformationsEnum.bitfolge, erg, null);
 
+        }
+
+        public Information TextGenerieren(uint informationsID, Information? operand1, object operand2, String ergebnisName)
+        {
+            if (informationsID.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (!operand2.GetType().Equals(typeof(string)))
+            {
+                throw new Exception("operand2 ist nicht vom Typ string");
+            }
+
+            return new Information(informationsID, ergebnisName, InformationsEnum.asciiText, operand2, null);
+        }
+
+        public Information TextLaengeBestimmen(uint informationsID, Information operand1, Information? operand2, String ergebnisName)
+        {
+            if (informationsID.Equals(null) || operand1.Equals(null) || ergebnisName.Equals(null))
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (!(operand1.InformationsTyp.Equals(InformationsEnum.asciiText)) || !((operand1.InformationsInhalt.GetType().Equals(typeof(string)))))
+            {
+                throw new Exception("operand1 nicht vom Typ asciiText oder ist kein string");
+            }
+
+            string text = (string)operand1.InformationsInhalt;
+            var bytes = System.Text.Encoding.UTF8.GetBytes(text);
+            var bits = new BitArray(bytes);
+            
+            return new Information(informationsID, ergebnisName, InformationsEnum.zahl, bits.Length, null);
         }
 
         //Operand1 = Text, Operand2 = Schlüssel
@@ -523,6 +576,21 @@ namespace quaKrypto.Models.Classes
             }
 
             return new Information(informationsID, ergebnisName, InformationsEnum.bitfolge, operand1.InformationsInhalt, null);
+        }
+
+        public Information ZahlGenerieren(uint informationsID, Information? operand1, object operand2, String ergebnisName)
+        {
+            if (informationsID.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
+            {
+                throw new ArgumentNullException();
+            }
+
+            if(!operand2.GetType().Equals(typeof(int)))
+            {
+                throw new Exception("operand2 ist nicht vom Typ int");
+            }
+            
+            return new Information(informationsID, ergebnisName, InformationsEnum.zahl, operand2, null);
         }
 
         public Information? ZugBeenden(uint? informationsID, Information operand1, Information operand2, String ergebnisName)
