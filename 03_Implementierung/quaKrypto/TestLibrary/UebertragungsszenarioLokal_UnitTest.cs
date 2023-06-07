@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -15,76 +16,48 @@ using NUnit.Framework;
 using quaKrypto.Models;
 using quaKrypto.Models.Classes;
 using quaKrypto.Models.Enums;
+using quaKrypto.Models.Interfaces;
 
 namespace TestLibrary
 {
     [TestFixture]
     public class UebertragungsszenarioLokal_UnitTest
-    {/*
-        // Leopold Bialek, 20.05.2023
+    {
+        // Arrange 
+        RolleEnum rolleEnum = RolleEnum.Alice;
+        string alias = "alias_alice";
+        string passwort = "passwort_alice";
+        RolleEnum rolleEnumEve = RolleEnum.Eve;
+        string aliasEve = "alias_alice";
+        string passwortEve = "passwort_alice";
+        RolleEnum rolleEnumBob = RolleEnum.Bob;
+        string aliasBob = "alias_alice";
+        string passwortBob = "passwort_alice";
+        RolleEnum rolleEnumAlice2 = RolleEnum.Alice;
+        string aliasAlice2 = "alias_alice2";
+        string passwortAlice2 = "passwort_alice2";
+        
+        IVariante variante = new VarianteAbhoeren(1);
+        string nameueb = "Ueb";
+       
         [Test]
-        public void UebertragungsszenarioLokal_Initialisieren_Erfolg()
+        public void UebungsszenarioLokal_RollenAnlegen_Erfolg()
         {
-            // Arrange 
-            VarianteNormalerAblauf varianteNormalerAblauf =
-                new VarianteNormalerAblauf(1, SchwierigkeitsgradEnum.mittel);
+            //Arrange
+            UebungsszenarioLokal Ueb = new UebungsszenarioLokal(SchwierigkeitsgradEnum.leicht, variante, 1, 4, nameueb);
+            Rolle rolle = new Rolle(rolleEnum, alias, passwort);
+            Rolle rolle2 = new Rolle(rolleEnumEve, aliasEve, passwortEve);
+            Rolle rolle3 = new Rolle(rolleEnumBob, aliasBob, passwortBob);
 
-            // Act
-            UebungsszenarioLokal uebungsszenarioLokal = new UebungsszenarioLokal(SchwierigkeitsgradEnum.mittel, varianteNormalerAblauf, 1, 2);
+            Ueb.RolleHinzufuegen(rolle);
+            Ueb.RolleHinzufuegen(rolle2);
+            Ueb.RolleHinzufuegen(rolle3);
 
-            // Assert
-            Assert.IsEmpty(uebungsszenarioLokal.Rollen);
-            Assert.AreEqual(uebungsszenarioLokal.Schwierigkeitsgrad, SchwierigkeitsgradEnum.mittel);
-            Assert.AreEqual(uebungsszenarioLokal.Variante, varianteNormalerAblauf);
-            Assert.AreEqual(uebungsszenarioLokal.StartPhase, 1);
-            Assert.AreEqual(uebungsszenarioLokal.EndPhase, 2);
-            Assert.IsEmpty(uebungsszenarioLokal.Uebertragungskanal.BitKanal);
-            Assert.IsEmpty(uebungsszenarioLokal.Uebertragungskanal.PhotonenKanal);
-            Assert.IsEmpty(uebungsszenarioLokal.Aufzeichnung.Handlungsschritte);
+            //Assert
+            List<Rolle> expected = new List<Rolle>{ rolle, rolle2, rolle3 };
+            Assert.AreEqual(expected[0], Ueb.Rollen[0]);
+            Assert.AreEqual(expected[1], Ueb.Rollen[1]);
+            Assert.AreEqual(expected[2], Ueb.Rollen[2]);
         }
-
-        // Leopold Bialek, 20.05.2023
-        [Test]
-        public void Uebertragungskanal_VeroeffentlicheLobby_Erfolg()
-        {
-            //Noch zu ergänzen, sobald Implementierung für VeroeffentlicheLobby erfolgt ist
-        }
-
-        // Leopold Bialek, 20.05.2023
-        [Test]
-        public void UebertragungsszenarioLokal_RolleHinzufuegen_Erfolg()
-        {
-            // Arrange 
-            VarianteNormalerAblauf varianteNormalerAblauf =
-                new VarianteNormalerAblauf(1, SchwierigkeitsgradEnum.mittel);
-            UebungsszenarioLokal uebungsszenarioLokal = new UebungsszenarioLokal(SchwierigkeitsgradEnum.mittel, varianteNormalerAblauf, 1, 2);
-            Rolle rolle = new Rolle(RolleEnum.Alice, "alias_alice", "passwort_alice");
-
-            // Act
-            uebungsszenarioLokal.RolleHinzufuegen(rolle);
-
-            // Assert
-            Assert.IsTrue(uebungsszenarioLokal.Rollen.Contains(rolle));
-        }
-
-        // Leopold Bialek, 20.05.2023
-        [Test]
-        public void UebertragungsszenarioLokal_NaechsterZug_Erfolg()
-        {
-            // Arrange 
-            VarianteNormalerAblauf varianteNormalerAblauf =
-                new VarianteNormalerAblauf(1, SchwierigkeitsgradEnum.mittel);
-            UebungsszenarioLokal uebungsszenarioLokal = new UebungsszenarioLokal(SchwierigkeitsgradEnum.mittel, varianteNormalerAblauf, 1, 2);
-            Rolle alice = new Rolle(RolleEnum.Alice, "alias_alice", "passwort_alice");
-            Rolle bob = new Rolle(RolleEnum.Bob, "alias_bob", "passwort_bob");
-            uebungsszenarioLokal.RolleHinzufuegen(alice);
-            uebungsszenarioLokal.RolleHinzufuegen(bob);
-
-            // Act
-            uebungsszenarioLokal.NaechsterZug("passwort_bob");
-
-            // Assert
-            //Assert.AreEqual(uebungsszenarioLokal.AktuelleRolle, bob);
-        }*/
     }
 }

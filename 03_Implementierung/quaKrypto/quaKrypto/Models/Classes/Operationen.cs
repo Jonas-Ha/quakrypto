@@ -20,9 +20,9 @@ namespace quaKrypto.Models.Classes
         //Operand1 enthält zu sendende Information, operand2 enthält den Empfänger der Information
         public Information NachrichtSenden(uint informationsID, Information operand1, Object operand2, String ergebnisName)
         {
-            if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
+            if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Object reference not set to an instance of an object");
             }
 
             if (!(operand2.GetType().Equals(typeof(RolleEnum))))
@@ -43,9 +43,9 @@ namespace quaKrypto.Models.Classes
         //Operand1 enthält die zu empfangende Information, operand2 null
         public Information NachrichtEmpfangen(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
-            if (informationsID.Equals(null) || operand1.Equals(null) || ergebnisName.Equals(null))
+            if (informationsID == null || operand1 == null || ergebnisName == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Object reference not set to an instance of an object");
             }
 
             return new Information(informationsID, ergebnisName, operand1.InformationsTyp, operand1.InformationsInhalt, null);
@@ -54,9 +54,9 @@ namespace quaKrypto.Models.Classes
         //Überlegung: Streichen der Funktion NachrichtAbhoeren, da identisch zu NachrichtEmpfangen (Leopold Bialek, Alexander Dennner)
         public  Information NachrichtAbhoeren(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
-            if (informationsID.Equals(null) || operand1.Equals(null) || ergebnisName.Equals(null))
+            if (informationsID == null || operand1 == null || ergebnisName == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Object reference not set to an instance of an object");
             }
 
             return new Information(informationsID, ergebnisName, operand1.InformationsTyp, operand1.InformationsInhalt, null);
@@ -66,9 +66,9 @@ namespace quaKrypto.Models.Classes
         // Operand1 Länge der zu generierenden Bitfolge, operand2 null
         public Information BitfolgeGenerierenZahl(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
-            if (informationsID.Equals(null) || operand1.Equals(null) || ergebnisName.Equals(null))
+            if (informationsID == null || operand1 == null || ergebnisName == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Object reference not set to an instance of an object");
             }
 
             if (!(operand1.InformationsTyp.Equals(InformationsEnum.zahl)) || !((operand1.InformationsInhalt.GetType().Equals(typeof(int)))))
@@ -100,9 +100,9 @@ namespace quaKrypto.Models.Classes
         //Operand1 Eingegebene Bitfolge, Operand2 länge der zu generierenden Bitfolge
         public Information BitfolgeGenerierenAngabe(uint informationsID,  Information operand1, Information operand2, String ergebnisName)
         {
-            if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
+            if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Object reference not set to an instance of an object");
             }
 
             if (!(operand1.InformationsTyp.Equals(InformationsEnum.bitfolge)) || !((operand1.InformationsInhalt.GetType().Equals(typeof(BitArray)))))
@@ -133,9 +133,9 @@ namespace quaKrypto.Models.Classes
         // Operand1 Länge der zu generierenden Polschata, operand2 null
         public Information PolarisationsschemataGenerierenZahl(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
-            if (informationsID.Equals(null) || operand1.Equals(null) || ergebnisName.Equals(null))
+            if (informationsID == null || operand1 == null || ergebnisName == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Object reference not set to an instance of an object");
             }
 
             if (!(operand1.InformationsTyp.Equals(InformationsEnum.zahl)) || !((operand1.InformationsInhalt.GetType().Equals(typeof(int)))))
@@ -167,9 +167,9 @@ namespace quaKrypto.Models.Classes
         //Operand1 Eingegebene Polschata, Operand2 länge der zu generierenden Polschata
         public Information PolarisationsschemataGenerierenAngabe(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
-            if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
+            if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Object reference not set to an instance of an object");
             }
 
             if (!(operand1.InformationsTyp.Equals(InformationsEnum.bitfolge)) || !((operand1.InformationsInhalt.GetType().Equals(typeof(BitArray)))))
@@ -200,9 +200,9 @@ namespace quaKrypto.Models.Classes
         //Operand 1 = polarisationsschemata, Operand2 = Schlüssel
         public Information PhotonenGenerieren(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
-            if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
+            if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Object reference not set to an instance of an object");
             }
 
             if (!(operand1.InformationsTyp.Equals(InformationsEnum.polarisationsschemata)) || !((operand1.InformationsInhalt.GetType().Equals(typeof(BitArray)))))
@@ -239,9 +239,9 @@ namespace quaKrypto.Models.Classes
         public Information BitmaskeGenerieren(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
 
-            if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
+            if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Object reference not set to an instance of an object");
             }
 
             if (!operand1.InformationsTyp.Equals(InformationsEnum.zahl) || !operand1.InformationsInhalt.GetType().Equals(typeof(int)) || (int)operand1.InformationsInhalt <= 0)
@@ -279,9 +279,9 @@ namespace quaKrypto.Models.Classes
         //Operand1 = Polschata, Operand2 = Polschata
         public Information PolschataVergleichen(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
-            if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
+            if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Object reference not set to an instance of an object");
             }
 
             if (!(operand1.InformationsTyp.Equals(InformationsEnum.polarisationsschemata)) || !((operand1.InformationsInhalt.GetType().Equals(typeof(BitArray)))))
@@ -314,9 +314,9 @@ namespace quaKrypto.Models.Classes
         //Operand1 = Bitfolge, Operand2 = Bitfolge
         public Information BitfolgenVergleichen(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
-            if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
+            if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Object reference not set to an instance of an object");
             }
 
             if (!(operand1.InformationsTyp.Equals(InformationsEnum.bitfolge)) || !((operand1.InformationsInhalt.GetType().Equals(typeof(BitArray)))))
@@ -349,9 +349,9 @@ namespace quaKrypto.Models.Classes
         //Operand1 = Bitfolge, Operand2 = null
         public Information BitfolgeNegieren(uint informationsID, Information operand1, Information? operand2, String ergebnisName)
         {
-            if (informationsID.Equals(null) || operand1.Equals(null) || ergebnisName.Equals(null))
+            if (informationsID == null || operand1 == null || ergebnisName == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Object reference not set to an instance of an object");
             }
 
             if (!(operand1.InformationsTyp.Equals(InformationsEnum.bitfolge)) || !((operand1.InformationsInhalt.GetType().Equals(typeof(BitArray)))))
@@ -369,9 +369,9 @@ namespace quaKrypto.Models.Classes
         //Operand1 = Polarisationsschemata, Operand2 = unscharfePhotonen
         public Information PhotonenZuBitfolge(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
-            if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
+            if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Object reference not set to an instance of an object");
             }
 
             if (!(operand1.InformationsTyp.Equals(InformationsEnum.polarisationsschemata)) || !((operand1.InformationsInhalt.GetType().Equals(typeof(BitArray)))))
@@ -418,9 +418,9 @@ namespace quaKrypto.Models.Classes
         //Operand1 = null, Operand2 = Eingegebener Text
         public Information TextGenerieren(uint informationsID, Information? operand1, object operand2, String ergebnisName)
         {
-            if (informationsID.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
+            if (informationsID == null || operand2 == null || ergebnisName == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Object reference not set to an instance of an object");
             }
 
             if (!operand2.GetType().Equals(typeof(string)))
@@ -434,9 +434,9 @@ namespace quaKrypto.Models.Classes
         //Operand1 = Text Information, Operand2 = null
         public Information TextLaengeBestimmen(uint informationsID, Information operand1, Information? operand2, String ergebnisName)
         {
-            if (informationsID.Equals(null) || operand1.Equals(null) || ergebnisName.Equals(null))
+            if (informationsID == null || operand1 == null || ergebnisName == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Object reference not set to an instance of an object");
             }
 
             if (!(operand1.InformationsTyp.Equals(InformationsEnum.asciiText)) || !((operand1.InformationsInhalt.GetType().Equals(typeof(string)))))
@@ -454,9 +454,9 @@ namespace quaKrypto.Models.Classes
         //Operand1 = Text, Operand2 = Schlüssel
         public Information TextVerschluesseln(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
-            if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
+            if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Object reference not set to an instance of an object");
             }
 
             if (!(operand1.InformationsTyp.Equals(InformationsEnum.asciiText)) || !((operand1.InformationsInhalt.GetType().Equals(typeof(string)))))
@@ -494,9 +494,9 @@ namespace quaKrypto.Models.Classes
         //Operand1 = verschlüsselter Text, Operand2 = Schlüssel
         public Information TextEntschluesseln(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
-            if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
+            if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Object reference not set to an instance of an object");
             }
 
             if (!(operand1.InformationsTyp.Equals(InformationsEnum.verschluesselterText)) || !((operand1.InformationsInhalt.GetType().Equals(typeof(string)))))
@@ -534,9 +534,9 @@ namespace quaKrypto.Models.Classes
         //Operand1 = Bitfolge die die Bits gestrichen bekommt, Operand2 = Bitfolge die angibt welche Bits gestrichen werden
         public Information BitsStreichen(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
-            if (informationsID.Equals(null) || operand1.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
+            if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Object reference not set to an instance of an object");
             }
 
             if (!(operand1.InformationsTyp.Equals(InformationsEnum.bitfolge)) || !((operand1.InformationsInhalt.GetType().Equals(typeof(BitArray)))))
@@ -580,9 +580,9 @@ namespace quaKrypto.Models.Classes
         //Operand1 = Angepasste Information, Operand2 = null
         public Information BitsFreiBearbeiten(uint informationsID, Information operand1, Information? operand2, String ergebnisName)
         {
-            if (informationsID.Equals(null) || operand1.Equals(null) || ergebnisName.Equals(null))
+            if (informationsID == null || operand1 == null || ergebnisName == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Object reference not set to an instance of an object");
             }
 
             if (!(operand1.InformationsTyp.Equals(InformationsEnum.bitfolge)) || !((operand1.InformationsInhalt.GetType().Equals(typeof(BitArray)))))
@@ -596,9 +596,10 @@ namespace quaKrypto.Models.Classes
         //Operand1 = null,  Operand2 = Zahl per Eingabe
         public Information ZahlGenerieren(uint informationsID, Information? operand1, object operand2, String ergebnisName)
         {
-            if (informationsID.Equals(null) || operand2.Equals(null) || ergebnisName.Equals(null))
+
+            if (informationsID == null|| operand2 == null || ergebnisName == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Object reference not set to an instance of an object");
             }
 
             if(!operand2.GetType().Equals(typeof(int)))
