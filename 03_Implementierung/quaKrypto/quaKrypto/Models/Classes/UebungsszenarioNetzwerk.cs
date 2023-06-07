@@ -7,6 +7,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +17,7 @@ using quaKrypto.Models.Interfaces;
 
 namespace quaKrypto.Models.Classes
 {
-    public class UebungsszenarioNetzwerk : IUebungsszenario
+    public class UebungsszenarioNetzwerk : IUebungsszenario, INotifyPropertyChanged
     {
         private List<Rolle> rollen;
         private Rolle aktuelleRolle;
@@ -25,8 +27,10 @@ namespace quaKrypto.Models.Classes
         private uint endPhase;
         private Uebertragungskanal uebertragungskanal;
         private Aufzeichnung aufzeichnung;
+        private string name;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
-        public UebungsszenarioNetzwerk(SchwierigkeitsgradEnum schwierigkeitsgrad, IVariante variante, uint startPhase, uint endPhase)
+        public UebungsszenarioNetzwerk(SchwierigkeitsgradEnum schwierigkeitsgrad, IVariante variante, uint startPhase, uint endPhase, string name)
         {
             this.rollen = new List<Rolle>();
             this.aktuelleRolle = null;
@@ -36,9 +40,10 @@ namespace quaKrypto.Models.Classes
             this.endPhase = endPhase;
             this.uebertragungskanal = new Uebertragungskanal();
             this.aufzeichnung = new Aufzeichnung();
+            this.name = name;
         }
 
-        public List<Rolle> Rollen { get; }
+        public ReadOnlyCollection<Rolle> Rollen { get; }
         public SchwierigkeitsgradEnum Schwierigkeitsgrad { get; }
         public IVariante Variante { get; }
         public uint StartPhase { get; }
@@ -61,7 +66,7 @@ namespace quaKrypto.Models.Classes
             throw new NotImplementedException();
         }
 
-        public bool NaechsterZug()
+        public void NaechsterZug()
         {
             throw new NotImplementedException();
         }
@@ -71,12 +76,12 @@ namespace quaKrypto.Models.Classes
             throw new NotImplementedException();
         }
 
-        public Information HandlungsschrittAusführenLassen(Handlungsschritt handlungsschritt)
+        public Information HandlungsschrittAusführenLassen(Enums.OperationsEnum operationsTyp, Information operand1, object operand2, String ergebnisInformationsName, Enums.RolleEnum rolle)
         {
             throw new NotImplementedException();
         }
 
-        public void SpeichereInformationenAb(uint informationID)
+        public void SpeichereInformationenAb(Information information)
         {
             throw new NotImplementedException();
         }

@@ -10,14 +10,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.VisualBasic;
 using NUnit.Framework;
 using quaKrypto.Models;
 using quaKrypto.Models.Classes;
 using quaKrypto.Models.Enums;
 using quaKrypto.Models.Interfaces;
-using static Xceed.Wpf.Toolkit.Calculator;
+using Information = quaKrypto.Models.Classes.Information;
 
 namespace TestLibrary
 {
@@ -37,7 +39,7 @@ namespace TestLibrary
         public void Rolle_Initialisieren_Erfolg()
         {
             // Act
-            Rolle rolle = new Rolle(rolleEnum, alias, passwort, variante);
+            Rolle rolle = new Rolle(rolleEnum, alias, passwort);
 
             // Assert
             Assert.AreEqual(RolleEnum.Alice, rolle.RolleTyp);
@@ -50,7 +52,7 @@ namespace TestLibrary
         public void Rolle_Beginne_Zug_Erfolg()
         {
             // Act
-            Rolle rolle = new Rolle(rolleEnum, alias, passwort, variante);
+            Rolle rolle = new Rolle(rolleEnum, alias, passwort);
 
             // Act
             bool result = rolle.BeginneZug("passwort_alice");
@@ -64,7 +66,7 @@ namespace TestLibrary
         public void Rolle_Beginne_Zug_Fehler()
         {
             // Act
-            Rolle rolle = new Rolle(rolleEnum, alias, passwort, variante);
+            Rolle rolle = new Rolle(rolleEnum, alias, passwort);
 
             // Act
             bool result = rolle.BeginneZug("passwort_bob");
@@ -78,7 +80,7 @@ namespace TestLibrary
         public void Rolle_Beende_Zug_Erfolg()
         {
             // Act
-            Rolle rolle = new Rolle(rolleEnum, alias, passwort, variante);
+            Rolle rolle = new Rolle(rolleEnum, alias, passwort);
             rolle.BeginneZug("passwort_alice");
 
             // Act
@@ -99,19 +101,14 @@ namespace TestLibrary
         public void Rolle_Beende_Zug_Fehler()
         {
             // Act
-            Rolle rolle = new Rolle(rolleEnum, alias, passwort, variante);
-            rolle.BeginneZug("passwort_bob");
+            Rolle rolle = new Rolle(rolleEnum, alias, passwort);
+            rolle.BeginneZug("passwort_alice");
 
-            // Act
-            try
-            {
-                Handlungsschritt handlungsschritt = rolle.ErzeugeHandlungsschritt(OperationsEnum.zahlGenerieren, null, null, null, rolle.RolleTyp);
-            }
-            // Assert
-            catch (Exception ex)
-            {
-                Assert.IsNotNull(ex);
-            }
+            //Act
+            var ex = Assert.Throws<TargetInvocationException>(() => rolle.ErzeugeHandlungsschritt(OperationsEnum.zahlGenerieren, null, null, null, rolle.RolleTyp));
+
+            //Assert
+            Assert.That(ex.Message == "Exception has been thrown by the target of an invocation.");
         }
 
         // Leopold Bialek, 20.05.2023
@@ -119,8 +116,8 @@ namespace TestLibrary
         public void Rolle_Erzeuge_Handlungsschritt_ein_Operand_Erfolg()
         {
             // Act
-            Rolle rolle = new Rolle(rolleEnum, alias, passwort, variante);
-            rolle.BeginneZug("passwort_bob");
+            Rolle rolle = new Rolle(rolleEnum, alias, passwort);
+            rolle.BeginneZug("passwort_alice");
             string informationsname = "ABC";
             Information information = new Information(0, "GesendeteNachricht", InformationsEnum.asciiText, "HelloWorld", RolleEnum.Alice);
 
@@ -148,35 +145,22 @@ namespace TestLibrary
         public void Rolle_Erzeuge_Handlungsschritt_ein_Operand_Fehler()
         {
             // Act
-            Rolle rolle = new Rolle(rolleEnum, alias, passwort, variante);
-            rolle.BeginneZug("passwort_bob");
+            Rolle rolle = new Rolle(rolleEnum, alias, passwort);
+            rolle.BeginneZug("passwort_alice");
             string informationsname = "ABC";
             Information information = new Information(0, "GesendeteNachricht", InformationsEnum.asciiText, "HelloWorld", RolleEnum.Alice);
 
-            
-            // Act
-            try
-            {
-                // Act
-                Handlungsschritt handlungsschritt = rolle.ErzeugeHandlungsschritt(OperationsEnum.nachrichtSenden, information, null, informationsname, rolle.RolleTyp);
-            }
-            // Assert
-            catch (Exception ex)
-            {
-                Assert.IsNotNull(ex);
-            }
+            //Act
+            var ex = Assert.Throws<TargetInvocationException>(() => rolle.ErzeugeHandlungsschritt(OperationsEnum.nachrichtSenden, information, null, informationsname, rolle.RolleTyp));
 
-            // Act
-            try
-            {
-                // Act
-                Handlungsschritt handlungsschritt = rolle.ErzeugeHandlungsschritt(OperationsEnum.nachrichtEmpfangen, null, null, informationsname, rolle.RolleTyp);
-            }
-            // Assert
-            catch (Exception ex)
-            {
-                Assert.IsNotNull(ex);
-            }
+            //Assert
+            Assert.That(ex.Message == "Exception has been thrown by the target of an invocation.");
+
+            //Act
+            var ex2 = Assert.Throws<TargetInvocationException>(() => rolle.ErzeugeHandlungsschritt(OperationsEnum.nachrichtEmpfangen, null, null, informationsname, rolle.RolleTyp));
+
+            //Assert
+            Assert.That(ex2.Message == "Exception has been thrown by the target of an invocation.");
         }
 
         // Leopold Bialek, 20.05.2023
@@ -184,7 +168,8 @@ namespace TestLibrary
         public void Rolle_Erzeuge_Handlungsschritt_zwei_Operanden_Erfolg_polschata()
         {
             //Arrange
-            Rolle rolle = new Rolle(rolleEnum, alias, passwort, variante);
+            Rolle rolle = new Rolle(rolleEnum, alias, passwort);
+            rolle.BeginneZug("passwort_alice");
             string informationsname = "Bitfolge";
             BitArray arrpol1 = new BitArray(10, false);
             arrpol1[1] = true;
@@ -223,7 +208,8 @@ namespace TestLibrary
         public void Rolle_Erzeuge_Handlungsschritt_zwei_Operanden_Fehler_polschata()
         {
             //Arrange
-            Rolle rolle = new Rolle(rolleEnum, alias, passwort, variante);
+            Rolle rolle = new Rolle(rolleEnum, alias, passwort);
+            rolle.BeginneZug("passwort_alice");
             string informationsname = "Bitfolge";
             BitArray arrpol1 = new BitArray(10, false);
             arrpol1[1] = true;
@@ -234,24 +220,19 @@ namespace TestLibrary
             Information information1 = new Information(1, "Polarisationsschemata", InformationsEnum.polarisationsschemata, arrpol1, null);
             Information information2 = new Information(2, "Polarisationsschemata", InformationsEnum.polarisationsschemata, arrpol2, null);
 
-            // Act
-            try
-            {
-                // Act
-                Handlungsschritt handlungsschritt = rolle.ErzeugeHandlungsschritt(OperationsEnum.polschataVergleichen, information1, null, informationsname, rolle.RolleTyp);
-            }
-            // Assert
-            catch (Exception ex)
-            {
-                Assert.IsNotNull(ex);
-            }
+            //Act
+            var ex = Assert.Throws<TargetInvocationException>(() => rolle.ErzeugeHandlungsschritt(OperationsEnum.polschataVergleichen, information1, null, informationsname, rolle.RolleTyp));
+
+            //Assert
+            Assert.That(ex.Message == "Exception has been thrown by the target of an invocation.");
         }
 
         [Test]
         public void Rolle_Erzeuge_Handlungsschritt_zwei_Operanden_Erfolg()
         {
             //Arrange
-            Rolle rolle = new Rolle(rolleEnum, alias, passwort, variante);
+            Rolle rolle = new Rolle(rolleEnum, alias, passwort);
+            rolle.BeginneZug("passwort_alice");
             string informationsname = "Bitfolge";
 
             //Arrange
@@ -288,7 +269,8 @@ namespace TestLibrary
         public void Rolle_Erzeuge_Handlungsschritt_zwei_Operanden_Failed()
         {
             //Arrange
-            Rolle rolle = new Rolle(rolleEnum, alias, passwort, variante);
+            Rolle rolle = new Rolle(rolleEnum, alias, passwort);
+            rolle.BeginneZug("passwort_alice");
             string informationsname = "Bitfolge";
             BitArray arrpol = new BitArray(10, false);
             arrpol[1] = true;
@@ -299,23 +281,19 @@ namespace TestLibrary
             Information information1 = new Information(1, "Polarisationsschemata", InformationsEnum.polarisationsschemata, arrpol, null);
             Information information2 = new Information(2, "Schlüssel", InformationsEnum.bitfolge, arrkey, null);
 
-            // Act
-            try
-            {
-                Handlungsschritt handlungsschritt = rolle.ErzeugeHandlungsschritt(OperationsEnum.polschataVergleichen, information1, null, informationsname, rolle.RolleTyp);
-            }
-            // Assert
-            catch (Exception ex)
-            {
-                Assert.IsNotNull(ex);
-            }
+            //Act
+            var ex = Assert.Throws<TargetInvocationException>(() => rolle.ErzeugeHandlungsschritt(OperationsEnum.polschataVergleichen, information1, null, informationsname, rolle.RolleTyp));
+
+            //Assert
+            Assert.That(ex.Message == "Exception has been thrown by the target of an invocation.");
         }
 
         [Test]
         public void Rolle_SpeicherInformationAb_Erfolg()
         {
             //Arrange
-            Rolle rolle = new Rolle(rolleEnum, alias, passwort, variante);
+            Rolle rolle = new Rolle(rolleEnum, alias, passwort);
+            rolle.BeginneZug("passwort_alice");
             string informationsname = "Bitfolge";
             BitArray arrpol = new BitArray(10, false);
             arrpol[1] = true;
@@ -339,7 +317,8 @@ namespace TestLibrary
         public void Rolle_SpeicherInformationAb_Failed()
         {
             //Arrange
-            Rolle rolle = new Rolle(rolleEnum, alias, passwort, variante);
+            Rolle rolle = new Rolle(rolleEnum, alias, passwort);
+            rolle.BeginneZug("passwort_alice");
             string informationsname = "Bitfolge";
             BitArray arrpol = new BitArray(10, false);
             arrpol[1] = true;
@@ -357,7 +336,8 @@ namespace TestLibrary
         public void Rolle_LoescheInformation_Erfolg()
         {
             //Arrange
-            Rolle rolle = new Rolle(rolleEnum, alias, passwort, variante);
+            Rolle rolle = new Rolle(rolleEnum, alias, passwort);
+            rolle.BeginneZug("passwort_alice");
             string informationsname = "Bitfolge";
             BitArray arrpol = new BitArray(10, false);
             arrpol[1] = true;
@@ -371,7 +351,7 @@ namespace TestLibrary
             //Act
             rolle.SpeicherInformationAb(information1);
             rolle.SpeicherInformationAb(information2);
-            bool erfolg = rolle.LoescheInformation(information1);
+            bool erfolg = rolle.LoescheInformation(information1.InformationsID);
 
             //Assert
             Assert.IsTrue(erfolg);
@@ -382,7 +362,8 @@ namespace TestLibrary
         public void Rolle_LoescheInformation_Failed()
         {
             //Arrange
-            Rolle rolle = new Rolle(rolleEnum, alias, passwort, variante);
+            Rolle rolle = new Rolle(rolleEnum, alias, passwort);
+            rolle.BeginneZug("passwort_alice");
             string informationsname = "Bitfolge";
             BitArray arrpol = new BitArray(10, false);
             arrpol[1] = true;
@@ -395,7 +376,7 @@ namespace TestLibrary
 
             //Act
             rolle.SpeicherInformationAb(information2);
-            bool erfolg = rolle.LoescheInformation(information1);
+            bool erfolg = rolle.LoescheInformation(information1.InformationsID);
 
             //Assert
             Assert.IsFalse(erfolg);
@@ -406,7 +387,8 @@ namespace TestLibrary
         public void Rolle_AktualisiereInformatoinsZaehler_Erfolg()
         {
             //Arrange
-            Rolle rolle = new Rolle(rolleEnum, alias, passwort, variante);
+            Rolle rolle = new Rolle(rolleEnum, alias, passwort);
+            rolle.BeginneZug("passwort_alice");
 
             //Act
             rolle.AktualisiereInformationsZaehler(333);

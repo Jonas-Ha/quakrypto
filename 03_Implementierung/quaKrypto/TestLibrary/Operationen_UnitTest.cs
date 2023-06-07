@@ -13,6 +13,7 @@ using System.Linq;
 using System.Printing.IndexedProperties;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using Microsoft.VisualBasic;
 using NUnit.Framework;
@@ -82,15 +83,10 @@ namespace TestLibrary
             RolleEnum empfaenger = RolleEnum.Bob;
 
             //Act
-            try
-            {
-                Information gesendeteInformation = operationen.NachrichtSenden(2, information, information, "GesendeteNachricht");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.NachrichtSenden(2, information, information, "GesendeteNachricht"));
+            
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand2 nicht vom Typ RolleEnum"));
-            }   
+            Assert.That(ex.Message == "operand2 nicht vom Typ RolleEnum"); 
         }
 
         [Test]
@@ -138,15 +134,10 @@ namespace TestLibrary
             Information information = new Information(1, "Zahl", InformationsEnum.zahl, length, null);
             
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.BitfolgeGenerierenZahl(2, information, null, "Bitfolge");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.BitfolgeGenerierenZahl(2, information, null, "Bitfolge"));
+
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand1 darf nicht negativ sein"));
-            }
+            Assert.That(ex.Message == "operand1 darf nicht negativ sein");
         }
 
         [Test]
@@ -157,15 +148,10 @@ namespace TestLibrary
             Information information = new Information(1, "Zahl", InformationsEnum.zahl, arr, null);
 
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.BitfolgeGenerierenZahl(2, information, null, "Bitfolge");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.BitfolgeGenerierenZahl(2, information, null, "Bitfolge"));
+
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand1 nicht vom Typ Zahl oder ist kein int"));
-            }
+            Assert.That(ex.Message == "operand1 nicht vom Typ Zahl oder ist kein int");
         }
 
         [Test]
@@ -203,16 +189,12 @@ namespace TestLibrary
             int length = 20;
             Information information1 = new Information(1, "Angabe", InformationsEnum.bitfolge, length, null);
             Information information2 = new Information(2, "Zahl", InformationsEnum.zahl, length, null);
-            
+
             //Act
-            try
-            { 
-                Information empfangeneInformation = operationen.BitfolgeGenerierenAngabe(2, information1, information2, "Bitfolge");
-            }
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand1 nicht vom Typ Bitfolge oder ist kein BitArray"));
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.BitfolgeGenerierenAngabe(2, information1, information2, "Bitfolge"));
+
+            //Assert
+            Assert.That(ex.Message == "operand1 nicht vom Typ Bitfolge oder ist kein BitArray");
         }
 
         [Test]
@@ -226,14 +208,10 @@ namespace TestLibrary
             Information information2 = new Information(2, "Zahl", InformationsEnum.zahl, arr, null);
 
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.BitfolgeGenerierenAngabe(2, information1, information2, "Bitfolge");
-            }
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand2 nicht vom Typ Zahl oder ist kein int oder der eingegebene int ist kleiner/gleich 0"));
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.BitfolgeGenerierenAngabe(2, information1, information2, "Bitfolge"));
+
+            //Assert
+            Assert.That(ex.Message == "operand2 nicht vom Typ Zahl oder ist kein int oder der eingegebene int ist kleiner/gleich 0");
         }
 
         [Test]
@@ -246,16 +224,12 @@ namespace TestLibrary
             int length = 0;
             Information information1 = new Information(1, "Angabe", InformationsEnum.bitfolge, arr, null);
             Information information2 = new Information(2, "Zahl", InformationsEnum.zahl, length, null);
-
+            
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.BitfolgeGenerierenAngabe(2, information1, information2, "Bitfolge");
-            }
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand2 nicht vom Typ Zahl oder ist kein int oder der eingegebene int ist kleiner/gleich 0"));
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.BitfolgeGenerierenAngabe(2, information1, information2, "Bitfolge"));
+
+            //Assert
+            Assert.That(ex.Message == "operand2 nicht vom Typ Zahl oder ist kein int oder der eingegebene int ist kleiner/gleich 0");
         }
 
         [Test]
@@ -285,15 +259,10 @@ namespace TestLibrary
             Information information = new Information(1, "Zahl", InformationsEnum.zahl, length, null);
 
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.PolarisationsschemataGenerierenZahl(2, information, null, "Bitfolge");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.PolarisationsschemataGenerierenZahl(2, information, null, "Bitfolge"));
+
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand1 darf nicht negativ sein"));
-            }
+            Assert.That(ex.Message == "operand1 darf nicht negativ sein");
         }
 
         [Test]
@@ -304,15 +273,10 @@ namespace TestLibrary
             Information information = new Information(1, "Zahl", InformationsEnum.zahl, arr, null);
 
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.PolarisationsschemataGenerierenZahl(2, information, null, "Bitfolge");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.PolarisationsschemataGenerierenZahl(2, information, null, "Bitfolge"));
+
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand1 nicht vom Typ Zahl oder ist kein int"));
-            }
+            Assert.That(ex.Message == "operand1 nicht vom Typ Zahl oder ist kein int");
         }
 
         [Test]
@@ -352,14 +316,10 @@ namespace TestLibrary
             Information information2 = new Information(2, "Zahl", InformationsEnum.zahl, length, null);
 
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.PolarisationsschemataGenerierenAngabe(2, information1, information2, "Bitfolge");
-            }
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand1 nicht vom Typ Bitfolge oder ist kein BitArray"));
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.PolarisationsschemataGenerierenAngabe(2, information1, information2, "Bitfolge"));
+
+            //Assert
+            Assert.That(ex.Message == "operand1 nicht vom Typ Bitfolge oder ist kein BitArray");
         }
 
         [Test]
@@ -373,14 +333,10 @@ namespace TestLibrary
             Information information2 = new Information(2, "Zahl", InformationsEnum.zahl, arr, null);
 
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.PolarisationsschemataGenerierenAngabe(2, information1, information2, "Bitfolge");
-            }
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand2 nicht vom Typ Zahl oder ist kein int oder der eingegebene int ist kleiner/gleich 0"));
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.PolarisationsschemataGenerierenAngabe(2, information1, information2, "Bitfolge"));
+
+            //Assert
+            Assert.That(ex.Message == "operand2 nicht vom Typ Zahl oder ist kein int oder der eingegebene int ist kleiner/gleich 0");
         }
 
         [Test]
@@ -395,14 +351,10 @@ namespace TestLibrary
             Information information2 = new Information(2, "Zahl", InformationsEnum.zahl, length, null);
 
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.PolarisationsschemataGenerierenAngabe(2, information1, information2, "Bitfolge");
-            }
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand2 nicht vom Typ Zahl oder ist kein int oder der eingegebene int ist kleiner/gleich 0"));
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.PolarisationsschemataGenerierenAngabe(2, information1, information2, "Bitfolge"));
+
+            //Assert
+            Assert.That(ex.Message == "operand2 nicht vom Typ Zahl oder ist kein int oder der eingegebene int ist kleiner/gleich 0");
         }
 
         [Test]
@@ -443,15 +395,10 @@ namespace TestLibrary
             Information information2 = new Information(2, "Schlüssel", InformationsEnum.bitfolge, arrkey, null);
 
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.PhotonenGenerieren(2, information1, information2, "Bitfolge");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.PhotonenGenerieren(2, information1, information2, "Bitfolge"));
+
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand1 nicht vom Typ polarisationsschemata oder ist kein BitArray"));
-            }
+            Assert.That(ex.Message == "operand1 nicht vom Typ polarisationsschemata oder ist kein BitArray");
         }
 
         [Test]
@@ -465,15 +412,10 @@ namespace TestLibrary
             Information information2 = new Information(2, "Schlüssel", InformationsEnum.zahl, 4, null);
 
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.PhotonenGenerieren(2, information1, information2, "Bitfolge");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.PhotonenGenerieren(2, information1, information2, "Bitfolge"));
+
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand2 nicht vom Typ bitfolge oder ist kein BitArray"));
-            }
+            Assert.That(ex.Message == "operand2 nicht vom Typ bitfolge oder ist kein BitArray");
         }
 
         [Test]
@@ -490,15 +432,10 @@ namespace TestLibrary
             Information information2 = new Information(2, "Schlüssel", InformationsEnum.bitfolge, arrkey, null);
 
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.PhotonenGenerieren(2, information1, information2, "Bitfolge");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.PhotonenGenerieren(2, information1, information2, "Bitfolge"));
+
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("Die Inhalte der beiden Operanden haben nicht die gleiche Länge!"));
-            }
+            Assert.That(ex.Message == "Die Inhalte der beiden Operanden haben nicht die gleiche Länge!");
         }
 
         [Test]
@@ -540,15 +477,10 @@ namespace TestLibrary
             Information information2 = new Information(2, "anzahlEinser", InformationsEnum.zahl, anzahlEinser, null);
 
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.BitmaskeGenerieren(2, information1, information2, "Bitfolge");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.BitmaskeGenerieren(2, information1, information2, "Bitfolge"));
+
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand1 nicht vom Typ Zahl oder ist kein int oder ist <= null"));
-            }
+            Assert.That(ex.Message == "operand1 nicht vom Typ Zahl oder ist kein int oder ist <= null");
         }
 
         [Test]
@@ -561,15 +493,10 @@ namespace TestLibrary
             Information information2 = new Information(2, "anzahlEinser", InformationsEnum.zahl, anzahlEinser, null);
 
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.BitmaskeGenerieren(2, information1, information2, "Bitfolge");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.BitmaskeGenerieren(2, information1, information2, "Bitfolge"));
+
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand1 nicht vom Typ Zahl oder ist kein int oder ist <= null"));
-            }
+            Assert.That(ex.Message == "operand1 nicht vom Typ Zahl oder ist kein int oder ist <= null");
         }
 
         [Test]
@@ -582,15 +509,10 @@ namespace TestLibrary
             Information information2 = new Information(2, "anzahlEinser", InformationsEnum.zahl, anzahlEinser, null);
 
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.BitmaskeGenerieren(2, information1, information2, "Bitfolge");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.BitmaskeGenerieren(2, information1, information2, "Bitfolge"));
+
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand1 nicht vom Typ Zahl oder ist kein int oder ist <= null"));
-            }
+            Assert.That(ex.Message == "operand1 nicht vom Typ Zahl oder ist kein int oder ist <= null");
         }
 
         [Test]
@@ -603,15 +525,10 @@ namespace TestLibrary
             Information information2 = new Information(2, "anzahlEinser", InformationsEnum.zahl, anzahlEinser, null);
 
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.BitmaskeGenerieren(2, information1, information2, "Bitfolge");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.BitmaskeGenerieren(2, information1, information2, "Bitfolge"));
+
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand2 nicht vom Typ Zahl oder ist kein int oder anzahlEinser > LängeBitmaske"));
-            }
+            Assert.That(ex.Message == "operand2 nicht vom Typ Zahl oder ist kein int oder anzahlEinser > LängeBitmaske");
         }
 
         [Test]
@@ -653,15 +570,10 @@ namespace TestLibrary
             Information information2 = new Information(2, "Polarisationsschemata", InformationsEnum.polarisationsschemata, arrpol2, null);
 
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.PolschataVergleichen(2, information1, information2, "Bitfolge");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.PolschataVergleichen(2, information1, information2, "Bitfolge"));
+
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand1 nicht vom Typ Polarisationsschemata oder ist kein Bitarray"));
-            }
+            Assert.That(ex.Message == "operand1 nicht vom Typ Polarisationsschemata oder ist kein Bitarray");
         }
 
         [Test]
@@ -676,17 +588,12 @@ namespace TestLibrary
             arrpol2[3] = true;
             Information information1 = new Information(1, "Polarisationsschemata", InformationsEnum.polarisationsschemata, arrpol1, null);
             Information information2 = new Information(2, "Polarisationsschemata", InformationsEnum.polarisationsschemata, arrpol2, null);
-            
+
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.PolschataVergleichen(2, information1, information2, "Bitfolge");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.PolschataVergleichen(2, information1, information2, "Bitfolge"));
+
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand1 und operand2 sind nicht gleich lang"));
-            }
+            Assert.That(ex.Message == "operand1 und operand2 sind nicht gleich lang");
         }
 
         [Test]
@@ -728,15 +635,10 @@ namespace TestLibrary
             Information information2 = new Information(2, "Bitfolge", InformationsEnum.bitfolge, arrpol2, null);
 
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.BitfolgenVergleichen(2, information1, information2, "Bitfolge");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.BitfolgenVergleichen(2, information1, information2, "Bitfolge"));
+
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand1 nicht vom Typ Bitfolge oder ist kein Bitarray"));
-            }
+            Assert.That(ex.Message == "operand1 nicht vom Typ Bitfolge oder ist kein Bitarray");
         }
 
         [Test]
@@ -753,15 +655,48 @@ namespace TestLibrary
             Information information2 = new Information(2, "Bitfolge", InformationsEnum.bitfolge, arrpol2, null);
 
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.BitfolgenVergleichen(2, information1, information2, "Bitfolge");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.BitfolgenVergleichen(2, information1, information2, "Bitfolge"));
+
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand1 und operand2 sind nicht gleich lang"));
-            }
+            Assert.That(ex.Message == "operand1 und operand2 sind nicht gleich lang");
+        }
+
+        [Test]
+        public void BitfolgeNegieren_Erfolg()
+        {
+            //Arrange
+            BitArray arrpol1 = new BitArray(10, false);
+            arrpol1[1] = true;
+            arrpol1[2] = true;
+            Information information1 = new Information(1, "Bitfolge", InformationsEnum.bitfolge, arrpol1, null);
+
+            //Act
+            Information empfangeneInformation = operationen.BitfolgeNegieren(2, information1, null, "Bitfolge");
+
+            //Assert
+            BitArray erwarteteBitfolge = new BitArray(10, true);
+            erwarteteBitfolge[1] = false;
+            erwarteteBitfolge[2] = false;
+            Information erwarteteInformation = new Information(2, "Bitfolge", InformationsEnum.bitfolge, erwarteteBitfolge, null);
+            Assert.AreEqual(erwarteteInformation.InformationsID, empfangeneInformation.InformationsID);
+            Assert.AreEqual(erwarteteInformation.InformationsName, empfangeneInformation.InformationsName);
+            Assert.AreEqual(erwarteteInformation.InformationsTyp, empfangeneInformation.InformationsTyp);
+            Assert.AreEqual(erwarteteInformation.InformationsInhalt, empfangeneInformation.InformationsInhalt);
+            Assert.AreEqual(erwarteteInformation.InformationsEmpfaenger, empfangeneInformation.InformationsEmpfaenger);
+        }
+
+        [Test]
+        public void BitfolgeNegieren_Failed_KeinBitArray()
+        {
+            //Arrange
+            string keineBitfolge = "Nein";
+            Information information1 = new Information(1, "Bitfolge", InformationsEnum.bitfolge, keineBitfolge, null);
+
+            //Act
+            var ex = Assert.Throws<Exception>(() => operationen.BitfolgeNegieren(2, information1, null, "Bitfolge"));
+
+            //Assert
+            Assert.That(ex.Message == "operand1 nicht vom Typ Bitfolge oder ist kein Bitarray");
         }
 
         [Test]
@@ -831,15 +766,10 @@ namespace TestLibrary
             Information information2 = new Information(2, "unscharfePhotonen", InformationsEnum.unscharfePhotonen, Photonen, null);
 
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.PhotonenZuBitfolge(2, information1, information2, "Bitfolge");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.PhotonenZuBitfolge(2, information1, information2, "Bitfolge"));
+
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand1 nicht vom Typ polarisationsschmata oder ist kein Bitarray"));
-            }
+            Assert.That(ex.Message == "operand1 nicht vom Typ polarisationsschmata oder ist kein Bitarray");
         }
 
         [Test]
@@ -853,15 +783,10 @@ namespace TestLibrary
             Information information2 = new Information(2, "unscharfePhotonen", InformationsEnum.unscharfePhotonen, 4, null);
 
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.PhotonenZuBitfolge(2, information1, information2, "Bitfolge");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.PhotonenZuBitfolge(2, information1, information2, "Bitfolge"));
+
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand2 nicht vom Typ unscharfePhotonen oder ist kein byte[]"));
-            }
+            Assert.That(ex.Message == "operand2 nicht vom Typ unscharfePhotonen oder ist kein byte[]");
         }
 
         [Test]
@@ -876,15 +801,10 @@ namespace TestLibrary
             Information information2 = new Information(2, "unscharfePhotonen", InformationsEnum.unscharfePhotonen, Photonen, null);
 
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.PhotonenZuBitfolge(2, information1, information2, "Bitfolge");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.PhotonenZuBitfolge(2, information1, information2, "Bitfolge"));
+
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand1 und operand2 sind nicht gleich lang"));
-            }
+            Assert.That(ex.Message == "operand1 und operand2 sind nicht gleich lang");
         }
 
         [Test]
@@ -899,15 +819,72 @@ namespace TestLibrary
             Information information2 = new Information(2, "unscharfePhotonen", InformationsEnum.unscharfePhotonen, Photonen, null);
 
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.PhotonenZuBitfolge(2, information1, information2, "Bitfolge");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.PhotonenZuBitfolge(2, information1, information2, "Bitfolge"));
+
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand1 nicht vom Typ polarisationsschmata oder ist kein Bitarray"));
-            }
+            Assert.That(ex.Message == "operand1 nicht vom Typ polarisationsschmata oder ist kein Bitarray");
+        }
+
+        [Test]
+        public void TextGenerieren_Erfolg()
+        {
+            //Arrange
+            string text = "Hällo";
+
+            //Act
+            Information empfangeneInformation = operationen.TextGenerieren(2, null, text, "text");
+
+            //Assert
+            Information erwarteteInformation = new Information(2, "text", InformationsEnum.asciiText, text, null);
+            Assert.AreEqual(erwarteteInformation.InformationsID, empfangeneInformation.InformationsID);
+            Assert.AreEqual(erwarteteInformation.InformationsName, empfangeneInformation.InformationsName);
+            Assert.AreEqual(erwarteteInformation.InformationsTyp, empfangeneInformation.InformationsTyp);
+            Assert.AreEqual(erwarteteInformation.InformationsInhalt, empfangeneInformation.InformationsInhalt);
+            Assert.AreEqual(erwarteteInformation.InformationsEmpfaenger, empfangeneInformation.InformationsEmpfaenger);
+        }
+
+        [Test]
+        public void TextGenerieren_Failed_Falscher_Typ()
+        {
+            //Arrange
+            int zahl = 24234234;
+
+            var ex = Assert.Throws<Exception>(() => operationen.TextGenerieren(2, null, zahl, "Zahl"));
+            Assert.That(ex.Message == "operand2 ist nicht vom Typ string");
+        }
+
+        [Test]
+        public void TextLaengeBestimmen_Erfolg()
+        {
+            //Arrange
+            string text = "Hällo";
+            int length = 48;
+            Information information1 = new Information(1, "Text", InformationsEnum.asciiText, text, null);
+
+            //Act
+            Information empfangeneInformation = operationen.TextLaengeBestimmen(2, information1, null, "zahl");
+
+            //Assert
+            Information erwarteteInformation = new Information(2, "zahl", InformationsEnum.zahl, length, null);
+            Assert.AreEqual(erwarteteInformation.InformationsID, empfangeneInformation.InformationsID);
+            Assert.AreEqual(erwarteteInformation.InformationsName, empfangeneInformation.InformationsName);
+            Assert.AreEqual(erwarteteInformation.InformationsTyp, empfangeneInformation.InformationsTyp);
+            Assert.AreEqual(erwarteteInformation.InformationsInhalt, empfangeneInformation.InformationsInhalt);
+            Assert.AreEqual(erwarteteInformation.InformationsEmpfaenger, empfangeneInformation.InformationsEmpfaenger);
+        }
+
+        [Test]
+        public void TextLaengeBestimmen_Failed_FalscherTyp()
+        {
+            //Arrange
+            int length = 48;
+            Information information1 = new Information(1, "Text", InformationsEnum.asciiText, length, null);
+
+            //Act
+            var ex = Assert.Throws<Exception>(() => operationen.TextLaengeBestimmen(2, information1, null, "zahl"));
+
+            //Assert
+            Assert.That(ex.Message == "operand1 nicht vom Typ asciiText oder ist kein string");
         }
 
         [Test]
@@ -947,15 +924,10 @@ namespace TestLibrary
             Information information2 = new Information(2, "schluessel", InformationsEnum.bitfolge, schluessel, null);
 
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.TextVerschluesseln(2, information1, information2, "VerschlüsselterText");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.TextVerschluesseln(2, information1, information2, "VerschlüsselterText"));
+
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand1 nicht vom Typ Text oder ist kein String"));
-            }
+            Assert.That(ex.Message == "operand1 nicht vom Typ Text oder ist kein String");
         }
 
         [Test]
@@ -967,15 +939,10 @@ namespace TestLibrary
             Information information2 = new Information(2, "schluessel", InformationsEnum.bitfolge, 4, null);
 
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.TextVerschluesseln(2, information1, information2, "VerschlüsselterText");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.TextVerschluesseln(2, information1, information2, "VerschlüsselterText"));
+
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand2 nicht vom Typ bitfolge oder ist kein BitArray"));
-            }
+            Assert.That(ex.Message == "operand2 nicht vom Typ bitfolge oder ist kein BitArray");
         }
 
         [Test]
@@ -993,15 +960,10 @@ namespace TestLibrary
             Information information2 = new Information(2, "schluessel", InformationsEnum.bitfolge, schluessel, null);
 
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.TextVerschluesseln(2, information1, information2, "VerschlüsselterText");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.TextVerschluesseln(2, information1, information2, "VerschlüsselterText"));
+
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("Der Schlüssel ist zu kurz zum Verschlüsseln"));
-            }
+            Assert.That(ex.Message == "Der Schlüssel ist zu kurz zum Verschlüsseln");
         }
 
         [Test]
@@ -1018,15 +980,10 @@ namespace TestLibrary
             Information information2 = new Information(2, "schluessel", InformationsEnum.bitfolge, schluessel, null);
 
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.TextEntschluesseln(2, information1, information2, "VerschlüsselterText");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.TextEntschluesseln(2, information1, information2, "VerschlüsselterText"));
+
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand1 nicht vom Typ VerschlüsselterText oder ist kein String"));
-            }
+            Assert.That(ex.Message == "operand1 nicht vom Typ VerschlüsselterText oder ist kein String");
         }
 
         [Test]
@@ -1046,15 +1003,10 @@ namespace TestLibrary
             Information KeinKey = new Information(2, "schluessel", InformationsEnum.bitfolge, 4, null);
 
             //Act
-            try
-            {
-                Information entschluesselterInfo = operationen.TextEntschluesseln(2, empfangeneInformation, KeinKey, "VerschlüsselterText");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.TextEntschluesseln(2, empfangeneInformation, KeinKey, "VerschlüsselterText"));
+
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand2 nicht vom Typ bitfolge oder ist kein BitArray"));
-            }
+            Assert.That(ex.Message == "operand2 nicht vom Typ bitfolge oder ist kein BitArray");
         }
 
         [Test]
@@ -1072,7 +1024,7 @@ namespace TestLibrary
             Information information2 = new Information(2, "schluessel", InformationsEnum.bitfolge, schluessel, null);
             Information empfangeneInformation = operationen.TextVerschluesseln(2, information1, information2, "VerschlüsselterText");
             int length2 = 10;
-            BitArray schluessel2 = new BitArray(length, false);
+            BitArray schluessel2 = new BitArray(length2, false);
             for (int i = 0; i < length2; i++)
             {
                 schluessel2[i] = (i % 2) == 1 ? true : false;
@@ -1080,15 +1032,10 @@ namespace TestLibrary
             Information KurzerKey = new Information(2, "schluessel", InformationsEnum.bitfolge, schluessel2, null);
 
             //Act
-            try
-            {
-                Information entschluesselterInfo = operationen.TextEntschluesseln(2, empfangeneInformation, KurzerKey, "VerschlüsselterText");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.TextEntschluesseln(2, empfangeneInformation, KurzerKey, "VerschlüsselterText"));
+
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("Der Schlüssel ist zu kurz zum Entschlüsseln"));
-            }
+            Assert.That(ex.Message == "Der Schlüssel ist zu kurz zum Entschlüsseln");
         }
 
         [Test]
@@ -1131,15 +1078,10 @@ namespace TestLibrary
             Information information2 = new Information(2, "zustreichen", InformationsEnum.bitfolge, zustreichen, null);
 
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.BitsStreichen(2, information1, information2, "GekürzteFolge");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.BitsStreichen(2, information1, information2, "GekürzteFolge"));
+
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand1 nicht vom Typ bitfolge oder ist kein BitArray"));
-            }
+            Assert.That(ex.Message == "operand1 nicht vom Typ bitfolge oder ist kein BitArray");
         }
 
         [Test]
@@ -1155,15 +1097,10 @@ namespace TestLibrary
             Information information2 = new Information(2, "zustreichen", InformationsEnum.bitfolge, zustreichen, null);
 
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.BitsStreichen(2, information1, information2, "GekürzteFolge");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.BitsStreichen(2, information1, information2, "GekürzteFolge"));
+
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand1 nicht vom Typ bitfolge oder ist kein BitArray"));
-            }
+            Assert.That(ex.Message == "operand1 nicht vom Typ bitfolge oder ist kein BitArray");
         }
 
         [Test]
@@ -1179,15 +1116,10 @@ namespace TestLibrary
             Information information2 = new Information(2, "zustreichen", InformationsEnum.bitfolge, zustreichen, null);
 
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.BitsStreichen(2, information1, information2, "GekürzteFolge");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.BitsStreichen(2, information1, information2, "GekürzteFolge"));
+
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand1 und operand2 sind nicht gleich lang"));
-            }
+            Assert.That(ex.Message == "operand1 und operand2 sind nicht gleich lang");
         }
 
         [Test]
@@ -1223,15 +1155,10 @@ namespace TestLibrary
             Information information1 = new Information(1, "zielArray", InformationsEnum.asciiText, zielArray, null);
 
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.BitsFreiBearbeiten(2, information1, null, "BearbeiteteBits");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.BitsFreiBearbeiten(2, information1, null, "BearbeiteteBits"));
+
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand1 nicht vom Typ bitfolge oder ist kein BitArray"));
-            }
+            Assert.That(ex.Message == "operand1 nicht vom Typ bitfolge oder ist kein BitArray");
         }
 
         [Test]
@@ -1241,15 +1168,55 @@ namespace TestLibrary
             Information information1 = new Information(1, "zielArray", InformationsEnum.bitfolge, 4, null);
 
             //Act
-            try
-            {
-                Information empfangeneInformation = operationen.BitsFreiBearbeiten(2, information1, null, "BearbeiteteBits");
-            }
+            var ex = Assert.Throws<Exception>(() => operationen.BitsFreiBearbeiten(2, information1, null, "BearbeiteteBits"));
+
             //Assert
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.Message.Equals("operand1 nicht vom Typ bitfolge oder ist kein BitArray"));
-            }
+            Assert.That(ex.Message == "operand1 nicht vom Typ bitfolge oder ist kein BitArray");
+        }
+
+        [Test]
+        public void ZahlGenerieren_Erfolg()
+        {
+            //Arrange
+            int zahl = 24234234;
+
+            //Act
+            Information empfangeneInformation = operationen.ZahlGenerieren(2, null, zahl, "Zahl");
+
+            //Assert
+            Information erwarteteInformation = new Information(2, "Zahl", InformationsEnum.zahl, zahl, null);
+            Assert.AreEqual(erwarteteInformation.InformationsID, empfangeneInformation.InformationsID);
+            Assert.AreEqual(erwarteteInformation.InformationsName, empfangeneInformation.InformationsName);
+            Assert.AreEqual(erwarteteInformation.InformationsTyp, empfangeneInformation.InformationsTyp);
+            Assert.AreEqual(erwarteteInformation.InformationsInhalt, empfangeneInformation.InformationsInhalt);
+            Assert.AreEqual(erwarteteInformation.InformationsEmpfaenger, empfangeneInformation.InformationsEmpfaenger);
+        }
+
+        [Test]
+        public void ZahlGenerieren_Failed_Falscher_Typ()
+        {
+            //Arrange
+            string zahl = "24234234";
+
+            //Act
+            var ex = Assert.Throws<Exception>(() => operationen.ZahlGenerieren(2, null, zahl, "Zahl"));
+
+            //Assert
+            Assert.That(ex.Message == "operand2 ist nicht vom Typ int");
+
+        }
+
+        [Test]
+        public void ZahlGenerieren_Failed_Falscher_Typ_long()
+        {
+            //Arrange
+            long zahl = 24234234;
+
+            //Act
+            var ex = Assert.Throws<Exception>(() => operationen.ZahlGenerieren(2, null, zahl, "Zahl"));
+
+            //Assert
+            Assert.That(ex.Message == "operand2 ist nicht vom Typ int");
         }
 
         [Test]
