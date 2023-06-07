@@ -16,9 +16,6 @@
             <DataTemplate DataType="{x:Type viewmodels:AufzeichnungViewModel}">
                 <views:AufzeichnungView/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewmodels:BenutzerFestlegenViewModel}">
-                <views:BenutzerFestlegenView/>
-            </DataTemplate>
             <DataTemplate DataType="{x:Type viewmodels:LobbyBeitrittViewModel}">
                 <views:LobbyBeitrittView/>
             </DataTemplate>

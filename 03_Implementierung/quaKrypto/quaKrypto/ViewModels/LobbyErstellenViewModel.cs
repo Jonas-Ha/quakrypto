@@ -28,43 +28,29 @@ namespace quaKrypto.ViewModels
             }, null);
             LobbyErstellen = new((o) =>
             {
+                IVariante ausgewaehlteVariante;
+                if (AusgVariante == 0)
+                {
+                    ausgewaehlteVariante = new VarianteNormalerAblauf((uint)AusgPhaseStart);
+                }
+                else if (AusgVariante == 1)
+                {
+                    ausgewaehlteVariante = new VarianteAbhoeren((uint)AusgPhaseStart);
+                }
+                else
+                {
+                    ausgewaehlteVariante = new VarianteManInTheMiddle((uint)AusgPhaseStart);
+                }
+
                 if (NetzwerkBasiert)
                 {
                     UebungsszenarioNetzwerkBeitrittInfo ErstelltesSzenarioInfo = new UebungsszenarioNetzwerkBeitrittInfo(IPAddress.Any, LobbyName, Protokoll[AusgProtokoll], VarianteAuswahl[AusgVariante], AusgSchwierigkeit == 0 ? SchwierigkeitsgradEnum.leicht : AusgSchwierigkeit == 1 ? SchwierigkeitsgradEnum.mittel : SchwierigkeitsgradEnum.schwer, false, false, false);
                     NetzwerkHost.BeginneZyklischesSendenVonLobbyinformation(ErstelltesSzenarioInfo);
-
-                    IVariante ausgewaehlteVariante;
-                    if (AusgVariante == 0)
-                    {
-                        ausgewaehlteVariante = new VarianteNormalerAblauf((uint)AusgPhaseStart);
-                    }
-                    else if (AusgVariante == 1)
-                    {
-                        ausgewaehlteVariante = new VarianteAbhoeren((uint)AusgPhaseStart);
-                    }
-                    else
-                    {
-                        ausgewaehlteVariante = new VarianteManInTheMiddle((uint)AusgPhaseStart);
-                    }
                     UebungsszenarioNetzwerk uebungsszenarioNetzwerk = new UebungsszenarioNetzwerk(AusgSchwierigkeit == 0 ? SchwierigkeitsgradEnum.leicht : AusgSchwierigkeit == 1 ? SchwierigkeitsgradEnum.mittel : SchwierigkeitsgradEnum.schwer, ausgewaehlteVariante, (uint)AusgPhaseStart, (uint)AusgPhaseEnd);
                     navigator.aktuellesViewModel = new LobbyScreenViewModel(navigator, uebungsszenarioNetzwerk);
                 }
                 else
-                {
-                    
-                    IVariante ausgewaehlteVariante;
-                    if (AusgVariante == 0)
-                    {
-                        ausgewaehlteVariante = new VarianteNormalerAblauf((uint)AusgPhaseStart);
-                    }
-                    else if (AusgVariante == 1)
-                    {
-                        ausgewaehlteVariante = new VarianteAbhoeren((uint)AusgPhaseStart);
-                    }
-                    else
-                    {
-                        ausgewaehlteVariante = new VarianteManInTheMiddle((uint)AusgPhaseStart);
-                    }
+                {                 
                     UebungsszenarioLokal uebungsszenarioLokal = new UebungsszenarioLokal(AusgSchwierigkeit == 0 ? SchwierigkeitsgradEnum.leicht : AusgSchwierigkeit == 1 ? SchwierigkeitsgradEnum.mittel : SchwierigkeitsgradEnum.schwer, ausgewaehlteVariante, (uint)AusgPhaseStart, (uint)AusgPhaseEnd);
                     navigator.aktuellesViewModel = new LobbyScreenViewModel(navigator, uebungsszenarioLokal);
                 }
