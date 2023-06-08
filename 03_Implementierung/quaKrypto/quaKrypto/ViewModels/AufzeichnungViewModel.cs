@@ -3,6 +3,7 @@ using quaKrypto.Models.Classes;
 using quaKrypto.Models.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace quaKrypto.ViewModels
     {
         private IUebungsszenario uebungsszenario;
 
-        public List<Handlungsschritt> Handlungsschritte 
+        public ObservableCollection<Handlungsschritt> Handlungsschritte 
         {
             get { return uebungsszenario.Aufzeichnung.Handlungsschritte; }
         }
