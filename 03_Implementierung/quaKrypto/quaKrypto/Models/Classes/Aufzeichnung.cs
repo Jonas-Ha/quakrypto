@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,14 +16,14 @@ namespace quaKrypto.Models.Classes
 {
     public class Aufzeichnung
     {
-        private List<Handlungsschritt> handlungsschritte;
+        private ObservableCollection<Handlungsschritt> handlungsschritte;
 
         public Aufzeichnung()
         {
-            this.handlungsschritte = new List<Handlungsschritt>();
+            this.handlungsschritte = new ObservableCollection<Handlungsschritt>();
         }
 
-        public List<Handlungsschritt>? Handlungsschritte
+        public ObservableCollection<Handlungsschritt>? Handlungsschritte
         {
             get { return handlungsschritte; }
         }
