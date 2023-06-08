@@ -30,6 +30,9 @@ namespace quaKrypto.Models.Classes
         public string Lobbyname { get; set; }
         public string Protokoll { get; set; }
         public string Variante { get; set; }
+
+        public uint StartPhase { get; set; }
+        public uint EndPhase { get; set; }
         public SchwierigkeitsgradEnum Schwierigkeitsgrad { get; set; }
         public BitmapImage AliceIcon { get { return new BitmapImage(new Uri(AliceState?"pack://application:,,,/Icons/Spiel/Alice/Alice_128px.png": "pack://application:,,,/Icons/Spiel/Alice/Alice_128px_grey.png")); }}
         public BitmapImage BobIcon { get { return new BitmapImage(new Uri(BobState? "pack://application:,,,/Icons/Spiel/Bob/Bob_128px.png" : "pack://application:,,,/Icons/Spiel/Bob/Bob_128px_grey.png")); } }
