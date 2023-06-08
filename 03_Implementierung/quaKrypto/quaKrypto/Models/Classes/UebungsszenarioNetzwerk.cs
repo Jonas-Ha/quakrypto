@@ -33,7 +33,6 @@ namespace quaKrypto.Models.Classes
         public UebungsszenarioNetzwerk(SchwierigkeitsgradEnum schwierigkeitsgrad, IVariante variante, uint startPhase, uint endPhase, string name)
         {
             this.rollen = new List<Rolle>();
-            this.aktuelleRolle = null;
             this.schwierigkeitsgrad = schwierigkeitsgrad;
             this.variante = variante;
             this.startPhase = startPhase;

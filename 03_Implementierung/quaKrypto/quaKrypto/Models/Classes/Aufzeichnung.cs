@@ -32,10 +32,5 @@ namespace quaKrypto.Models.Classes
         {
             this.handlungsschritte.Add(handlungsschritt);
         }
-
-        public void HaengeListeHandlungsschritteAn(List<Handlungsschritt> handlungsschritte)
-        {
-            this.handlungsschritte.AddRange(handlungsschritte);
-        }
     }
 }
