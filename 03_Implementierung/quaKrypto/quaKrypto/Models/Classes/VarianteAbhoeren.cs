@@ -13,13 +13,16 @@ using System.Threading.Tasks;
 using quaKrypto.Models.Interfaces;
 using quaKrypto.Models.Enums;
 using System.Collections.Specialized;
+using System.Collections.ObjectModel;
 
 namespace quaKrypto.Models.Classes
 {
     public class VarianteAbhoeren : IVariante
     {
         private uint aktuellePhase;
-        private List<RolleEnum> moeglicheRollen = new List<RolleEnum> { RolleEnum.Alice, RolleEnum.Bob };
+        public readonly IList<RolleEnum> moeglicheRollen = new ReadOnlyCollection<RolleEnum>
+            (new List<RolleEnum> { RolleEnum.Alice, RolleEnum.Bob, RolleEnum.Eve });
+        
 
         private RolleEnum vorherigeRolle;
         private RolleEnum aktuelleRolle;
@@ -44,9 +47,9 @@ namespace quaKrypto.Models.Classes
             get { return "BB84"; }
         }
 
-        public List<RolleEnum> MoeglicheRollen
-        {
-            get { return moeglicheRollen; }
+        public IList<RolleEnum> MoeglicheRollen
+        { 
+            get { return moeglicheRollen; } 
         }
 
         public VarianteAbhoeren(uint startPhase)

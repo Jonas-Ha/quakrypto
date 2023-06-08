@@ -44,6 +44,7 @@ namespace quaKrypto.Models.Classes
         }
 
         public ReadOnlyCollection<Rolle> Rollen { get; }
+        public Rolle AktuelleRolle { get { return aktuelleRolle; } }
         public SchwierigkeitsgradEnum Schwierigkeitsgrad { get; }
         public IVariante Variante { get; }
         public uint StartPhase { get; }
@@ -61,7 +62,7 @@ namespace quaKrypto.Models.Classes
             throw new NotImplementedException();
         }
 
-        public void Starten()
+        public bool Starten()
         {
             throw new NotImplementedException();
         }
