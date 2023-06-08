@@ -22,6 +22,9 @@ namespace quaKrypto.Models.Interfaces
         public ReadOnlyCollection<Rolle> Rollen
         { get; }
 
+        public Rolle AktuelleRolle
+        { get; }
+
         public Enums.SchwierigkeitsgradEnum Schwierigkeitsgrad
         { get; }
 
@@ -53,7 +56,7 @@ namespace quaKrypto.Models.Interfaces
         public void GebeRolleFrei(RolleEnum rolle);
 
         //Wird aufgerufen wenn das Spiel gestartet wird.
-        public void Starten();
+        public bool Starten();
 
         //Wird aufgerufen wenn ein Benutzer auf Zug Beenden klickt
         //Gibt false zurück wenn das Übungsszenario durchgespielt wurde

@@ -18,26 +18,26 @@ namespace quaKrypto.Models.Classes
     public class Operationen
     {
         //Operand1 enthält zu sendende Information, operand2 enthält den Empfänger der Information
-        public Information NachrichtSenden(uint informationsID, Information operand1, Object operand2, String ergebnisName)
+        public Information NachrichtSenden(uint informationsID, Information operand1, Information operand2, String ergebnisName)
         {
             if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {
                 throw new ArgumentNullException("Object reference not set to an instance of an object");
             }
 
-            if (!(operand2.GetType().Equals(typeof(RolleEnum))))
+            if (!(operand2.InformationsInhalt.GetType().Equals(typeof(RolleEnum))))
             {
                 throw new Exception("operand2 nicht vom Typ RolleEnum");
             }
 
-            RolleEnum empfaenger = (RolleEnum)operand2;
+            RolleEnum empfaenger = (RolleEnum) operand2.InformationsInhalt;
             
             if(operand1.InformationsTyp == InformationsEnum.photonen)
             {
                 return new Information(informationsID, ergebnisName, InformationsEnum.unscharfePhotonen, operand1.InformationsInhalt, empfaenger);
             }
 
-            return new Information(informationsID, ergebnisName,operand1.InformationsTyp, operand1.InformationsInhalt, empfaenger);
+            return new Information(informationsID, ergebnisName, operand1.InformationsTyp, operand1.InformationsInhalt, empfaenger);
         }
 
         //Operand1 enthält die zu empfangende Information, operand2 null
@@ -416,19 +416,19 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 = null, Operand2 = Eingegebener Text
-        public Information TextGenerieren(uint informationsID, Information? operand1, object operand2, String ergebnisName)
+        public Information TextGenerieren(uint informationsID, Information? operand1, Information operand2, String ergebnisName)
         {
             if (informationsID == null || operand2 == null || ergebnisName == null)
             {
                 throw new ArgumentNullException("Object reference not set to an instance of an object");
             }
 
-            if (!operand2.GetType().Equals(typeof(string)))
+            if (!operand2.InformationsInhalt.GetType().Equals(typeof(string)))
             {
                 throw new Exception("operand2 ist nicht vom Typ string");
             }
 
-            return new Information(informationsID, ergebnisName, InformationsEnum.asciiText, operand2, null);
+            return new Information(informationsID, ergebnisName, InformationsEnum.asciiText, operand2.InformationsInhalt, null);
         }
 
         //Operand1 = Text Information, Operand2 = null
@@ -594,7 +594,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 = null,  Operand2 = Zahl per Eingabe
-        public Information ZahlGenerieren(uint informationsID, Information? operand1, object operand2, String ergebnisName)
+        public Information ZahlGenerieren(uint informationsID, Information? operand1, Information operand2, String ergebnisName)
         {
 
             if (informationsID == null|| operand2 == null || ergebnisName == null)
@@ -602,12 +602,12 @@ namespace quaKrypto.Models.Classes
                 throw new ArgumentNullException("Object reference not set to an instance of an object");
             }
 
-            if(!operand2.GetType().Equals(typeof(int)))
+            if(!operand2.InformationsInhalt.GetType().Equals(typeof(int)))
             {
                 throw new Exception("operand2 ist nicht vom Typ int");
             }
             
-            return new Information(informationsID, ergebnisName, InformationsEnum.zahl, operand2, null);
+            return new Information(informationsID, ergebnisName, InformationsEnum.zahl, operand2.InformationsInhalt, null);
         }
 
         //Operand1 = null, Operand2 = null
