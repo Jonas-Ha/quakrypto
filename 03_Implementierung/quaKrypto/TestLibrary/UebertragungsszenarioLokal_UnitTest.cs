@@ -180,12 +180,13 @@ namespace TestLibrary
             Assert.AreEqual(rolle, Ueb.AktuelleRolle);
             Assert.IsTrue(Ueb.AktuelleRolle.BeginneZug(passwort));
 
-            string text = "HelloWorld";
-            int laenge = 80;
+            Information text = new Information(0, "text", InformationsEnum.asciiText, "HelloWorld", null);
+            Information laenge = new Information(0, "laenge", InformationsEnum.zahl, 80, null);
+
             Information erg1 = Ueb.HandlungsschrittAusführenLassen(OperationsEnum.textGenerieren, null, text, "NameDerInfo", Ueb.AktuelleRolle.RolleTyp);
             Information erg2 = Ueb.HandlungsschrittAusführenLassen(OperationsEnum.textLaengeBestimmen, erg1, null, "TextLaenge", Ueb.AktuelleRolle.RolleTyp);
-            Assert.AreEqual(text, erg1.InformationsInhalt);
-            Assert.AreEqual(laenge, erg2.InformationsInhalt);
+            Assert.AreEqual(text.InformationsInhalt, erg1.InformationsInhalt);
+            Assert.AreEqual(laenge.InformationsInhalt, erg2.InformationsInhalt);
 
             Ueb.NaechsterZug();
             Assert.IsTrue(Ueb.GebeBildschirmFrei(passwortBob));
@@ -240,8 +241,9 @@ namespace TestLibrary
             Assert.AreEqual(rolle, Ueb.AktuelleRolle);
             Assert.IsTrue(Ueb.AktuelleRolle.BeginneZug(passwort));
 
-            string text = "HelloWorld";
-            int laenge = 80;
+            Information text = new Information(0, "text", InformationsEnum.asciiText, "HelloWorld", null);
+            Information laenge = new Information(0, "laenge", InformationsEnum.zahl, 80, null);
+
             Information erg1 = Ueb.HandlungsschrittAusführenLassen(OperationsEnum.textGenerieren, null, text, "NameDerInfo", Ueb.AktuelleRolle.RolleTyp);
             Information erg2 = Ueb.HandlungsschrittAusführenLassen(OperationsEnum.textLaengeBestimmen, erg1, null, "TextLaenge", Ueb.AktuelleRolle.RolleTyp);
 
@@ -269,8 +271,9 @@ namespace TestLibrary
             Assert.AreEqual(rolle, Ueb.AktuelleRolle);
             Assert.IsTrue(Ueb.AktuelleRolle.BeginneZug(passwort));
 
-            string text = "HelloWorld";
-            int laenge = 80;
+            Information text = new Information(0, "text", InformationsEnum.asciiText, "HelloWorld", null);
+            Information laenge = new Information(0, "laenge", InformationsEnum.zahl, 80, null);
+
             Information erg1 = Ueb.HandlungsschrittAusführenLassen(OperationsEnum.textGenerieren, null, text, "NameDerInfo", Ueb.AktuelleRolle.RolleTyp);
             Information erg2 = Ueb.HandlungsschrittAusführenLassen(OperationsEnum.textLaengeBestimmen, erg1, null, "TextLaenge", Ueb.AktuelleRolle.RolleTyp);
 

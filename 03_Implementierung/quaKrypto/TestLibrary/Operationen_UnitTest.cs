@@ -35,13 +35,13 @@ namespace TestLibrary
             //Arrange
             
             Information information = new Information(1, "Bitfolge", InformationsEnum.bitfolge, new BitArray(10, true), null);
-            RolleEnum empfaenger = RolleEnum.Bob;
+            Information empfaenger = new Information(0, "Empfaenger", InformationsEnum.zahl, RolleEnum.Bob, null);
 
             //Act
             Information gesendeteInformation = operationen.NachrichtSenden(2, information, empfaenger, "GesendeteNachricht");
 
             //Assert
-            Information erwarteteInformation = new Information(2, "GesendeteNachricht", InformationsEnum.bitfolge, new BitArray(10, true), empfaenger);
+            Information erwarteteInformation = new Information(2, "GesendeteNachricht", InformationsEnum.bitfolge, new BitArray(10, true), (RolleEnum) empfaenger.InformationsInhalt);
             Assert.AreEqual(erwarteteInformation.InformationsID, gesendeteInformation.InformationsID);
             Assert.AreEqual(erwarteteInformation.InformationsName, gesendeteInformation.InformationsName);
             Assert.AreEqual(erwarteteInformation.InformationsTyp, gesendeteInformation.InformationsTyp);
@@ -61,13 +61,13 @@ namespace TestLibrary
             }
             
             Information information = new Information(1, "Photonen", InformationsEnum.photonen, photonen, null);
-            RolleEnum empfaenger = RolleEnum.Bob;
+            Information empfaenger = new Information(0, "Empfaenger", InformationsEnum.zahl, RolleEnum.Bob, null);
 
             //Act
             Information gesendeteInformation = operationen.NachrichtSenden(2, information, empfaenger, "GesendeteNachricht");
 
             //Assert
-            Information erwarteteInformation = new Information(2, "GesendeteNachricht", InformationsEnum.unscharfePhotonen, photonen, empfaenger);
+            Information erwarteteInformation = new Information(2, "GesendeteNachricht", InformationsEnum.unscharfePhotonen, photonen, (RolleEnum) empfaenger.InformationsInhalt);
             Assert.AreEqual(erwarteteInformation.InformationsID, gesendeteInformation.InformationsID);
             Assert.AreEqual(erwarteteInformation.InformationsName, gesendeteInformation.InformationsName);
             Assert.AreEqual(erwarteteInformation.InformationsTyp, gesendeteInformation.InformationsTyp);
@@ -829,13 +829,13 @@ namespace TestLibrary
         public void TextGenerieren_Erfolg()
         {
             //Arrange
-            string text = "Hällo";
-
+            Information text = new Information(0, "Test", InformationsEnum.asciiText, "Hällo", null);
+            
             //Act
-            Information empfangeneInformation = operationen.TextGenerieren(2, null, text, "text");
+            Information empfangeneInformation = operationen.TextGenerieren(2, null, text, "Test");
 
             //Assert
-            Information erwarteteInformation = new Information(2, "text", InformationsEnum.asciiText, text, null);
+            Information erwarteteInformation = new Information(2, "Test", InformationsEnum.asciiText, text.InformationsInhalt, null);
             Assert.AreEqual(erwarteteInformation.InformationsID, empfangeneInformation.InformationsID);
             Assert.AreEqual(erwarteteInformation.InformationsName, empfangeneInformation.InformationsName);
             Assert.AreEqual(erwarteteInformation.InformationsTyp, empfangeneInformation.InformationsTyp);
@@ -847,7 +847,7 @@ namespace TestLibrary
         public void TextGenerieren_Failed_Falscher_Typ()
         {
             //Arrange
-            int zahl = 24234234;
+            Information zahl = new Information(0, "Zahl", InformationsEnum.zahl, 24234234, null);
 
             var ex = Assert.Throws<Exception>(() => operationen.TextGenerieren(2, null, zahl, "Zahl"));
             Assert.That(ex.Message == "operand2 ist nicht vom Typ string");
@@ -1178,13 +1178,13 @@ namespace TestLibrary
         public void ZahlGenerieren_Erfolg()
         {
             //Arrange
-            int zahl = 24234234;
+            Information zahl = new Information(0, "Zahl", InformationsEnum.zahl, 24234234, null);
 
             //Act
             Information empfangeneInformation = operationen.ZahlGenerieren(2, null, zahl, "Zahl");
 
             //Assert
-            Information erwarteteInformation = new Information(2, "Zahl", InformationsEnum.zahl, zahl, null);
+            Information erwarteteInformation = new Information(2, "Zahl", InformationsEnum.zahl, zahl.InformationsInhalt, null);
             Assert.AreEqual(erwarteteInformation.InformationsID, empfangeneInformation.InformationsID);
             Assert.AreEqual(erwarteteInformation.InformationsName, empfangeneInformation.InformationsName);
             Assert.AreEqual(erwarteteInformation.InformationsTyp, empfangeneInformation.InformationsTyp);
@@ -1196,7 +1196,7 @@ namespace TestLibrary
         public void ZahlGenerieren_Failed_Falscher_Typ()
         {
             //Arrange
-            string zahl = "24234234";
+            Information zahl = new Information(0, "Zahl", InformationsEnum.zahl, "string", null);
 
             //Act
             var ex = Assert.Throws<Exception>(() => operationen.ZahlGenerieren(2, null, zahl, "Zahl"));
@@ -1210,7 +1210,7 @@ namespace TestLibrary
         public void ZahlGenerieren_Failed_Falscher_Typ_long()
         {
             //Arrange
-            long zahl = 24234234;
+            Information zahl = new Information(0, "Zahl", InformationsEnum.zahl, (long) 24234234, null);
 
             //Act
             var ex = Assert.Throws<Exception>(() => operationen.ZahlGenerieren(2, null, zahl, "Zahl"));

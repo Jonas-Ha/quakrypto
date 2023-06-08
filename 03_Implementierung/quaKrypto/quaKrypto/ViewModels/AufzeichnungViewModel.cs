@@ -1,4 +1,5 @@
 ﻿using quaKrypto.Commands;
+using quaKrypto.Models.Classes;
 using quaKrypto.Models.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,13 @@ namespace quaKrypto.ViewModels
     {
         private IUebungsszenario uebungsszenario;
 
+        public List<Handlungsschritt> Handlungsschritte 
+        {
+            get { return uebungsszenario.Aufzeichnung.Handlungsschritte; }
+        }
+
         public DelegateCommand HauptMenu { get; set; }
+
         public AufzeichnungViewModel(Navigator navigator, IUebungsszenario uebungsszenario)
         {
             this.uebungsszenario = uebungsszenario;
