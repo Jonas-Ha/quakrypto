@@ -63,7 +63,7 @@ namespace quaKrypto.ViewModels
                 };
                 IUebungsszenario uebungsszenario = new UebungsszenarioNetzwerk(uebungsszenarioInfo.Schwierigkeitsgrad,
                     variante, uebungsszenarioInfo.StartPhase, uebungsszenarioInfo.EndPhase,
-                    uebungsszenarioInfo.Lobbyname);
+                    uebungsszenarioInfo.Lobbyname, false);
                 navigator.aktuellesViewModel = new LobbyScreenViewModel(navigator, uebungsszenario);
                 
 
