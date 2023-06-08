@@ -47,6 +47,7 @@ namespace quaKrypto.Models.Classes
         }
 
         public ReadOnlyCollection<Rolle> Rollen => rollen.AsReadOnly();
+        public Rolle AktuelleRolle { get { return aktuelleRolle; } }
         public SchwierigkeitsgradEnum Schwierigkeitsgrad { get { return schwierigkeitsgrad; } }
         public IVariante Variante { get { return variante; } }
         public uint StartPhase { get { return startPhase; } }
@@ -71,9 +72,8 @@ namespace quaKrypto.Models.Classes
             if(verfügbar)
             {
                 rollen.Add(rolle);
-                return true;
             }
-            return false;
+            return verfügbar;
         }
 
         public void GebeRolleFrei(RolleEnum rolle)
@@ -88,8 +88,23 @@ namespace quaKrypto.Models.Classes
             }
         }
 
-        public void Starten()
+        public bool Starten()
         {
+            var benoetigteRollen = Variante.MoeglicheRollen;
+            if (Rollen.Count != benoetigteRollen.Count) return false;
+            for(int i = 0; i < benoetigteRollen.Count; i++)
+            {
+                bool istvorhanden = false;
+                for (int j = 0; j < Rollen.Count; j++)
+                {
+                    if (benoetigteRollen[i] == Rollen[j].RolleTyp)
+                    {
+                        istvorhanden = true;
+                        break;
+                    }
+                }
+                if (!istvorhanden) return false;
+            }
             RolleEnum aktRolle = Variante.NaechsteRolle();
             for (int i = 0; i < Rollen.Count; i++)
             {
@@ -99,13 +114,15 @@ namespace quaKrypto.Models.Classes
                     break;
                 }
             }
+            return true;
         }
 
         public void NaechsterZug()
         {
-            List<Handlungsschritt> handlungsschritte = aktuelleRolle.handlungsschritte;
+            //List<Handlungsschritt> handlungsschritte = aktuelleRolle.handlungsschritte;
+
+            //Aufzeichnung.HaengeListeHandlungsschritteAn(handlungsschritte.ToList());
             //Die Handlungsschritte müssen hier noch überprüft werden um die Informationsablage auf den richtigen Stand zu bekommen
-            Aufzeichnung.HaengeListeHandlungsschritteAn(handlungsschritte.ToList());
             aktuelleRolle.handlungsschritte.Clear();
             if(variante.AktuellePhase > endPhase) 
             { 
@@ -117,7 +134,9 @@ namespace quaKrypto.Models.Classes
             {
                 if (aktRolle == Rollen[i].RolleTyp)
                 {
+                    uint zaehlerstand = aktuelleRolle.InformationsZaehler;
                     aktuelleRolle = Rollen[i];
+                    aktuelleRolle.AktualisiereInformationsZaehler(zaehlerstand);
                     break;
                 }
             }
