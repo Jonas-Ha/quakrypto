@@ -42,6 +42,7 @@ namespace quaKrypto.Models.Classes
             this.endPhase = endPhase;
             this.uebertragungskanal = new Uebertragungskanal();
             this.aufzeichnung = new Aufzeichnung();
+            this.aufzeichnung.Handlungsschritte.CollectionChanged += this.variante.BerechneAktuellePhase;
             this.name = name;
             this.beendet = false;
         }
