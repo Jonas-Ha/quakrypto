@@ -29,7 +29,7 @@ namespace quaKrypto.Models.Classes
         private bool freigeschaltet;
         private ObservableCollection<Information> informationsablage;
         public  ReadOnlyObservableCollection<Information> Informationsablage;
-        private uint informationszaehler;
+        private int informationszaehler;
         public List<Handlungsschritt> handlungsschritte; //Eigentlich nur für das Netzwerk benötigt
 
         //Dieser Konstruktor ist nur für die View zum Anzeigen in der LobbyView
@@ -62,7 +62,7 @@ namespace quaKrypto.Models.Classes
             get { return rolle; }
         }
 
-        public uint InformationsZaehler
+        public int InformationsZaehler
         {
             get { return informationszaehler; }
         }
@@ -103,7 +103,7 @@ namespace quaKrypto.Models.Classes
             throw new Exception("Rolle war nicht freigeschaltet");
         }
 
-        public bool LoescheInformation(uint informationsID)
+        public bool LoescheInformation(int informationsID)
         {
             if (freigeschaltet) 
             {
@@ -120,7 +120,7 @@ namespace quaKrypto.Models.Classes
             throw new Exception("Rolle war nicht freigeschaltet");
         }
 
-        public void AktualisiereInformationsZaehler(uint informationszaehler)
+        public void AktualisiereInformationsZaehler(int informationszaehler)
         {
             this.informationszaehler = informationszaehler;
         }

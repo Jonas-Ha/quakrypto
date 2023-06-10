@@ -181,7 +181,7 @@ namespace quaKrypto.Models.Classes
             {
                 if (aktRolle == Rollen[i].RolleTyp)
                 {
-                    uint zaehlerstand = aktuelleRolle.InformationsZaehler;
+                    int zaehlerstand = aktuelleRolle.InformationsZaehler;
                     aktuelleRolle = Rollen[i];
                     aktuelleRolle.AktualisiereInformationsZaehler(zaehlerstand);
                     break;
@@ -208,7 +208,7 @@ namespace quaKrypto.Models.Classes
             aktuelleRolle.SpeicherInformationAb(information);
         }
 
-        public void LoescheInformation(uint informationID)
+        public void LoescheInformation(int informationID)
         {
             aktuelleRolle.LoescheInformation(informationID);
         }

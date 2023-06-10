@@ -27,7 +27,7 @@ namespace quaKrypto.ViewModels
             }, null);
         LobbyErstellen = new((o) =>
             {
-                navigator.aktuellesViewModel = new LobbyErstellenViewModel(navigator);
+                //navigator.aktuellesViewModel = new LobbyErstellenViewModel(navigator);
 
                 /*
                  * ZUM TESTEN FÜR DIE AUFZEICHNUNG
@@ -79,7 +79,39 @@ namespace quaKrypto.ViewModels
 
                 navigator.aktuellesViewModel = new AufzeichnungViewModel(navigator, Ueb);
                 */
+                //SpielView
+                
+                RolleEnum rolleEnum = RolleEnum.Alice;
+                string alias = "alias_alice";
+                string passwort = "p";
+                RolleEnum rolleEnumEve = RolleEnum.Eve;
+                string aliasEve = "alias_eve";
+                string passwortEve = "passwort_eve";
+                RolleEnum rolleEnumBob = RolleEnum.Bob;
+                string aliasBob = "alias_bob";
+                string passwortBob = "passwort_bob";
+                RolleEnum rolleEnumAlice2 = RolleEnum.Alice;
+                string aliasAlice2 = "alias_alice2";
+                string passwortAlice2 = "passwort_alice2";
 
+
+                string nameueb = "Ueb";
+
+                //Arrange
+                IVariante varianteNorm = new VarianteNormalerAblauf(1);
+                UebungsszenarioLokal Ueb = new UebungsszenarioLokal(SchwierigkeitsgradEnum.leicht, varianteNorm, 1, 4, nameueb);
+                Rolle rolle = new Rolle(rolleEnum, alias, passwort);
+                Rolle rolle2 = new Rolle(rolleEnumEve, aliasEve, passwortEve);
+                Rolle rolle3 = new Rolle(rolleEnumBob, aliasBob, passwortBob);
+
+                Ueb.RolleHinzufuegen(rolle);
+                Ueb.RolleHinzufuegen(rolle3);
+
+                Ueb.Starten();
+                Ueb.AktuelleRolle.BeginneZug(passwort);
+                List<Rolle> eigeneRollen = new List<Rolle> { rolle };
+                navigator.aktuellesViewModel = new SpielViewModel(navigator, Ueb, eigeneRollen);
+                
             }, null);
         }
 
