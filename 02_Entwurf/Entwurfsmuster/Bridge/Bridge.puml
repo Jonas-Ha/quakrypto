@@ -1,0 +1,31 @@
+@startuml Bridge
+
+skinparam pageMargin 10
+skinparam pageExternalColor gray
+skinparam pageBorderColor black
+
+class Client
+
+class Abspielgeraet
+
+
+class ListenAbspielgeraet
+
+
+class CDSpieler
+
+
+class KassettenSpieler
+
+interface IAbspielgeraetImplementierer
+
+IAbspielgeraetImplementierer <|- CDSpieler
+IAbspielgeraetImplementierer <|-- KassettenSpieler
+
+Abspielgeraet <|-- ListenAbspielgeraet
+
+Abspielgeraet <-[dashed] Client : <<use>>
+ListenAbspielgeraet <-[dashed] Client : <<use>>
+
+Abspielgeraet o-> IAbspielgeraetImplementierer
+@enduml

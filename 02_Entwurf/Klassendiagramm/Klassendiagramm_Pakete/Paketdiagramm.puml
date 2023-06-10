@@ -1,0 +1,34 @@
+@startuml Paketdiagramm
+
+skinparam pageMargin 10
+skinparam pageExternalColor gray
+skinparam pageBorderColor black
+
+package QuaKrypto
+{
+package Commands
+{
+}
+
+package UI
+{
+	package View{}
+	package ViewModel{}
+}
+
+package Model{}
+
+package Icons{}
+package Services{}
+
+}
+
+package WPF{}
+
+WPF .u.> UI
+View .r.> ViewModel
+ViewModel .u.> Commands
+ViewModel .u.> Services
+ViewModel .u.> Icons
+ViewModel .r.> Model
+@enduml

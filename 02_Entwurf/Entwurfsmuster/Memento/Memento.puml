@@ -1,0 +1,34 @@
+@startuml Memento
+
+skinparam pageMargin 10
+skinparam pageExternalColor gray
+skinparam pageBorderColor black
+
+class Memento
+{
+	- state
+	- Memento(state)
+	- getState()
+}
+
+class Originator
+{
+	- state
+	+ save() : Memento
+	+ restore(m : Memento)
+}
+
+class Caretaker
+{
+	- originator
+	- history : Memento[]
+	+ doSomething()
+	+ undo()
+}
+
+note bottom of Caretaker: m = history.pop()\noriginator.restore(m) 
+note bottom of Caretaker: m = originator.save()\nhistory.push(m)\n//originator.change()
+
+Memento <-[dashed] Originator
+Caretaker o-> Memento
+@enduml

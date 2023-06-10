@@ -1,0 +1,41 @@
+<Window x:Class="quaKrypto.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewmodels="clr-namespace:quaKrypto.ViewModels"
+        xmlns:views="clr-namespace:quaKrypto.Views"
+        
+        mc:Ignorable="d"
+        Title="MainView" Height="500" Width="800" MinHeight="500" MinWidth="800">
+    <ContentControl Content="{Binding AktuellesViewModel}">
+        <ContentControl.Resources>
+            <DataTemplate DataType="{x:Type viewmodels:HauptMenuViewModel}">
+                <views:HauptMenuView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:AufzeichnungViewModel}">
+                <views:AufzeichnungView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:LobbyBeitrittViewModel}">
+                <views:LobbyBeitrittView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:LobbyErstellenViewModel}">
+                <views:LobbyErstellenView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:LobbyScreenViewModel}">
+                <views:LobbyScreenView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:RolleEntsperrenViewModel}">
+                <views:RolleEntsperrenView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:SpielEveViewModel}">
+                <views:SpielEveView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:SpielViewModel}">
+                <views:SpielView/>
+            </DataTemplate>
+        </ContentControl.Resources>
+    </ContentControl>
+
+    <!--="{Binding RelativeSource={RelativeSource Mode=Self}}"-->
+</Window>
