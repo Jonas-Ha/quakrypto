@@ -148,7 +148,7 @@ namespace quaKrypto.ViewModels
              * Zu Test Zwecken
              
              
-             */
+             
             Informationsablage = new ObservableCollection<Information>();
             BitArray arr = new BitArray(10, false);
             arr[1] = true;
