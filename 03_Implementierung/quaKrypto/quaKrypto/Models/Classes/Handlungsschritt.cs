@@ -51,7 +51,7 @@ namespace quaKrypto.Models.Classes
                 { OperationsEnum.zugBeenden, op.ZugBeenden },
             };
 
-        public Handlungsschritt(uint informationsID, Enums.OperationsEnum operationsTyp, Information operand1, object operand2, String ergebnisName, RolleEnum rolle)
+        public Handlungsschritt(int informationsID, Enums.OperationsEnum operationsTyp, Information operand1, object operand2, String ergebnisName, RolleEnum rolle)
         {
             this.OperationsTyp = operationsTyp;
             this.Operand1 = operand1;

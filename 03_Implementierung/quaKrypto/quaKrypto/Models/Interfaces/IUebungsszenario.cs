@@ -73,7 +73,7 @@ namespace quaKrypto.Models.Interfaces
         //Speichert die Information mit der übergebenen ID im Speicher der aktuellen Rolle ab
         public void SpeichereInformationenAb(Information information);
         //Löscht die Information mit der übergebenen ID aus dem Speicher der aktuellen Rolle
-        public void LoescheInformation(uint informationID);
+        public void LoescheInformation(int informationID);
         //Soll aufgerufen werden wenn das Übungsszenario beendet werden soll
         public void Beenden();
 

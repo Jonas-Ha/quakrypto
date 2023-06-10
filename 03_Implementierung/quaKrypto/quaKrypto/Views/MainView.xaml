@@ -7,7 +7,7 @@
         xmlns:views="clr-namespace:quaKrypto.Views"
         
         mc:Ignorable="d"
-        Title="MainView" Height="500" Width="800" MinHeight="500" MinWidth="800">
+        Title="MainView" Height="800" Width="1200" MinHeight="800" MinWidth="1200">
     <ContentControl Content="{Binding AktuellesViewModel}">
         <ContentControl.Resources>
             <DataTemplate DataType="{x:Type viewmodels:HauptMenuViewModel}">

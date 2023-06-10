@@ -42,9 +42,9 @@
                 <Label Content="Phase: 1"/>
             </StackPanel>
         </StackPanel>
-        <Button x:Name="ZugBeendenButton" Content="Zug beenden" Grid.Column="3" Grid.Row="0"  Height="30" Width="120" Visibility="Visible"/>
+        <Button x:Name="ZugBeendenButton" Content="Zug beenden" Grid.Column="3" Grid.Row="0"  Height="30" Width="120" Visibility="{Binding SpielVisibility}"/>
 
-        <Border x:Name="BituebertragungskanalEingangDock" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1" Visibility="Visible">
+        <Border x:Name="BituebertragungskanalEingangDock" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1" Visibility="{Binding SpielVisibility}">
             <DockPanel>
                 <Label DockPanel.Dock="Top" Content="Bitübertragungskanal Eingang:" />
                 <ListView Background="LightGray" ItemsSource="{Binding Path=BituebertragungEingang}" FontSize="20"
@@ -53,7 +53,7 @@
             </DockPanel>
         </Border>
 
-        <Border x:Name="PhotonenuebertragungskanalEingangDock" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1" Visibility="Visible">
+        <Border x:Name="PhotonenuebertragungskanalEingangDock" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1" Visibility="{Binding SpielVisibility}">
             <DockPanel>
                 <Label DockPanel.Dock="Top" Content="Photonenübertragungskanal Eingang:" />
                 <ListView Background="LightGray" ItemsSource="{Binding Path=PhotonenuebertragungEingang}" FontSize="20"
@@ -62,7 +62,7 @@
             </DockPanel>
         </Border>
 
-        <Border x:Name="BituebertragungskanalAusgangDock" BorderBrush="Black" BorderThickness="1"  Grid.Row="1" Grid.Column="3" Visibility="Visible">
+        <Border x:Name="BituebertragungskanalAusgangDock" BorderBrush="Black" BorderThickness="1"  Grid.Row="1" Grid.Column="3" Visibility="{Binding SpielVisibility}">
             <DockPanel Grid.Row="1" Grid.Column="2">
                 <Label DockPanel.Dock="Top" Content="Bitübertragungskanal Ausgang:" />
                 <ListView Background="LightGray" ItemsSource="{Binding Path=BituebertragungAusgang}" FontSize="20"
@@ -71,7 +71,7 @@
             </DockPanel>
         </Border>
 
-        <Border x:Name="PhotonenuebertragungskanalAusgangDock" BorderBrush="Black" BorderThickness="1"  Grid.Row="2" Grid.Column="3" Visibility="Visible">
+        <Border x:Name="PhotonenuebertragungskanalAusgangDock" BorderBrush="Black" BorderThickness="1"  Grid.Row="2" Grid.Column="3" Visibility="{Binding SpielVisibility}">
             <DockPanel>
                 <Label DockPanel.Dock="Top" Content="Photonenübertragungskanal Ausgang:" />
                 <ListView Background="LightGray" ItemsSource="{Binding Path=PhotonenuebertragungAusgang}" FontSize="20"
@@ -80,7 +80,7 @@
             </DockPanel>
         </Border>
 
-        <Border Visibility="Hidden" BorderBrush="Black" BorderThickness="1" Grid.Row="1" Grid.Column="2" Grid.RowSpan="2">
+        <Border Visibility="{Binding WarteVisibility}" BorderBrush="Black" BorderThickness="1" Grid.Row="1" Grid.Column="2" Grid.RowSpan="2">
             <DockPanel>
                 <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" DockPanel.Dock="Top" VerticalAlignment="Center">
                     <Label Content="Bitte warten Sie," FontSize="50" HorizontalContentAlignment="Center"/>
@@ -89,20 +89,20 @@
             </DockPanel>
         </Border>
         
-        <Border Visibility="Visible" BorderBrush="Black" BorderThickness="1" Grid.Row="1" Grid.Column="2" Grid.RowSpan="2" VerticalAlignment="Center">
+        <Border Visibility="{Binding PasswortEingabeVisibility}" BorderBrush="Black" BorderThickness="1" Grid.Row="1" Grid.Column="2" Grid.RowSpan="2" VerticalAlignment="Center">
             <DockPanel Background="LightGray">
                 <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" DockPanel.Dock="Top">
                     <Label Content="Passwort eingeben:" FontSize="40" HorizontalContentAlignment="Center"/>
                     <Border BorderBrush="Black" BorderThickness="1" Margin="20,20,20,20">
-                        <PasswordBox FontSize="16" VerticalContentAlignment="Center"/>
+                        <TextBox x:Name="PasswortBox" Text="{Binding passwortFeld, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
                     </Border>
-                    <Button Content="Bestätigen" Width="100" Margin="0,0,0,10"/>
+                    <Button Content="Bestätigen" Command="{Binding PasswortEingabe}" Width="100" Margin="0,0,0,10" IsDefault="True"/>
 
                 </StackPanel>
             </DockPanel>
         </Border>
 
-        <Border x:Name="CraftingFensterDock" Visibility="Hidden" BorderBrush="Black" BorderThickness="1" Grid.Row="1" Grid.Column="2" Grid.RowSpan="2">
+        <Border x:Name="CraftingFensterDock" Visibility="{Binding SpielVisibility}" BorderBrush="Black" BorderThickness="1" Grid.Row="1" Grid.Column="2" Grid.RowSpan="2">
             <TabControl TabStripPlacement="Bottom">
                 <TabControl.Template>
                     <ControlTemplate TargetType="TabControl">
@@ -128,7 +128,7 @@
                     <TabItem.Header>
                         <TextBlock TextWrapping="Wrap" ToolTip="Bitfolge erzeugen">
                             <InlineUIContainer>
-                                 <Image Source="../Icons/Spiel/BitfolgeErzeugen/icons8-binary-code-96.png" Width="30" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                 <Image Name="BitfolgeErzeugen"  Source="../Icons/Spiel/BitfolgeErzeugen/icons8-binary-code-96.png" Width="30" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </InlineUIContainer>
                         </TextBlock>
                     </TabItem.Header>
@@ -140,7 +140,7 @@
                                 <Label Content="Name"/>
                             </Border>
                             <Border BorderBrush="Black" BorderThickness="1">
-                                <TextBox FontSize="16" VerticalContentAlignment="Center"/>
+                                <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
                             </Border>
                         </DockPanel>
                         
@@ -155,22 +155,22 @@
                         </Border>
 
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,30">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldPhotonen}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                             </ListView>
                         </Border>
 
-                        <CheckBox x:Name="chk" Content="Manuell eingeben" Margin="10,0,10,10"/>
+                        <CheckBox x:Name="chk" Content="Manuell eingeben" IsChecked="{Binding EingabeBool, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,10,10"/>
                         <DockPanel Margin="10,0,10,10" Visibility="{Binding IsChecked,ElementName=chk,Converter={StaticResource b2v}}">
                             <Border BorderBrush="Black" BorderThickness="1">
                                 <Label Content="Bitfolge: "/>
                             </Border>
                             <Border BorderBrush="Black" BorderThickness="1">
-                                <TextBox FontSize="16" VerticalContentAlignment="Center"/>
+                                <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="16"  VerticalContentAlignment="Center"/>
                             </Border>
                         </DockPanel>
 
-                        <Button x:Name="ErstellenButton" HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50">
+                        <Button x:Name="ErstellenButton" Command="{Binding BitFolgeErzeugen}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50">
                             <Image Source="../Icons/Spiel/Equal/equal.png" Width="40" Height="40"/>
                         </Button>
 
@@ -178,7 +178,7 @@
                             <Label Content="Ergebnis:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldErgebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                             </ListView>
                         </Border>
@@ -202,7 +202,7 @@
                                 <Label Content="Name"/>
                             </Border>
                             <Border BorderBrush="Black" BorderThickness="1">
-                                <TextBox FontSize="16" VerticalContentAlignment="Center"/>
+                                <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
                             </Border>
                         </DockPanel>
                         
@@ -216,7 +216,7 @@
                             <Label Content="Text:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldPhotonen}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                             </ListView>
                         </Border>
@@ -225,12 +225,12 @@
                             <Label Content="Schlüssel:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,10">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldPolarisation}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand2, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                             </ListView>
                         </Border>
 
-                        <Button HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50">
+                        <Button HorizontalAlignment="Center" Command="{Binding EntVerschlüsseln}" VerticalAlignment="Center" Width="50" Height="50">
                             <Image Source="../Icons/Spiel/Equal/equal.png" Width="40" Height="40"/>
                         </Button>
 
@@ -238,7 +238,7 @@
                             <Label Content="Ergebnis:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldErgebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                             </ListView>
                         </Border>
@@ -261,7 +261,7 @@
                                 <Label Content="Name"/>
                             </Border>
                             <Border BorderBrush="Black" BorderThickness="1">
-                                <TextBox FontSize="16" VerticalContentAlignment="Center"/>
+                                <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
                             </Border>
                         </DockPanel>
 
@@ -275,7 +275,7 @@
                             <Label Content="Polarisationsschemata:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldPhotonen}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                             </ListView>
                         </Border>
@@ -284,12 +284,12 @@
                             <Label Content="Schlüssel:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,10">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldPolarisation}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand2, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                             </ListView>
                         </Border>
 
-                        <Button HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50">
+                        <Button HorizontalAlignment="Center" Command="{Binding PhotonenErzeugen}" VerticalAlignment="Center" Width="50" Height="50">
                             <Image Source="../Icons/Spiel/Equal/equal.png" Width="40" Height="40"/>
                         </Button>
 
@@ -297,7 +297,7 @@
                             <Label Content="Ergebnis:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldErgebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                             </ListView>
                         </Border>
@@ -320,7 +320,7 @@
                                 <Label Content="Name"/>
                             </Border>
                             <Border BorderBrush="Black" BorderThickness="1">
-                                <TextBox FontSize="16" VerticalContentAlignment="Center"/>
+                                <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
                             </Border>
                         </DockPanel>
 
@@ -335,22 +335,22 @@
                         </Border>
 
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,30">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldPhotonen}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                             </ListView>
                         </Border>
 
-                        <CheckBox x:Name="chk2" Content="Manuell eingeben" Margin="10,0,10,10"/>
+                        <CheckBox x:Name="chk2" Content="Manuell eingeben" IsChecked="{Binding EingabeBool, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,10,10"/>
                         <DockPanel Margin="10,0,10,10" Visibility="{Binding IsChecked,ElementName=chk2,Converter={StaticResource b2v2}}">
                             <Border BorderBrush="Black" BorderThickness="1">
                                 <Label Content="Polarisationsschemata: "/>
                             </Border>
                             <Border BorderBrush="Black" BorderThickness="1">
-                                <TextBox FontSize="16" VerticalContentAlignment="Center"/>
+                                <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
                             </Border>
                         </DockPanel>
 
-                        <Button HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50">
+                        <Button HorizontalAlignment="Center" Command="{Binding PolschaErzeugen}" VerticalAlignment="Center" Width="50" Height="50">
                             <Image Source="../Icons/Spiel/Equal/equal.png" Width="40" Height="40"/>
                         </Button>
 
@@ -358,7 +358,7 @@
                             <Label Content="Ergebnis:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldErgebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                             </ListView>
                         </Border>
@@ -382,7 +382,7 @@
                                 <Label Content="Name"/>
                             </Border>
                             <Border BorderBrush="Black" BorderThickness="1">
-                                <TextBox FontSize="16" VerticalContentAlignment="Center"/>
+                                <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
                             </Border>
                         </DockPanel>
 
@@ -396,7 +396,7 @@
                             <Label Content="Bitfolge zu streichende Bits:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,10">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldPolarisation}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                             </ListView>
                         </Border>
@@ -405,12 +405,12 @@
                             <Label Content="Bitfolge Muster zu streichen:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,10">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldErgebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand2, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                             </ListView>
                         </Border>
 
-                        <Button HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50">
+                        <Button HorizontalAlignment="Center" Command="{Binding Streichen}" VerticalAlignment="Center" Width="50" Height="50">
                             <Image Source="../Icons/Spiel/Equal/equal.png" Width="40" Height="40"/>
                         </Button>
 
@@ -418,7 +418,7 @@
                             <Label Content="Ergebnis:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldErgebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                             </ListView>
                         </Border>
@@ -442,7 +442,7 @@
                                 <Label Content="Name"/>
                             </Border>
                             <Border BorderBrush="Black" BorderThickness="1">
-                                <TextBox FontSize="16" VerticalContentAlignment="Center"/>
+                                <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
                             </Border>
                         </DockPanel>
                         <Border Width="50" Height="50" Margin="10"  BorderBrush="Black" BorderThickness="1">
@@ -455,7 +455,7 @@
                             <Label Content="Element 1: "/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,10">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldPolarisation}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                             </ListView>
                         </Border>
@@ -464,12 +464,12 @@
                             <Label Content="Element 2:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,10">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldErgebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand2, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                             </ListView>
                         </Border>
 
-                        <Button HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50">
+                        <Button HorizontalAlignment="Center" Command="{Binding Vergleichen}" VerticalAlignment="Center" Width="50" Height="50">
                             <Image Source="../Icons/Spiel/Equal/equal.png" Width="40" Height="40"/>
                         </Button>
 
@@ -477,7 +477,7 @@
                             <Label Content="Ergebnis:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldErgebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                             </ListView>
                         </Border>
@@ -500,7 +500,7 @@
                                 <Label Content="Name"/>
                             </Border>
                             <Border BorderBrush="Black" BorderThickness="1">
-                                <TextBox FontSize="16" VerticalContentAlignment="Center"/>
+                                <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
                             </Border>
                         </DockPanel>
 
@@ -515,11 +515,11 @@
                                 <Label Content="Zahl: "/>
                             </Border>
                             <Border BorderBrush="Black" BorderThickness="1">
-                                <TextBox FontSize="16" VerticalContentAlignment="Center"/>
+                                <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
                             </Border>
                         </DockPanel>
-                        
-                        <Button HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50">
+
+                        <Button HorizontalAlignment="Center" Command="{Binding ZahlErzeugen}" VerticalAlignment="Center" Width="50" Height="50">
                             <Image Source="../Icons/Spiel/Equal/equal.png" Width="40" Height="40"/>
                         </Button>
 
@@ -527,7 +527,7 @@
                             <Label Content="Ergebnis:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldErgebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                             </ListView>
                         </Border>
@@ -549,7 +549,7 @@
                                 <Label Content="Name"/>
                             </Border>
                             <Border BorderBrush="Black" BorderThickness="1">
-                                <TextBox FontSize="16" VerticalContentAlignment="Center"/>
+                                <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
                             </Border>
                         </DockPanel>
                         <Border Width="50" Height="50" Margin="10"  BorderBrush="Black" BorderThickness="1">
@@ -562,7 +562,7 @@
                             <Label Content="Zahl für Länge: "/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,10">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldPolarisation}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                             </ListView>
                         </Border>
@@ -571,20 +571,20 @@
                             <Label Content="Zahl für Anzahl 1er:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,10">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldErgebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand2, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                             </ListView>
                         </Border>
 
-                        <Button HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50">
-                            <Image Source="../Icons/Spiel/Equal/equal.png" Width="40" Height="40"/>
+                        <Button HorizontalAlignment="Center" Command="{Binding BitMaskeGenerieren}" VerticalAlignment="Center" Width="50" Height="50">
+                            <Image Source="../Icons/Spiel/Equal/equal.png"  Width="40" Height="40"/>
                         </Button>
 
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,10,10,0">
                             <Label Content="Ergebnis:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldErgebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                             </ListView>
                         </Border>
@@ -607,7 +607,7 @@
                                 <Label Content="Name"/>
                             </Border>
                             <Border BorderBrush="Black" BorderThickness="1">
-                                <TextBox FontSize="16" VerticalContentAlignment="Center"/>
+                                <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
                             </Border>
                         </DockPanel>
                         <Border Width="50" Height="50" Margin="10"  BorderBrush="Black" BorderThickness="1">
@@ -620,12 +620,12 @@
                             <Label Content="Bitfolge: "/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,10">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldPolarisation}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                             </ListView>
                         </Border>
 
-                        <Button HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50">
+                        <Button HorizontalAlignment="Center" Command="{Binding BitfolgeNegieren}" VerticalAlignment="Center" Width="50" Height="50">
                             <Image Source="../Icons/Spiel/Equal/equal.png" Width="40" Height="40"/>
                         </Button>
 
@@ -633,7 +633,7 @@
                             <Label Content="Ergebnis:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldErgebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                             </ListView>
                         </Border>
@@ -656,7 +656,7 @@
                                 <Label Content="Name"/>
                             </Border>
                             <Border BorderBrush="Black" BorderThickness="1">
-                                <TextBox FontSize="16" VerticalContentAlignment="Center"/>
+                                <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
                             </Border>
                         </DockPanel>
                         <Border Width="50" Height="50" Margin="10"  BorderBrush="Black" BorderThickness="1">
@@ -669,7 +669,7 @@
                             <Label Content="Photon: "/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,10">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldPolarisation}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                             </ListView>
                         </Border>
@@ -678,12 +678,12 @@
                             <Label Content="Polarisationsschemata:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,10">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldErgebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand2, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                             </ListView>
                         </Border>
 
-                        <Button HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50">
+                        <Button HorizontalAlignment="Center" Command="{Binding PhotonenZuBitfolge}" VerticalAlignment="Center" Width="50" Height="50">
                             <Image Source="../Icons/Spiel/Equal/equal.png" Width="40" Height="40"/>
                         </Button>
 
@@ -691,7 +691,7 @@
                             <Label Content="Ergebnis:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldErgebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                             </ListView>
                         </Border>
@@ -714,7 +714,7 @@
                                 <Label Content="Name"/>
                             </Border>
                             <Border BorderBrush="Black" BorderThickness="1">
-                                <TextBox FontSize="16" VerticalContentAlignment="Center"/>
+                                <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
                             </Border>
                         </DockPanel>
 
@@ -733,7 +733,7 @@
                             </Border>
                         </DockPanel>
 
-                        <Button HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50">
+                        <Button HorizontalAlignment="Center" Command="{Binding TextGenerieren}" VerticalAlignment="Center" Width="50" Height="50">
                             <Image Source="../Icons/Spiel/Equal/equal.png" Width="40" Height="40"/>
                         </Button>
 
@@ -741,7 +741,7 @@
                             <Label Content="Ergebnis:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldErgebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                             </ListView>
                         </Border>
@@ -762,7 +762,7 @@
                                 <Label Content="Name"/>
                             </Border>
                             <Border BorderBrush="Black" BorderThickness="1">
-                                <TextBox FontSize="16" VerticalContentAlignment="Center"/>
+                                <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
                             </Border>
                         </DockPanel>
                         <Border Width="50" Height="50" Margin="10"  BorderBrush="Black" BorderThickness="1">
@@ -775,13 +775,13 @@
                             <Label Content="Text: "/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,10">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldPolarisation}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                             </ListView>
                         </Border>
 
 
-                        <Button HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50">
+                        <Button HorizontalAlignment="Center" Command="{Binding TextLaengeBestimmen}" VerticalAlignment="Center" Width="50" Height="50">
                             <Image Source="../Icons/Spiel/Equal/equal.png" Width="40" Height="40"/>
                         </Button>
 
@@ -789,7 +789,7 @@
                             <Label Content="Ergebnis:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldErgebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                             </ListView>
                         </Border>
@@ -812,7 +812,7 @@
                                 <Label Content="Name"/>
                             </Border>
                             <Border BorderBrush="Black" BorderThickness="1">
-                                <TextBox FontSize="16" VerticalContentAlignment="Center"/>
+                                <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
                             </Border>
                         </DockPanel>
                         <Border Width="50" Height="50" Margin="10"  BorderBrush="Black" BorderThickness="1">
@@ -825,7 +825,7 @@
                             <Label Content="Text: "/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,10">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldPolarisation}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                            <ListView x:Name="ListViewBitsFrei" Background="AliceBlue" ItemsSource="{Binding Path=OperandBitsFrei, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                             </ListView>
                         </Border>
@@ -835,11 +835,11 @@
                                 <Label Content="Text"/>
                             </Border>
                             <Border BorderBrush="Black" BorderThickness="1">
-                                <TextBox FontSize="16" VerticalContentAlignment="Center"/>
+                                <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
                             </Border>
                         </DockPanel>
 
-                        <Button HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50">
+                        <Button HorizontalAlignment="Center" Command="{Binding BitsFreiBearbeiten}" VerticalAlignment="Center" Width="50" Height="50">
                             <Image Source="../Icons/Spiel/Equal/equal.png" Width="40" Height="40"/>
                         </Button>
 
@@ -847,7 +847,7 @@
                             <Label Content="Ergebnis:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=CraftingFeldErgebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                             </ListView>
                         </Border>
@@ -856,7 +856,7 @@
             </TabControl>
         </Border>
 
-        <Border x:Name="MuelleimerDock" BorderBrush="Black" BorderThickness="1" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="1" Visibility="Visible">
+        <Border x:Name="MuelleimerDock" BorderBrush="Black" BorderThickness="1" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="1" Visibility="{Binding SpielVisibility}">
             <DockPanel>
                 <Image DockPanel.Dock="Top" Source="../Icons/Spiel/Muelleimer/icons8-trash-96.png" Width="40" Height="50"/>
                 <ListView DockPanel.Dock="Top"  Background="LightGray" ItemsSource="{Binding Path=Muelleimer}" FontSize="20"
@@ -865,7 +865,7 @@
             </DockPanel>
         </Border>
 
-        <Border x:Name="InformationsablageDock" BorderBrush="Black" BorderThickness="1" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Visibility="Visible">
+        <Border x:Name="InformationsablageDock" BorderBrush="Black" BorderThickness="1" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Visibility="{Binding SpielVisibility}">
 
             <DockPanel>
                 <Label DockPanel.Dock="Top" Content="Informations-Ablage: "/>
