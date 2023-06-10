@@ -27,7 +27,7 @@ namespace quaKrypto.ViewModels
             }, null);
         LobbyErstellen = new((o) =>
             {
-                //navigator.aktuellesViewModel = new LobbyErstellenViewModel(navigator);
+                navigator.aktuellesViewModel = new LobbyErstellenViewModel(navigator);
 
                 /*
                  * ZUM TESTEN FÜR DIE AUFZEICHNUNG
@@ -80,7 +80,7 @@ namespace quaKrypto.ViewModels
                 navigator.aktuellesViewModel = new AufzeichnungViewModel(navigator, Ueb);
                 */
                 //SpielView
-                
+                /*
                 RolleEnum rolleEnum = RolleEnum.Alice;
                 string alias = "alias_alice";
                 string passwort = "p";
@@ -111,7 +111,7 @@ namespace quaKrypto.ViewModels
                 Ueb.AktuelleRolle.BeginneZug(passwort);
                 List<Rolle> eigeneRollen = new List<Rolle> { rolle };
                 navigator.aktuellesViewModel = new SpielViewModel(navigator, Ueb, eigeneRollen);
-                
+                */
             }, null);
         }
 
