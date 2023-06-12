@@ -156,6 +156,11 @@ namespace quaKrypto.ViewModels
             int length = 0;
             Information information = new Information(1, "Angabe", InformationsEnum.bitfolge, arr, null);
             Informationsablage.Add(information);
+            //Arrange
+            string text = "Hello";
+
+            Information ergInformation = new Information(2, "Bitfolge", InformationsEnum.verschluesselterText, text, null);
+            Informationsablage.Add(ergInformation);
             /**
              * 
              * 
@@ -288,7 +293,7 @@ namespace quaKrypto.ViewModels
 
         private void CollectionChangedMethodBitsFrei(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (OperandBitsFrei.Count == 1 && OperandBitsFrei[0].InformationsTyp == InformationsEnum.bitfolge) Eingabe = OperandBitsFrei[0].InformationsInhaltToString();
+            if (OperandBitsFrei.Count == 1 && OperandBitsFrei[0].InformationsTyp == InformationsEnum.bitfolge) Eingabe = OperandBitsFrei[0].InformationsInhaltToString;
             CanExecute();
         }
 
