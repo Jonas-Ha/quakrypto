@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using quaKrypto.Models.Interfaces;
 
 namespace quaKrypto.ViewModels
 {
@@ -49,13 +50,24 @@ namespace quaKrypto.ViewModels
             LobbyBeitreten = new((o) =>
             {
                 //Hier wird sich mit dem ausgwählten Übungsszeanrio verbunden, die Suche beendet und dann weiter zum Lobbyscreen gegangen
-                NetzwerkClient.VerbindeMitUebungsszenario(NetzwerkClient.VerfuegbareLobbys[AusgewaehlteLobby]);
+                UebungsszenarioNetzwerkBeitrittInfo uebungsszenarioInfo =
+                    NetzwerkClient.VerfuegbareLobbys[AusgewaehlteLobby];
+                NetzwerkClient.VerbindeMitUebungsszenario(uebungsszenarioInfo);
                 NetzwerkClient.BeendeSucheNachLobbys();
-                navigator.aktuellesViewModel = new LobbyScreenViewModel(navigator, null);
+                IVariante variante = uebungsszenarioInfo.Variante switch
+                {
+                    "Normaler Ablauf" => new VarianteNormalerAblauf(uebungsszenarioInfo.StartPhase),
+                    "Lauschangriff" => new VarianteAbhoeren(uebungsszenarioInfo.StartPhase),//TODO: Start und endphase in Info hinzufügen
+                    "Man-In-The-Middle" => new VarianteManInTheMiddle(uebungsszenarioInfo.StartPhase),
+                    _ => new VarianteNormalerAblauf(uebungsszenarioInfo.StartPhase),
+                };
+                IUebungsszenario uebungsszenario = new UebungsszenarioNetzwerk(uebungsszenarioInfo.Schwierigkeitsgrad,
+                    variante, uebungsszenarioInfo.StartPhase, uebungsszenarioInfo.EndPhase,
+                    uebungsszenarioInfo.Lobbyname, false);
+                navigator.aktuellesViewModel = new LobbyScreenViewModel(navigator, uebungsszenario);
                 
 
             }, (o) => _ausgewaehlteLobby != -1);
-            
         }
 
     }

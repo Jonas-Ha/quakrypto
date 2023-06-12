@@ -31,7 +31,7 @@ namespace quaKrypto.Models.Interfaces
         public string ProtokollName 
         { get; }
 
-        public List<RolleEnum> MoeglicheRollen
+        public IList<RolleEnum> MoeglicheRollen
         { get; }
 
         public RolleEnum NaechsteRolle();

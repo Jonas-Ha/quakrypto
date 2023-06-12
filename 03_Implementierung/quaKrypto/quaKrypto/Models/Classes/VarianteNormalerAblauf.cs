@@ -13,13 +13,15 @@ using System.Text;
 using System.Threading.Tasks;
 using quaKrypto.Models.Interfaces;
 using quaKrypto.Models.Enums;
+using System.Collections.ObjectModel;
 
 namespace quaKrypto.Models.Classes
 {
     public class VarianteNormalerAblauf : IVariante
     {
         private uint aktuellePhase;
-        private List<RolleEnum> moeglicheRollen = new List<RolleEnum> { RolleEnum.Alice, RolleEnum.Bob };
+        public readonly IList<RolleEnum> moeglicheRollen = new ReadOnlyCollection<RolleEnum>
+            (new List<RolleEnum> { RolleEnum.Alice, RolleEnum.Bob });
 
         private RolleEnum aktuelleRolle;
 
@@ -43,7 +45,7 @@ namespace quaKrypto.Models.Classes
             get { return "BB84"; }
         }
 
-        public List<RolleEnum> MoeglicheRollen
+        public IList<RolleEnum> MoeglicheRollen
         {
             get { return moeglicheRollen; }
         }
@@ -172,69 +174,52 @@ namespace quaKrypto.Models.Classes
 
         private List<OperationsEnum> GebeHilfestellungMittel()
         {
-            List<OperationsEnum> op = new List<OperationsEnum>();
+            List<OperationsEnum> op = Enum.GetValues(typeof(OperationsEnum)).Cast<OperationsEnum>().ToList();
 
-            if (this.aktuellePhase == 0)
+            switch (this.aktuellePhase)
             {
-                if (this.aktuelleRolle == RolleEnum.Alice)
-                {
-                    op.Add(OperationsEnum.textGenerieren);
-                    op.Add(OperationsEnum.zahlGenerieren);
-                }
-            }
-            else if (this.aktuellePhase == 1)
-            {
-                if (this.aktuelleRolle == RolleEnum.Alice)
-                {
-                    op.Add(OperationsEnum.bitfolgeGenerierenAngabe);
-                    op.Add(OperationsEnum.bitfolgeGenerierenZahl);
-                    op.Add(OperationsEnum.polarisationsschemataGenerierenAngabe);
-                    op.Add(OperationsEnum.polarisationsschemataGenerierenZahl);
-                    op.Add(OperationsEnum.photonenGenerieren);
-                }
-                else
-                {
-                    op.Add(OperationsEnum.polarisationsschemataGenerierenAngabe);
-                    op.Add(OperationsEnum.polarisationsschemataGenerierenZahl);
-                    op.Add(OperationsEnum.photonenZuBitfolge);
-                }
-            }
-            else if (this.aktuellePhase == 2)
-            {
-                if (this.aktuelleRolle == RolleEnum.Alice)
-                {
-                    op.Add(OperationsEnum.bitsStreichen);
-                }
-                else
-                {
-                    op.Add(OperationsEnum.polschataVergleichen);
-                    op.Add(OperationsEnum.bitsStreichen);
-                }
-            }
-            else if (this.aktuellePhase == 3)
-            {
-                if (this.aktuelleRolle == RolleEnum.Alice)
-                {
-                    op.Add(OperationsEnum.zahlGenerieren);
-                    op.Add(OperationsEnum.bitmaskeGenerieren);
-                    op.Add(OperationsEnum.bitsStreichen);
-                    op.Add(OperationsEnum.bitfolgenVergleichen);
-                }
-                else
-                {
-                    op.Add(OperationsEnum.bitsStreichen);
-                }
-            }
-            else if (this.aktuellePhase == 4)
-            {
-                if (this.aktuelleRolle == RolleEnum.Alice)
-                {
-                    op.Add(OperationsEnum.textVerschluesseln);
-                }
-                else
-                {
-                    op.Add(OperationsEnum.textEntschluesseln);
-                }
+                case 0:
+                    op.Remove(OperationsEnum.bitfolgeNegieren);
+                    op.Remove(OperationsEnum.bitfolgenVergleichen);
+                    op.Remove(OperationsEnum.bitsFreiBearbeiten);
+                    op.Remove(OperationsEnum.bitsStreichen);
+                    op.Remove(OperationsEnum.polschataVergleichen);
+                    op.Remove(OperationsEnum.textEntschluesseln);
+                    op.Remove(OperationsEnum.textVerschluesseln);
+                    break;
+                case 1:
+                    op.Remove(OperationsEnum.bitfolgeNegieren);
+                    op.Remove(OperationsEnum.bitfolgenVergleichen);
+                    op.Remove(OperationsEnum.bitsFreiBearbeiten);
+                    op.Remove(OperationsEnum.bitsStreichen);
+                    op.Remove(OperationsEnum.polschataVergleichen);
+                    op.Remove(OperationsEnum.textEntschluesseln);
+                    op.Remove(OperationsEnum.textVerschluesseln);
+                    break;
+                case 2:
+                    op.Remove(OperationsEnum.bitfolgeGenerierenAngabe);
+                    op.Remove(OperationsEnum.bitmaskeGenerieren);
+                    op.Remove(OperationsEnum.bitfolgeGenerierenZahl);
+                    op.Remove(OperationsEnum.photonenGenerieren);
+                    op.Remove(OperationsEnum.polarisationsschemataGenerierenAngabe);
+                    op.Remove(OperationsEnum.polarisationsschemataGenerierenZahl);
+                    op.Remove(OperationsEnum.textGenerieren);
+                    op.Remove(OperationsEnum.zahlGenerieren);
+                    op.Remove(OperationsEnum.textEntschluesseln);
+                    op.Remove(OperationsEnum.textVerschluesseln);
+                    break;
+                case 3:
+                    op.Remove(OperationsEnum.textEntschluesseln);
+                    op.Remove(OperationsEnum.textVerschluesseln);
+                    break;
+                case 4:
+                    op.Remove(OperationsEnum.bitfolgeGenerierenAngabe);
+                    op.Remove(OperationsEnum.bitmaskeGenerieren);
+                    op.Remove(OperationsEnum.bitfolgeGenerierenZahl);
+                    op.Remove(OperationsEnum.photonenGenerieren);
+                    op.Remove(OperationsEnum.polarisationsschemataGenerierenAngabe);
+                    op.Remove(OperationsEnum.polarisationsschemataGenerierenZahl);
+                    break;
             }
 
             return op;

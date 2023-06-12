@@ -26,13 +26,15 @@ namespace quaKrypto.Models.Enums
 		bitmaskeGenerieren,
 		polschataVergleichen,
 		bitfolgenVergleichen,
+		bitfolgeNegieren,
 		photonenZuBitfolge,
         textGenerieren,
+		textLaengeBestimmen,
         textVerschluesseln,
 		textEntschluesseln,
 		bitsStreichen,
 		bitsFreiBearbeiten,
 		zahlGenerieren,
-		zugBeenden
+		zugBeenden,
 	}
 }

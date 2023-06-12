@@ -7,6 +7,7 @@
 
 using quaKrypto.Models.Enums;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,13 +17,13 @@ namespace quaKrypto.Models.Classes
 {
     public class Information
     {
-        private uint informationsID;
+        private int informationsID;
         private RolleEnum? informationsEmpfaenger;
         private string informationsName;
         private Enums.InformationsEnum informationsTyp;
         private object informationsInhalt;
 
-        public Information(uint informationsID, string informationsName, InformationsEnum informationsTyp, object informationsInhalt, RolleEnum? informationsEmpfaenger)
+        public Information(int informationsID, string informationsName, InformationsEnum informationsTyp, object informationsInhalt, RolleEnum? informationsEmpfaenger)
         {
             InformationsID = informationsID;
             InformationsName = informationsName;
@@ -31,7 +32,7 @@ namespace quaKrypto.Models.Classes
             InformationsEmpfaenger = informationsEmpfaenger;
         }
 
-        public uint InformationsID
+        public int InformationsID
         {
             get { return informationsID; }
             init { informationsID = value; }
@@ -59,6 +60,21 @@ namespace quaKrypto.Models.Classes
         {
             get { return informationsEmpfaenger; }
             init { informationsEmpfaenger = value; }
+        }
+
+        public string InformationsInhaltToString()
+        {
+            string erg = string.Empty;
+            if (InformationsInhalt == null) ;
+            else if (InformationsTyp == InformationsEnum.bitfolge && InformationsInhalt.GetType() == typeof(BitArray))
+            {
+                BitArray bitArray = (BitArray)InformationsInhalt;
+                for(int i = 0; i < bitArray.Length; i++)
+                {
+                    erg += bitArray[i] ? 1 : 0;
+                }
+            }
+            return erg;
         }
     }
 }
