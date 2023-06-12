@@ -54,7 +54,7 @@ namespace quaKrypto.Models.Classes
         #region UDP
 
         //Schnittstelle für LobbyScreenView im Konstruktor oder LobbyerstellenView am Ende
-        public static async void BeginneZyklischesSendenVonLobbyinformation(UebungsszenarioNetzwerkBeitrittInfo netzwerkBeitrittInfo)
+        public static async void BeginneZyklischesSendenVonLobbyinformation(UebungsszenarioNetzwerkBeitrittInfo netzwerkBeitrittInfo, int portToSendTo = UDP_PORT)
         {
             if (udpClient != null) return;
             udpClient = new UdpClient(UDP_PORT);
@@ -75,7 +75,7 @@ namespace quaKrypto.Models.Classes
                 Array.Copy(nachrichtAlsByteArray, 0, nachrichtZumSenden, 1, nachrichtAlsByteArray.Length);
                 try
                 {
-                    udpClient.Send(nachrichtZumSenden, nachrichtZumSenden.Length, "255.255.255.255", UDP_PORT);
+                    udpClient.Send(nachrichtZumSenden, nachrichtZumSenden.Length, "255.255.255.255", portToSendTo);
                 }
                 catch (SocketException) { Trace.WriteLine("Eine Socket-Exception wurde beim UDP-Senden vom Host geworfen"); break; }
 
