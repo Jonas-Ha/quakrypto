@@ -27,7 +27,7 @@
             <Button MinHeight="30" x:Name="WikiButton" Margin="0, 0, 0, 10">Wiki</Button>
         </StackPanel>
         <StackPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
-            <Button MinHeight="30" x:Name="LobbyVerlassenButton" Margin="0, 0, 0, 10">Lobby verlassen</Button>
+            <Button MinHeight="30" x:Name="LobbyVerlassenButton" Margin="0, 0, 0, 10" Command="{Binding HauptMenu}">Lobby verlassen</Button>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
             <Border BorderBrush="Black" BorderThickness="1">
@@ -48,42 +48,90 @@
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center">
             <Border BorderBrush="Black" BorderThickness="1">
-                <Label x:Name="LabelSpiel">Bob's Hackerparadies</Label>
+                <Label x:Name="LabelSpiel" Content="{Binding LobbyName}"></Label>
             </Border>
             <Border BorderBrush="Black" BorderThickness="1">
-                <Label x:Name="LabelVariante">Lauschangriff</Label>
+                <Label x:Name="LabelVariante" Content="{Binding Variante}"></Label>
             </Border>
             <Border BorderBrush="Black" BorderThickness="1">
-                <Label x:Name="LabelSchwierigkeitsgrad">schwer</Label>
+                <Label x:Name="LabelSchwierigkeitsgrad" Content="{Binding Schwierigkeit}"></Label>
             </Border>
             <Border BorderBrush="Black" BorderThickness="1">
-                <Label x:Name="LabelPhase">0-5</Label>
+                <Label x:Name="LabelPhase" Content="{Binding Phase}"></Label>
             </Border>
             <Border BorderBrush="Black" BorderThickness="1">
-                <Label x:Name="LabelProtokoll">BB84</Label>
+                <Label x:Name="LabelProtokoll" Content="{Binding Protokoll}"></Label>
             </Border>
         </StackPanel>
-        <StackPanel Grid.Row="1" Grid.Column="5" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+        <DockPanel Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="2">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                <DockPanel >
+                    <Label Width="40">Alice</Label>
+                    <TextBlock Text="{Binding AliasAliceText}" Visibility="{Binding AliceSelected}" ></TextBlock>
+                    <TextBox MinWidth="60" ToolTip="Alias eingeben" Text="{Binding AliasAliceText}" Visibility="{Binding AliceBoxesVisible}">
+                        
+                    </TextBox>
+                    <TextBox MinWidth="60" ToolTip="Passwort eingeben" Text="{Binding PasswortAliceText}" Visibility="{Binding AliceBoxesVisible}"></TextBox>
+                    <Button Command="{Binding Alicebestaetigen}" Visibility="{Binding AliceBoxesVisible}">Bestätigen</Button>
+                    <Button Visibility="{Binding AliceSelected}" Command="{Binding ClearAlice}">Freigeben</Button>
+                </DockPanel>
+                <DockPanel >
+                    <Label Width="40">Bob</Label>
+                    <TextBlock Visibility="{Binding BobSelected}" Text="{Binding AliasBobText}"></TextBlock>
+                    <TextBox MinWidth="60" ToolTip="Alias eingeben" Visibility="{Binding BobBoxesVisible}" Text="{Binding AliasBobText}"></TextBox>
+                    <TextBox MinWidth="60" ToolTip="Passwort eingeben" Visibility="{Binding BobBoxesVisible}" Text="{Binding PasswortBobText}"></TextBox>
+                    <Button Command="{Binding Bobbestaetigen}" Visibility="{Binding BobBoxesVisible}">Bestätigen</Button>
+                    <Button Visibility="{Binding BobSelected}" Command="{Binding ClearBob}">Freigeben</Button>
+                </DockPanel>
+                <DockPanel >
+                    <Label Width="40">Eve</Label>
+                    <TextBlock Visibility="{Binding EveSelected}" Text="{Binding AliasEveText}"></TextBlock>
+                    <TextBox MinWidth="60" ToolTip="Alias eingeben" Visibility="{Binding EveBoxesVisible}" Text="{Binding AliasEveText}"></TextBox>
+                    <TextBox MinWidth="60" ToolTip="Passwort eingeben" Visibility="{Binding EveBoxesVisible}" Text="{Binding PasswortEveText}"></TextBox>
+                    <Button Command="{Binding Evebestaetigen}" Visibility="{Binding EveBoxesVisible}">Bestätigen</Button>
+                    <Button Visibility="{Binding EveSelected}" Command="{Binding ClearEve}">Freigeben</Button>
+                </DockPanel>
+            </StackPanel>    
+            
+            
+            
+            
+            
+        <StackPanel Grid.Row="1" Grid.Column="5"  VerticalAlignment="Center" Visibility="Collapsed">
             <Border BorderBrush="Black" BorderThickness="1">
                 <Label>Alice</Label>
             </Border>
             <Border BorderBrush="Black" BorderThickness="1">
                 <Label>Bob</Label>
             </Border>
-            <Border BorderBrush="Black" BorderThickness="1">
+            <Border BorderBrush="Black" BorderThickness="1" Visibility="{Binding}">
                 <Label>Eve</Label>
             </Border>
+            
         </StackPanel>
+            <StackPanel VerticalAlignment="Center" Visibility="Collapsed">
+                <Border BorderBrush="Black" BorderThickness="1">
+                    <TextBox></TextBox>
+                </Border>
+                <Border BorderBrush="Black" BorderThickness="1">
+                    <Label>Bob</Label>
+                </Border>
+                <Border BorderBrush="Black" BorderThickness="1" Visibility="{Binding}">
+                    <Label>Eve</Label>
+                </Border>
+            </StackPanel>
+        </DockPanel>
         <!--<StackPanel Grid.Row="1" Grid.Column="6" HorizontalAlignment="Stretch" VerticalAlignment="Center">-->
         <!--<Button x:Name="AliceAuswaehlen" Height="25" Style="{StaticResource {x:Type Button}}">Auswählen</Button>-->
         <!--<Button x:Name="BobAuswaehlen" Height="25">Auswählen</Button>-->
         <!--<Button x:Name="EveAuswaehlen" Height="25">Auswählen</Button>-->
         <!--</StackPanel>-->
-        <DataGrid HeadersVisibility="None" Grid.Column="6" Grid.ColumnSpan="2" Margin="1,56,75,56" Grid.RowSpan="3">
+        <DataGrid HeadersVisibility="None" Grid.Column="5" Grid.ColumnSpan="3" Margin="1,56,75,56" Grid.Row="0" Grid.RowSpan="3" Visibility="Collapsed">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Rolle">
 
                 </DataGridTextColumn>
+                <DataGridTextColumn Header=""></DataGridTextColumn>
                 <DataGridTemplateColumn Header="Buttons">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

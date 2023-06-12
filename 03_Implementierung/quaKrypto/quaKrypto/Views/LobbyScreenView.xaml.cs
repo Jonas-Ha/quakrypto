@@ -24,5 +24,10 @@ namespace quaKrypto.Views
         {
             InitializeComponent();
         }
+
+        private void AliceAliasText_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }
