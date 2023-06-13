@@ -4,20 +4,59 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:quaKrypto.Views"
+             xmlns:services="clr-namespace:quaKrypto.Services"
              xmlns:glob="clr-namespace:quaKrypto"
              mc:Ignorable="d" 
              d:DesignHeight="1000" d:DesignWidth="2000">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="b2v"/>
         <BooleanToVisibilityConverter x:Key="b2v2"/>
+        <services:InformationFarbenWaehler x:Key="InfoFarbenWaehler" />
+        <DataTemplate x:Key="InfoCraftingFeld">
+            <Grid Background="{Binding Path=InformationsTyp, Converter={StaticResource InfoFarbenWaehler}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding Path=InformationsName}" Grid.Column="0" Margin="10,0,10,0"></TextBlock>
+                <TextBlock Text="|" Grid.Column="1"></TextBlock>
+                <TextBlock Text="{Binding Path=InformationsInhaltToString}" Grid.Column="2" Margin="10, 0, 10, 0"></TextBlock>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="InfoEingang">
+            <Grid Background="{Binding Path=InformationsTyp, Converter={StaticResource InfoFarbenWaehler}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding Path=InformationsTyp}" Grid.Column="0" Margin="10,0,10,0"></TextBlock>
+                <TextBlock Text="|" Grid.Column="1"></TextBlock>
+                <TextBlock Text="{Binding Path=InformationsInhaltToString}" Grid.Column="2" Margin="10, 0, 10, 0"></TextBlock>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="InfoAusgang">
+            <Grid Background="{Binding Path=InformationsTyp, Converter={StaticResource InfoFarbenWaehler}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding Path=InformationsName}" Grid.Column="0" Margin="10,0,10,0"></TextBlock>
+                <TextBlock Text="|" Grid.Column="1"></TextBlock>
+                <TextBlock Text="{Binding Path=InformationsTyp}" Grid.Column="2" Margin="10, 0, 10, 0"></TextBlock>
+            </Grid>
+        </DataTemplate>
+
     </UserControl.Resources>
-        
+
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
             <RowDefinition Height="4*"/>
             <RowDefinition Height="4*"/>
-            <RowDefinition Height="2*"/>
+            <RowDefinition Height="3*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.5*"/>
@@ -47,8 +86,8 @@
         <Border x:Name="BituebertragungskanalEingangDock" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1" Visibility="{Binding SpielVisibility}">
             <DockPanel>
                 <Label DockPanel.Dock="Top" Content="Bitübertragungskanal Eingang:" />
-                <ListView Background="LightGray" ItemsSource="{Binding Path=BituebertragungEingang}" FontSize="20"
-                          glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" MinHeight="125">
+                <ListView HorizontalContentAlignment="Stretch" Background="LightGray" ItemsSource="{Binding Path=BituebertragungEingang}" FontSize="20"
+                          glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" MinHeight="125" ItemTemplate="{StaticResource InfoEingang}" >
                 </ListView>
             </DockPanel>
         </Border>
@@ -56,8 +95,8 @@
         <Border x:Name="PhotonenuebertragungskanalEingangDock" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1" Visibility="{Binding SpielVisibility}">
             <DockPanel>
                 <Label DockPanel.Dock="Top" Content="Photonenübertragungskanal Eingang:" />
-                <ListView Background="LightGray" ItemsSource="{Binding Path=PhotonenuebertragungEingang}" FontSize="20"
-                          glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                <ListView HorizontalContentAlignment="Stretch" Background="LightGray" ItemsSource="{Binding Path=PhotonenuebertragungEingang}" FontSize="20"
+                          glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoEingang}">
                 </ListView>
             </DockPanel>
         </Border>
@@ -65,8 +104,8 @@
         <Border x:Name="BituebertragungskanalAusgangDock" BorderBrush="Black" BorderThickness="1"  Grid.Row="1" Grid.Column="3" Visibility="{Binding SpielVisibility}">
             <DockPanel Grid.Row="1" Grid.Column="2">
                 <Label DockPanel.Dock="Top" Content="Bitübertragungskanal Ausgang:" />
-                <ListView Background="LightGray" ItemsSource="{Binding Path=BituebertragungAusgang}" FontSize="20"
-                          glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                <ListView HorizontalContentAlignment="Stretch" Background="LightGray" ItemsSource="{Binding Path=BituebertragungAusgang}" FontSize="20"
+                          glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoAusgang}">
                 </ListView>
             </DockPanel>
         </Border>
@@ -74,8 +113,8 @@
         <Border x:Name="PhotonenuebertragungskanalAusgangDock" BorderBrush="Black" BorderThickness="1"  Grid.Row="2" Grid.Column="3" Visibility="{Binding SpielVisibility}">
             <DockPanel>
                 <Label DockPanel.Dock="Top" Content="Photonenübertragungskanal Ausgang:" />
-                <ListView Background="LightGray" ItemsSource="{Binding Path=PhotonenuebertragungAusgang}" FontSize="20"
-                          glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                <ListView HorizontalContentAlignment="Stretch" Background="LightGray" ItemsSource="{Binding Path=PhotonenuebertragungAusgang}" FontSize="20"
+                          glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoAusgang}">
                 </ListView>
             </DockPanel>
         </Border>
@@ -155,8 +194,8 @@
                         </Border>
 
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,30">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
-                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
                             </ListView>
                         </Border>
 
@@ -178,8 +217,8 @@
                             <Label Content="Ergebnis:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
-                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
                             </ListView>
                         </Border>
 
@@ -216,8 +255,8 @@
                             <Label Content="Text:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
-                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
                             </ListView>
                         </Border>
 
@@ -225,8 +264,8 @@
                             <Label Content="Schlüssel:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,10">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand2, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
-                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Operand2, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
                             </ListView>
                         </Border>
 
@@ -238,8 +277,8 @@
                             <Label Content="Ergebnis:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
-                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
                             </ListView>
                         </Border>
                     </StackPanel>
@@ -275,8 +314,8 @@
                             <Label Content="Polarisationsschemata:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
-                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
                             </ListView>
                         </Border>
 
@@ -284,8 +323,8 @@
                             <Label Content="Schlüssel:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,10">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand2, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
-                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Operand2, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
                             </ListView>
                         </Border>
 
@@ -297,8 +336,8 @@
                             <Label Content="Ergebnis:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
-                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
                             </ListView>
                         </Border>
                     </StackPanel>
@@ -335,8 +374,8 @@
                         </Border>
 
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,30">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
-                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
                             </ListView>
                         </Border>
 
@@ -358,8 +397,8 @@
                             <Label Content="Ergebnis:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
-                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
                             </ListView>
                         </Border>
 
@@ -396,8 +435,8 @@
                             <Label Content="Bitfolge zu streichende Bits:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,10">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
-                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
                             </ListView>
                         </Border>
 
@@ -405,8 +444,8 @@
                             <Label Content="Bitfolge Muster zu streichen:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,10">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand2, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
-                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Operand2, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
                             </ListView>
                         </Border>
 
@@ -418,8 +457,8 @@
                             <Label Content="Ergebnis:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
-                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
                             </ListView>
                         </Border>
                         
@@ -455,8 +494,8 @@
                             <Label Content="Element 1: "/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,10">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
-                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
                             </ListView>
                         </Border>
 
@@ -464,8 +503,8 @@
                             <Label Content="Element 2:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,10">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand2, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
-                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Operand2, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
                             </ListView>
                         </Border>
 
@@ -477,8 +516,8 @@
                             <Label Content="Ergebnis:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
-                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
                             </ListView>
                         </Border>
 
@@ -527,8 +566,8 @@
                             <Label Content="Ergebnis:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
-                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
                             </ListView>
                         </Border>
                     </StackPanel>
@@ -562,8 +601,8 @@
                             <Label Content="Zahl für Länge: "/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,10">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
-                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
                             </ListView>
                         </Border>
 
@@ -571,8 +610,8 @@
                             <Label Content="Zahl für Anzahl 1er:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,10">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand2, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
-                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Operand2, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
                             </ListView>
                         </Border>
 
@@ -584,8 +623,8 @@
                             <Label Content="Ergebnis:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
-                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
                             </ListView>
                         </Border>
 
@@ -620,8 +659,8 @@
                             <Label Content="Bitfolge: "/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,10">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
-                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
                             </ListView>
                         </Border>
 
@@ -633,8 +672,8 @@
                             <Label Content="Ergebnis:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
-                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
                             </ListView>
                         </Border>
 
@@ -669,8 +708,8 @@
                             <Label Content="Photon: "/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,10">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
-                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
                             </ListView>
                         </Border>
 
@@ -678,8 +717,8 @@
                             <Label Content="Polarisationsschemata:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,10">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand2, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
-                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Operand2, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
                             </ListView>
                         </Border>
 
@@ -691,8 +730,8 @@
                             <Label Content="Ergebnis:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
-                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
                             </ListView>
                         </Border>
 
@@ -741,8 +780,8 @@
                             <Label Content="Ergebnis:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
-                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
                             </ListView>
                         </Border>
                     </StackPanel>
@@ -775,8 +814,8 @@
                             <Label Content="Text: "/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,10">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
-                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
                             </ListView>
                         </Border>
 
@@ -789,8 +828,8 @@
                             <Label Content="Ergebnis:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
-                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
                             </ListView>
                         </Border>
                     </StackPanel>
@@ -825,8 +864,8 @@
                             <Label Content="Text: "/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,10">
-                            <ListView x:Name="ListViewBitsFrei" Background="AliceBlue" ItemsSource="{Binding Path=OperandBitsFrei, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
-                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            <ListView x:Name="ListViewBitsFrei" HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=OperandBitsFrei, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
                             </ListView>
                         </Border>
                         
@@ -847,8 +886,8 @@
                             <Label Content="Ergebnis:"/>
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                            <ListView Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
-                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
                             </ListView>
                         </Border>
                     </StackPanel>
@@ -859,8 +898,18 @@
         <Border x:Name="MuelleimerDock" BorderBrush="Black" BorderThickness="1" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="1" Visibility="{Binding SpielVisibility}">
             <DockPanel>
                 <Image DockPanel.Dock="Top" Source="../Icons/Spiel/Muelleimer/icons8-trash-96.png" Width="40" Height="50"/>
-                <ListView DockPanel.Dock="Top"  Background="LightGray" ItemsSource="{Binding Path=Muelleimer}" FontSize="20"
+                <ListView HorizontalContentAlignment="Stretch" DockPanel.Dock="Top"  Background="LightGray" ItemsSource="{Binding Path=Muelleimer}" FontSize="20"
                           glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                    <ListView.ItemTemplate>
+                        <DataTemplate DataType="x:Information">
+                            <Grid Background="{Binding Path=InformationsTyp, Converter={StaticResource InfoFarbenWaehler}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding Path=InformationsName}" Grid.Column="0" Margin="10,0,10,0"></TextBlock>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
                 </ListView>
             </DockPanel>
         </Border>
@@ -869,8 +918,26 @@
 
             <DockPanel>
                 <Label DockPanel.Dock="Top" Content="Informations-Ablage: "/>
-                <ListView Background="LightGray" ItemsSource="{Binding Path=Informationsablage}" FontSize="20"
-                          glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" MinHeight="125">
+                <ListView  HorizontalContentAlignment="Stretch" Background="LightGray" ItemsSource="{Binding Path=Informationsablage}" FontSize="20"
+                          glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" MinHeight="110">
+                    <ListView.ItemTemplate>
+                        <DataTemplate DataType="x:Information">
+                            <Grid Background="{Binding Path=InformationsTyp, Converter={StaticResource InfoFarbenWaehler}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="5"/>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="5"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding Path=InformationsName}" Grid.Column="0" Margin="10,0,10,0"></TextBlock>
+                                <TextBlock Text="|" Grid.Column="1"></TextBlock>
+                                <TextBlock Text="{Binding Path=InformationsTyp}" Grid.Column="2" Margin="10,0,10,0"></TextBlock>
+                                <TextBlock Text="|" Grid.Column="3"></TextBlock>
+                                <TextBlock Text="{Binding Path=InformationsInhaltToString}" Grid.Column="4" Margin="10, 0, 10, 0"></TextBlock>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
                 </ListView>
             </DockPanel>
         </Border>
