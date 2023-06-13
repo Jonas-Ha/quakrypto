@@ -148,7 +148,7 @@ namespace quaKrypto.ViewModels
              * Zu Test Zwecken
              
              */
-             
+             /*
             Informationsablage = new ObservableCollection<Information>();
             BitArray arr = new BitArray(160, false);
             arr[1] = true;
@@ -288,7 +288,9 @@ namespace quaKrypto.ViewModels
             Operand1.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(CollectionChangedMethod);
             Operand2.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(CollectionChangedMethod);
             OperandBitsFrei.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(CollectionChangedMethodBitsFrei);
-
+            
+            Informationsablage = new ObservableCollection<Information>();
+            
             this.BituebertragungEingang = new ObservableCollection<Information>();
             this.PhotonenuebertragungEingang = new ObservableCollection<Information>();
 
