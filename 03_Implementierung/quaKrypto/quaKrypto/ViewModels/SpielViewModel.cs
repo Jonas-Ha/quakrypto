@@ -147,19 +147,28 @@ namespace quaKrypto.ViewModels
              * 
              * Zu Test Zwecken
              
-             
+             */
              
             Informationsablage = new ObservableCollection<Information>();
-            BitArray arr = new BitArray(10, false);
+            BitArray arr = new BitArray(160, false);
             arr[1] = true;
             arr[2] = true;
+            arr[2] = true;
+            arr[20] = true;
+            arr[30] = true;
+            arr[31] = true;
+            arr[32] = true;
+            arr[20] = true;
+            arr[50] = true;
+            arr[51] = true;
+            arr[62] = true;
             int length = 0;
             Information information = new Information(1, "Angabe", InformationsEnum.bitfolge, arr, null);
             Informationsablage.Add(information);
             //Arrange
             string text = "Hello";
 
-            Information ergInformation = new Information(2, "Bitfolge", InformationsEnum.verschluesselterText, text, null);
+            Information ergInformation = new Information(2, "Bitfolge", InformationsEnum.asciiText, text, null);
             Informationsablage.Add(ergInformation);
             /**
              * 
@@ -566,7 +575,7 @@ namespace quaKrypto.ViewModels
             if (Informationsname == null || 
                 Informationsname == "" ||
                 Operand1.Count != 1 ||
-                (Operand1[0].InformationsTyp != InformationsEnum.zahl)) return false;
+                (Operand1[0].InformationsTyp != InformationsEnum.bitfolge)) return false;
             return true;
         }
 
