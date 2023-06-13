@@ -31,6 +31,7 @@ namespace quaKrypto.Models.Classes
         private bool beendet;
         public event PropertyChangedEventHandler? PropertyChanged;
         private bool host;
+        private RolleEnum? eigeneRolle;
 
         public UebungsszenarioNetzwerk(SchwierigkeitsgradEnum schwierigkeitsgrad, IVariante variante, uint startPhase, uint endPhase, string name, bool host)
         {
@@ -63,7 +64,7 @@ namespace quaKrypto.Models.Classes
         public Uebertragungskanal Uebertragungskanal { get; }
         public Aufzeichnung Aufzeichnung { get; }
         public string Name { get; }
-        public bool RolleHinzufuegen(Rolle rolle)
+        public bool RolleHinzufuegen(Rolle rolle, bool eigeneRolle = false)
         {
             bool verfügbar = true;
             for (int i = 0; i < Rollen.Count; i++)
@@ -74,19 +75,31 @@ namespace quaKrypto.Models.Classes
                     break;
                 }
             }
+
             if (verfügbar)
             {
                 rollen.Add(rolle);
-            }
-
-            //TODO: Netzwerkfunktion
-            if (host)
-            {
-                NetzwerkHost.SendeRollenInformation();
-            }
-            else
-            {
-                NetzwerkClient.WaehleRolle(rolle.RolleTyp, rolle.Alias);
+                if (host)
+                {
+                    switch (rolle.RolleTyp)
+                    {
+                        case RolleEnum.Alice:
+                            NetzwerkHost.AliceRolle = rolle;
+                            break;
+                        case RolleEnum.Bob:
+                            NetzwerkHost.BobRolle = rolle;
+                            break;
+                        case RolleEnum.Eve:
+                            NetzwerkHost.EveRolle = rolle;
+                            break;
+                    }
+                    NetzwerkHost.SendeRollenInformation();
+                }
+                else
+                {
+                    NetzwerkClient.WaehleRolle(rolle.RolleTyp, rolle.Alias);
+                }
+                this.eigeneRolle = rolle.RolleTyp;
             }
 
             return verfügbar;
@@ -99,25 +112,36 @@ namespace quaKrypto.Models.Classes
                 if (rolle == Rollen[i].RolleTyp)
                 {
                     rollen.RemoveAt(i);
+                    if (host)
+                    {
+                        switch (rolle)
+                        {
+                            case RolleEnum.Alice:
+                                NetzwerkHost.AliceRolle = null;
+                                break;
+                            case RolleEnum.Bob:
+                                NetzwerkHost.BobRolle = null;
+                                break;
+                            case RolleEnum.Eve:
+                                NetzwerkHost.EveRolle = null;
+                                break;
+                        }
+                        NetzwerkHost.SendeRollenInformation();
+                    }
+                    else
+                    {
+                        NetzwerkClient.GebeRolleFrei(rolle);
+                    }
+                    if (rolle == eigeneRolle) eigeneRolle = null;
                     break;
                 }
-            }
-
-            //TODO: Netzwerkfunktion
-            if (host)
-            {
-                //Welche Funktion
-            }
-            else
-            {
-                NetzwerkClient.GebeRolleFrei(rolle);
             }
         }
 
         public bool Starten()
         {
             //Geht nur wenn Host -> Host flag hinzufügen
-            if (host)
+            if (host && eigeneRolle != null)
             {
                 var benoetigteRollen = Variante.MoeglicheRollen;
                 if (Rollen.Count != benoetigteRollen.Count) return false;
@@ -142,14 +166,18 @@ namespace quaKrypto.Models.Classes
                     if (aktRolle == Rollen[i].RolleTyp)
                     {
                         aktuelleRolle = Rollen[i];
+                        PropertyHasChanged(nameof(AktuelleRolle));
                         break;
                     }
                 }
 
-                //TODO: Netzwerkfunktion
-                //NetzwerkHost.StarteUebungsszeanrio();
-                //Wenn man selber nicht am zug dann noch:
-                //NetzwerkHost.UebergebeKontrolle(aktuelleRolle)
+                NetzwerkHost.StarteUebungsszenario();
+
+                if (aktRolle != eigeneRolle)
+                {
+                    NetzwerkHost.UebergebeKontrolle(aktRolle);
+                }
+
                 return true;
             }
 
@@ -158,10 +186,19 @@ namespace quaKrypto.Models.Classes
 
         public void NaechsterZug()
         {
-            //TODO: Netzwerkfunktion
+
+            RolleEnum aktRolle = Variante.NaechsteRolle();
             if (host)
             {
-                //??
+                //Aufzeichnung wird an alle gesendet, da man Host ist.
+                NetzwerkHost.SendeAufzeichnungsUpdate(aktuelleRolle.handlungsschritte);
+                if (variante.AktuellePhase > endPhase)
+                {
+                    Beenden();
+                    return;
+                }
+                else
+                    NetzwerkHost.UebergebeKontrolle(aktRolle);
             }
             else
             {
@@ -170,13 +207,7 @@ namespace quaKrypto.Models.Classes
 
             //Wird das darunter noch gebraucht?
             aktuelleRolle.handlungsschritte.Clear();
-            if (variante.AktuellePhase > endPhase)
-            {
-                //TODO: Netzwerkfunktion
-                Beenden();
-                return;
-            }
-            RolleEnum aktRolle = Variante.NaechsteRolle();
+
             for (int i = 0; i < Rollen.Count; i++)
             {
                 if (aktRolle == Rollen[i].RolleTyp)
@@ -187,8 +218,7 @@ namespace quaKrypto.Models.Classes
                     break;
                 }
             }
-            PropertyHasChanged(nameof(Rolle));
-            //TODO: NEtzwerkfunktion
+            PropertyHasChanged(nameof(aktuelleRolle));
         }
 
         public bool GebeBildschirmFrei(string Passwort)
@@ -196,9 +226,9 @@ namespace quaKrypto.Models.Classes
             return aktuelleRolle.BeginneZug(Passwort);
         }
 
-        public Information HandlungsschrittAusführenLassen(Enums.OperationsEnum operationsTyp, Information operand1, object operand2, String ergebnisInformationsName, Enums.RolleEnum rolle)
+        public Information HandlungsschrittAusführenLassen(OperationsEnum operationsTyp, Information operand1, object operand2, string ergebnisInformationsName, RolleEnum ausFührer)
         {
-            Handlungsschritt handlungsschritt = aktuelleRolle.ErzeugeHandlungsschritt(operationsTyp, operand1, operand2, ergebnisInformationsName, rolle);
+            Handlungsschritt handlungsschritt = aktuelleRolle.ErzeugeHandlungsschritt(operationsTyp, operand1, operand2, ergebnisInformationsName, ausFührer);
             Aufzeichnung.HaengeHandlungsschrittAn(handlungsschritt);
             return handlungsschritt.Ergebnis;
         }
@@ -208,13 +238,21 @@ namespace quaKrypto.Models.Classes
             aktuelleRolle.SpeicherInformationAb(information);
         }
 
-        public void LoescheInformation(int informationID)
+        public void LoescheInformation(int informationsID)
         {
-            aktuelleRolle.LoescheInformation(informationID);
+            aktuelleRolle.LoescheInformation(informationsID);
         }
 
         public void Beenden()
         {
+            if (host)
+            {
+                NetzwerkHost.BeendeUebungsszenario();
+            }
+            else
+            {
+                NetzwerkClient.BeendeUebungsszenario();
+            }
             beendet = true;
             PropertyHasChanged(nameof(beendet));
         }
@@ -224,17 +262,22 @@ namespace quaKrypto.Models.Classes
          */
         public void ZugWurdeBeendet(List<Handlungsschritt> handlungsschritte)
         {
-            //TODO: Bestimmen der anderen Rolle (nicht man selbst und nicht aktive)
-            if(Rollen.Count > 2) NetzwerkHost.SendeAufzeichnungsUpdate(null, handlungsschritte);
-            foreach(Handlungsschritt handlungsschritt in handlungsschritte)
+            //Bestimmen der anderen Rolle (nicht man selbst und nicht aktive)
+            if (Rollen.Count > 2) NetzwerkHost.SendeAufzeichnungsUpdate(handlungsschritte, eigeneRolle != RolleEnum.Alice && aktuelleRolle.RolleTyp != RolleEnum.Alice ? RolleEnum.Alice : eigeneRolle != RolleEnum.Bob && aktuelleRolle.RolleTyp != RolleEnum.Bob ? RolleEnum.Bob : RolleEnum.Eve);
+            foreach (Handlungsschritt handlungsschritt in handlungsschritte)
             {
-                HandlungsschrittAusführenLassen(handlungsschritt.OperationsTyp, handlungsschritt.Operand1,
-                    handlungsschritt.Operand2, handlungsschritt.ErgebnisName, handlungsschritt.Rolle);
-                Aufzeichnung.HaengeHandlungsschrittAn(handlungsschritt);
-                //Wann nachricht abspeichern ?
+                HandlungsschrittAusführenLassen(handlungsschritt.OperationsTyp, handlungsschritt.Operand1, handlungsschritt.Operand2, handlungsschritt.ErgebnisName, handlungsschritt.Rolle);
+                if (handlungsschritt.OperationsTyp == OperationsEnum.nachrichtSenden && (eigeneRolle == RolleEnum.Eve || (handlungsschritt.Rolle == RolleEnum.Alice && eigeneRolle == RolleEnum.Bob) || (handlungsschritt.Rolle == RolleEnum.Bob && eigeneRolle == RolleEnum.Alice)))
+                {
+                    Uebertragungskanal.SpeicherNachrichtAb(handlungsschritt.Ergebnis);
+                }
             }
 
             RolleEnum naechsteRolle = variante.NaechsteRolle();
+
+            if (naechsteRolle != eigeneRolle)
+                NetzwerkHost.UebergebeKontrolle(naechsteRolle);
+
             foreach (Rolle rolle in rollen)
             {
                 if (rolle.RolleTyp == naechsteRolle)
@@ -244,40 +287,40 @@ namespace quaKrypto.Models.Classes
                 }
             }
             PropertyHasChanged(nameof(aktuelleRolle));
-            //Property Changed Event muss dann checken ob host aktuelle rolle ist, und ggf. Kontrolle übergeben
-        }
-
-
-        public void UebungsszenarioWurdeBeendetHost()
-        {
-            throw new NotImplementedException();
         }
 
         /**
          * Schnittstelle für Befehle von  Netzwerkklasse Client
          */
-        public void UebungsszenarioWurdeBeendetClient()
-        {
-            throw new NotImplementedException();
-        }
 
         public void AufzeichnungUpdate(List<Handlungsschritt> handlungsschritte)
         {
-            throw new NotImplementedException();
+            foreach (Handlungsschritt handlungsschritt in handlungsschritte)
+            {
+                HandlungsschrittAusführenLassen(handlungsschritt.OperationsTyp, handlungsschritt.Operand1, handlungsschritt.Operand2, handlungsschritt.ErgebnisName, handlungsschritt.Rolle);
+                if (handlungsschritt.OperationsTyp == OperationsEnum.nachrichtSenden && (eigeneRolle == RolleEnum.Eve || (handlungsschritt.Rolle == RolleEnum.Alice && eigeneRolle == RolleEnum.Bob) || (handlungsschritt.Rolle == RolleEnum.Bob && eigeneRolle == RolleEnum.Alice)))
+                {
+                    Uebertragungskanal.SpeicherNachrichtAb(handlungsschritt.Ergebnis);
+                }
+            }
         }
 
         public void KontrolleErhalten()
         {
+            //Lobbyscreenview muss Bildschirm freigeben und Passwort eingeben lassen.
             throw new NotImplementedException();
         }
 
         public void UebungsszenarioWurdeGestartet()
         {
+            //Views müssen auf Spiel umschalten und den WarteBildschirm anzeigen
             throw new NotImplementedException();
         }
 
         public void NeueRollenInformation(Rolle? rolleAlice, Rolle? rolleBob, Rolle? rolleEve)
         {
+            //LobbySceenView muss die aktualisierten Rollen anzeigen
+            //Rollen müssen irgendwo hinzugefügt/entfernt werden
             throw new NotImplementedException();
         }
 

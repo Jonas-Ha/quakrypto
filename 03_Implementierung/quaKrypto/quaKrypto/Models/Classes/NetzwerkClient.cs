@@ -226,8 +226,8 @@ namespace quaKrypto.Models.Classes
                                 uebungsszenario?.AufzeichnungUpdate(listeEmpfangenerHandlungsschritte);
                                 break;
                             case UEBUNGSSZENARIO_ENDE:
-                                uebungsszenario?.UebungsszenarioWurdeBeendetClient();
                                 TrenneVerbindungMitUebungsszenario();
+                                uebungsszenario?.Beenden();
                                 break;
                         }
                         kompletteNachrichtAlsBytes = new byte[TCP_RECEIVE_BUFFER_SIZE];

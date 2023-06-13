@@ -44,7 +44,7 @@ namespace quaKrypto.ViewModels
         public LobbyScreenViewModel(Navigator navigator, IUebungsszenario uebungsszenario)
         {
             this.uebungsszenario = uebungsszenario;
-            
+
             HauptMenu = new((o) =>
             {
                 navigator.aktuellesViewModel = new HauptMenuViewModel(navigator);
@@ -66,11 +66,11 @@ namespace quaKrypto.ViewModels
             ClearBob = new DelegateCommand(BobFreigeben);
             ClearEve = new DelegateCommand(EveFreigeben);
             LobbyName = uebungsszenario.Name;
-            if(uebungsszenario.Variante.ToString().Contains("VarianteNormalerAblauf"))
+            if (uebungsszenario.Variante.ToString().Contains("VarianteNormalerAblauf"))
             {
                 Variante = VarianteNormalerAblauf.VariantenName;
             }
-            else if(uebungsszenario.Variante.ToString().Contains("VarianteAbhoeren"))
+            else if (uebungsszenario.Variante.ToString().Contains("VarianteAbhoeren"))
             {
                 Variante = VarianteAbhoeren.VariantenName;
             }
@@ -82,40 +82,50 @@ namespace quaKrypto.ViewModels
             Schwierigkeit = uebungsszenario.Schwierigkeitsgrad.ToString();
             Phase = uebungsszenario.StartPhase.ToString() + " - " + uebungsszenario.EndPhase.ToString();
             Protokoll = "BB84";
-            
+
         }
         public string LobbyName
         {
             get { return _lobbyname; }
-            set { _lobbyname = value;
+            set
+            {
+                _lobbyname = value;
                 this.EigenschaftWurdeGeändert();
             }
         }
         public string Variante
         {
             get { return _variante; }
-            set { _variante = value;
+            set
+            {
+                _variante = value;
                 this.EigenschaftWurdeGeändert();
             }
         }
         public string Schwierigkeit
         {
             get { return _schwierigkeit; }
-            set { _schwierigkeit = value;
+            set
+            {
+                _schwierigkeit = value;
                 this.EigenschaftWurdeGeändert();
             }
         }
         public string Phase
         {
             get { return _phase; }
-            set { _phase = value;
+            set
+            {
+                _phase = value;
                 this.EigenschaftWurdeGeändert();
             }
         }
         public string Protokoll
         {
             get { return _protokoll; }
-            set { _protokoll = value;
+            set
+            {
+                _protokoll = value;
                 this.EigenschaftWurdeGeändert();
             }
         }

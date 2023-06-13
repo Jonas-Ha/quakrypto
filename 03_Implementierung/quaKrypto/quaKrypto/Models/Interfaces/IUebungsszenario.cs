@@ -50,7 +50,7 @@ namespace quaKrypto.Models.Interfaces
 
         // Füge ein Rollen Objekt zum Übungsszenario hinzu
         // Gibt false zurück, wenn der RollenTyp bereits belegt ist
-        public bool RolleHinzufuegen(Rolle rolle);
+        public bool RolleHinzufuegen(Rolle rolle, bool eigeneRolle = false);
 
         // Entferne ein Rolle mit bestimmten Typ
         public void GebeRolleFrei(RolleEnum rolle);
