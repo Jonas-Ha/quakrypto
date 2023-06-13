@@ -38,17 +38,20 @@ namespace quaKrypto.Models.Classes
 
         private const int TCP_RECEIVE_BUFFER_SIZE = 8192;
 
-        private static readonly Dictionary<Rolle, NetworkStream> rolleNetworkStreams = new();
+        private static readonly Dictionary<RolleEnum, NetworkStream> rolleNetworkStreams = new();
         private static readonly List<NetworkStream> networkStreams = new();
 
         private static Rolle? aliceRolle, bobRolle, eveRolle;
 
-        public static Rolle? AliceRolle { get { return aliceRolle; } }
-        public static Rolle? BobRolle { get { return bobRolle; } }
-        public static Rolle? EveRolle { get { return eveRolle; } }
+        public static Rolle? AliceRolle { get { return aliceRolle; } set { aliceRolle = value; if(uebungsszenarioNetzwerkBeitrittInfo != null) uebungsszenarioNetzwerkBeitrittInfo.AliceState = aliceRolle != null; } }
+        public static Rolle? BobRolle { get { return bobRolle; } set { bobRolle = value; if (uebungsszenarioNetzwerkBeitrittInfo != null) uebungsszenarioNetzwerkBeitrittInfo.BobState = bobRolle != null; } }
+        public static Rolle? EveRolle { get { return eveRolle; } set { eveRolle = value; if (uebungsszenarioNetzwerkBeitrittInfo != null) uebungsszenarioNetzwerkBeitrittInfo.EveState = eveRolle != null; } }
 
         private static UebungsszenarioNetzwerk? uebungsszenario;
         public static UebungsszenarioNetzwerk Ubungsszenario { set { uebungsszenario = value; } }
+
+
+        private static UebungsszenarioNetzwerkBeitrittInfo? uebungsszenarioNetzwerkBeitrittInfo;
 
 
         #region UDP
@@ -57,17 +60,18 @@ namespace quaKrypto.Models.Classes
         public static async void BeginneZyklischesSendenVonLobbyinformation(UebungsszenarioNetzwerkBeitrittInfo netzwerkBeitrittInfo, int portToSendTo = UDP_PORT)
         {
             if (udpClient != null) return;
+            uebungsszenarioNetzwerkBeitrittInfo = netzwerkBeitrittInfo;
             udpClient = new UdpClient(UDP_PORT);
             periodicTimer = new PeriodicTimer(TimeSpan.FromMilliseconds(ZEIT_ZWISCHEN_LOBBYINFORMATION_SENDEN_IN_MS));
             while (await periodicTimer.WaitForNextTickAsync())
             {
-                string netzwerkBeitrittInfoAsString = netzwerkBeitrittInfo.Lobbyname.Replace("\t", "") + '\t'
-                    + netzwerkBeitrittInfo.Protokoll + '\t'
-                    + netzwerkBeitrittInfo.Variante + '\t'
-                    + netzwerkBeitrittInfo.Schwierigkeitsgrad.ToString() + '\t'
-                    + netzwerkBeitrittInfo.AliceState.ToString() + '\t'
-                    + netzwerkBeitrittInfo.BobState.ToString() + '\t'
-                    + netzwerkBeitrittInfo.EveState.ToString();
+                string netzwerkBeitrittInfoAsString = uebungsszenarioNetzwerkBeitrittInfo.Lobbyname.Replace("\t", "") + '\t'
+                    + uebungsszenarioNetzwerkBeitrittInfo.Protokoll + '\t'
+                    + uebungsszenarioNetzwerkBeitrittInfo.Variante + '\t'
+                    + uebungsszenarioNetzwerkBeitrittInfo.Schwierigkeitsgrad.ToString() + '\t'
+                    + uebungsszenarioNetzwerkBeitrittInfo.AliceState.ToString() + '\t'
+                    + uebungsszenarioNetzwerkBeitrittInfo.BobState.ToString() + '\t'
+                    + uebungsszenarioNetzwerkBeitrittInfo.EveState.ToString();
 
                 byte[] nachrichtAlsByteArray = Encoding.UTF8.GetBytes(netzwerkBeitrittInfoAsString);
                 byte[] nachrichtZumSenden = new byte[nachrichtAlsByteArray.Length + 1];
@@ -95,7 +99,7 @@ namespace quaKrypto.Models.Classes
         #endregion
 
         #region TCP
-        private static void SendeNachrichtTCP(byte commandIdentifier, string nachricht, Rolle? empfänger = null)
+        private static void SendeNachrichtTCP(byte commandIdentifier, string nachricht, RolleEnum? empfänger = null)
         {
             byte[] nachrichtAlsByteArray = Encoding.UTF8.GetBytes(nachricht);
             byte[] nachrichtZumSenden = new byte[nachrichtAlsByteArray.Length + 1];
@@ -107,10 +111,14 @@ namespace quaKrypto.Models.Classes
                 {
                     networkStream.Write(nachrichtZumSenden, 0, nachrichtZumSenden.Length);
                 }
+                foreach (NetworkStream networkStream in rolleNetworkStreams.Values)
+                {
+                    networkStream.Write(nachrichtZumSenden, 0, nachrichtZumSenden.Length);
+                }
             }
             else
             {
-                NetworkStream networkStream = rolleNetworkStreams[empfänger];
+                NetworkStream networkStream = rolleNetworkStreams[(RolleEnum)empfänger];
                 networkStream.Write(nachrichtZumSenden, 0, nachrichtZumSenden.Length);
             }
         }
@@ -129,7 +137,7 @@ namespace quaKrypto.Models.Classes
                         TcpClient tcpClient = tcpListener.AcceptTcpClient();
                         NetworkStream networkStream = tcpClient.GetStream();
                         networkStreams.Add(networkStream);
-                        //Client schicken 
+                        //TODO: Client schicken 
                         StarteTCPListeningThread(networkStream);
                     }
                 }
@@ -184,13 +192,13 @@ namespace quaKrypto.Models.Classes
         }
 
         //Schnittstelle fürs Übungsszenario
-        public static void UebergebeKontrolle(Rolle nächsteRolle)
+        public static void UebergebeKontrolle(RolleEnum nächsteRolle)
         {
             SendeNachrichtTCP(KONTROLLE_UEBERGEBEN, "", nächsteRolle);
         }
 
         //Schnittstelle fürs Übungsszenario
-        public static void SendeAufzeichnungsUpdate(Rolle empfänger, List<Handlungsschritt> neueHandlungsschritte)
+        public static void SendeAufzeichnungsUpdate(List<Handlungsschritt> neueHandlungsschritte, RolleEnum? empfänger = null)
         {
             string serializedHandlungsschritte = new("");
             XmlSerializer xmlSerializer = new(typeof(Handlungsschritt));
@@ -207,10 +215,8 @@ namespace quaKrypto.Models.Classes
         //Schnittstelle fürs Übungsszenario
         public static void BeendeUebungsszenario()
         {
-            foreach (Rolle rolle in rolleNetworkStreams.Keys)
-            {
-                SendeNachrichtTCP(UEBUNGSSZENARIO_ENDE, "", rolle);
-            }
+            SendeNachrichtTCP(UEBUNGSSZENARIO_ENDE, "");
+            BeendeTCPLobby();
         }
 
         private static void StarteTCPListeningThread(NetworkStream networkStream)
@@ -234,15 +240,19 @@ namespace quaKrypto.Models.Classes
                                     {
                                         case RolleEnum.Alice:
                                             aliceRolle = new Rolle(RolleEnum.Alice, empfangeneNachrichtTeile[1]);
+                                            uebungsszenario?.RolleHinzufuegen(aliceRolle);
                                             break;
                                         case RolleEnum.Bob:
                                             bobRolle = new Rolle(RolleEnum.Bob, empfangeneNachrichtTeile[1]);
+                                            uebungsszenario?.RolleHinzufuegen(bobRolle);
                                             break;
                                         case RolleEnum.Eve:
                                             eveRolle = new Rolle(RolleEnum.Eve, empfangeneNachrichtTeile[1]);
+                                            uebungsszenario?.RolleHinzufuegen(eveRolle);
                                             break;
-                                            //Notify Changed?
                                     }
+                                    networkStreams.Remove(networkStream);
+                                    rolleNetworkStreams[neueRolle] = networkStream;
                                 }
                                 break;
                             case ROLLE_FREIGEBEN:
@@ -259,8 +269,10 @@ namespace quaKrypto.Models.Classes
                                         case RolleEnum.Eve:
                                             eveRolle = null;
                                             break;
-                                            //Notify Changed?
                                     }
+                                    networkStreams.Add(networkStream);
+                                    rolleNetworkStreams.Remove(alteRolle);
+                                    uebungsszenario?.GebeRolleFrei(alteRolle);
                                 }
                                 break;
                             case ZUG_BEENDEN:
@@ -278,7 +290,7 @@ namespace quaKrypto.Models.Classes
                                 uebungsszenario?.ZugWurdeBeendet(listeEmpfangenerHandlungsschritte);
                                 break;
                             case UEBUNGSSZENARIO_ENDE:
-                                uebungsszenario?.UebungsszenarioWurdeBeendetClient();
+                                uebungsszenario?.Beenden();
                                 break;
                         }
                         kompletteNachrichtAlsBytes = new byte[TCP_RECEIVE_BUFFER_SIZE];

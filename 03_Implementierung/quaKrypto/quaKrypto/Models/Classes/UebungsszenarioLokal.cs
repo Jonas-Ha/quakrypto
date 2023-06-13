@@ -59,7 +59,7 @@ namespace quaKrypto.Models.Classes
         public bool Beendet { get { return beendet; } }
 
         //Überprüft ob die Rolle bereits vergeben ist und falls nicht wird die Rolle hinzugefügt und gibt zurück ob die Rolle hinzugefügt
-        public bool RolleHinzufuegen(Rolle rolle)
+        public bool RolleHinzufuegen(Rolle rolle, bool eigeneRolle = false)
         {
             bool verfügbar = true;
             for (int i = 0; i < Rollen.Count; i++)
