@@ -75,13 +75,13 @@
 
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Image Source="../Icons/Spiel/Alice/Alice_128px.png" Margin="5"/>
+            <Image  Source="{Binding RolleIcon}" Margin="5"/>
             <StackPanel Orientation="Vertical">
-                <Label FontWeight="Bold" Content="Alice" FontSize="24"/>
+                <Label FontWeight="Bold" Content="{Binding AktuelleRolleAnzeige}" FontSize="24"/>
                 <Label Content="Phase: 1"/>
             </StackPanel>
         </StackPanel>
-        <Button x:Name="ZugBeendenButton" Content="Zug beenden" Grid.Column="3" Grid.Row="0"  Height="30" Width="120" Visibility="{Binding SpielVisibility}"/>
+        <Button x:Name="ZugBeendenButton" Command="{Binding ZugBeenden}" Content="Zug beenden" Grid.Column="3" Grid.Row="0"  Height="30" Width="120" Visibility="{Binding SpielVisibility}"/>
 
         <Border x:Name="BituebertragungskanalEingangDock" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1" Visibility="{Binding SpielVisibility}">
             <DockPanel>
@@ -768,7 +768,7 @@
                                 <Label Content="Text: "/>
                             </Border>
                             <Border BorderBrush="Black" BorderThickness="1">
-                                <TextBox FontSize="16" VerticalContentAlignment="Center"/>
+                                <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
                             </Border>
                         </DockPanel>
 

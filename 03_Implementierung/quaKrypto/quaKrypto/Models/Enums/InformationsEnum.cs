@@ -21,6 +21,7 @@ namespace quaKrypto.Models.Enums
 		polarisationsschemata,
 		unscharfePhotonen,
 		asciiText,
-		verschluesselterText
+		verschluesselterText,
+		keinInhalt
 	}
 }

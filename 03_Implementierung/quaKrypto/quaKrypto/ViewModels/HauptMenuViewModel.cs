@@ -98,6 +98,7 @@ namespace quaKrypto.ViewModels
                 string nameueb = "Ueb";
 
                 //Arrange
+                //IVariante varianteNorm = new VarianteManInTheMiddle(1);
                 IVariante varianteNorm = new VarianteNormalerAblauf(1);
                 UebungsszenarioLokal Ueb = new UebungsszenarioLokal(SchwierigkeitsgradEnum.leicht, varianteNorm, 1, 4, nameueb);
                 Rolle rolle = new Rolle(rolleEnum, alias, passwort);
@@ -105,13 +106,17 @@ namespace quaKrypto.ViewModels
                 Rolle rolle3 = new Rolle(rolleEnumBob, aliasBob, passwortBob);
 
                 Ueb.RolleHinzufuegen(rolle);
+                //Ueb.RolleHinzufuegen(rolle2);
                 Ueb.RolleHinzufuegen(rolle3);
 
                 Ueb.Starten();
                 Ueb.AktuelleRolle.BeginneZug(passwort);
-                List<Rolle> eigeneRollen = new List<Rolle> { rolle };
-                navigator.aktuellesViewModel = new SpielViewModel(navigator, Ueb, eigeneRollen);
-                */
+                List<Rolle> eigeneRollen = new List<Rolle> { rolle, rolle2, rolle3 };
+                SpielViewModel spielViewModel = new SpielViewModel(navigator, Ueb, eigeneRollen);
+                SpielEveViewModel spielEveViewModel = new SpielEveViewModel(navigator, Ueb, eigeneRollen);
+                spielViewModel.SpielEveViewModel = spielEveViewModel;
+                spielEveViewModel.SpielViewModel = spielViewModel;
+                navigator.aktuellesViewModel = spielViewModel;*/
             }, null);
         }
 

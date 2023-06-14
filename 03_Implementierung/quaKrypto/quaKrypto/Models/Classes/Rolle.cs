@@ -97,6 +97,10 @@ namespace quaKrypto.Models.Classes
             if (freigeschaltet)
             {
                 if (information == null) throw new NoNullAllowedException("Abzuspeichernde Information darf nicht null sein");
+                for (int i = 0; i < informationsablage.Count; i++)
+                {
+                    if (informationsablage[i].InformationsID == information.InformationsID) return;
+                }
                 informationsablage.Add(information);
                 return;
             }
