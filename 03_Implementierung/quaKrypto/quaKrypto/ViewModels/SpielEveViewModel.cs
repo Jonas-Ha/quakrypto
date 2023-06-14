@@ -1,4 +1,5 @@
 ﻿using quaKrypto.Commands;
+using quaKrypto.Models.Classes;
 using quaKrypto.Models.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -9,59 +10,42 @@ using System.Threading.Tasks;
 
 namespace quaKrypto.ViewModels
 {
-    public class SpielEveViewModel : BaseViewModel
+    public class SpielEveViewModel : SpielViewModelBase
     {
-        private IUebungsszenario uebungsszenario;
-
-        public ObservableCollection<string> BituebertragungEingangAlice { get; set; }
-        public ObservableCollection<string> BituebertragungEingangBob { get; set; }
-        public ObservableCollection<string> PhotonenuebertragungEingangAlice { get; set; }
-        public ObservableCollection<string> PhotonenuebertragungEingangBob { get; set; }
-        public ObservableCollection<string> BituebertragungAusgangAlice { get; set; }
-        public ObservableCollection<string> BituebertragungAusgangBob { get; set; }
-        public ObservableCollection<string> PhotonenuebertragungAusgangAlice { get; set; }
-        public ObservableCollection<string> PhotonenuebertragungAusgangBob { get; set; }
-        public string CraftingFeldPhotonen { get; set; }
-        public string CraftingFeldPolarisation { get; set; }
-        public string CraftingFeldErgebnis { get; set; }
-        public string Muelleimer { get; set; }
-        public string Informationsablage { get; set; }
-
-
-        public DelegateCommand HauptMenu { get; set; }
-        public SpielEveViewModel(Navigator navigator, IUebungsszenario uebungsszenario)
+        private SpielViewModel spielViewModel;
+        private bool once = false;
+        public SpielViewModel SpielViewModel
         {
-            this.uebungsszenario = uebungsszenario;
-            HauptMenu = new((o) =>
+            set
             {
-                navigator.aktuellesViewModel = new HauptMenuViewModel(navigator);
+                if (once)
+                {
+                    spielViewModel = value;
+                    once = true;
+                }
+            }
+        }
+        public ObservableCollection<Information> BituebertragungEingangAlice { get; set; }
+        public ObservableCollection<Information> BituebertragungEingangBob { get; set; }
+        public ObservableCollection<Information> PhotonenuebertragungEingangAlice { get; set; }
+        public ObservableCollection<Information> PhotonenuebertragungEingangBob { get; set; }
+        public ObservableCollection<Information> BituebertragungAusgangAlice { get; set; }
+        public ObservableCollection<Information> BituebertragungAusgangBob { get; set; }
+        public ObservableCollection<Information> PhotonenuebertragungAusgangAlice { get; set; }
+        public ObservableCollection<Information> PhotonenuebertragungAusgangBob { get; set; }
 
-            }, null);
-
-            this.BituebertragungEingangAlice = new ObservableCollection<string>();
-            this.BituebertragungEingangBob = new ObservableCollection<string>();
-            this.PhotonenuebertragungEingangAlice = new ObservableCollection<string>();
-            this.PhotonenuebertragungEingangBob = new ObservableCollection<string>();
-
-
-            this.BituebertragungAusgangAlice = new ObservableCollection<string>();
-            this.BituebertragungAusgangBob = new ObservableCollection<string>();
-
-            this.PhotonenuebertragungAusgangAlice = new ObservableCollection<string>();
-            this.PhotonenuebertragungAusgangBob = new ObservableCollection<string>();
+        public SpielEveViewModel(Navigator navigator, IUebungsszenario uebungsszenario, List<Rolle> eigeneRollen) : base(navigator, uebungsszenario, eigeneRollen)
+        {
+            this.BituebertragungEingangAlice = new ObservableCollection<Information>();
+            this.BituebertragungEingangBob = new ObservableCollection<Information>();
+            this.PhotonenuebertragungEingangAlice = new ObservableCollection<Information>();
+            this.PhotonenuebertragungEingangBob = new ObservableCollection<Information>();
 
 
-            this.BituebertragungEingangAlice.Add("Simon");
-            this.BituebertragungEingangBob.Add("Moeez");
-
-            this.PhotonenuebertragungEingangAlice.Add("Alex");
-            this.PhotonenuebertragungEingangBob.Add("Mentel");
-
-            this.BituebertragungAusgangAlice.Add("Jonas");
-            this.BituebertragungAusgangBob.Add("Leo");
-
-            this.PhotonenuebertragungAusgangAlice.Add("Domi");
-            this.PhotonenuebertragungAusgangBob.Add("Kris");
+            this.BituebertragungAusgangAlice = new ObservableCollection<Information>();
+            this.BituebertragungAusgangBob = new ObservableCollection<Information>();
+            this.PhotonenuebertragungAusgangAlice = new ObservableCollection<Information>();
+            this.PhotonenuebertragungAusgangBob = new ObservableCollection<Information>();
         }
     }
 }
