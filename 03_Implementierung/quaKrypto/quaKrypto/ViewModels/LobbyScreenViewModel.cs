@@ -64,7 +64,15 @@ namespace quaKrypto.ViewModels
             }, null);
             LobbyErstellen = new((o) =>
             {
-                navigator.aktuellesViewModel = new SpielViewModel(navigator, uebungsszenario, EigeneRollen);
+                uebungsszenario.Starten();
+                //uebungsszenario.AktuelleRolle.BeginneZug(_passwortalice);
+                SpielEveViewModel eveViewModel = new SpielEveViewModel(navigator, uebungsszenario, EigeneRollen);
+                SpielViewModel spielViewModel = new SpielViewModel(navigator, uebungsszenario, EigeneRollen);
+                spielViewModel.SpielEveViewModel = eveViewModel;
+                eveViewModel.SpielViewModel = spielViewModel;
+                
+                
+                navigator.aktuellesViewModel = spielViewModel;
 
             }, (o) => ishost == true && _aliasalice != "" && _aliasbob != "" && _aliasalice != "" && EigeneRollen.Count != 0);
             Alicebestaetigen = new((o) =>
