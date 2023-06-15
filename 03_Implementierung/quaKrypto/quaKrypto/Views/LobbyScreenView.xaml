@@ -84,7 +84,7 @@
                     <Button Visibility="{Binding BobSelected}" Command="{Binding ClearBob}">Freigeben</Button>
                 </DockPanel>
                 <DockPanel >
-                    <Label Width="40">Eve</Label>
+                    <Label Width="40" Visibility="{Binding EveLabel}">Eve</Label>
                     <TextBlock Visibility="{Binding EveSelected}" Text="{Binding AliasEveText}"></TextBlock>
                     <TextBox MinWidth="60" ToolTip="Alias eingeben" Visibility="{Binding EveBoxesVisible}" Text="{Binding AliasEveText}"></TextBox>
                     <TextBox MinWidth="60" ToolTip="Passwort eingeben" Visibility="{Binding EveBoxesVisible}" Text="{Binding PasswortEveText}"></TextBox>
@@ -104,7 +104,7 @@
             <Border BorderBrush="Black" BorderThickness="1">
                 <Label>Bob</Label>
             </Border>
-            <Border BorderBrush="Black" BorderThickness="1" Visibility="{Binding}">
+            <Border BorderBrush="Black" BorderThickness="1">
                 <Label>Eve</Label>
             </Border>
             
@@ -116,7 +116,7 @@
                 <Border BorderBrush="Black" BorderThickness="1">
                     <Label>Bob</Label>
                 </Border>
-                <Border BorderBrush="Black" BorderThickness="1" Visibility="{Binding}">
+                <Border BorderBrush="Black" BorderThickness="1">
                     <Label>Eve</Label>
                 </Border>
             </StackPanel>
