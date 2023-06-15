@@ -27,7 +27,7 @@ namespace quaKrypto.ViewModels
         private string _aliasbob = "";
         private string _passworteve = "";
         private string _aliaseve = "";
-
+        private List<Rolle> _eigeneRollen = new List<Rolle>();
         private Visibility _aliceboxesvisible = Visibility.Visible;
         private Visibility _aliceselected = Visibility.Collapsed;
         private Visibility _bobboxesvisible = Visibility.Visible;
@@ -35,13 +35,15 @@ namespace quaKrypto.ViewModels
         private Visibility _eveboxesvisible = Visibility.Visible;
         private Visibility _eveselected = Visibility.Collapsed;
         public DelegateCommand HauptMenu { get; set; }
+        public DelegateCommand LobbyErstellen { get; set; }
         public DelegateCommand Alicebestaetigen { get; set; }
         public DelegateCommand Bobbestaetigen { get; set; }
         public DelegateCommand Evebestaetigen { get; set; }
         public DelegateCommand ClearAlice { get; set; }
         public DelegateCommand ClearBob { get; set; }
         public DelegateCommand ClearEve { get; set; }
-        public LobbyScreenViewModel(Navigator navigator, IUebungsszenario uebungsszenario)
+        public List<Rolle> EigeneRollen = new List<Rolle>();
+        public LobbyScreenViewModel(Navigator navigator, IUebungsszenario uebungsszenario, bool ishost)
         {
             this.uebungsszenario = uebungsszenario;
 
@@ -50,17 +52,26 @@ namespace quaKrypto.ViewModels
                 navigator.aktuellesViewModel = new HauptMenuViewModel(navigator);
 
             }, null);
+            LobbyErstellen = new((o) =>
+            {
+                navigator.aktuellesViewModel = new SpielViewModel(navigator, null, null);
+
+            }, (o) => ishost == true && _aliasalice != "" && _aliasbob != "" && _aliasalice != "");
             Alicebestaetigen = new((o) =>
             {
                 AliceCommand((o));
+                
+                LobbyErstellen.RaiseCanExecuteChanged();
             }, (o) => _passwortalice != "" && _aliasalice != "");
             Bobbestaetigen = new((o) =>
             {
                 BobCommand((o));
+                LobbyErstellen.RaiseCanExecuteChanged();
             }, (o) => _passwortbob != "" && _aliasbob != "");
             Evebestaetigen = new((o) =>
             {
                 EveCommand((o));
+                LobbyErstellen.RaiseCanExecuteChanged();
             }, (o) => _passworteve != "" && _aliaseve != "");
             ClearAlice = new DelegateCommand(AliceFreigeben);
             ClearBob = new DelegateCommand(BobFreigeben);
@@ -267,6 +278,7 @@ namespace quaKrypto.ViewModels
             AliceSelected = Visibility.Collapsed;
             AliasAliceText = "";
             PasswortAliceText = "";
+            LobbyErstellen.RaiseCanExecuteChanged();
         }
         private void BobFreigeben(object paramter)
         {
@@ -274,6 +286,7 @@ namespace quaKrypto.ViewModels
             BobSelected = Visibility.Collapsed;
             AliasBobText = "";
             PasswortBobText = "";
+            LobbyErstellen.RaiseCanExecuteChanged();
         }
         private void EveFreigeben(object paramter)
         {
@@ -281,6 +294,7 @@ namespace quaKrypto.ViewModels
             EveSelected = Visibility.Collapsed;
             AliasEveText = "";
             PasswortEveText = "";
+            LobbyErstellen.RaiseCanExecuteChanged();
         }
     }
 }

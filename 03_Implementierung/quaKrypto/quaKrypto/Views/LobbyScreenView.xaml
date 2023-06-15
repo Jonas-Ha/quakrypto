@@ -142,7 +142,7 @@
             </DataGrid.Columns>
         </DataGrid>
         <StackPanel Grid.Row="2" Grid.Column="6" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
-            <Button MinHeight="30" x:Name="Spielstarten" Margin="0, 0, 0, 10">Spiel starten</Button>
+            <Button MinHeight="30" x:Name="Spielstarten" Margin="0, 0, 0, 10" Command="{Binding LobbyErstellen}">Spiel starten</Button>
         </StackPanel>
     </Grid>
 </UserControl>
