@@ -72,27 +72,27 @@
                 </DockPanel>
                 <DockPanel>
                     <Label Width="40">Alice</Label>
-                    <TextBlock Text="{Binding AliasAliceText}" Visibility="{Binding AliceSelected}" VerticalAlignment="Center" MaxWidth="180"></TextBlock>
-                    <TextBox Width="100" ToolTip="Alias eingeben" Text="{Binding AliasAliceText}" Visibility="{Binding AliceBoxesVisible}">
+                    <TextBlock Text="{Binding AliceUebungsszenario}" Visibility="{Binding AliceSelected}" VerticalAlignment="Center" MaxWidth="180"></TextBlock>
+                    <TextBox Width="100" ToolTip="Alias eingeben" Text="{Binding AliasAliceText, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding AliceBoxesVisible}">
                         
                     </TextBox>
-                    <TextBox Width="100" ToolTip="Passwort eingeben" Text="{Binding PasswortAliceText}" Margin="10,0,0,0" Visibility="{Binding AliceBoxesVisible}"></TextBox>
+                    <TextBox Width="100" ToolTip="Passwort eingeben" Text="{Binding PasswortAliceText, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,0,0" Visibility="{Binding AliceBoxesVisible}"></TextBox>
                     <Button Command="{Binding Alicebestaetigen}" Visibility="{Binding AliceBoxesVisible}" Margin="10,0,0,0">Bestätigen</Button>
                     <Button Visibility="{Binding AliceSelected}" Command="{Binding ClearAlice}" Margin="10,0,0,0">Freigeben</Button>
                 </DockPanel>
                 <DockPanel Margin="0,10,0,10">
                     <Label Width="40">Bob</Label>
-                    <TextBlock Visibility="{Binding BobSelected}" Text="{Binding AliasBobText}" VerticalAlignment="Center" MaxWidth="180" ></TextBlock>
-                    <TextBox Width="100" ToolTip="Alias eingeben" Visibility="{Binding BobBoxesVisible}" Text="{Binding AliasBobText}"></TextBox>
-                    <TextBox Width="100" ToolTip="Passwort eingeben" Margin="10,0,0,0" Visibility="{Binding BobBoxesVisible}" Text="{Binding PasswortBobText}"></TextBox>
+                    <TextBlock Visibility="{Binding BobSelected}" Text="{Binding BobUebungsszenario}" VerticalAlignment="Center" MaxWidth="180" ></TextBlock>
+                    <TextBox Width="100" ToolTip="Alias eingeben" Visibility="{Binding BobBoxesVisible}" Text="{Binding AliasBobText, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    <TextBox Width="100" ToolTip="Passwort eingeben" Margin="10,0,0,0" Visibility="{Binding BobBoxesVisible}" Text="{Binding PasswortBobText, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                     <Button Command="{Binding Bobbestaetigen}" Margin="10,0,0,0" Visibility="{Binding BobBoxesVisible}">Bestätigen</Button>
                     <Button Visibility="{Binding BobSelected}" Margin="10,0,0,0" Command="{Binding ClearBob}">Freigeben</Button>
                 </DockPanel>
                 <DockPanel >
-                    <Label Width="40">Eve</Label>
-                    <TextBlock Visibility="{Binding EveSelected}" Text="{Binding AliasEveText}" VerticalAlignment="Center" MaxWidth="180"></TextBlock>
-                    <TextBox Width="100" ToolTip="Alias eingeben" Visibility="{Binding EveBoxesVisible}" Text="{Binding AliasEveText}"></TextBox>
-                    <TextBox Width="100" ToolTip="Passwort eingeben" Margin="10,0,0,1" Visibility="{Binding EveBoxesVisible}" Text="{Binding PasswortEveText}"></TextBox>
+                    <Label Width="40" Visibility="{Binding EveLabel}">Eve</Label>
+                    <TextBlock Visibility="{Binding EveSelected}" Text="{Binding EveUebungsszenario}" VerticalAlignment="Center" MaxWidth="180"></TextBlock>
+                    <TextBox Width="100" ToolTip="Alias eingeben" Visibility="{Binding EveBoxesVisible}" Text="{Binding AliasEveText, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    <TextBox Width="100" ToolTip="Passwort eingeben" Margin="10,0,0,1" Visibility="{Binding EveBoxesVisible}" Text="{Binding PasswortEveText, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                     <Button Command="{Binding Evebestaetigen}" Visibility="{Binding EveBoxesVisible}" Margin="10,0,0,1">Bestätigen</Button>
                     <Button Visibility="{Binding EveSelected}" Command="{Binding ClearEve}" Margin="10,0,0,1">Freigeben</Button>
                 </DockPanel>

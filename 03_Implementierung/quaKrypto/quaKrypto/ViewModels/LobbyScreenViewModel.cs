@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Security;
 using System.Text;
@@ -27,6 +28,9 @@ namespace quaKrypto.ViewModels
         private string _aliasbob = "";
         private string _passworteve = "";
         private string _aliaseve = "";
+        private string _aliceuebungsszenario = "";
+        private string _bobuebungsszenario = "";
+        private string _eveuebungsszenario = "";
         private List<Rolle> _eigeneRollen = new List<Rolle>();
         private Visibility _aliceboxesvisible = Visibility.Visible;
         private Visibility _aliceselected = Visibility.Collapsed;
@@ -48,6 +52,7 @@ namespace quaKrypto.ViewModels
         {
             this.uebungsszenario = uebungsszenario;
             
+            ((INotifyCollectionChanged)this.uebungsszenario.Rollen).CollectionChanged += new NotifyCollectionChangedEventHandler(RollenChanged);
             HauptMenu = new((o) =>
             {
                 for(int i = 0; i < EigeneRollen.Count; i++)
@@ -210,46 +215,25 @@ namespace quaKrypto.ViewModels
         {
             get
             {
-                for(int i = 0; i < uebungsszenario.Rollen.Count; i++)
-                {
-                    if (uebungsszenario.Rollen[i].RolleTyp == Models.Enums.RolleEnum.Alice)
-                    {
-                        return "Spieler: " + uebungsszenario.Rollen[i].Alias;
-                    }
-
-                }
-                return String.Empty;                
+                return _aliceuebungsszenario;                
             }
+            set{ _aliceuebungsszenario = "Spieler: " + value; this.EigenschaftWurdeGeändert(); }
         }
         public string BobUebungsszenario
         {
             get
             {
-                for (int i = 0; i < uebungsszenario.Rollen.Count; i++)
-                {
-                    if (uebungsszenario.Rollen[i].RolleTyp == Models.Enums.RolleEnum.Bob)
-                    {
-                        return "Spieler: " + uebungsszenario.Rollen[i].Alias;
-                    }
-
-                }
-                return String.Empty;
+                return _bobuebungsszenario;
             }
+            set { _bobuebungsszenario = "Spieler: " + value; this.EigenschaftWurdeGeändert(); }
         }
         public string EveUebungsszenario
         {
             get
             {
-                for (int i = 0; i < uebungsszenario.Rollen.Count; i++)
-                {
-                    if (uebungsszenario.Rollen[i].RolleTyp == Models.Enums.RolleEnum.Eve)
-                    {
-                        return "Spieler: " + uebungsszenario.Rollen[i].Alias;
-                    }
-
-                }
-                return String.Empty;
+                return _eveuebungsszenario;
             }
+            set { _eveuebungsszenario = "Spieler: " + value; this.EigenschaftWurdeGeändert(); }
         }
         public string PasswortAliceText
         {
@@ -429,6 +413,57 @@ namespace quaKrypto.ViewModels
                 }
             }
             LobbyErstellen.RaiseCanExecuteChanged();
+        }
+        private void RollenChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            bool alice = false;
+            bool bob = false;
+            bool eve = false;
+            for(int i = 0; i < uebungsszenario.Rollen.Count;i++)
+            {
+                if (uebungsszenario.Rollen[i].RolleTyp == Models.Enums.RolleEnum.Alice)
+                {
+                    AliceUebungsszenario = uebungsszenario.Rollen[i].Alias;
+                    alice = true;
+                    AliceBoxesVisible = Visibility.Collapsed;
+                    AliceSelected = Visibility.Visible;
+                }
+                else if(uebungsszenario.Rollen[i].RolleTyp == Models.Enums.RolleEnum.Bob)
+                {
+                    BobUebungsszenario = uebungsszenario.Rollen[i].Alias;
+                    bob = true;
+                    BobBoxesVisible = Visibility.Collapsed;
+                    BobSelected = Visibility.Visible;
+                }
+                else if (uebungsszenario.Rollen[i].RolleTyp == Models.Enums.RolleEnum.Eve)
+                {
+                    EveUebungsszenario = uebungsszenario.Rollen[i].Alias;
+                    eve = true;
+                    EveBoxesVisible = Visibility.Collapsed;
+                    EveSelected = Visibility.Visible;
+                }
+            }
+            if(!alice) 
+            {
+                AliceUebungsszenario = String.Empty;
+                AliceBoxesVisible = Visibility.Visible;
+                AliceSelected = Visibility.Collapsed;
+            }
+            if (!bob)
+            {
+                BobUebungsszenario = String.Empty;
+                BobBoxesVisible = Visibility.Visible;
+                BobSelected = Visibility.Collapsed;
+            }
+            if(!eve)
+            {
+                EveUebungsszenario = String.Empty;
+                if (Variante != VarianteNormalerAblauf.VariantenName)
+                {
+                    EveBoxesVisible = Visibility.Visible;
+                    EveSelected = Visibility.Collapsed;
+                }
+            }
         }
     }
 }
