@@ -19,7 +19,8 @@ namespace quaKrypto.Models.Classes
 {
     public class UebungsszenarioNetzwerk : IUebungsszenario, INotifyPropertyChanged
     {
-        private List<Rolle> rollen;
+        private ObservableCollection<Rolle> rollen;
+        private ReadOnlyObservableCollection<Rolle> rollenActual;
         private Rolle aktuelleRolle;
         private SchwierigkeitsgradEnum schwierigkeitsgrad;
         private IVariante variante;
@@ -35,7 +36,8 @@ namespace quaKrypto.Models.Classes
 
         public UebungsszenarioNetzwerk(SchwierigkeitsgradEnum schwierigkeitsgrad, IVariante variante, uint startPhase, uint endPhase, string name, bool host)
         {
-            this.rollen = new List<Rolle>();
+            this.rollen = new ObservableCollection<Rolle>();
+            this.rollenActual = new ReadOnlyObservableCollection<Rolle>(rollen);
             this.schwierigkeitsgrad = schwierigkeitsgrad;
             this.variante = variante;
             this.startPhase = startPhase;
@@ -55,7 +57,7 @@ namespace quaKrypto.Models.Classes
             }
         }
 
-        public ReadOnlyCollection<Rolle> Rollen { get; }
+        public ReadOnlyObservableCollection<Rolle> Rollen { get; }
         public Rolle AktuelleRolle { get { return aktuelleRolle; } }
         public SchwierigkeitsgradEnum Schwierigkeitsgrad { get; }
         public IVariante Variante { get; }

@@ -21,7 +21,8 @@ namespace quaKrypto.Models.Classes
 {
     public class UebungsszenarioLokal : IUebungsszenario, INotifyPropertyChanged
     {
-        private List<Rolle> rollen;
+        private ObservableCollection<Rolle> rollen;
+        private ReadOnlyObservableCollection<Rolle> rollenActual;
         private Rolle aktuelleRolle;
         private SchwierigkeitsgradEnum schwierigkeitsgrad;
         private IVariante variante;
@@ -35,7 +36,8 @@ namespace quaKrypto.Models.Classes
 
         public UebungsszenarioLokal(SchwierigkeitsgradEnum schwierigkeitsgrad, IVariante variante, uint startPhase, uint endPhase, string name)
         {
-            this.rollen = new List<Rolle>();
+            this.rollen = new ObservableCollection<Rolle>();
+            this.rollenActual = new ReadOnlyObservableCollection<Rolle>(this.rollen);
             this.schwierigkeitsgrad = schwierigkeitsgrad;
             this.variante = variante;
             this.startPhase = startPhase;
@@ -45,9 +47,11 @@ namespace quaKrypto.Models.Classes
             this.aufzeichnung.Handlungsschritte.CollectionChanged += this.variante.BerechneAktuellePhase;
             this.name = name;
             this.beendet = false;
+            
+            
         }
 
-        public ReadOnlyCollection<Rolle> Rollen => rollen.AsReadOnly();
+        public ReadOnlyObservableCollection<Rolle> Rollen => rollenActual;
         public Rolle AktuelleRolle { get { return aktuelleRolle; } }
         public SchwierigkeitsgradEnum Schwierigkeitsgrad { get { return schwierigkeitsgrad; } }
         public IVariante Variante { get { return variante; } }

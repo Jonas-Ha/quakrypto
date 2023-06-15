@@ -19,7 +19,7 @@ namespace quaKrypto.Models.Interfaces
 {
     public interface IUebungsszenario : INotifyPropertyChanged
     {
-        public ReadOnlyCollection<Rolle> Rollen
+        public ReadOnlyObservableCollection<Rolle> Rollen
         { get; }
 
         public Rolle AktuelleRolle
