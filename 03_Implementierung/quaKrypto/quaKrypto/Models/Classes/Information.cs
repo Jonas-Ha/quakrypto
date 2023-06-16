@@ -19,17 +19,21 @@ namespace quaKrypto.Models.Classes
     {
         private int informationsID;
         private RolleEnum? informationsEmpfaenger;
+        private RolleEnum? informationsSender;
         private string informationsName;
         private Enums.InformationsEnum informationsTyp;
         private object informationsInhalt;
 
-        public Information(int informationsID, string informationsName, InformationsEnum informationsTyp, object informationsInhalt, RolleEnum? informationsEmpfaenger)
+        public Information(int informationsID, string informationsName, InformationsEnum informationsTyp, object informationsInhalt, RolleEnum? informationsEmpfaenger = null, RolleEnum? informationsSender = null)
         {
             InformationsID = informationsID;
             InformationsName = informationsName;
             InformationsTyp = informationsTyp;
             InformationsInhalt = informationsInhalt;
+            if (informationsEmpfaenger != null )
             InformationsEmpfaenger = informationsEmpfaenger;
+            if (informationsSender != null)
+                InformationsSender = informationsSender;
         }
 
         public int InformationsID
@@ -60,6 +64,12 @@ namespace quaKrypto.Models.Classes
         {
             get { return informationsEmpfaenger; }
             init { informationsEmpfaenger = value; }
+        }
+
+        public RolleEnum? InformationsSender
+        {
+            get { return informationsSender; }
+            init { informationsSender = value; }
         }
 
         public string InformationsInhaltToString

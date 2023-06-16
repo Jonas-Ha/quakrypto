@@ -29,7 +29,7 @@ namespace quaKrypto.ViewModels
         public SpielEveViewModel SpielEveViewModel { 
             set
             { 
-                if (once) 
+                if (!once) 
                 { 
                     spielEveViewModel = value;
                     once = true;
