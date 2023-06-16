@@ -18,9 +18,9 @@ namespace quaKrypto.Models.Classes
     public class Operationen
     {
         //Operand1 enthält zu sendende Information, operand2 enthält den Empfänger der Information
-        public Information NachrichtSenden(int informationsID, Information operand1, Information operand2, String ergebnisName)
+        public Information NachrichtSenden(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum sender)
         {
-            if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
+            if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null || sender == null)
             {
                 throw new ArgumentNullException("Object reference not set to an instance of an object");
             }
@@ -34,14 +34,14 @@ namespace quaKrypto.Models.Classes
             
             if(operand1.InformationsTyp == InformationsEnum.photonen)
             {
-                return new Information(informationsID, ergebnisName, InformationsEnum.unscharfePhotonen, operand1.InformationsInhalt, empfaenger);
+                return new Information(informationsID, ergebnisName, InformationsEnum.unscharfePhotonen, operand1.InformationsInhalt, empfaenger, sender);
             }
 
-            return new Information(informationsID, ergebnisName, operand1.InformationsTyp, operand1.InformationsInhalt, empfaenger);
+            return new Information(informationsID, ergebnisName, operand1.InformationsTyp, operand1.InformationsInhalt, empfaenger, sender);
         }
 
         //Operand1 enthält die zu empfangende Information, operand2 null
-        public Information NachrichtEmpfangen(int informationsID, Information operand1, Information operand2, String ergebnisName)
+        public Information NachrichtEmpfangen(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
         {
             if (informationsID == null || operand1 == null || ergebnisName == null)
             {
@@ -52,7 +52,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Überlegung: Streichen der Funktion NachrichtAbhoeren, da identisch zu NachrichtEmpfangen (Leopold Bialek, Alexander Dennner)
-        public  Information NachrichtAbhoeren(int informationsID, Information operand1, Information operand2, String ergebnisName)
+        public  Information NachrichtAbhoeren(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
         {
             if (informationsID == null || operand1 == null || ergebnisName == null)
             {
@@ -64,7 +64,7 @@ namespace quaKrypto.Models.Classes
 
         // Rückgabe einer zufälligen Bitfolge aus einer Zufallszahl generiert
         // Operand1 Länge der zu generierenden Bitfolge, operand2 null
-        public Information BitfolgeGenerierenZahl(int informationsID, Information operand1, Information operand2, String ergebnisName)
+        public Information BitfolgeGenerierenZahl(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
         {
             if (informationsID == null || operand1 == null || ergebnisName == null)
             {
@@ -98,7 +98,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 Eingegebene Bitfolge, Operand2 länge der zu generierenden Bitfolge
-        public Information BitfolgeGenerierenAngabe(int informationsID,  Information operand1, Information operand2, String ergebnisName)
+        public Information BitfolgeGenerierenAngabe(int informationsID,  Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
         {
             if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {
@@ -131,7 +131,7 @@ namespace quaKrypto.Models.Classes
         }
 
         // Operand1 Länge der zu generierenden Polschata, operand2 null
-        public Information PolarisationsschemataGenerierenZahl(int informationsID, Information operand1, Information operand2, String ergebnisName)
+        public Information PolarisationsschemataGenerierenZahl(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
         {
             if (informationsID == null || operand1 == null || ergebnisName == null)
             {
@@ -165,7 +165,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 Eingegebene Polschata, Operand2 länge der zu generierenden Polschata
-        public Information PolarisationsschemataGenerierenAngabe(int informationsID, Information operand1, Information operand2, String ergebnisName)
+        public Information PolarisationsschemataGenerierenAngabe(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
         {
             if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {
@@ -198,7 +198,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand 1 = polarisationsschemata, Operand2 = Schlüssel
-        public Information PhotonenGenerieren(int informationsID, Information operand1, Information operand2, String ergebnisName)
+        public Information PhotonenGenerieren(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
         {
             if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {
@@ -236,7 +236,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 = länge der Bitmaske, Operand2 = Anzahl der 1er in der Bitmaske
-        public Information BitmaskeGenerieren(int informationsID, Information operand1, Information operand2, String ergebnisName)
+        public Information BitmaskeGenerieren(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
         {
 
             if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
@@ -277,7 +277,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 = Polschata, Operand2 = Polschata
-        public Information PolschataVergleichen(int informationsID, Information operand1, Information operand2, String ergebnisName)
+        public Information PolschataVergleichen(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
         {
             if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {
@@ -312,7 +312,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 = Bitfolge, Operand2 = Bitfolge
-        public Information BitfolgenVergleichen(int informationsID, Information operand1, Information operand2, String ergebnisName)
+        public Information BitfolgenVergleichen(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
         {
             if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {
@@ -347,7 +347,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 = Bitfolge, Operand2 = null
-        public Information BitfolgeNegieren(int informationsID, Information operand1, Information? operand2, String ergebnisName)
+        public Information BitfolgeNegieren(int informationsID, Information operand1, Information? operand2, String ergebnisName, RolleEnum? sender)
         {
             if (informationsID == null || operand1 == null || ergebnisName == null)
             {
@@ -367,7 +367,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 = Polarisationsschemata, Operand2 = unscharfePhotonen
-        public Information PhotonenZuBitfolge(int informationsID, Information operand1, Information operand2, String ergebnisName)
+        public Information PhotonenZuBitfolge(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
         {
             if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {
@@ -416,7 +416,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 = null, Operand2 = Eingegebener Text
-        public Information TextGenerieren(int informationsID, Information? operand1, Information operand2, String ergebnisName)
+        public Information TextGenerieren(int informationsID, Information? operand1, Information operand2, String ergebnisName, RolleEnum? sender)
         {
             if (informationsID == null || operand2 == null || ergebnisName == null)
             {
@@ -432,7 +432,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 = Text Information, Operand2 = null
-        public Information TextLaengeBestimmen(int informationsID, Information operand1, Information? operand2, String ergebnisName)
+        public Information TextLaengeBestimmen(int informationsID, Information operand1, Information? operand2, String ergebnisName, RolleEnum? sender)
         {
             if (informationsID == null || operand1 == null || ergebnisName == null)
             {
@@ -452,7 +452,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 = Text, Operand2 = Schlüssel
-        public Information TextVerschluesseln(int informationsID, Information operand1, Information operand2, String ergebnisName)
+        public Information TextVerschluesseln(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
         {
             if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {
@@ -492,7 +492,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 = verschlüsselter Text, Operand2 = Schlüssel
-        public Information TextEntschluesseln(int informationsID, Information operand1, Information operand2, String ergebnisName)
+        public Information TextEntschluesseln(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
         {
             if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {
@@ -532,7 +532,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 = Bitfolge die die Bits gestrichen bekommt, Operand2 = Bitfolge die angibt welche Bits gestrichen werden
-        public Information BitsStreichen(int informationsID, Information operand1, Information operand2, String ergebnisName)
+        public Information BitsStreichen(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
         {
             if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {
@@ -578,7 +578,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 = Angepasste Information, Operand2 = null
-        public Information BitsFreiBearbeiten(int informationsID, Information operand1, Information? operand2, String ergebnisName)
+        public Information BitsFreiBearbeiten(int informationsID, Information operand1, Information? operand2, String ergebnisName, RolleEnum? sender)
         {
             if (informationsID == null || operand1 == null || ergebnisName == null)
             {
@@ -594,7 +594,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 = null,  Operand2 = Zahl per Eingabe
-        public Information ZahlGenerieren(int informationsID, Information? operand1, Information operand2, String ergebnisName)
+        public Information ZahlGenerieren(int informationsID, Information? operand1, Information operand2, String ergebnisName, RolleEnum? sender)
         {
 
             if (informationsID == null|| operand2 == null || ergebnisName == null)
@@ -611,7 +611,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 = null, Operand2 = null
-        public Information? ZugBeenden(int? informationsID, Information operand1, Information operand2, String ergebnisName)
+        public Information? ZugBeenden(int? informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
         {
             return null;
         }

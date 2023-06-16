@@ -63,7 +63,7 @@ namespace quaKrypto.Models.Classes
 
             if (HandlungsschrittKommando.TryGetValue(OperationsTyp, out del))
             {
-                var Ergebnis = del.DynamicInvoke(informationsID, Operand1, Operand2, ErgebnisName) as Information;
+                var Ergebnis = del.DynamicInvoke(informationsID, Operand1, Operand2, ErgebnisName, Rolle) as Information; //Rolle hier nur bei Nachricht senden benötigt
                 if ((Ergebnis != null)) this.Ergebnis = Ergebnis;
             }
             else throw new InvalidOperationException("Für diesen Operationstypen wurde keine Operation gefunden");

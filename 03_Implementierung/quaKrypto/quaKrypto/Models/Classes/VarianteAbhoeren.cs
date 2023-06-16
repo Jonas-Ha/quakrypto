@@ -66,10 +66,22 @@ namespace quaKrypto.Models.Classes
         {
             if (this.aktuelleRolle == RolleEnum.Eve)
             {
-                if (vorherigeRolle == RolleEnum.Bob) this.aktuelleRolle = RolleEnum.Alice;
-                else if (vorherigeRolle == RolleEnum.Alice) this.aktuelleRolle = RolleEnum.Bob;
+                if (vorherigeRolle == RolleEnum.Bob)
+                {
+                    this.vorherigeRolle = this.aktuelleRolle;
+                    this.aktuelleRolle = RolleEnum.Alice;
+                }
+                else if (vorherigeRolle == RolleEnum.Alice)
+                {
+                    this.vorherigeRolle = this.aktuelleRolle;
+                    this.aktuelleRolle = RolleEnum.Bob;
+                }
             }
-            else this.aktuelleRolle = RolleEnum.Eve;
+            else
+            {
+                this.vorherigeRolle = this.aktuelleRolle;
+                this.aktuelleRolle = RolleEnum.Eve;
+            }
 
             return this.aktuelleRolle;
         }
