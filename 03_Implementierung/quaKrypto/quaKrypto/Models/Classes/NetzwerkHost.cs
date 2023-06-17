@@ -63,6 +63,7 @@ namespace quaKrypto.Models.Classes
             uebungsszenarioNetzwerkBeitrittInfo = netzwerkBeitrittInfo;
             udpClient = new UdpClient(UDP_PORT);
             periodicTimer = new PeriodicTimer(TimeSpan.FromMilliseconds(ZEIT_ZWISCHEN_LOBBYINFORMATION_SENDEN_IN_MS));
+            ErstelleTCPLobby();
             while (await periodicTimer.WaitForNextTickAsync())
             {
                 string netzwerkBeitrittInfoAsString = uebungsszenarioNetzwerkBeitrittInfo.Lobbyname.Replace("\t", "") + '\t'
@@ -84,7 +85,7 @@ namespace quaKrypto.Models.Classes
                 catch (SocketException) { Trace.WriteLine("Eine Socket-Exception wurde beim UDP-Senden vom Host geworfen"); break; }
 
             }
-            ErstelleTCPLobby();
+
         }
         private static void BeendeZyklischesSendenVonLobbyinformation()
         {
@@ -134,14 +135,16 @@ namespace quaKrypto.Models.Classes
                     tcpListener.Start();
                     while (true)
                     {
+                        Trace.WriteLine("Starting To Accept");
                         TcpClient tcpClient = tcpListener.AcceptTcpClient();
+                        Trace.WriteLine("Accepted Client");
                         NetworkStream networkStream = tcpClient.GetStream();
                         networkStreams.Add(networkStream);
                         //TODO: Client schicken 
                         StarteTCPListeningThread(networkStream);
                     }
                 }
-                catch (SocketException) { Trace.WriteLine("Eine Socket-Exception wurde beim TCP-Verbindung Annehmen als Host geworfen"); }
+                catch (SocketException) { BeendeTCPLobby(); Trace.WriteLine("Eine Socket-Exception wurde beim TCP-Verbindung Annehmen als Host geworfen"); }
             }).Start();
         }
 
@@ -278,7 +281,7 @@ namespace quaKrypto.Models.Classes
                         }
                         kompletteNachrichtAlsBytes = new byte[TCP_RECEIVE_BUFFER_SIZE];
                     }
-                    catch (SocketException) { Trace.WriteLine("Eine Socket-Exception wurde beim TCP-Empfangen mit folgender Adresse geworfen: "); break; }
+                    catch (SocketException) { networkStream.Close(); Trace.WriteLine("Eine Socket-Exception wurde beim TCP-Empfangen mit folgender Adresse geworfen: "); break; }
                 }
             }).Start();
         }

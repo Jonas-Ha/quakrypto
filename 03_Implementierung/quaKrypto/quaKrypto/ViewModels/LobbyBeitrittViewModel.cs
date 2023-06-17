@@ -15,6 +15,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using quaKrypto.Models.Interfaces;
+using System.ComponentModel;
+using System.Diagnostics;
 
 namespace quaKrypto.ViewModels
 {
@@ -39,6 +41,7 @@ namespace quaKrypto.ViewModels
             */
             //Hier wird der Anstoß gegeben nach verfübaren Lobbys zu suchen
             NetzwerkClient.BeginneSucheNachLobbys();
+            NetzwerkClient.VerfuegbareLobbys.CollectionChanged += (a, b) => { Trace.WriteLine("IchwarHier"); EigenschaftWurdeGeändert(nameof(VerfuegbarLobbys)); };
             HauptMenu = new((o) =>
             {
                 //Hier wird die suche beendet und dann zum Hauptmenü zurück navigiert
@@ -65,7 +68,7 @@ namespace quaKrypto.ViewModels
                     variante, uebungsszenarioInfo.StartPhase, uebungsszenarioInfo.EndPhase,
                     uebungsszenarioInfo.Lobbyname, false);
                 navigator.aktuellesViewModel = new LobbyScreenViewModel(navigator, uebungsszenario, false);
-                
+               
 
             }, (o) => _ausgewaehlteLobby != -1);
         }

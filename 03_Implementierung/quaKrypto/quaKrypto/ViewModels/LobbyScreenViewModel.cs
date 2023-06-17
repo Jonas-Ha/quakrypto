@@ -58,7 +58,9 @@ namespace quaKrypto.ViewModels
                 for(int i = 0; i < EigeneRollen.Count; i++)
                 {
                     uebungsszenario.GebeRolleFrei(EigeneRollen[i].RolleTyp);
+                    
                 }
+                NetzwerkHost.BeendeTCPLobby();
                 navigator.aktuellesViewModel = new HauptMenuViewModel(navigator);
 
             }, null);

@@ -14,10 +14,14 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Serialization;
 using System.IO;
+using System.Runtime.CompilerServices;
+using System.ComponentModel;
+using System.Windows.Threading;
+using System.Windows;
 
 namespace quaKrypto.Models.Classes
 {
-    public static class NetzwerkClient
+    public static class NetzwerkClient 
     {
         private const byte LOBBYINFORMATION = 0x01;
         private const byte LOBBY_NICHT_MEHR_VERFUEGBAR = 0x02;
@@ -45,18 +49,11 @@ namespace quaKrypto.Models.Classes
         //Schnittstelle für Lobby Beitreten
         public static ObservableCollection<UebungsszenarioNetzwerkBeitrittInfo> VerfuegbareLobbys
         {
-            get
-            {
-                ObservableCollection<UebungsszenarioNetzwerkBeitrittInfo> returnCollection = new();
-                foreach (UebungsszenarioNetzwerkBeitrittInfo netzwerkBeitrittInfo in verfügbareLobbys.Values)
-                {
-                    returnCollection.Add(netzwerkBeitrittInfo);
-                }
-                return returnCollection;
-            }
-        }
+            get;
+        } = new ObservableCollection<UebungsszenarioNetzwerkBeitrittInfo>();
 
         private static UebungsszenarioNetzwerk? uebungsszenario;
+
         public static UebungsszenarioNetzwerk Ubungsszenario { set { uebungsszenario = value; } }
 
         #region UDP
@@ -73,6 +70,7 @@ namespace quaKrypto.Models.Classes
                     try
                     {
                         byte[] kompletteNachrichtAlsBytes = udpClient.Receive(ref senderAdresse);
+                        Trace.WriteLine("BeginneLobbySucheNachrichtErhalten");
                         byte commandIdentifier = kompletteNachrichtAlsBytes[0];
                         if (commandIdentifier == LOBBYINFORMATION)
                         {
@@ -83,12 +81,18 @@ namespace quaKrypto.Models.Classes
                                 bool bobBesetzt = bool.Parse(empfangeneNachrichtTeile[5]);
                                 bool eveBesetzt = bool.Parse(empfangeneNachrichtTeile[6]);
                                 UebungsszenarioNetzwerkBeitrittInfo netzwerkBeitrittInfo = new(senderAdresse.Address, empfangeneNachrichtTeile[0], empfangeneNachrichtTeile[1], empfangeneNachrichtTeile[2], schwierigkeit, aliceBesetzt, bobBesetzt, eveBesetzt);
-                                verfügbareLobbys.Add(senderAdresse.Address, netzwerkBeitrittInfo);
+                                if (!verfügbareLobbys.ContainsKey(senderAdresse.Address))
+                                {
+                                    verfügbareLobbys.Add(senderAdresse.Address, netzwerkBeitrittInfo);
+                                    Application.Current.Dispatcher.Invoke(new Action(() => VerfuegbareLobbys.Add(netzwerkBeitrittInfo)));
+                                }
+
                                 //NOTIFY CHANGED?
                             }
                         }
                         else if (commandIdentifier == LOBBY_NICHT_MEHR_VERFUEGBAR)
                         {
+                            Application.Current.Dispatcher.Invoke(new Action(() => VerfuegbareLobbys.Remove(verfügbareLobbys[senderAdresse.Address])));
                             verfügbareLobbys.Remove(senderAdresse.Address);
                             //NOTIFY CHANGED?
                         }
