@@ -186,6 +186,7 @@ namespace quaKrypto.Models.Classes
                     {
                         networkStream.Read(kompletteNachrichtAlsBytes, 0, TCP_RECEIVE_BUFFER_SIZE);
                         byte commandIdentifier = kompletteNachrichtAlsBytes[0];
+                        string ales = Encoding.UTF8.GetString(kompletteNachrichtAlsBytes[1..]);
                         string[] empfangeneNachrichtTeile = Encoding.UTF8.GetString(kompletteNachrichtAlsBytes[1..]).Split('\t');
                         switch (commandIdentifier)
                         {
@@ -193,6 +194,7 @@ namespace quaKrypto.Models.Classes
                                 Rolle? rolleAlice, rolleBob, rolleEve;
                                 rolleAlice = empfangeneNachrichtTeile[0] == "" ? null : new Rolle(RolleEnum.Alice, empfangeneNachrichtTeile[0]);
                                 rolleBob = empfangeneNachrichtTeile[1] == "" ? null : new Rolle(RolleEnum.Bob, empfangeneNachrichtTeile[1]);
+                                empfangeneNachrichtTeile[2] = empfangeneNachrichtTeile[2].TrimEnd('\0');
                                 rolleEve = empfangeneNachrichtTeile[2] == "" ? null : new Rolle(RolleEnum.Eve, empfangeneNachrichtTeile[2]);
 
                                 uebungsszenario?.NeueRollenInformation(rolleAlice, rolleBob, rolleEve);

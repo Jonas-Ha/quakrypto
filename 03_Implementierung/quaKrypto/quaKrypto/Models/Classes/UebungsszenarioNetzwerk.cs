@@ -336,15 +336,15 @@ namespace quaKrypto.Models.Classes
             Trace.Write("Ga");
             Rolle? rolle = rollen.Where(r => r.RolleTyp == RolleEnum.Alice).FirstOrDefault();
             if (rolleAlice != null && (rolle == null || rolle == default(Rolle))) { rollen.Add(rolleAlice); this.PropertyHasChanged(nameof(Rollen)); }
-            else if (rolle != null && rolle != default(Rolle)) rollen.Remove(rolle);
+            else if (rolleAlice == null && (rolle != null && rolle != default(Rolle))) rollen.Remove(rolle);
 
             rolle = rollen.Where(r => r.RolleTyp == RolleEnum.Bob).FirstOrDefault();
             if (rolleBob != null && (rolle == null || rolle == default(Rolle))) { rollen.Add(rolleBob); this.PropertyHasChanged(nameof(Rollen)); }
-            else if (rolle != null && rolle != default(Rolle)) rollen.Remove(rolle);
+            else if (rolleBob == null && (rolle != null && rolle != default(Rolle))) rollen.Remove(rolle);
 
             rolle = rollen.Where(r => r.RolleTyp == RolleEnum.Eve).FirstOrDefault();
             if (rolleEve != null && (rolle == null || rolle == default(Rolle))) { rollen.Add(rolleEve); this.PropertyHasChanged(nameof(Rollen)); }
-            else if (rolle != null && rolle != default(Rolle)) rollen.Remove(rolle);
+            else if (rolleEve == null && (rolle != null && rolle != default(Rolle))) rollen.Remove(rolle);
         }
 
         private void PropertyHasChanged(string nameOfProperty)
