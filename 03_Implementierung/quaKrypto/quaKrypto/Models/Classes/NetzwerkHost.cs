@@ -143,6 +143,7 @@ namespace quaKrypto.Models.Classes
                         networkStreams.Add(networkStream);
                         //TODO: Client schicken 
                         StarteTCPListeningThread(networkStream);
+                        Thread.Sleep(100); //Zum Teil wird sonst nicht richtig die RollenInformation gesendet
                         SendeRollenInformation();
                     }
                 }
@@ -219,6 +220,7 @@ namespace quaKrypto.Models.Classes
                         networkStream.Read(kompletteNachrichtAlsBytes, 0, TCP_RECEIVE_BUFFER_SIZE);
                         byte commandIdentifier = kompletteNachrichtAlsBytes[0];
                         string[] empfangeneNachrichtTeile = Encoding.UTF8.GetString(kompletteNachrichtAlsBytes[1..]).Split('\t');
+                        for(int i = 0; i <empfangeneNachrichtTeile.Length; i++)empfangeneNachrichtTeile[i] = empfangeneNachrichtTeile[i].TrimEnd('\0');
                         switch (commandIdentifier)
                         {
                             case ROLLE_WAEHLEN:

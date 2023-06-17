@@ -110,7 +110,7 @@ namespace quaKrypto.ViewModels
             Alicebestaetigen = new((o) =>
             {
                 
-                bool success = uebungsszenario.RolleHinzufuegen(new Rolle(Models.Enums.RolleEnum.Alice, _aliasalice, _passwortalice), false);
+                bool success = uebungsszenario.RolleHinzufuegen(new Rolle(Models.Enums.RolleEnum.Alice, _aliasalice, _passwortalice), true);
                 if(success)
                 {
                     for(int i = 0; i < uebungsszenario.Rollen.Count; i++)
@@ -132,7 +132,7 @@ namespace quaKrypto.ViewModels
             Bobbestaetigen = new((o) =>
             {
                 
-                bool success = uebungsszenario.RolleHinzufuegen(new Rolle(Models.Enums.RolleEnum.Bob, _aliasbob, _passwortbob), false);
+                bool success = uebungsszenario.RolleHinzufuegen(new Rolle(Models.Enums.RolleEnum.Bob, _aliasbob, _passwortbob), true);
                 if (success)
                 {
                     for (int i = 0; i < uebungsszenario.Rollen.Count; i++)
@@ -154,7 +154,7 @@ namespace quaKrypto.ViewModels
             Evebestaetigen = new((o) =>
             {
                 
-                bool success = uebungsszenario.RolleHinzufuegen(new Rolle(Models.Enums.RolleEnum.Eve, _aliaseve, _passworteve), false);
+                bool success = uebungsszenario.RolleHinzufuegen(new Rolle(Models.Enums.RolleEnum.Eve, _aliaseve, _passworteve), true);
                 if (success)
                 {
                     for (int i = 0; i < uebungsszenario.Rollen.Count; i++)
@@ -549,6 +549,7 @@ namespace quaKrypto.ViewModels
                 Rolle? gefunden = uebungsszenario.Rollen.Where(r => r.RolleTyp == rolle).FirstOrDefault();
                 if (gefunden == null || gefunden == default(Rolle)) return false;
             }
+            if(EigeneRollen.Count == 0) return false;
             return true;
         }
     }

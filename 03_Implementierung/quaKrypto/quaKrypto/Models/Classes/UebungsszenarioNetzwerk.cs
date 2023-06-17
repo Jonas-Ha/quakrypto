@@ -322,13 +322,15 @@ namespace quaKrypto.Models.Classes
         public void KontrolleErhalten()
         {
             //Lobbyscreenview muss Bildschirm freigeben und Passwort eingeben lassen.
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            NaechsterZug();
         }
 
         public void UebungsszenarioWurdeGestartet()
         {
             //Views müssen auf Spiel umschalten und den WarteBildschirm anzeigen
-            throw new NotImplementedException();
+            NaechsterZug();
+            //throw new NotImplementedException();
         }
 
 
