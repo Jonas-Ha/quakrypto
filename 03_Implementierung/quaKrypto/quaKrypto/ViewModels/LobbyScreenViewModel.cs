@@ -422,6 +422,7 @@ namespace quaKrypto.ViewModels
                     EigeneRollen.RemoveAt(i);
                 }
             }
+            ClearAlice.RaiseCanExecuteChanged();
             LobbyErstellen.RaiseCanExecuteChanged();
         }
         private bool AliceFreigebenStartBedingung()
@@ -445,6 +446,7 @@ namespace quaKrypto.ViewModels
                     EigeneRollen.RemoveAt(i);
                 }
             }
+            ClearBob.RaiseCanExecuteChanged();
             LobbyErstellen.RaiseCanExecuteChanged();
         }
         private bool BobFreigebenStartBedingung()
@@ -468,6 +470,7 @@ namespace quaKrypto.ViewModels
                     EigeneRollen.RemoveAt(i);
                 }
             }
+            ClearEve.RaiseCanExecuteChanged();
             LobbyErstellen.RaiseCanExecuteChanged();
         }
         private bool EveFreigebenStartBedingung()

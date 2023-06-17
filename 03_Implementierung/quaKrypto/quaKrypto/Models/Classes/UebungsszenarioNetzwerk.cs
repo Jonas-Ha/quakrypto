@@ -137,6 +137,7 @@ namespace quaKrypto.Models.Classes
                         NetzwerkClient.GebeRolleFrei(rolle);
                     }
                     _ = eigeneRollen.Remove(rolle);
+                    this.PropertyHasChanged(nameof(Rollen));
                     break;
                 }
             }

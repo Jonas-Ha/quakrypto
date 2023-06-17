@@ -227,15 +227,15 @@ namespace quaKrypto.Models.Classes
                                     switch (neueRolle)
                                     {
                                         case RolleEnum.Alice:
-                                            aliceRolle = new Rolle(RolleEnum.Alice, empfangeneNachrichtTeile[1]);
+                                            aliceRolle = new Rolle(RolleEnum.Alice, empfangeneNachrichtTeile[1].TrimEnd('\0'));
                                             uebungsszenario?.RolleHinzufuegen(aliceRolle, false);
                                             break;
                                         case RolleEnum.Bob:
-                                            bobRolle = new Rolle(RolleEnum.Bob, empfangeneNachrichtTeile[1]);
+                                            bobRolle = new Rolle(RolleEnum.Bob, empfangeneNachrichtTeile[1].TrimEnd('\0'));
                                             uebungsszenario?.RolleHinzufuegen(bobRolle, false);
                                             break;
                                         case RolleEnum.Eve:
-                                            eveRolle = new Rolle(RolleEnum.Eve, empfangeneNachrichtTeile[1]);
+                                            eveRolle = new Rolle(RolleEnum.Eve, empfangeneNachrichtTeile[1].TrimEnd('\0'));
                                             uebungsszenario?.RolleHinzufuegen(eveRolle, false);
                                             break;
                                     }
