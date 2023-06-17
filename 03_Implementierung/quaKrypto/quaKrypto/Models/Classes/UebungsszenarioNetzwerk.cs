@@ -68,7 +68,7 @@ namespace quaKrypto.Models.Classes
         public string Name { get { return name; } }
         public bool Beendet { get { return beendet; } }
 
-        public bool RolleHinzufuegen(Rolle rolle, bool eigeneRolle = false)
+        public bool RolleHinzufuegen(Rolle rolle, bool eigeneRolle)
         {
             bool verfügbar = true;
             for (int i = 0; i < Rollen.Count; i++)
@@ -103,7 +103,7 @@ namespace quaKrypto.Models.Classes
                 {
                     NetzwerkClient.WaehleRolle(rolle.RolleTyp, rolle.Alias);
                 }
-                this.eigeneRollen.Add(rolle.RolleTyp);
+                if(eigeneRolle)eigeneRollen.Add(rolle.RolleTyp);
             }
 
             return verfügbar;

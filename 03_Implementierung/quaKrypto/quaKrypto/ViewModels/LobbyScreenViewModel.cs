@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using System.Windows;
 using quaKrypto.Commands;
 using quaKrypto.Models;
 using quaKrypto.Models.Classes;
+using quaKrypto.Models.Enums;
 using quaKrypto.Models.Interfaces;
 
 namespace quaKrypto.ViewModels
@@ -85,7 +87,7 @@ namespace quaKrypto.ViewModels
                 
                 navigator.aktuellesViewModel = spielViewModel;
 
-            }, (o) => ishost == true && _aliasalice != "" && _aliasbob != "" && _aliasalice != "" && EigeneRollen.Count != 0);
+            }, (o) => ishost && LobbyErstellenStartBedingung());
             Alicebestaetigen = new((o) =>
             {
                 
@@ -485,6 +487,16 @@ namespace quaKrypto.ViewModels
                     EveSelected = Visibility.Collapsed;
                 }
             }
+        }
+        private bool LobbyErstellenStartBedingung()
+        {
+            IList<RolleEnum> benötigteRollen = uebungsszenario.Variante.MoeglicheRollen;
+            foreach(RolleEnum rolle in benötigteRollen)
+            {
+                Rolle? gefunden = uebungsszenario.Rollen.Where(r => r.RolleTyp == rolle).FirstOrDefault();
+                if (gefunden == null || gefunden == default(Rolle)) return false;
+            }
+            return true;
         }
     }
 }
