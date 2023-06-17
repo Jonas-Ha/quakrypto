@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -329,18 +330,20 @@ namespace quaKrypto.Models.Classes
             throw new NotImplementedException();
         }
 
+
         public void NeueRollenInformation(Rolle? rolleAlice, Rolle? rolleBob, Rolle? rolleEve)
         {
+            Trace.Write("Ga");
             Rolle? rolle = rollen.Where(r => r.RolleTyp == RolleEnum.Alice).FirstOrDefault();
-            if (rolleAlice != null && (rolle == null || rolle == default(Rolle))) rollen.Add(rolleAlice);
+            if (rolleAlice != null && (rolle == null || rolle == default(Rolle))) { rollen.Add(rolleAlice); this.PropertyHasChanged(nameof(Rollen)); }
             else if (rolle != null && rolle != default(Rolle)) rollen.Remove(rolle);
 
             rolle = rollen.Where(r => r.RolleTyp == RolleEnum.Bob).FirstOrDefault();
-            if (rolleBob != null && (rolle == null || rolle == default(Rolle))) rollen.Add(rolleBob);
+            if (rolleBob != null && (rolle == null || rolle == default(Rolle))) { rollen.Add(rolleBob); this.PropertyHasChanged(nameof(Rollen)); }
             else if (rolle != null && rolle != default(Rolle)) rollen.Remove(rolle);
 
             rolle = rollen.Where(r => r.RolleTyp == RolleEnum.Eve).FirstOrDefault();
-            if (rolleEve != null && (rolle == null || rolle == default(Rolle))) rollen.Add(rolleEve);
+            if (rolleEve != null && (rolle == null || rolle == default(Rolle))) { rollen.Add(rolleEve); this.PropertyHasChanged(nameof(Rollen)); }
             else if (rolle != null && rolle != default(Rolle)) rollen.Remove(rolle);
         }
 

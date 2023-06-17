@@ -138,10 +138,12 @@ namespace quaKrypto.Models.Classes
                         Trace.WriteLine("Starting To Accept");
                         TcpClient tcpClient = tcpListener.AcceptTcpClient();
                         Trace.WriteLine("Accepted Client");
+                        
                         NetworkStream networkStream = tcpClient.GetStream();
                         networkStreams.Add(networkStream);
                         //TODO: Client schicken 
                         StarteTCPListeningThread(networkStream);
+                        SendeRollenInformation();
                     }
                 }
                 catch (SocketException) { BeendeTCPLobby(); Trace.WriteLine("Eine Socket-Exception wurde beim TCP-Verbindung Annehmen als Host geworfen"); }

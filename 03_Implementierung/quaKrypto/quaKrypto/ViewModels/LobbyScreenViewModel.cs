@@ -437,6 +437,7 @@ namespace quaKrypto.ViewModels
                     alice = true;
                     AliceBoxesVisible = Visibility.Collapsed;
                     AliceSelected = Visibility.Visible;
+                    
                 }
                 else if(uebungsszenario.Rollen[i].RolleTyp == Models.Enums.RolleEnum.Bob)
                 {
@@ -452,6 +453,7 @@ namespace quaKrypto.ViewModels
                     EveBoxesVisible = Visibility.Collapsed;
                     EveSelected = Visibility.Visible;
                 }
+
             }
             if(!alice) 
             {

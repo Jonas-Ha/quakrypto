@@ -57,6 +57,7 @@ namespace quaKrypto.ViewModels
                     NetzwerkClient.VerfuegbareLobbys[AusgewaehlteLobby];
                 NetzwerkClient.VerbindeMitUebungsszenario(uebungsszenarioInfo);
                 NetzwerkClient.BeendeSucheNachLobbys();
+                
                 IVariante variante = uebungsszenarioInfo.Variante switch
                 {
                     "Normaler Ablauf" => new VarianteNormalerAblauf(uebungsszenarioInfo.StartPhase),
@@ -67,6 +68,7 @@ namespace quaKrypto.ViewModels
                 IUebungsszenario uebungsszenario = new UebungsszenarioNetzwerk(uebungsszenarioInfo.Schwierigkeitsgrad,
                     variante, uebungsszenarioInfo.StartPhase, uebungsszenarioInfo.EndPhase,
                     uebungsszenarioInfo.Lobbyname, false);
+                NetzwerkClient.Ubungsszenario = (UebungsszenarioNetzwerk)uebungsszenario;
                 navigator.aktuellesViewModel = new LobbyScreenViewModel(navigator, uebungsszenario, false);
                
 
