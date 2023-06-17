@@ -60,7 +60,16 @@ namespace quaKrypto.ViewModels
                     uebungsszenario.GebeRolleFrei(EigeneRollen[i].RolleTyp);
                     
                 }
-                NetzwerkHost.BeendeTCPLobby();
+                if (ishost)
+                {
+                    NetzwerkHost.BeendeTCPLobby();
+                }
+                else
+                {
+                    NetzwerkClient.TrenneVerbindungMitUebungsszenario();
+                }
+                
+                
                 navigator.aktuellesViewModel = new HauptMenuViewModel(navigator);
 
             }, null);

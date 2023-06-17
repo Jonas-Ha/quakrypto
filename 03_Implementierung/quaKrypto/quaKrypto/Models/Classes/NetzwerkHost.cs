@@ -43,7 +43,7 @@ namespace quaKrypto.Models.Classes
 
         private static Rolle? aliceRolle, bobRolle, eveRolle;
 
-        public static Rolle? AliceRolle { get { return aliceRolle; } set { aliceRolle = value; if(uebungsszenarioNetzwerkBeitrittInfo != null) uebungsszenarioNetzwerkBeitrittInfo.AliceState = aliceRolle != null; } }
+        public static Rolle? AliceRolle { get { return aliceRolle; } set { aliceRolle = value; if (uebungsszenarioNetzwerkBeitrittInfo != null) uebungsszenarioNetzwerkBeitrittInfo.AliceState = aliceRolle != null; } }
         public static Rolle? BobRolle { get { return bobRolle; } set { bobRolle = value; if (uebungsszenarioNetzwerkBeitrittInfo != null) uebungsszenarioNetzwerkBeitrittInfo.BobState = bobRolle != null; } }
         public static Rolle? EveRolle { get { return eveRolle; } set { eveRolle = value; if (uebungsszenarioNetzwerkBeitrittInfo != null) uebungsszenarioNetzwerkBeitrittInfo.EveState = eveRolle != null; } }
 
@@ -138,7 +138,7 @@ namespace quaKrypto.Models.Classes
                         Trace.WriteLine("Starting To Accept");
                         TcpClient tcpClient = tcpListener.AcceptTcpClient();
                         Trace.WriteLine("Accepted Client");
-                        
+
                         NetworkStream networkStream = tcpClient.GetStream();
                         networkStreams.Add(networkStream);
                         //TODO: Client schicken 
@@ -168,8 +168,8 @@ namespace quaKrypto.Models.Classes
 
         //Schnittstelle fürs Übungsszenario (Wenn du selber eine Rolle wählst)
         public static void SendeRollenInformation()
-        {   
-            SendeNachrichtTCP(ROLLENINFORMATION, AliceRolle?.Alias + '\t' + BobRolle?.Alias + '\t' + EveRolle?.Alias);
+        {
+            SendeNachrichtTCP(ROLLENINFORMATION, (AliceRolle == null ? "" : AliceRolle.Alias) + '\t' + (BobRolle == null ? "" : BobRolle?.Alias) + '\t' + (EveRolle == null ? "" : EveRolle?.Alias));
         }
 
         //Schnittstelle für LobbyScreenView

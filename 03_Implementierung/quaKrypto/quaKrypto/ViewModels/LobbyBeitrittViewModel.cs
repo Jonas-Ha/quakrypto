@@ -55,9 +55,6 @@ namespace quaKrypto.ViewModels
                 //Hier wird sich mit dem ausgwählten Übungsszeanrio verbunden, die Suche beendet und dann weiter zum Lobbyscreen gegangen
                 UebungsszenarioNetzwerkBeitrittInfo uebungsszenarioInfo =
                     NetzwerkClient.VerfuegbareLobbys[AusgewaehlteLobby];
-                NetzwerkClient.VerbindeMitUebungsszenario(uebungsszenarioInfo);
-                NetzwerkClient.BeendeSucheNachLobbys();
-                
                 IVariante variante = uebungsszenarioInfo.Variante switch
                 {
                     "Normaler Ablauf" => new VarianteNormalerAblauf(uebungsszenarioInfo.StartPhase),
@@ -69,6 +66,10 @@ namespace quaKrypto.ViewModels
                     variante, uebungsszenarioInfo.StartPhase, uebungsszenarioInfo.EndPhase,
                     uebungsszenarioInfo.Lobbyname, false);
                 NetzwerkClient.Ubungsszenario = (UebungsszenarioNetzwerk)uebungsszenario;
+
+                NetzwerkClient.VerbindeMitUebungsszenario(uebungsszenarioInfo);
+                
+
                 navigator.aktuellesViewModel = new LobbyScreenViewModel(navigator, uebungsszenario, false);
                
 

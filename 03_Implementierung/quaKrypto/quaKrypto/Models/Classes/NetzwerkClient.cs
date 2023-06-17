@@ -133,7 +133,7 @@ namespace quaKrypto.Models.Classes
             return true;
         }
 
-        private static void TrenneVerbindungMitUebungsszenario()
+        public static void TrenneVerbindungMitUebungsszenario()
         {
             networkStream?.Close();
             tcpClient?.Close();
