@@ -32,7 +32,7 @@ namespace quaKrypto.Models.Classes
         private bool beendet;
         public event PropertyChangedEventHandler? PropertyChanged;
         private bool host;
-        private RolleEnum? eigeneRolle;
+        private List<RolleEnum> eigeneRollen = new();
 
         public UebungsszenarioNetzwerk(SchwierigkeitsgradEnum schwierigkeitsgrad, IVariante variante, uint startPhase, uint endPhase, string name, bool host)
         {
@@ -56,16 +56,17 @@ namespace quaKrypto.Models.Classes
                 NetzwerkClient.Ubungsszenario = this;
             }
         }
-
-        public ReadOnlyObservableCollection<Rolle> Rollen { get; }
+        public ReadOnlyObservableCollection<Rolle> Rollen => rollenActual;
         public Rolle AktuelleRolle { get { return aktuelleRolle; } }
-        public SchwierigkeitsgradEnum Schwierigkeitsgrad { get; }
-        public IVariante Variante { get; }
-        public uint StartPhase { get; }
-        public uint EndPhase { get; }
-        public Uebertragungskanal Uebertragungskanal { get; }
-        public Aufzeichnung Aufzeichnung { get; }
-        public string Name { get; }
+        public SchwierigkeitsgradEnum Schwierigkeitsgrad { get { return schwierigkeitsgrad; } }
+        public IVariante Variante { get { return variante; } }
+        public uint StartPhase { get { return startPhase; } }
+        public uint EndPhase { get { return endPhase; } }
+        public Uebertragungskanal Uebertragungskanal { get { return uebertragungskanal; } }
+        public Aufzeichnung Aufzeichnung { get { return aufzeichnung; } }
+        public string Name { get { return name; } }
+        public bool Beendet { get { return beendet; } }
+
         public bool RolleHinzufuegen(Rolle rolle, bool eigeneRolle = false)
         {
             bool verfügbar = true;
@@ -101,7 +102,7 @@ namespace quaKrypto.Models.Classes
                 {
                     NetzwerkClient.WaehleRolle(rolle.RolleTyp, rolle.Alias);
                 }
-                this.eigeneRolle = rolle.RolleTyp;
+                this.eigeneRollen.Add(rolle.RolleTyp);
             }
 
             return verfügbar;
@@ -134,7 +135,7 @@ namespace quaKrypto.Models.Classes
                     {
                         NetzwerkClient.GebeRolleFrei(rolle);
                     }
-                    if (rolle == eigeneRolle) eigeneRolle = null;
+                    _ = eigeneRollen.Remove(rolle);
                     break;
                 }
             }
@@ -143,7 +144,7 @@ namespace quaKrypto.Models.Classes
         public bool Starten()
         {
             //Geht nur wenn Host -> Host flag hinzufügen
-            if (host && eigeneRolle != null)
+            if (host && eigeneRollen.Count != 0)
             {
                 var benoetigteRollen = Variante.MoeglicheRollen;
                 if (Rollen.Count != benoetigteRollen.Count) return false;
@@ -175,11 +176,10 @@ namespace quaKrypto.Models.Classes
 
                 NetzwerkHost.StarteUebungsszenario();
 
-                if (aktRolle != eigeneRolle)
+                if (!eigeneRollen.Contains(aktRolle))
                 {
                     NetzwerkHost.UebergebeKontrolle(aktRolle);
                 }
-
                 return true;
             }
 
@@ -194,12 +194,22 @@ namespace quaKrypto.Models.Classes
             {
                 //Aufzeichnung wird an alle gesendet, da man Host ist.
                 NetzwerkHost.SendeAufzeichnungsUpdate(aktuelleRolle.handlungsschritte);
+                if (eigeneRollen.Count != 1)
+                {
+                    foreach (Handlungsschritt handlungsschritt in aktuelleRolle.handlungsschritte)
+                    {
+                        if (handlungsschritt.OperationsTyp == OperationsEnum.nachrichtSenden && (eigeneRollen.Contains(RolleEnum.Eve) || (handlungsschritt.Rolle == RolleEnum.Alice && eigeneRollen.Contains(RolleEnum.Bob)) || (handlungsschritt.Rolle == RolleEnum.Bob && eigeneRollen.Contains(RolleEnum.Alice))))
+                        {
+                            Uebertragungskanal.SpeicherNachrichtAb(handlungsschritt.Ergebnis);
+                        }
+                    }
+                }
                 if (variante.AktuellePhase > endPhase)
                 {
                     Beenden();
                     return;
                 }
-                else
+                else if (!eigeneRollen.Contains(aktRolle))
                     NetzwerkHost.UebergebeKontrolle(aktRolle);
             }
             else
@@ -265,11 +275,11 @@ namespace quaKrypto.Models.Classes
         public void ZugWurdeBeendet(List<Handlungsschritt> handlungsschritte)
         {
             //Bestimmen der anderen Rolle (nicht man selbst und nicht aktive)
-            if (Rollen.Count > 2) NetzwerkHost.SendeAufzeichnungsUpdate(handlungsschritte, eigeneRolle != RolleEnum.Alice && aktuelleRolle.RolleTyp != RolleEnum.Alice ? RolleEnum.Alice : eigeneRolle != RolleEnum.Bob && aktuelleRolle.RolleTyp != RolleEnum.Bob ? RolleEnum.Bob : RolleEnum.Eve);
+            if (Variante.GetType() != typeof(VarianteNormalerAblauf) && eigeneRollen.Count == 1) NetzwerkHost.SendeAufzeichnungsUpdate(handlungsschritte, !eigeneRollen.Contains(RolleEnum.Alice) && aktuelleRolle.RolleTyp != RolleEnum.Alice ? RolleEnum.Alice : !eigeneRollen.Contains(RolleEnum.Bob) && aktuelleRolle.RolleTyp != RolleEnum.Bob ? RolleEnum.Bob : RolleEnum.Eve);
             foreach (Handlungsschritt handlungsschritt in handlungsschritte)
             {
                 HandlungsschrittAusführenLassen(handlungsschritt.OperationsTyp, handlungsschritt.Operand1, handlungsschritt.Operand2, handlungsschritt.ErgebnisName, handlungsschritt.Rolle);
-                if (handlungsschritt.OperationsTyp == OperationsEnum.nachrichtSenden && (eigeneRolle == RolleEnum.Eve || (handlungsschritt.Rolle == RolleEnum.Alice && eigeneRolle == RolleEnum.Bob) || (handlungsschritt.Rolle == RolleEnum.Bob && eigeneRolle == RolleEnum.Alice)))
+                if (handlungsschritt.OperationsTyp == OperationsEnum.nachrichtSenden && (eigeneRollen.Contains(RolleEnum.Eve) || (handlungsschritt.Rolle == RolleEnum.Alice && eigeneRollen.Contains(RolleEnum.Bob)) || (handlungsschritt.Rolle == RolleEnum.Bob && eigeneRollen.Contains(RolleEnum.Alice))))
                 {
                     Uebertragungskanal.SpeicherNachrichtAb(handlungsschritt.Ergebnis);
                 }
@@ -277,7 +287,7 @@ namespace quaKrypto.Models.Classes
 
             RolleEnum naechsteRolle = variante.NaechsteRolle();
 
-            if (naechsteRolle != eigeneRolle)
+            if (!eigeneRollen.Contains(naechsteRolle))
                 NetzwerkHost.UebergebeKontrolle(naechsteRolle);
 
             foreach (Rolle rolle in rollen)
@@ -300,7 +310,7 @@ namespace quaKrypto.Models.Classes
             foreach (Handlungsschritt handlungsschritt in handlungsschritte)
             {
                 HandlungsschrittAusführenLassen(handlungsschritt.OperationsTyp, handlungsschritt.Operand1, handlungsschritt.Operand2, handlungsschritt.ErgebnisName, handlungsschritt.Rolle);
-                if (handlungsschritt.OperationsTyp == OperationsEnum.nachrichtSenden && (eigeneRolle == RolleEnum.Eve || (handlungsschritt.Rolle == RolleEnum.Alice && eigeneRolle == RolleEnum.Bob) || (handlungsschritt.Rolle == RolleEnum.Bob && eigeneRolle == RolleEnum.Alice)))
+                if (handlungsschritt.OperationsTyp == OperationsEnum.nachrichtSenden && (eigeneRollen.Contains(RolleEnum.Eve) || (handlungsschritt.Rolle == RolleEnum.Alice && eigeneRollen.Contains(RolleEnum.Bob)) || (handlungsschritt.Rolle == RolleEnum.Bob && eigeneRollen.Contains(RolleEnum.Alice))))
                 {
                     Uebertragungskanal.SpeicherNachrichtAb(handlungsschritt.Ergebnis);
                 }
@@ -321,9 +331,17 @@ namespace quaKrypto.Models.Classes
 
         public void NeueRollenInformation(Rolle? rolleAlice, Rolle? rolleBob, Rolle? rolleEve)
         {
-            //LobbySceenView muss die aktualisierten Rollen anzeigen
-            //Rollen müssen irgendwo hinzugefügt/entfernt werden
-            throw new NotImplementedException();
+            Rolle? rolle = rollen.Where(r => r.RolleTyp == RolleEnum.Alice).FirstOrDefault();
+            if (rolleAlice != null && (rolle == null || rolle == default(Rolle))) rollen.Add(rolleAlice);
+            else if (rolle != null && rolle != default(Rolle)) rollen.Remove(rolle);
+
+            rolle = rollen.Where(r => r.RolleTyp == RolleEnum.Bob).FirstOrDefault();
+            if (rolleBob != null && (rolle == null || rolle == default(Rolle))) rollen.Add(rolleBob);
+            else if (rolle != null && rolle != default(Rolle)) rollen.Remove(rolle);
+
+            rolle = rollen.Where(r => r.RolleTyp == RolleEnum.Eve).FirstOrDefault();
+            if (rolleEve != null && (rolle == null || rolle == default(Rolle))) rollen.Add(rolleEve);
+            else if (rolle != null && rolle != default(Rolle)) rollen.Remove(rolle);
         }
 
         private void PropertyHasChanged(string nameOfProperty)

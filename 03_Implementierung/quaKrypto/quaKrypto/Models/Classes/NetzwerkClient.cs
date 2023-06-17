@@ -187,22 +187,10 @@ namespace quaKrypto.Models.Classes
                         {
                             case ROLLENINFORMATION:
                                 Rolle? rolleAlice, rolleBob, rolleEve;
-                                XmlSerializer xmlRollenSerializer = new(typeof(Rolle));
-                                using (StringReader stringReader = new(empfangeneNachrichtTeile[0]))
-                                {
-                                    object? deserialisiertesObjekt = xmlRollenSerializer.Deserialize(stringReader);
-                                    rolleAlice = (Rolle?)deserialisiertesObjekt;
-                                }
-                                using (StringReader stringReader = new(empfangeneNachrichtTeile[1]))
-                                {
-                                    object? deserialisiertesObjekt = xmlRollenSerializer.Deserialize(stringReader);
-                                    rolleBob = (Rolle?)deserialisiertesObjekt;
-                                }
-                                using (StringReader stringReader = new(empfangeneNachrichtTeile[2]))
-                                {
-                                    object? deserialisiertesObjekt = xmlRollenSerializer.Deserialize(stringReader);
-                                    rolleEve = (Rolle?)deserialisiertesObjekt;
-                                }
+                                rolleAlice = empfangeneNachrichtTeile[0] == "" ? null : new Rolle(RolleEnum.Alice, empfangeneNachrichtTeile[0]);
+                                rolleBob = empfangeneNachrichtTeile[1] == "" ? null : new Rolle(RolleEnum.Bob, empfangeneNachrichtTeile[1]);
+                                rolleEve = empfangeneNachrichtTeile[2] == "" ? null : new Rolle(RolleEnum.Eve, empfangeneNachrichtTeile[2]);
+
                                 uebungsszenario?.NeueRollenInformation(rolleAlice, rolleBob, rolleEve);
                                 break;
                             case UEBUNGSSZENARIO_STARTEN:

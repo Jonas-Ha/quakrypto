@@ -163,25 +163,8 @@ namespace quaKrypto.Models.Classes
 
         //Schnittstelle fürs Übungsszenario (Wenn du selber eine Rolle wählst)
         public static void SendeRollenInformation()
-        {
-            string serializedRollen = new("");
-            XmlSerializer xmlSerializer = new(typeof(Rolle));
-            using (StringWriter stringWriter = new())
-            {
-                xmlSerializer.Serialize(stringWriter, aliceRolle);
-                serializedRollen += stringWriter.ToString() + '\t';
-            }
-            using (StringWriter stringWriter = new())
-            {
-                xmlSerializer.Serialize(stringWriter, bobRolle);
-                serializedRollen += stringWriter.ToString() + '\t';
-            }
-            using (StringWriter stringWriter = new())
-            {
-                xmlSerializer.Serialize(stringWriter, eveRolle);
-                serializedRollen += stringWriter.ToString();
-            }
-            SendeNachrichtTCP(ROLLENINFORMATION, serializedRollen);
+        {   
+            SendeNachrichtTCP(ROLLENINFORMATION, AliceRolle?.Alias + '\t' + BobRolle?.Alias + '\t' + EveRolle?.Alias);
         }
 
         //Schnittstelle für LobbyScreenView
