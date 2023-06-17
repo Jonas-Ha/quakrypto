@@ -14,10 +14,14 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Serialization;
 using System.IO;
+using System.Runtime.CompilerServices;
+using System.ComponentModel;
+using System.Windows.Threading;
+using System.Windows;
 
 namespace quaKrypto.Models.Classes
 {
-    public static class NetzwerkClient
+    public static class NetzwerkClient 
     {
         private const byte LOBBYINFORMATION = 0x01;
         private const byte LOBBY_NICHT_MEHR_VERFUEGBAR = 0x02;
@@ -45,18 +49,11 @@ namespace quaKrypto.Models.Classes
         //Schnittstelle für Lobby Beitreten
         public static ObservableCollection<UebungsszenarioNetzwerkBeitrittInfo> VerfuegbareLobbys
         {
-            get
-            {
-                ObservableCollection<UebungsszenarioNetzwerkBeitrittInfo> returnCollection = new();
-                foreach (UebungsszenarioNetzwerkBeitrittInfo netzwerkBeitrittInfo in verfügbareLobbys.Values)
-                {
-                    returnCollection.Add(netzwerkBeitrittInfo);
-                }
-                return returnCollection;
-            }
-        }
+            get;
+        } = new ObservableCollection<UebungsszenarioNetzwerkBeitrittInfo>();
 
         private static UebungsszenarioNetzwerk? uebungsszenario;
+
         public static UebungsszenarioNetzwerk Ubungsszenario { set { uebungsszenario = value; } }
 
         #region UDP
@@ -73,6 +70,7 @@ namespace quaKrypto.Models.Classes
                     try
                     {
                         byte[] kompletteNachrichtAlsBytes = udpClient.Receive(ref senderAdresse);
+                        Trace.WriteLine("BeginneLobbySucheNachrichtErhalten");
                         byte commandIdentifier = kompletteNachrichtAlsBytes[0];
                         if (commandIdentifier == LOBBYINFORMATION)
                         {
@@ -83,12 +81,18 @@ namespace quaKrypto.Models.Classes
                                 bool bobBesetzt = bool.Parse(empfangeneNachrichtTeile[5]);
                                 bool eveBesetzt = bool.Parse(empfangeneNachrichtTeile[6]);
                                 UebungsszenarioNetzwerkBeitrittInfo netzwerkBeitrittInfo = new(senderAdresse.Address, empfangeneNachrichtTeile[0], empfangeneNachrichtTeile[1], empfangeneNachrichtTeile[2], schwierigkeit, aliceBesetzt, bobBesetzt, eveBesetzt);
-                                verfügbareLobbys.Add(senderAdresse.Address, netzwerkBeitrittInfo);
+                                if (!verfügbareLobbys.ContainsKey(senderAdresse.Address))
+                                {
+                                    verfügbareLobbys.Add(senderAdresse.Address, netzwerkBeitrittInfo);
+                                    Application.Current.Dispatcher.Invoke(new Action(() => VerfuegbareLobbys.Add(netzwerkBeitrittInfo)));
+                                }
+
                                 //NOTIFY CHANGED?
                             }
                         }
                         else if (commandIdentifier == LOBBY_NICHT_MEHR_VERFUEGBAR)
                         {
+                            Application.Current.Dispatcher.Invoke(new Action(() => VerfuegbareLobbys.Remove(verfügbareLobbys[senderAdresse.Address])));
                             verfügbareLobbys.Remove(senderAdresse.Address);
                             //NOTIFY CHANGED?
                         }
@@ -129,7 +133,7 @@ namespace quaKrypto.Models.Classes
             return true;
         }
 
-        private static void TrenneVerbindungMitUebungsszenario()
+        public static void TrenneVerbindungMitUebungsszenario()
         {
             networkStream?.Close();
             tcpClient?.Close();
@@ -182,27 +186,17 @@ namespace quaKrypto.Models.Classes
                     {
                         networkStream.Read(kompletteNachrichtAlsBytes, 0, TCP_RECEIVE_BUFFER_SIZE);
                         byte commandIdentifier = kompletteNachrichtAlsBytes[0];
+                        string ales = Encoding.UTF8.GetString(kompletteNachrichtAlsBytes[1..]);
                         string[] empfangeneNachrichtTeile = Encoding.UTF8.GetString(kompletteNachrichtAlsBytes[1..]).Split('\t');
                         switch (commandIdentifier)
                         {
                             case ROLLENINFORMATION:
                                 Rolle? rolleAlice, rolleBob, rolleEve;
-                                XmlSerializer xmlRollenSerializer = new(typeof(Rolle));
-                                using (StringReader stringReader = new(empfangeneNachrichtTeile[0]))
-                                {
-                                    object? deserialisiertesObjekt = xmlRollenSerializer.Deserialize(stringReader);
-                                    rolleAlice = (Rolle?)deserialisiertesObjekt;
-                                }
-                                using (StringReader stringReader = new(empfangeneNachrichtTeile[1]))
-                                {
-                                    object? deserialisiertesObjekt = xmlRollenSerializer.Deserialize(stringReader);
-                                    rolleBob = (Rolle?)deserialisiertesObjekt;
-                                }
-                                using (StringReader stringReader = new(empfangeneNachrichtTeile[2]))
-                                {
-                                    object? deserialisiertesObjekt = xmlRollenSerializer.Deserialize(stringReader);
-                                    rolleEve = (Rolle?)deserialisiertesObjekt;
-                                }
+                                rolleAlice = empfangeneNachrichtTeile[0] == "" ? null : new Rolle(RolleEnum.Alice, empfangeneNachrichtTeile[0]);
+                                rolleBob = empfangeneNachrichtTeile[1] == "" ? null : new Rolle(RolleEnum.Bob, empfangeneNachrichtTeile[1]);
+                                empfangeneNachrichtTeile[2] = empfangeneNachrichtTeile[2].TrimEnd('\0');
+                                rolleEve = empfangeneNachrichtTeile[2] == "" ? null : new Rolle(RolleEnum.Eve, empfangeneNachrichtTeile[2]);
+
                                 uebungsszenario?.NeueRollenInformation(rolleAlice, rolleBob, rolleEve);
                                 break;
                             case UEBUNGSSZENARIO_STARTEN:

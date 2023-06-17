@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Data;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +12,7 @@ using System.Windows;
 using quaKrypto.Commands;
 using quaKrypto.Models;
 using quaKrypto.Models.Classes;
+using quaKrypto.Models.Enums;
 using quaKrypto.Models.Interfaces;
 
 namespace quaKrypto.ViewModels
@@ -36,9 +39,9 @@ namespace quaKrypto.ViewModels
         private Visibility _aliceselected = Visibility.Collapsed;
         private Visibility _bobboxesvisible = Visibility.Visible;
         private Visibility _bobselected = Visibility.Collapsed;
-        private Visibility _eveboxesvisible = Visibility.Visible;
+        private Visibility _eveboxesvisible = Visibility.Collapsed;
         private Visibility _eveselected = Visibility.Collapsed;
-        private Visibility _evelabel = Visibility.Visible;
+        private Visibility _evelabel = Visibility.Collapsed;
         public DelegateCommand HauptMenu { get; set; }
         public DelegateCommand LobbyErstellen { get; set; }
         public DelegateCommand Alicebestaetigen { get; set; }
@@ -51,17 +54,30 @@ namespace quaKrypto.ViewModels
         public LobbyScreenViewModel(Navigator navigator, IUebungsszenario uebungsszenario, bool ishost)
         {
             this.uebungsszenario = uebungsszenario;
-            
+
             ((INotifyCollectionChanged)this.uebungsszenario.Rollen).CollectionChanged += new NotifyCollectionChangedEventHandler(RollenChanged);
+            
             HauptMenu = new((o) =>
             {
                 for(int i = 0; i < EigeneRollen.Count; i++)
                 {
                     uebungsszenario.GebeRolleFrei(EigeneRollen[i].RolleTyp);
+                    
                 }
+                if (ishost)
+                {
+                    NetzwerkHost.BeendeTCPLobby();
+                }
+                else
+                {
+                    NetzwerkClient.TrenneVerbindungMitUebungsszenario();
+                }
+                
+                
                 navigator.aktuellesViewModel = new HauptMenuViewModel(navigator);
 
             }, null);
+
             LobbyErstellen = new((o) =>
             {
                 uebungsszenario.Starten();
@@ -74,11 +90,27 @@ namespace quaKrypto.ViewModels
                 
                 navigator.aktuellesViewModel = spielViewModel;
 
-            }, (o) => ishost == true && _aliasalice != "" && _aliasbob != "" && _aliasalice != "" && EigeneRollen.Count != 0);
+            }, (o) => ishost && LobbyErstellenStartBedingung());
+
+            ClearAlice = new((o) =>
+            {
+                AliceFreigeben();
+            }, (o) => AliceFreigebenStartBedingung());
+
+            ClearBob = new((o) =>
+            {
+                BobFreigeben();
+            }, (o) => BobFreigebenStartBedingung());
+
+            ClearEve = new((o) =>
+            {
+                EveFreigeben();
+            }, (o) => EveFreigebenStartBedingung());
+
             Alicebestaetigen = new((o) =>
             {
                 
-                bool success = uebungsszenario.RolleHinzufuegen(new Rolle(Models.Enums.RolleEnum.Alice, _aliasalice, _passwortalice), false);
+                bool success = uebungsszenario.RolleHinzufuegen(new Rolle(Models.Enums.RolleEnum.Alice, _aliasalice, _passwortalice), true);
                 if(success)
                 {
                     for(int i = 0; i < uebungsszenario.Rollen.Count; i++)
@@ -94,13 +126,13 @@ namespace quaKrypto.ViewModels
                 {
                     MessageBox.Show("Rolle bereits belegt!", "Rolle vergeben", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-
+                ClearAlice.RaiseCanExecuteChanged();
                 LobbyErstellen.RaiseCanExecuteChanged();
             }, (o) => _passwortalice != "" && _aliasalice != "");
             Bobbestaetigen = new((o) =>
             {
                 
-                bool success = uebungsszenario.RolleHinzufuegen(new Rolle(Models.Enums.RolleEnum.Bob, _aliasbob, _passwortbob), false);
+                bool success = uebungsszenario.RolleHinzufuegen(new Rolle(Models.Enums.RolleEnum.Bob, _aliasbob, _passwortbob), true);
                 if (success)
                 {
                     for (int i = 0; i < uebungsszenario.Rollen.Count; i++)
@@ -116,12 +148,13 @@ namespace quaKrypto.ViewModels
                 {
                     MessageBox.Show("Rolle bereits belegt!", "Rolle vergeben", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
+                ClearBob.RaiseCanExecuteChanged();
                 LobbyErstellen.RaiseCanExecuteChanged();
             }, (o) => _passwortbob != "" && _aliasbob != "");
             Evebestaetigen = new((o) =>
             {
                 
-                bool success = uebungsszenario.RolleHinzufuegen(new Rolle(Models.Enums.RolleEnum.Eve, _aliaseve, _passworteve), false);
+                bool success = uebungsszenario.RolleHinzufuegen(new Rolle(Models.Enums.RolleEnum.Eve, _aliaseve, _passworteve), true);
                 if (success)
                 {
                     for (int i = 0; i < uebungsszenario.Rollen.Count; i++)
@@ -137,11 +170,12 @@ namespace quaKrypto.ViewModels
                 {
                     MessageBox.Show("Rolle bereits belegt!", "Rolle vergeben", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
+                ClearEve.RaiseCanExecuteChanged();
                 LobbyErstellen.RaiseCanExecuteChanged();
             }, (o) => _passworteve != "" && _aliaseve != "");
-            ClearAlice = new DelegateCommand(AliceFreigeben);
-            ClearBob = new DelegateCommand(BobFreigeben);
-            ClearEve = new DelegateCommand(EveFreigeben);
+            
+
+
             LobbyName = uebungsszenario.Name;
             if (uebungsszenario.Variante.ToString().Contains("VarianteNormalerAblauf"))
             {
@@ -374,7 +408,7 @@ namespace quaKrypto.ViewModels
             EveSelected = Visibility.Visible;
             AliasEveText = "Spieler: " + AliasEveText;
         }
-        private void AliceFreigeben(object parameter)
+        private void AliceFreigeben()
         {
             AliceBoxesVisible = Visibility.Visible;
             AliceSelected = Visibility.Collapsed;
@@ -388,9 +422,17 @@ namespace quaKrypto.ViewModels
                     EigeneRollen.RemoveAt(i);
                 }
             }
+            ClearAlice.RaiseCanExecuteChanged();
             LobbyErstellen.RaiseCanExecuteChanged();
         }
-        private void BobFreigeben(object paramter)
+        private bool AliceFreigebenStartBedingung()
+        {
+            Rolle? gefunden = EigeneRollen.Where(r => r.RolleTyp == RolleEnum.Alice).FirstOrDefault();
+            if (gefunden == null || gefunden == default(Rolle)) return false;
+            return true;
+        }
+
+        private void BobFreigeben()
         {
             BobBoxesVisible = Visibility.Visible;
             BobSelected = Visibility.Collapsed;
@@ -404,9 +446,17 @@ namespace quaKrypto.ViewModels
                     EigeneRollen.RemoveAt(i);
                 }
             }
+            ClearBob.RaiseCanExecuteChanged();
             LobbyErstellen.RaiseCanExecuteChanged();
         }
-        private void EveFreigeben(object paramter)
+        private bool BobFreigebenStartBedingung()
+        {
+            Rolle? gefunden = EigeneRollen.Where(r => r.RolleTyp == RolleEnum.Bob).FirstOrDefault();
+            if (gefunden == null || gefunden == default(Rolle)) return false;
+            return true;
+        }
+
+        private void EveFreigeben()
         {
             EveBoxesVisible = Visibility.Visible;
             EveSelected = Visibility.Collapsed;
@@ -420,8 +470,16 @@ namespace quaKrypto.ViewModels
                     EigeneRollen.RemoveAt(i);
                 }
             }
+            ClearEve.RaiseCanExecuteChanged();
             LobbyErstellen.RaiseCanExecuteChanged();
         }
+        private bool EveFreigebenStartBedingung()
+        {
+            Rolle? gefunden = EigeneRollen.Where(r => r.RolleTyp == RolleEnum.Eve).FirstOrDefault();
+            if (gefunden == null || gefunden == default(Rolle)) return false;
+            return true;
+        }
+
         private void RollenChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             bool alice = false;
@@ -451,6 +509,7 @@ namespace quaKrypto.ViewModels
                     EveSelected = Visibility.Visible;
                 }
             }
+
             if(!alice) 
             {
                 AliceUebungsszenario = String.Empty;
@@ -465,13 +524,33 @@ namespace quaKrypto.ViewModels
             }
             if(!eve)
             {
+
                 EveUebungsszenario = String.Empty;
                 if (Variante != VarianteNormalerAblauf.VariantenName)
                 {
                     EveBoxesVisible = Visibility.Visible;
                     EveSelected = Visibility.Collapsed;
                 }
+                else
+                {
+                    EveBoxesVisible = Visibility.Hidden;
+                    EveSelected = Visibility.Hidden;
+                }
+               
             }
+            Application.Current.Dispatcher.Invoke(new Action(() => LobbyErstellen.RaiseCanExecuteChanged()));
+            
+        }
+        private bool LobbyErstellenStartBedingung()
+        {
+            IList<RolleEnum> benötigteRollen = uebungsszenario.Variante.MoeglicheRollen;
+            foreach(RolleEnum rolle in benötigteRollen)
+            {
+                Rolle? gefunden = uebungsszenario.Rollen.Where(r => r.RolleTyp == rolle).FirstOrDefault();
+                if (gefunden == null || gefunden == default(Rolle)) return false;
+            }
+            if(EigeneRollen.Count == 0) return false;
+            return true;
         }
     }
 }

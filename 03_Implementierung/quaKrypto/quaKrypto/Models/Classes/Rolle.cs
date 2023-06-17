@@ -76,7 +76,11 @@ namespace quaKrypto.Models.Classes
             } 
             else return false;
         }
-        
+        public void Add(Handlungsschritt handlungsschritt)
+        {
+            handlungsschritte.Add(handlungsschritt);
+        }
+
         public Handlungsschritt ErzeugeHandlungsschritt(Enums.OperationsEnum operationsTyp, Information operand1, object operand2, String ergebnisInformationsName, Enums.RolleEnum rolle)
         {
             if(freigeschaltet)
@@ -84,7 +88,8 @@ namespace quaKrypto.Models.Classes
 
                 var handlungsschritt = new Handlungsschritt(informationszaehler++, operationsTyp, operand1, operand2, ergebnisInformationsName, rolle);
                 if (operationsTyp == OperationsEnum.zugBeenden) freigeschaltet = false;
-                handlungsschritte.Add(handlungsschritt);
+                Add(handlungsschritt);
+                //handlungsschritte.Add(handlungsschritt);
                 return handlungsschritt;
 
             }

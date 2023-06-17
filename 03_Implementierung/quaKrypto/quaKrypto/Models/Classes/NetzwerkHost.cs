@@ -43,7 +43,7 @@ namespace quaKrypto.Models.Classes
 
         private static Rolle? aliceRolle, bobRolle, eveRolle;
 
-        public static Rolle? AliceRolle { get { return aliceRolle; } set { aliceRolle = value; if(uebungsszenarioNetzwerkBeitrittInfo != null) uebungsszenarioNetzwerkBeitrittInfo.AliceState = aliceRolle != null; } }
+        public static Rolle? AliceRolle { get { return aliceRolle; } set { aliceRolle = value; if (uebungsszenarioNetzwerkBeitrittInfo != null) uebungsszenarioNetzwerkBeitrittInfo.AliceState = aliceRolle != null; } }
         public static Rolle? BobRolle { get { return bobRolle; } set { bobRolle = value; if (uebungsszenarioNetzwerkBeitrittInfo != null) uebungsszenarioNetzwerkBeitrittInfo.BobState = bobRolle != null; } }
         public static Rolle? EveRolle { get { return eveRolle; } set { eveRolle = value; if (uebungsszenarioNetzwerkBeitrittInfo != null) uebungsszenarioNetzwerkBeitrittInfo.EveState = eveRolle != null; } }
 
@@ -63,6 +63,7 @@ namespace quaKrypto.Models.Classes
             uebungsszenarioNetzwerkBeitrittInfo = netzwerkBeitrittInfo;
             udpClient = new UdpClient(UDP_PORT);
             periodicTimer = new PeriodicTimer(TimeSpan.FromMilliseconds(ZEIT_ZWISCHEN_LOBBYINFORMATION_SENDEN_IN_MS));
+            ErstelleTCPLobby();
             while (await periodicTimer.WaitForNextTickAsync())
             {
                 string netzwerkBeitrittInfoAsString = uebungsszenarioNetzwerkBeitrittInfo.Lobbyname.Replace("\t", "") + '\t'
@@ -84,7 +85,7 @@ namespace quaKrypto.Models.Classes
                 catch (SocketException) { Trace.WriteLine("Eine Socket-Exception wurde beim UDP-Senden vom Host geworfen"); break; }
 
             }
-            ErstelleTCPLobby();
+
         }
         private static void BeendeZyklischesSendenVonLobbyinformation()
         {
@@ -134,14 +135,19 @@ namespace quaKrypto.Models.Classes
                     tcpListener.Start();
                     while (true)
                     {
+                        Trace.WriteLine("Starting To Accept");
                         TcpClient tcpClient = tcpListener.AcceptTcpClient();
+                        Trace.WriteLine("Accepted Client");
+
                         NetworkStream networkStream = tcpClient.GetStream();
                         networkStreams.Add(networkStream);
                         //TODO: Client schicken 
                         StarteTCPListeningThread(networkStream);
+                        Thread.Sleep(100); //Zum Teil wird sonst nicht richtig die RollenInformation gesendet
+                        SendeRollenInformation();
                     }
                 }
-                catch (SocketException) { Trace.WriteLine("Eine Socket-Exception wurde beim TCP-Verbindung Annehmen als Host geworfen"); }
+                catch (SocketException) { BeendeTCPLobby(); Trace.WriteLine("Eine Socket-Exception wurde beim TCP-Verbindung Annehmen als Host geworfen"); }
             }).Start();
         }
 
@@ -164,24 +170,7 @@ namespace quaKrypto.Models.Classes
         //Schnittstelle fürs Übungsszenario (Wenn du selber eine Rolle wählst)
         public static void SendeRollenInformation()
         {
-            string serializedRollen = new("");
-            XmlSerializer xmlSerializer = new(typeof(Rolle));
-            using (StringWriter stringWriter = new())
-            {
-                xmlSerializer.Serialize(stringWriter, aliceRolle);
-                serializedRollen += stringWriter.ToString() + '\t';
-            }
-            using (StringWriter stringWriter = new())
-            {
-                xmlSerializer.Serialize(stringWriter, bobRolle);
-                serializedRollen += stringWriter.ToString() + '\t';
-            }
-            using (StringWriter stringWriter = new())
-            {
-                xmlSerializer.Serialize(stringWriter, eveRolle);
-                serializedRollen += stringWriter.ToString();
-            }
-            SendeNachrichtTCP(ROLLENINFORMATION, serializedRollen);
+            SendeNachrichtTCP(ROLLENINFORMATION, (AliceRolle == null ? "" : AliceRolle.Alias) + '\t' + (BobRolle == null ? "" : BobRolle?.Alias) + '\t' + (EveRolle == null ? "" : EveRolle?.Alias));
         }
 
         //Schnittstelle für LobbyScreenView
@@ -231,6 +220,7 @@ namespace quaKrypto.Models.Classes
                         networkStream.Read(kompletteNachrichtAlsBytes, 0, TCP_RECEIVE_BUFFER_SIZE);
                         byte commandIdentifier = kompletteNachrichtAlsBytes[0];
                         string[] empfangeneNachrichtTeile = Encoding.UTF8.GetString(kompletteNachrichtAlsBytes[1..]).Split('\t');
+                        for(int i = 0; i <empfangeneNachrichtTeile.Length; i++)empfangeneNachrichtTeile[i] = empfangeneNachrichtTeile[i].TrimEnd('\0');
                         switch (commandIdentifier)
                         {
                             case ROLLE_WAEHLEN:
@@ -239,16 +229,16 @@ namespace quaKrypto.Models.Classes
                                     switch (neueRolle)
                                     {
                                         case RolleEnum.Alice:
-                                            aliceRolle = new Rolle(RolleEnum.Alice, empfangeneNachrichtTeile[1]);
-                                            uebungsszenario?.RolleHinzufuegen(aliceRolle);
+                                            aliceRolle = new Rolle(RolleEnum.Alice, empfangeneNachrichtTeile[1].TrimEnd('\0'));
+                                            uebungsszenario?.RolleHinzufuegen(aliceRolle, false);
                                             break;
                                         case RolleEnum.Bob:
-                                            bobRolle = new Rolle(RolleEnum.Bob, empfangeneNachrichtTeile[1]);
-                                            uebungsszenario?.RolleHinzufuegen(bobRolle);
+                                            bobRolle = new Rolle(RolleEnum.Bob, empfangeneNachrichtTeile[1].TrimEnd('\0'));
+                                            uebungsszenario?.RolleHinzufuegen(bobRolle, false);
                                             break;
                                         case RolleEnum.Eve:
-                                            eveRolle = new Rolle(RolleEnum.Eve, empfangeneNachrichtTeile[1]);
-                                            uebungsszenario?.RolleHinzufuegen(eveRolle);
+                                            eveRolle = new Rolle(RolleEnum.Eve, empfangeneNachrichtTeile[1].TrimEnd('\0'));
+                                            uebungsszenario?.RolleHinzufuegen(eveRolle, false);
                                             break;
                                     }
                                     networkStreams.Remove(networkStream);
@@ -262,12 +252,15 @@ namespace quaKrypto.Models.Classes
                                     {
                                         case RolleEnum.Alice:
                                             aliceRolle = null;
+                                            uebungsszenario?.GebeRolleFrei(RolleEnum.Alice);
                                             break;
                                         case RolleEnum.Bob:
                                             bobRolle = null;
+                                            uebungsszenario?.GebeRolleFrei(RolleEnum.Bob);
                                             break;
                                         case RolleEnum.Eve:
                                             eveRolle = null;
+                                            uebungsszenario?.GebeRolleFrei(RolleEnum.Eve);
                                             break;
                                     }
                                     networkStreams.Add(networkStream);
@@ -295,7 +288,7 @@ namespace quaKrypto.Models.Classes
                         }
                         kompletteNachrichtAlsBytes = new byte[TCP_RECEIVE_BUFFER_SIZE];
                     }
-                    catch (SocketException) { Trace.WriteLine("Eine Socket-Exception wurde beim TCP-Empfangen mit folgender Adresse geworfen: "); break; }
+                    catch (SocketException) { networkStream.Close(); Trace.WriteLine("Eine Socket-Exception wurde beim TCP-Empfangen mit folgender Adresse geworfen: "); break; }
                 }
             }).Start();
         }

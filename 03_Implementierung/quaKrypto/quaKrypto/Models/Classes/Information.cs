@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace quaKrypto.Models.Classes
 {
+    [Serializable]
     public class Information
     {
         private int informationsID;
@@ -23,6 +24,8 @@ namespace quaKrypto.Models.Classes
         private string informationsName;
         private Enums.InformationsEnum informationsTyp;
         private object informationsInhalt;
+
+        public Information() { }
 
         public Information(int informationsID, string informationsName, InformationsEnum informationsTyp, object informationsInhalt, RolleEnum? informationsEmpfaenger = null, RolleEnum? informationsSender = null)
         {

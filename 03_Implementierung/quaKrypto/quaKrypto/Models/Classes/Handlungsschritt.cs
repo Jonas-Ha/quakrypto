@@ -50,7 +50,7 @@ namespace quaKrypto.Models.Classes
                 { OperationsEnum.zahlGenerieren, op.ZahlGenerieren },
                 { OperationsEnum.zugBeenden, op.ZugBeenden },
             };
-
+        public Handlungsschritt() { }
         public Handlungsschritt(int informationsID, Enums.OperationsEnum operationsTyp, Information operand1, object operand2, String ergebnisName, RolleEnum rolle)
         {
             this.OperationsTyp = operationsTyp;
