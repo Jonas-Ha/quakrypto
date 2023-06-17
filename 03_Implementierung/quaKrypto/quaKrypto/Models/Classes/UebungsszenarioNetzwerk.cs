@@ -216,6 +216,7 @@ namespace quaKrypto.Models.Classes
             }
             else
             {
+                
                 NetzwerkClient.BeendeZug(aktuelleRolle.handlungsschritte);
             }
 
