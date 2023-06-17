@@ -250,12 +250,15 @@ namespace quaKrypto.Models.Classes
                                     {
                                         case RolleEnum.Alice:
                                             aliceRolle = null;
+                                            uebungsszenario?.GebeRolleFrei(RolleEnum.Alice);
                                             break;
                                         case RolleEnum.Bob:
                                             bobRolle = null;
+                                            uebungsszenario?.GebeRolleFrei(RolleEnum.Bob);
                                             break;
                                         case RolleEnum.Eve:
                                             eveRolle = null;
+                                            uebungsszenario?.GebeRolleFrei(RolleEnum.Eve);
                                             break;
                                     }
                                     networkStreams.Add(networkStream);
