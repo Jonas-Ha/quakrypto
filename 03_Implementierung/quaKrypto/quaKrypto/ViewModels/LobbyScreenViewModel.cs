@@ -487,6 +487,7 @@ namespace quaKrypto.ViewModels
                     EveSelected = Visibility.Collapsed;
                 }
             }
+            LobbyErstellen.RaiseCanExecuteChanged();
         }
         private bool LobbyErstellenStartBedingung()
         {
