@@ -44,14 +44,14 @@ namespace quaKrypto.ViewModels
 
                 if (NetzwerkBasiert)
                 {
-                    UebungsszenarioNetzwerkBeitrittInfo ErstelltesSzenarioInfo = new UebungsszenarioNetzwerkBeitrittInfo(IPAddress.Any, LobbyName, Protokoll[AusgProtokoll], VarianteAuswahl[AusgVariante], AusgSchwierigkeit == 0 ? SchwierigkeitsgradEnum.leicht : AusgSchwierigkeit == 1 ? SchwierigkeitsgradEnum.mittel : SchwierigkeitsgradEnum.schwer, false, false, false);
+                    UebungsszenarioNetzwerkBeitrittInfo ErstelltesSzenarioInfo = new UebungsszenarioNetzwerkBeitrittInfo(IPAddress.Any, LobbyName, Protokoll[AusgProtokoll], VarianteAuswahl[AusgVariante], AusgSchwierigkeit == 0 ? SchwierigkeitsgradEnum.Leicht : AusgSchwierigkeit == 1 ? SchwierigkeitsgradEnum.Mittel : SchwierigkeitsgradEnum.Schwer, false, false, false);
                     NetzwerkHost.BeginneZyklischesSendenVonLobbyinformation(ErstelltesSzenarioInfo);
-                    UebungsszenarioNetzwerk uebungsszenarioNetzwerk = new UebungsszenarioNetzwerk(AusgSchwierigkeit == 0 ? SchwierigkeitsgradEnum.leicht : AusgSchwierigkeit == 1 ? SchwierigkeitsgradEnum.mittel : SchwierigkeitsgradEnum.schwer, ausgewaehlteVariante, (uint)AusgPhaseStart, (uint)AusgPhaseEnd, LobbyName, true);
+                    UebungsszenarioNetzwerk uebungsszenarioNetzwerk = new UebungsszenarioNetzwerk(AusgSchwierigkeit == 0 ? SchwierigkeitsgradEnum.Leicht : AusgSchwierigkeit == 1 ? SchwierigkeitsgradEnum.Mittel : SchwierigkeitsgradEnum.Schwer, ausgewaehlteVariante, (uint)AusgPhaseStart, (uint)AusgPhaseEnd, LobbyName, true);
                     navigator.aktuellesViewModel = new LobbyScreenViewModel(navigator, uebungsszenarioNetzwerk, true);
                 }
                 else
                 {                 
-                    UebungsszenarioLokal uebungsszenarioLokal = new UebungsszenarioLokal(AusgSchwierigkeit == 0 ? SchwierigkeitsgradEnum.leicht : AusgSchwierigkeit == 1 ? SchwierigkeitsgradEnum.mittel : SchwierigkeitsgradEnum.schwer, ausgewaehlteVariante, (uint)AusgPhaseStart, (uint)AusgPhaseEnd, LobbyName);
+                    UebungsszenarioLokal uebungsszenarioLokal = new UebungsszenarioLokal(AusgSchwierigkeit == 0 ? SchwierigkeitsgradEnum.Leicht : AusgSchwierigkeit == 1 ? SchwierigkeitsgradEnum.Mittel : SchwierigkeitsgradEnum.Schwer, ausgewaehlteVariante, (uint)AusgPhaseStart, (uint)AusgPhaseEnd, LobbyName);
                     navigator.aktuellesViewModel = new LobbyScreenViewModel(navigator, uebungsszenarioLokal, true);
                 }
 
@@ -60,9 +60,9 @@ namespace quaKrypto.ViewModels
             AusgPhaseStart = 0;
             AusgPhaseEnd = 5;
             SchwierigkeitsgradAuswahl = new ObservableCollection<string>();
-            SchwierigkeitsgradAuswahl.Add(SchwierigkeitsgradEnum.leicht.ToString());
-            SchwierigkeitsgradAuswahl.Add(SchwierigkeitsgradEnum.mittel.ToString());
-            SchwierigkeitsgradAuswahl.Add(SchwierigkeitsgradEnum.schwer.ToString());
+            SchwierigkeitsgradAuswahl.Add(SchwierigkeitsgradEnum.Leicht.ToString());
+            SchwierigkeitsgradAuswahl.Add(SchwierigkeitsgradEnum.Mittel.ToString());
+            SchwierigkeitsgradAuswahl.Add(SchwierigkeitsgradEnum.Schwer.ToString());
             VarianteAuswahl = new ObservableCollection<string>();
             VarianteAuswahl.Add(VarianteNormalerAblauf.VariantenName);
             VarianteAuswahl.Add(VarianteAbhoeren.VariantenName);

@@ -10,22 +10,29 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="6*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"></RowDefinition>
-            <RowDefinition Height="380"></RowDefinition>
+            <RowDefinition Height="60"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="70"></RowDefinition>
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <Label Grid.Row ="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18">Aufzeichnung</Label>
+        <Label Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="SemiBold" FontSize="40" >Aufzeichnung</Label>
 
         <!-- DataGrid -->
         <DataGrid Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding Handlungsschritte}" AutoGenerateColumns="False" Margin="10" SelectionChanged="DataGrid_SelectionChanged" >
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Operations Typ" Binding="{Binding OperationsTyp}"/>
-                <DataGridTemplateColumn Header="Operand1">
+                <DataGridTextColumn Binding="{Binding OperationsTyp}">
+                    <DataGridTextColumn.Header>
+                        <Label Content="Operations Typ" FontSize="15"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <Label Content="Operand 1" FontSize="15"/>
+                    </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -34,7 +41,10 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Operand2">
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <Label Content="Operand 2" FontSize="15"/>
+                    </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -43,8 +53,15 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Name Ergebnis" Binding="{Binding ErgebnisName}" />
-                <DataGridTemplateColumn Header="Ergebnis">
+                <DataGridTextColumn Binding="{Binding ErgebnisName}">
+                    <DataGridTextColumn.Header>
+                        <Label Content="Name Ergebnis" FontSize="15"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <Label Content="Ergebnis" FontSize="15"/>
+                    </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -53,12 +70,20 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Rolle" Binding="{Binding Rolle}" />
-                <DataGridTextColumn Header="Aktuelle Phase" Binding="{Binding AktuellePhase}" />
+                <DataGridTextColumn Binding="{Binding Rolle}">
+                    <DataGridTextColumn.Header>
+                        <Label Content="Rolle" FontSize="15"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding AktuellePhase}">
+                    <DataGridTextColumn.Header>
+                        <Label Content="Phase" FontSize="15"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
 
         <!-- Button -->
-        <Button Grid.Row="2" Grid.Column="1" x:Name="ZurueckZumHauptMenuButton" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,0,0" MinWidth="80">Zurück zum Hauptmenu</Button>
+        <Button Grid.ColumnSpan="3" Grid.Row="2" x:Name="HauptmenueButton" MaxHeight="45" MinHeight="35" MaxWidth="450" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" MinWidth="80" Command="{Binding HauptMenu}">Zurück zum Hauptmenü</Button>
     </Grid>
 </UserControl>

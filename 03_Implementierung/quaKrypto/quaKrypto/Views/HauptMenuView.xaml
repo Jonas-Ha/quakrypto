@@ -10,7 +10,7 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="1.5*"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -18,10 +18,10 @@
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30">Willkommen bei QuaKrypto</Label>
+            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="55">Willkommen bei QuaKrypto</Label>
             <StackPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
-                <Button MinHeight="30" x:Name="LobbyErstellenButton" Margin="0, 0, 0, 10" Command="{Binding LobbyErstellen}">Lobby erstellen</Button>
-                <Button MinHeight="30" x:Name="LobbyBeitrettenButton" Margin="0, 0, 0, 10" Command="{Binding LobbyBeitritt}" >Lobby beitreten</Button>
+                <Button FontSize="20" MinHeight="45" x:Name="LobbyErstellenButton" Margin="15" Command="{Binding LobbyErstellen}">Lobby erstellen</Button>
+                <Button FontSize="20" MinHeight="45" x:Name="LobbyBeitrettenButton" Margin="15" Command="{Binding LobbyBeitritt}" >Lobby beitreten</Button>
             </StackPanel>
 
 

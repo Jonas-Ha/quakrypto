@@ -7,18 +7,17 @@
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="50">
     <Grid>
-        <Button Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left"
-              PreviewMouseDown="WikiButton_PreviewMouseDown" PreviewMouseUp="WikiButton_PreviewMouseUp" PreviewMouseMove="WikiButton_PreviewMouseMove"
-              BorderBrush="Orange" BorderThickness="25">
+        <Button Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left" PreviewMouseDown="WikiButton_PreviewMouseDown"
+                PreviewMouseUp="WikiButton_PreviewMouseUp" PreviewMouseMove="WikiButton_PreviewMouseMove" BorderBrush="DarkGray" Background="#3FA7D6">
             <Button.Resources>
                 <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="25"/>
+                    <Setter Property="CornerRadius" Value="4"/>
                 </Style>
             </Button.Resources>
             <Button.Content>
-                <Label Margin="-27,-23,-25,-25" Content="Wiki" FontSize="24" FontWeight="Thin"/>
+                <Label Margin="-25,-20,-25,-25" Content="Wiki" FontSize="20" FontWeight="SemiBold"/>
             </Button.Content>
         </Button>
     </Grid>
-    
+
 </UserControl>

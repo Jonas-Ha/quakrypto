@@ -95,9 +95,9 @@ namespace quaKrypto.Models.Classes
         {
             switch (schwierigkeitsgrad)
             {
-                case SchwierigkeitsgradEnum.leicht: return GebeHilfestellungLeicht();
-                case SchwierigkeitsgradEnum.mittel: return GebeHilfestellungMittel();
-                case SchwierigkeitsgradEnum.schwer: return new List<OperationsEnum>();
+                case SchwierigkeitsgradEnum.Leicht: return GebeHilfestellungLeicht();
+                case SchwierigkeitsgradEnum.Mittel: return GebeHilfestellungMittel();
+                case SchwierigkeitsgradEnum.Schwer: return new List<OperationsEnum>();
                 default: return new List<OperationsEnum>();
             } 
         }

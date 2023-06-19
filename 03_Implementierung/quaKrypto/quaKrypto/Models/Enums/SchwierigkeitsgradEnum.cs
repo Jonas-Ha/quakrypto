@@ -15,8 +15,8 @@ namespace quaKrypto.Models.Enums
 {
     public enum SchwierigkeitsgradEnum
     {
-        leicht,
-        mittel,
-        schwer
+        Leicht,
+        Mittel,
+        Schwer
     }
 }
