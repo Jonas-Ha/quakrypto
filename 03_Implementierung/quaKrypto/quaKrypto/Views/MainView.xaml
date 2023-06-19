@@ -25,9 +25,6 @@
             <DataTemplate DataType="{x:Type viewmodels:LobbyScreenViewModel}">
                 <views:LobbyScreenView/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewmodels:RolleEntsperrenViewModel}">
-                <views:RolleEntsperrenView/>
-            </DataTemplate>
             <DataTemplate DataType="{x:Type viewmodels:SpielEveViewModel}">
                 <views:SpielEveView/>
             </DataTemplate>

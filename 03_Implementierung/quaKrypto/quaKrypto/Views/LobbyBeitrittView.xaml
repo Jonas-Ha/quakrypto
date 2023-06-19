@@ -15,11 +15,11 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="1.1*"></RowDefinition>
                 <RowDefinition Height="10*"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="1.5*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Label Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" >Lobby beitreten</Label>
+            <Label Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="SemiBold" FontSize="40" >Lobby beitreten</Label>
             <Grid Grid.Row="1" Grid.ColumnSpan="3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"></ColumnDefinition>
@@ -28,17 +28,34 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
                     <RowDefinition Height="10*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <DataGrid Grid.Row="2" Grid.ColumnSpan="4" Margin="10,10,10,10" CanUserAddRows="False" AutoGenerateColumns="False" IsReadOnly="True" SelectedIndex="{Binding AusgewaehlteLobby}" ItemsSource="{Binding Source = {x:Static classes:NetzwerkClient.VerfuegbareLobbys}}">
+                <DataGrid Grid.Row="2" Grid.ColumnSpan="4" Margin="20" CanUserAddRows="False" AutoGenerateColumns="False" IsReadOnly="True" SelectedIndex="{Binding AusgewaehlteLobby}" ItemsSource="{Binding Source = {x:Static classes:NetzwerkClient.VerfuegbareLobbys}}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Lobby Name" Width="*" Binding="{Binding Lobbyname}"/>
-                        <DataGridTextColumn Header="Protokoll" Width="*" Binding="{Binding Protokoll}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Variante" Width="*" Binding="{Binding Variante}"/>
-                        <DataGridTextColumn Header="Schwierigkeitsgrad" Width="*" Binding="{Binding Schwierigkeitsgrad}"/>
-                        <DataGridTemplateColumn Header="Rollen" Width="*">
+                        <DataGridTextColumn  Width="*" Binding="{Binding Lobbyname}">
+                            <DataGridTextColumn.Header>
+                                <Label Content="Lobby Name" FontSize="15"/>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Width="*" Binding="{Binding Protokoll}">
+                            <DataGridTextColumn.Header>
+                                <Label Content="Protokoll" FontSize="15"/>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Width="*" Binding="{Binding Variante}">
+                            <DataGridTextColumn.Header>
+                                <Label Content="Variante" FontSize="15"/>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Width="*" Binding="{Binding Schwierigkeitsgrad}">
+                            <DataGridTextColumn.Header>
+                                <Label Content="Schwierigkeitsgrad" FontSize="15"/>
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTemplateColumn  Width="*">
+                            <DataGridTemplateColumn.Header>
+                                <Label Content="Rollen" FontSize="15"/>
+                            </DataGridTemplateColumn.Header>
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -52,9 +69,9 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
-            <Button x:Name="HauptmenueButton" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10,0,10,0" MinWidth="80" Grid.Row="3" Command="{Binding HauptMenu}">Zurück zum Hauptmenue</Button>
-            <Button x:Name="BeitretenButton" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10,0,10,0" MinWidth="80" Grid.Row="3" Grid.Column="2" Command="{Binding LobbyBeitreten}">Spiel beitreten</Button>
+            <Button x:Name="HauptmenueButton" MaxHeight="45" MinHeight="35" MaxWidth="450" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="20" MinWidth="80" Grid.Row="3" Command="{Binding HauptMenu}">Zurück zum Hauptmenü</Button>
+            <Button x:Name="BeitretenButton" MaxHeight="45" MinHeight="35" MaxWidth="450" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="20" MinWidth="80" Grid.Row="3" Grid.Column="2" Command="{Binding LobbyBeitreten}">Spiel beitreten</Button>
         </Grid>
-        <!--Wiki button entfernt muss wieder hinzugefügt werden -->
+        <local:WikiButton/>
     </Grid>
 </UserControl>

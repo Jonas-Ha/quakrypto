@@ -4,150 +4,98 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:quaKrypto.Views"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800">
+
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="1.5*"></ColumnDefinition>
-            <ColumnDefinition Width="2*"></ColumnDefinition>
-            <ColumnDefinition Width="1*"></ColumnDefinition>
-            <ColumnDefinition Width="0.5*"></ColumnDefinition>
-            <ColumnDefinition Width="1.5*"></ColumnDefinition>
-            <ColumnDefinition Width="2*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="5*"></RowDefinition>
-            <RowDefinition Height="1*"></RowDefinition>
-            <RowDefinition Height="1*"></RowDefinition>
-        </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
-            <Button MinHeight="30" x:Name="WikiButton" Margin="0, 0, 0, 10">Wiki</Button>
-        </StackPanel>
-        <StackPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
-            <Button MinHeight="30" x:Name="LobbyVerlassenButton" Margin="0, 0, 0, 10" Command="{Binding HauptMenu}">Lobby verlassen</Button>
-        </StackPanel>
-        <StackPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
-            <Border BorderBrush="Black" BorderThickness="1">
-                <Label>Name</Label>
-            </Border>
-            <Border BorderBrush="Black" BorderThickness="1">
-                <Label>Variante</Label>
-            </Border>
-            <Border BorderBrush="Black" BorderThickness="1">
-                <Label>Schwierigkeitsgrad</Label>
-            </Border>
-            <Border BorderBrush="Black" BorderThickness="1">
-                <Label>Phase</Label>
-            </Border>
-            <Border BorderBrush="Black" BorderThickness="1">
-                <Label>Protokoll</Label>
-            </Border>
-        </StackPanel>
-        <StackPanel Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center">
-            <Border BorderBrush="Black" BorderThickness="1">
-                <Label x:Name="LabelSpiel" Content="{Binding LobbyName}"></Label>
-            </Border>
-            <Border BorderBrush="Black" BorderThickness="1">
-                <Label x:Name="LabelVariante" Content="{Binding Variante}"></Label>
-            </Border>
-            <Border BorderBrush="Black" BorderThickness="1">
-                <Label x:Name="LabelSchwierigkeitsgrad" Content="{Binding Schwierigkeit}"></Label>
-            </Border>
-            <Border BorderBrush="Black" BorderThickness="1">
-                <Label x:Name="LabelPhase" Content="{Binding Phase}"></Label>
-            </Border>
-            <Border BorderBrush="Black" BorderThickness="1">
-                <Label x:Name="LabelProtokoll" Content="{Binding Protokoll}"></Label>
-            </Border>
-        </StackPanel>
-        <DockPanel Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="2">
-            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                <DockPanel>
-                    <Label Width="40">Rolle</Label>
-                    <Label Width="100">Benutzername:</Label>
-                    <Label Width="100">Passwort:</Label>
-                </DockPanel>
-                <DockPanel>
-                    <Label Width="40">Alice</Label>
-                    <TextBlock Text="{Binding AliceUebungsszenario}" Visibility="{Binding AliceSelected}" VerticalAlignment="Center" MaxWidth="180"></TextBlock>
-                    <TextBox Width="100" ToolTip="Alias eingeben" Text="{Binding AliasAliceText, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding AliceBoxesVisible}">
-                        
-                    </TextBox>
-                    <TextBox Width="100" ToolTip="Passwort eingeben" Text="{Binding PasswortAliceText, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,0,0" Visibility="{Binding AliceBoxesVisible}"></TextBox>
-                    <Button Command="{Binding Alicebestaetigen}" Visibility="{Binding AliceBoxesVisible}" Margin="10,0,0,0">Bestätigen</Button>
-                    <Button Visibility="{Binding AliceSelected}" Command="{Binding ClearAlice}" Margin="10,0,0,0">Freigeben</Button>
-                </DockPanel>
-                <DockPanel Margin="0,10,0,10">
-                    <Label Width="40">Bob</Label>
-                    <TextBlock Visibility="{Binding BobSelected}" Text="{Binding BobUebungsszenario}" VerticalAlignment="Center" MaxWidth="180" ></TextBlock>
-                    <TextBox Width="100" ToolTip="Alias eingeben" Visibility="{Binding BobBoxesVisible}" Text="{Binding AliasBobText, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                    <TextBox Width="100" ToolTip="Passwort eingeben" Margin="10,0,0,0" Visibility="{Binding BobBoxesVisible}" Text="{Binding PasswortBobText, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                    <Button Command="{Binding Bobbestaetigen}" Margin="10,0,0,0" Visibility="{Binding BobBoxesVisible}">Bestätigen</Button>
-                    <Button Visibility="{Binding BobSelected}" Margin="10,0,0,0" Command="{Binding ClearBob}">Freigeben</Button>
-                </DockPanel>
-                <DockPanel >
-                    <Label Width="40" Visibility="{Binding EveLabel}">Eve</Label>
-                    <TextBlock Visibility="{Binding EveSelected}" Text="{Binding EveUebungsszenario}" VerticalAlignment="Center" MaxWidth="180"></TextBlock>
-                    <TextBox Width="100" ToolTip="Alias eingeben" Visibility="{Binding EveBoxesVisible}" Text="{Binding AliasEveText, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                    <TextBox Width="100" ToolTip="Passwort eingeben" Margin="10,0,0,1" Visibility="{Binding EveBoxesVisible}" Text="{Binding PasswortEveText, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                    <Button Command="{Binding Evebestaetigen}" Visibility="{Binding EveBoxesVisible}" Margin="10,0,0,1">Bestätigen</Button>
-                    <Button Visibility="{Binding EveSelected}" Command="{Binding ClearEve}" Margin="10,0,0,1">Freigeben</Button>
-                </DockPanel>
-            </StackPanel>    
-            
-            
-            
-            
-            
-        <StackPanel Grid.Row="1" Grid.Column="5"  VerticalAlignment="Center" Visibility="Collapsed">
-            <Border BorderBrush="Black" BorderThickness="1">
-                <Label>Alice</Label>
-            </Border>
-            <Border BorderBrush="Black" BorderThickness="1">
-                <Label>Bob</Label>
-            </Border>
-            <Border BorderBrush="Black" BorderThickness="1">
-                <Label>Eve</Label>
-            </Border>
-            
-        </StackPanel>
-            <StackPanel VerticalAlignment="Center" Visibility="Collapsed">
-                <Border BorderBrush="Black" BorderThickness="1">
-                    <TextBox></TextBox>
+        <Grid Margin="100,0,100,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"></ColumnDefinition>
+                <ColumnDefinition Width="250"></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="400"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Label Content="{Binding Ueberschrift}" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="SemiBold" FontSize="40"/>
+
+            <StackPanel Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
+                <Border BorderBrush="DarkGray" BorderThickness="1.5" Margin="5" CornerRadius="4">
+                    <Label Content="Name" FontSize="15"/>
                 </Border>
-                <Border BorderBrush="Black" BorderThickness="1">
-                    <Label>Bob</Label>
+                <Border BorderBrush="DarkGray" BorderThickness="1.5" Margin="5" CornerRadius="4">
+                    <Label Content="Variante" FontSize="15"/>
                 </Border>
-                <Border BorderBrush="Black" BorderThickness="1">
-                    <Label>Eve</Label>
+                <Border BorderBrush="DarkGray" BorderThickness="1.5" Margin="5" CornerRadius="4">
+                    <Label Content="Schwierigkeitsgrad" FontSize="15"/>
+                </Border>
+                <Border BorderBrush="DarkGray" BorderThickness="1.5" Margin="5" CornerRadius="4">
+                    <Label Content="Phase" FontSize="15"/>
+                </Border>
+                <Border BorderBrush="DarkGray" BorderThickness="1.5" Margin="5" CornerRadius="4">
+                    <Label Content="Protokoll" FontSize="15"/>
                 </Border>
             </StackPanel>
-        </DockPanel>
-        <!--<StackPanel Grid.Row="1" Grid.Column="6" HorizontalAlignment="Stretch" VerticalAlignment="Center">-->
-        <!--<Button x:Name="AliceAuswaehlen" Height="25" Style="{StaticResource {x:Type Button}}">Auswählen</Button>-->
-        <!--<Button x:Name="BobAuswaehlen" Height="25">Auswählen</Button>-->
-        <!--<Button x:Name="EveAuswaehlen" Height="25">Auswählen</Button>-->
-        <!--</StackPanel>-->
-        <DataGrid HeadersVisibility="None" Grid.Column="5" Grid.ColumnSpan="3" Margin="1,56,75,56" Grid.Row="0" Grid.RowSpan="3" Visibility="Collapsed">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Rolle">
+            <StackPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                <Border BorderBrush="DarkGray" BorderThickness="1.5" Margin="5" CornerRadius="4">
+                    <Label x:Name="LabelSpiel" FontSize="15" Content="{Binding LobbyName}"/>
+                </Border>
+                <Border BorderBrush="DarkGray" BorderThickness="1.5" Margin="5" CornerRadius="4">
+                    <Label x:Name="LabelVariante" FontSize="15" Content="{Binding Variante}"/>
+                </Border>
+                <Border BorderBrush="DarkGray" BorderThickness="1.5" Margin="5" CornerRadius="4">
+                    <Label x:Name="LabelSchwierigkeitsgrad" FontSize="15" Content="{Binding Schwierigkeit}"/>
+                </Border>
+                <Border BorderBrush="DarkGray" BorderThickness="1.5" Margin="5" CornerRadius="4">
+                    <Label x:Name="LabelPhase" FontSize="15" Content="{Binding Phase}"/>
+                </Border>
+                <Border BorderBrush="DarkGray" BorderThickness="1.5" Margin="5" CornerRadius="4">
+                    <Label x:Name="LabelProtokoll" FontSize="15" Content="{Binding Protokoll}"/>
+                </Border>
+            </StackPanel>
+            <Grid Grid.Row="1" Grid.Column="2" Margin="0,80">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Column="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="Benutzername:" FontSize="15"/>
+                <Label Grid.Column="2" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="Passwort:" FontSize="15"/>
 
-                </DataGridTextColumn>
-                <DataGridTextColumn Header=""></DataGridTextColumn>
-                <DataGridTemplateColumn Header="Buttons">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button></Button>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
-        <StackPanel Grid.Row="2" Grid.Column="6" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
-            <Button MinHeight="30" x:Name="Spielstarten" Margin="0, 0, 0, 10" Command="{Binding LobbyErstellen}">Spiel starten</Button>
-        </StackPanel>
+                <Label Grid.Row="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" FontWeight="Bold" Margin="15,0" Content="Alice" FontSize="15"/>
+                <Label Grid.Row="2" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" FontWeight="Bold" Margin="15,0" Content="Bob" FontSize="15"/>
+                <Label Grid.Row="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" FontWeight="Bold" Margin="15,0" Content="Eve" FontSize="15" Visibility="{Binding EveLabel}"/>
+
+                <TextBlock Grid.Row="1" Grid.Column="1" Margin="10,5" MinHeight="35" MaxHeight="45" VerticalAlignment="Center" FontSize="15" TextAlignment="Center" Text="{Binding AliceUebungsszenario}" Visibility="{Binding AliceSelected}" />
+                <TextBox Grid.Row="1" Grid.Column="1" Margin="10,5" MinHeight="35" MaxHeight="45" VerticalContentAlignment="Center" FontSize="15" ToolTip="Alias eingeben" Text="{Binding AliasAliceText, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding AliceBoxesVisible}"/>
+                <TextBox Grid.Row="1" Grid.Column="2" Margin="10,5" MinHeight="35" MaxHeight="45" VerticalContentAlignment="Center" FontSize="15" ToolTip="Passwort eingeben" Text="{Binding PasswortAliceText, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding AliceBoxesVisible}"></TextBox>
+                <Button Grid.Row="1" Grid.Column="3" Margin="10,5" MinHeight="35" MaxHeight="45" VerticalAlignment="Center" FontSize="15" Command="{Binding Alicebestaetigen}" Visibility="{Binding AliceBoxesVisible}" >Bestätigen</Button>
+                <Button Grid.Row="1" Grid.Column="3" Margin="10,5" MinHeight="35" MaxHeight="45" VerticalAlignment="Center" FontSize="15" Visibility="{Binding AliceSelected}" Command="{Binding ClearAlice}">Freigeben</Button>
+
+                <TextBlock Grid.Row="2" Grid.Column="1" Margin="10,5" MinHeight="35" MaxHeight="45" VerticalAlignment="Center" FontSize="15" TextAlignment="Center"  Visibility="{Binding BobSelected}" Text="{Binding BobUebungsszenario}"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Margin="10,5" MinHeight="35" MaxHeight="45" VerticalContentAlignment="Center" FontSize="15" ToolTip="Alias eingeben" Visibility="{Binding BobBoxesVisible}" Text="{Binding AliasBobText, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                <TextBox Grid.Row="2" Grid.Column="2" Margin="10,5" MinHeight="35" MaxHeight="45" VerticalContentAlignment="Center"  FontSize="15" ToolTip="Passwort eingeben" Visibility="{Binding BobBoxesVisible}" Text="{Binding PasswortBobText, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                <Button Grid.Row="2" Grid.Column="3" Margin="10,5" MinHeight="35" MaxHeight="45" VerticalAlignment="Center" FontSize="15" Command="{Binding Bobbestaetigen}" Visibility="{Binding BobBoxesVisible}">Bestätigen</Button>
+                <Button Grid.Row="2" Grid.Column="3" Margin="10,5" MinHeight="35" MaxHeight="45" VerticalAlignment="Center" FontSize="15" Visibility="{Binding BobSelected}" Command="{Binding ClearBob}">Freigeben</Button>
+
+                <TextBlock Grid.Row="3" Grid.Column="1" Margin="10,5" MinHeight="35" MaxHeight="45" VerticalAlignment="Center" FontSize="15" TextAlignment="Center" Visibility="{Binding EveSelected}" Text="{Binding EveUebungsszenario}"/>
+                <TextBox Grid.Row="3" Grid.Column="1" Margin="10,5" MinHeight="35" MaxHeight="45" VerticalContentAlignment="Center" FontSize="15" ToolTip="Alias eingeben" Visibility="{Binding EveBoxesVisible}" Text="{Binding AliasEveText, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                <TextBox Grid.Row="3" Grid.Column="2" Margin="10,5" MinHeight="35" MaxHeight="45" VerticalContentAlignment="Center" FontSize="15" ToolTip="Passwort eingeben" Visibility="{Binding EveBoxesVisible}" Text="{Binding PasswortEveText, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                <Button Grid.Row="3" Grid.Column="3" Margin="10,5" MinHeight="35" MaxHeight="45" VerticalAlignment="Center" FontSize="15" Command="{Binding Evebestaetigen}" Visibility="{Binding EveBoxesVisible}" >Bestätigen</Button>
+                <Button Grid.Row="3" Grid.Column="3" Margin="10,5" MinHeight="35" MaxHeight="45" VerticalAlignment="Center" FontSize="15" Visibility="{Binding EveSelected}" Command="{Binding ClearEve}" >Freigeben</Button>
+
+            </Grid>
+            <Button Grid.Row="2" Grid.ColumnSpan="3" Width="450" VerticalAlignment="Bottom" HorizontalAlignment="Left" MinHeight="35" MaxHeight="45" FontSize="20" x:Name="LobbyVerlassenButton" Margin="0, 0, 0, 10" Command="{Binding HauptMenu}">Zurück zum Hauptmenü</Button>
+            <Button Grid.Row="2" Grid.ColumnSpan="3" Width="450" VerticalAlignment="Bottom" HorizontalAlignment="Right" MinHeight="35" MaxHeight="45" FontSize="20" x:Name="Spielstarten" Margin="0, 0, 0, 10" Command="{Binding LobbyErstellen}">Spiel starten</Button>
+        </Grid>
+        <local:WikiButton/>
     </Grid>
 </UserControl>

@@ -7,60 +7,49 @@
              xmlns:local="clr-namespace:quaKrypto.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-        
-    </UserControl.Resources>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="6*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40"></RowDefinition>
-            <RowDefinition Height="380"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-        </Grid.RowDefinitions>
-        
-        <Button x:Name="WikiButton" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" MinWidth="80">Wiki</Button>
-        <Label Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18">Lobby erstellen</Label>
-        <Grid Grid.Row="1" Grid.Column="1">
+        <Grid Margin="100,0,100,20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="4*"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="4*"></RowDefinition>
             </Grid.RowDefinitions>
-            <TextBox x:Name="LobbyNameTextBox" Text="{Binding LobbyName}" Grid.Row="0" Grid.Column="1" Margin="10,10,10,10"></TextBox>
+            <Label Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="SemiBold" FontSize="40">Lobby erstellen</Label>
+            <Label Grid.Row="1" Content="Name der Lobby:" VerticalAlignment="Center" FontSize="15" HorizontalAlignment="Right" Margin="10,10,30,10"/>
+            <TextBox x:Name="LobbyNameTextBox" Text="{Binding LobbyName}" MaxHeight="45" Grid.Row="1" Grid.Column="1" Margin="10" MaxLength="50" FontSize="15" VerticalContentAlignment="Center"/>
 
-            <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,10,30,10">Auswahl des Protokolls:</Label>
-            <ComboBox x:Name="ProtokollComboBox" Grid.Row="1" Grid.Column="1" Margin="10,10,10,10" ItemsSource="{Binding Protokoll}" SelectedIndex="{Binding AusgProtokoll}"></ComboBox>
+            <Label Grid.Row="2" Grid.Column="0" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,10,30,10">Auswahl des Protokolls:</Label>
+            <ComboBox x:Name="ProtokollComboBox" Grid.Row="2" Grid.Column="1" MaxHeight="45" Margin="10,10,10,10" ItemsSource="{Binding Protokoll}" SelectedIndex="{Binding AusgProtokoll}" FontSize="15" VerticalContentAlignment="Center"/>
 
-            <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,10,30,10">Auswahl der Ablaufvariante:</Label>
-            <ComboBox x:Name="VarianteCreateComboBox" Grid.Row="2" Grid.Column="1" Margin="10,10,10,10" ItemsSource="{Binding VarianteAuswahl}" SelectedIndex="{Binding AusgVariante}"></ComboBox>
+            <Label Grid.Row="3" Grid.Column="0" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,10,30,10">Auswahl der Ablaufvariante:</Label>
+            <ComboBox x:Name="VarianteCreateComboBox" Grid.Row="3" Grid.Column="1" MaxHeight="45" Margin="10,10,10,10" ItemsSource="{Binding VarianteAuswahl}" SelectedIndex="{Binding AusgVariante}" FontSize="15" VerticalContentAlignment="Center"/>
 
-            <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,10,30,10">Auswahl des Schwierigkeitsgrades:</Label>
-            <ComboBox x:Name="SchwierigkeitTextBox" Grid.Row="3" Grid.Column="1" Margin="10,10,10,10" ItemsSource="{Binding SchwierigkeitsgradAuswahl}" SelectedIndex="{Binding AusgSchwierigkeit}"></ComboBox>
+            <Label Grid.Row="4" Grid.Column="0" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,10,30,10">Auswahl des Schwierigkeitsgrades:</Label>
+            <ComboBox x:Name="SchwierigkeitTextBox" Grid.Row="4" Grid.Column="1" MaxHeight="45" Margin="10,10,10,10" ItemsSource="{Binding SchwierigkeitsgradAuswahl}" SelectedIndex="{Binding AusgSchwierigkeit}" FontSize="15" VerticalContentAlignment="Center"/>
 
-            <Label Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,10,30,10">Auswahl der Phasen:</Label>
-            <xctk:RangeSlider Grid.Column="1" Grid.Row="4" LowerValue="{Binding AusgPhaseStart}" HigherValue="{Binding AusgPhaseEnd}" Maximum="5" TickFrequency="1" IsSnapToTickEnabled="True"  Minimum="0" VerticalAlignment="Center" Margin="10,10,10,10"></xctk:RangeSlider>
+            <Label Grid.Row="5" Grid.Column="0" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,10,30,10">Auswahl der Phasen:</Label>
+            <xctk:RangeSlider Grid.Column="1" MaxHeight="45" Grid.Row="5" LowerValue="{Binding AusgPhaseStart}" HigherValue="{Binding AusgPhaseEnd}" Maximum="5" TickFrequency="1" IsSnapToTickEnabled="True"  Minimum="0" VerticalAlignment="Center" Margin="10"/>
             <!--<TextBox x:Name="ScalerTextBox" Grid.Row="4" Grid.Column="1" Margin="10,10,10,10"></TextBox>-->
-            <Label Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,10,30,10">Auswahl des Verbindungstyps:</Label>
+            <Label Grid.Row="6" Grid.Column="0" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,10,30,10">Auswahl des Verbindungstyps:</Label>
             <!--<ComboBox x:Name="LobbyartTextBox" Grid.Row="5" Grid.Column="1" Margin="10,10,10,10" ItemsSource="{Binding Verbindungstyp}"></ComboBox>-->
-            <StackPanel Grid.Row="5" Grid.Column="1" VerticalAlignment="Center">
-                <RadioButton Content="Lokal" IsChecked="True"></RadioButton>
-                <RadioButton Content="Netzwerkbasiert" IsChecked="{Binding NetzwerkBasiert}"></RadioButton>
+            <StackPanel Grid.Row="6" Grid.Column="1" VerticalAlignment="Center" Orientation="Horizontal">
+                <RadioButton Content="Lokal" FontSize="15" IsChecked="True" VerticalContentAlignment="Center" />
+                <RadioButton Content="Netzwerkbasiert" FontSize="15" IsChecked="{Binding NetzwerkBasiert}" VerticalContentAlignment="Center" Margin="20,0"/>
             </StackPanel>
 
-            <Button x:Name="HauptMenuButton" Grid.Row="6" Grid.Column="0" Margin="10,10,10,10" Command="{Binding HauptMenu}">Hauptmenu</Button>
-            <Button x:Name="LobbyErstellenButton" Grid.Row="6" Grid.Column="1" Margin="10,10,10,10" Command="{Binding LobbyErstellen}">Lobby erstellen</Button>
+            <Button x:Name="HauptMenuButton" FontSize="20" MaxHeight="45" MinHeight="35" MaxWidth="450" Grid.Row="7" Grid.Column="0" Margin="20" Command="{Binding HauptMenu}">Zurück zum Hauptmenü</Button>
+            <Button x:Name="LobbyErstellenButton" FontSize="20" MaxHeight="45" MinHeight="35" MaxWidth="450" Grid.Row="7" Grid.Column="1" Margin="20" Command="{Binding LobbyErstellen}">Lobby erstellen</Button>
         </Grid>
+        <local:WikiButton/>
     </Grid>
+
 </UserControl>

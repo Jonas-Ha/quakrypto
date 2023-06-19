@@ -50,7 +50,7 @@ namespace quaKrypto.ViewModels
 
                 //Arrange
                 IVariante varianteNorm = new VarianteNormalerAblauf(1);
-                UebungsszenarioLokal Ueb = new UebungsszenarioLokal(SchwierigkeitsgradEnum.leicht, varianteNorm, 1, 4, nameueb);
+                UebungsszenarioLokal Ueb = new UebungsszenarioLokal(SchwierigkeitsgradEnum.Leicht, varianteNorm, 1, 4, nameueb);
                 Rolle rolle = new Rolle(rolleEnum, alias, passwort);
                 Rolle rolle2 = new Rolle(rolleEnumEve, aliasEve, passwortEve);
                 Rolle rolle3 = new Rolle(rolleEnumBob, aliasBob, passwortBob);

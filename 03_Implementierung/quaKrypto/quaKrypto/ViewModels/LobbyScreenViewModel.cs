@@ -187,10 +187,17 @@ namespace quaKrypto.ViewModels
             else if (uebungsszenario.Variante.ToString().Contains("VarianteAbhoeren"))
             {
                 Variante = VarianteAbhoeren.VariantenName;
+                EveBoxesVisible = Visibility.Visible;
+                EveSelected = Visibility.Collapsed;
+                EveLabel = Visibility.Visible;
             }
             else
             {
                 Variante = VarianteManInTheMiddle.VariantenName;
+                Variante = VarianteAbhoeren.VariantenName;
+                EveBoxesVisible = Visibility.Visible;
+                EveSelected = Visibility.Collapsed;
+                EveLabel = Visibility.Visible;
             }
             //Variante = uebungsszenario.Variante.ToString();
             Schwierigkeit = uebungsszenario.Schwierigkeitsgrad.ToString();
@@ -259,7 +266,7 @@ namespace quaKrypto.ViewModels
             {
                 return _aliceuebungsszenario;                
             }
-            set{ _aliceuebungsszenario = "Spieler: " + value; this.EigenschaftWurdeGeändert(); }
+            set{ _aliceuebungsszenario = value; this.EigenschaftWurdeGeändert(); }
         }
         public string BobUebungsszenario
         {
@@ -267,7 +274,7 @@ namespace quaKrypto.ViewModels
             {
                 return _bobuebungsszenario;
             }
-            set { _bobuebungsszenario = "Spieler: " + value; this.EigenschaftWurdeGeändert(); }
+            set { _bobuebungsszenario = value; this.EigenschaftWurdeGeändert(); }
         }
         public string EveUebungsszenario
         {
@@ -275,7 +282,7 @@ namespace quaKrypto.ViewModels
             {
                 return _eveuebungsszenario;
             }
-            set { _eveuebungsszenario = "Spieler: " + value; this.EigenschaftWurdeGeändert(); }
+            set { _eveuebungsszenario = value; this.EigenschaftWurdeGeändert(); }
         }
         public string PasswortAliceText
         {
@@ -394,19 +401,19 @@ namespace quaKrypto.ViewModels
         {
             AliceBoxesVisible = Visibility.Collapsed;
             AliceSelected = Visibility.Visible;
-            AliasAliceText = "Spieler: " + AliasAliceText;
+            AliasAliceText = AliasAliceText;
         }
         private void BobCommand(object parameter)
         {
             BobBoxesVisible = Visibility.Collapsed;
             BobSelected = Visibility.Visible;
-            AliasBobText = "Spieler: " + AliasBobText;
+            AliasBobText = AliasBobText;
         }
         private void EveCommand(object parameter)
         {
             EveBoxesVisible = Visibility.Collapsed;
             EveSelected = Visibility.Visible;
-            AliasEveText = "Spieler: " + AliasEveText;
+            AliasEveText = AliasEveText;
         }
         private void AliceFreigeben()
         {
@@ -552,5 +559,7 @@ namespace quaKrypto.ViewModels
             if(EigeneRollen.Count == 0) return false;
             return true;
         }
+
+        public string Ueberschrift => $"Lobby \"{_lobbyname}\"";
     }
 }

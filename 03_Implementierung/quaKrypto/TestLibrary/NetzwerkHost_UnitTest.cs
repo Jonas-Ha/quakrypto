@@ -47,7 +47,7 @@ namespace TestLibrary
             const string PROTOKOLLNAME = "Name des Protokolls";
             const string VARIANTENNAME = "Name der Variante";
             const bool ALICESTATE = true, BOBSTATE = false, EVESTATE = false;
-            UebungsszenarioNetzwerkBeitrittInfo gesendeteNetzwerkBeitrittInfo = new(IPAddress.Any, LOBBYNAME, PROTOKOLLNAME, VARIANTENNAME, SchwierigkeitsgradEnum.leicht, ALICESTATE, BOBSTATE, EVESTATE);
+            UebungsszenarioNetzwerkBeitrittInfo gesendeteNetzwerkBeitrittInfo = new(IPAddress.Any, LOBBYNAME, PROTOKOLLNAME, VARIANTENNAME, SchwierigkeitsgradEnum.Leicht, ALICESTATE, BOBSTATE, EVESTATE);
             UebungsszenarioNetzwerkBeitrittInfo empfangeneNetzwerkBeitrittInfo;
             UdpClient udpClient = new(TESTPORT);
             IPEndPoint iPEndPoint = new(0, 0);
@@ -67,7 +67,7 @@ namespace TestLibrary
             }
             else
             {
-                empfangeneNetzwerkBeitrittInfo = new(iPEndPoint.Address, ERROR, ERROR, ERROR, SchwierigkeitsgradEnum.schwer, false, false, false);
+                empfangeneNetzwerkBeitrittInfo = new(iPEndPoint.Address, ERROR, ERROR, ERROR, SchwierigkeitsgradEnum.Schwer, false, false, false);
             }
 
             //Assert
