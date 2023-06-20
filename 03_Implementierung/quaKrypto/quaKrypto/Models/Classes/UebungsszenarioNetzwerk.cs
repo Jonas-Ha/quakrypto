@@ -282,8 +282,9 @@ namespace quaKrypto.Models.Classes
             if (Variante.GetType() != typeof(VarianteNormalerAblauf) && eigeneRollen.Count == 1) NetzwerkHost.SendeAufzeichnungsUpdate(handlungsschritte, !eigeneRollen.Contains(RolleEnum.Alice) && aktuelleRolle.RolleTyp != RolleEnum.Alice ? RolleEnum.Alice : !eigeneRollen.Contains(RolleEnum.Bob) && aktuelleRolle.RolleTyp != RolleEnum.Bob ? RolleEnum.Bob : RolleEnum.Eve);
             foreach (Handlungsschritt handlungsschritt in handlungsschritte)
             {
-                rollen.Where(rolle => rolle.RolleTyp == handlungsschritt.Rolle).First().BeginneZug("");
-                HandlungsschrittAusführenLassen(handlungsschritt.OperationsTyp, handlungsschritt.Operand1, handlungsschritt.Operand2, handlungsschritt.ErgebnisName, handlungsschritt.Rolle);
+                Aufzeichnung.HaengeHandlungsschrittAn(handlungsschritt);
+                //rollen.Where(rolle => rolle.RolleTyp == handlungsschritt.Rolle).First().BeginneZug("");
+                //HandlungsschrittAusführenLassen(handlungsschritt.OperationsTyp, handlungsschritt.Operand1, handlungsschritt.Operand2, handlungsschritt.ErgebnisName, handlungsschritt.Rolle);
                 if (handlungsschritt.OperationsTyp == OperationsEnum.nachrichtSenden && (eigeneRollen.Contains(RolleEnum.Eve) || (handlungsschritt.Rolle == RolleEnum.Alice && eigeneRollen.Contains(RolleEnum.Bob)) || (handlungsschritt.Rolle == RolleEnum.Bob && eigeneRollen.Contains(RolleEnum.Alice))))
                 {
                     Uebertragungskanal.SpeicherNachrichtAb(handlungsschritt.Ergebnis);
@@ -314,8 +315,9 @@ namespace quaKrypto.Models.Classes
         {
             foreach (Handlungsschritt handlungsschritt in handlungsschritte)
             {
-                rollen.Where(rolle => rolle.RolleTyp == handlungsschritt.Rolle).First().BeginneZug("");
-                HandlungsschrittAusführenLassen(handlungsschritt.OperationsTyp, handlungsschritt.Operand1, handlungsschritt.Operand2, handlungsschritt.ErgebnisName, handlungsschritt.Rolle);
+                Aufzeichnung.HaengeHandlungsschrittAn(handlungsschritt);
+                //rollen.Where(rolle => rolle.RolleTyp == handlungsschritt.Rolle).First().BeginneZug("");
+                //HandlungsschrittAusführenLassen(handlungsschritt.OperationsTyp, handlungsschritt.Operand1, handlungsschritt.Operand2, handlungsschritt.ErgebnisName, handlungsschritt.Rolle);
                 if (handlungsschritt.OperationsTyp == OperationsEnum.nachrichtSenden && (eigeneRollen.Contains(RolleEnum.Eve) || (handlungsschritt.Rolle == RolleEnum.Alice && eigeneRollen.Contains(RolleEnum.Bob)) || (handlungsschritt.Rolle == RolleEnum.Bob && eigeneRollen.Contains(RolleEnum.Alice))))
                 {
                     Uebertragungskanal.SpeicherNachrichtAb(handlungsschritt.Ergebnis);

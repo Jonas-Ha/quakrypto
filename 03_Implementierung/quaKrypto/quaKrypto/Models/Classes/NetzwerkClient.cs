@@ -66,6 +66,7 @@ namespace quaKrypto.Models.Classes
                 {
                     try
                     {
+                        if (udpClient == null) break;
                         byte[] kompletteNachrichtAlsBytes = udpClient.Receive(ref senderAdresse);
                         Trace.WriteLine("BeginneLobbySucheNachrichtErhalten");
                         byte commandIdentifier = kompletteNachrichtAlsBytes[0];
@@ -228,7 +229,7 @@ namespace quaKrypto.Models.Classes
                         }
                         kompletteNachrichtAlsBytes = new byte[TCP_RECEIVE_BUFFER_SIZE];
                     }
-                    catch (SocketException) { Trace.WriteLine("Eine Socket-Exception wurde beim TCP-Empfangen im Client mit dem Host geworfen"); break; }
+                    catch (IOException) { Trace.WriteLine("Eine Socket-Exception wurde beim TCP-Empfangen im Client mit dem Host geworfen"); break; }
                 }
             }).Start();
         }
