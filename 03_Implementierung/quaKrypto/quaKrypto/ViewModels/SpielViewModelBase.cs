@@ -628,8 +628,8 @@ namespace quaKrypto.ViewModels
         {
             return uebungsszenario.HandlungsschrittAusführenLassen(
                 OperationsEnum.photonenZuBitfolge,
-                Operand1[0],
                 Operand2[0],
+                Operand1[0], //Muss verkehrt herum angegeben werden
                 Informationsname,
                 uebungsszenario.AktuelleRolle.RolleTyp
                 );
@@ -707,11 +707,11 @@ namespace quaKrypto.ViewModels
         #endregion
 
         #region Datentyp Konverter
-        private BitArray convertedBitArray;
+        private bool[] convertedBitArray;
         private bool StringToBitArray(string eingabe)
         {
             if (eingabe == null) return false;
-            convertedBitArray = new BitArray(eingabe.Length);
+            convertedBitArray = new bool[(eingabe.Length)];
             for (int i = 0; i < eingabe.Length; i++)
             {
                 if (eingabe[i] == '0') convertedBitArray[i] = false;

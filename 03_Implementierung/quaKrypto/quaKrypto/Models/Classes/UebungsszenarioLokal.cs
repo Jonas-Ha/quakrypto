@@ -61,7 +61,7 @@ namespace quaKrypto.Models.Classes
         public Aufzeichnung Aufzeichnung { get { return aufzeichnung; } }
         public string Name { get { return name; } }
         public bool Beendet { get { return beendet; } }
-
+        public bool HostHatGestartet { get { return false; } }
         //Überprüft ob die Rolle bereits vergeben ist und falls nicht wird die Rolle hinzugefügt und gibt zurück ob die Rolle hinzugefügt
         public bool RolleHinzufuegen(Rolle rolle, bool eigeneRolle = false)
         {

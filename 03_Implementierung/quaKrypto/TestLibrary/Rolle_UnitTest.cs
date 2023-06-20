@@ -171,10 +171,10 @@ namespace TestLibrary
             Rolle rolle = new Rolle(rolleEnum, alias, passwort);
             rolle.BeginneZug("passwort_alice");
             string informationsname = "Bitfolge";
-            BitArray arrpol1 = new BitArray(10, false);
+            bool[] arrpol1 = new bool[10];
             arrpol1[1] = true;
             arrpol1[2] = true;
-            BitArray arrpol2 = new BitArray(10, false);
+            bool[] arrpol2 = new bool[10];
             arrpol2[2] = true;
             arrpol2[3] = true;
             Information information1 = new Information(1, "Polarisationsschemata", InformationsEnum.polarisationsschemata, arrpol1, null);
@@ -185,7 +185,7 @@ namespace TestLibrary
             Information empfangeneInformation = handlungsschritt.Ergebnis;
 
             //Assert
-            BitArray erwarteteBitfolge = new BitArray(10, false);
+            bool[] erwarteteBitfolge = new bool[10];
             erwarteteBitfolge[1] = true;
             erwarteteBitfolge[3] = true;
             Information erwarteteInformation = new Information(0, informationsname, InformationsEnum.bitfolge, erwarteteBitfolge, null);
@@ -211,10 +211,10 @@ namespace TestLibrary
             Rolle rolle = new Rolle(rolleEnum, alias, passwort);
             rolle.BeginneZug("passwort_alice");
             string informationsname = "Bitfolge";
-            BitArray arrpol1 = new BitArray(10, false);
+            bool[] arrpol1 = new bool[10];
             arrpol1[1] = true;
             arrpol1[2] = true;
-            BitArray arrpol2 = new BitArray(10, false);
+            bool[] arrpol2 = new bool[10];
             arrpol2[2] = true;
             arrpol2[3] = true;
             Information information1 = new Information(1, "Polarisationsschemata", InformationsEnum.polarisationsschemata, arrpol1, null);
@@ -236,10 +236,10 @@ namespace TestLibrary
             string informationsname = "Bitfolge";
 
             //Arrange
-            BitArray arrpol = new BitArray(10, false);
+            bool[] arrpol = new bool[10];
             arrpol[1] = true;
             arrpol[2] = true;
-            BitArray arrkey = new BitArray(10, false);
+            bool[] arrkey = new bool[10];
             arrkey[1] = true;
             arrkey[2] = true;
             Information information1 = new Information(1, "Polarisationsschemata", InformationsEnum.polarisationsschemata, arrpol, null);
@@ -272,10 +272,10 @@ namespace TestLibrary
             Rolle rolle = new Rolle(rolleEnum, alias, passwort);
             rolle.BeginneZug("passwort_alice");
             string informationsname = "Bitfolge";
-            BitArray arrpol = new BitArray(10, false);
+            bool[] arrpol = new bool[10];
             arrpol[1] = true;
             arrpol[2] = true;
-            BitArray arrkey = new BitArray(10, false);
+            bool[] arrkey = new bool[10];
             arrkey[1] = true;
             arrkey[2] = true;
             Information information1 = new Information(1, "Polarisationsschemata", InformationsEnum.polarisationsschemata, arrpol, null);
@@ -295,10 +295,10 @@ namespace TestLibrary
             Rolle rolle = new Rolle(rolleEnum, alias, passwort);
             rolle.BeginneZug("passwort_alice");
             string informationsname = "Bitfolge";
-            BitArray arrpol = new BitArray(10, false);
+            bool[] arrpol = new bool[10];
             arrpol[1] = true;
             arrpol[2] = true;
-            BitArray arrkey = new BitArray(10, false);
+            bool[] arrkey = new bool[10];
             arrkey[1] = true;
             arrkey[2] = true;
             Information information1 = new Information(1, "Polarisationsschemata", InformationsEnum.polarisationsschemata, arrpol, null);
@@ -320,10 +320,10 @@ namespace TestLibrary
             Rolle rolle = new Rolle(rolleEnum, alias, passwort);
             rolle.BeginneZug("passwort_alice");
             string informationsname = "Bitfolge";
-            BitArray arrpol = new BitArray(10, false);
+            bool[] arrpol = new bool[10];
             arrpol[1] = true;
             arrpol[2] = true;
-            BitArray arrkey = new BitArray(10, false);
+            bool[] arrkey = new bool[10];
             arrkey[1] = true;
             arrkey[2] = true;
             Information information1 = new Information(1, "Polarisationsschemata", InformationsEnum.polarisationsschemata, arrpol, null);
@@ -339,10 +339,10 @@ namespace TestLibrary
             Rolle rolle = new Rolle(rolleEnum, alias, passwort);
             rolle.BeginneZug("passwort_alice");
             string informationsname = "Bitfolge";
-            BitArray arrpol = new BitArray(10, false);
+            bool[] arrpol = new bool[10];
             arrpol[1] = true;
             arrpol[2] = true;
-            BitArray arrkey = new BitArray(10, false);
+            bool[] arrkey = new bool[10];
             arrkey[1] = true;
             arrkey[2] = true;
             Information information1 = new Information(1, "Polarisationsschemata", InformationsEnum.polarisationsschemata, arrpol, null);
@@ -365,10 +365,10 @@ namespace TestLibrary
             Rolle rolle = new Rolle(rolleEnum, alias, passwort);
             rolle.BeginneZug("passwort_alice");
             string informationsname = "Bitfolge";
-            BitArray arrpol = new BitArray(10, false);
+            bool[] arrpol = new bool[10];
             arrpol[1] = true;
             arrpol[2] = true;
-            BitArray arrkey = new BitArray(10, false);
+            bool[] arrkey = new bool[10];
             arrkey[1] = true;
             arrkey[2] = true;
             Information information1 = new Information(1, "Polarisationsschemata", InformationsEnum.polarisationsschemata, arrpol, null);

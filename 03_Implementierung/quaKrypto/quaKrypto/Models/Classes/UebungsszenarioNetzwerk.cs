@@ -34,6 +34,7 @@ namespace quaKrypto.Models.Classes
         public event PropertyChangedEventHandler? PropertyChanged;
         private bool host;
         private List<RolleEnum> eigeneRollen = new();
+        private bool hostHatGestartet = false;
 
         public UebungsszenarioNetzwerk(SchwierigkeitsgradEnum schwierigkeitsgrad, IVariante variante, uint startPhase, uint endPhase, string name, bool host)
         {
@@ -67,7 +68,7 @@ namespace quaKrypto.Models.Classes
         public Aufzeichnung Aufzeichnung { get { return aufzeichnung; } }
         public string Name { get { return name; } }
         public bool Beendet { get { return beendet; } }
-
+        public bool HostHatGestartet { get { return hostHatGestartet; } set { hostHatGestartet = value; this.PropertyHasChanged(nameof(HostHatGestartet)); } }
         public bool RolleHinzufuegen(Rolle rolle, bool eigeneRolle)
         {
             bool verfügbar = true;
@@ -176,7 +177,7 @@ namespace quaKrypto.Models.Classes
                     }
                 }
 
-                NetzwerkHost.StarteUebungsszenario();
+                NetzwerkHost.StarteUebungsszenario(aktRolle);
 
                 if (!eigeneRollen.Contains(aktRolle))
                 {
@@ -222,7 +223,7 @@ namespace quaKrypto.Models.Classes
 
             //Wird das darunter noch gebraucht?
             aktuelleRolle.handlungsschritte.Clear();
-
+            /*
             for (int i = 0; i < Rollen.Count; i++)
             {
                 if (aktRolle == Rollen[i].RolleTyp)
@@ -233,7 +234,7 @@ namespace quaKrypto.Models.Classes
                     break;
                 }
             }
-            PropertyHasChanged(nameof(aktuelleRolle));
+            PropertyHasChanged(nameof(aktuelleRolle));*/
         }
 
         public bool GebeBildschirmFrei(string Passwort)
@@ -281,7 +282,10 @@ namespace quaKrypto.Models.Classes
             if (Variante.GetType() != typeof(VarianteNormalerAblauf) && eigeneRollen.Count == 1) NetzwerkHost.SendeAufzeichnungsUpdate(handlungsschritte, !eigeneRollen.Contains(RolleEnum.Alice) && aktuelleRolle.RolleTyp != RolleEnum.Alice ? RolleEnum.Alice : !eigeneRollen.Contains(RolleEnum.Bob) && aktuelleRolle.RolleTyp != RolleEnum.Bob ? RolleEnum.Bob : RolleEnum.Eve);
             foreach (Handlungsschritt handlungsschritt in handlungsschritte)
             {
-                HandlungsschrittAusführenLassen(handlungsschritt.OperationsTyp, handlungsschritt.Operand1, handlungsschritt.Operand2, handlungsschritt.ErgebnisName, handlungsschritt.Rolle);
+                Aufzeichnung.HaengeHandlungsschrittAn(handlungsschritt);
+
+                //rollen.Where(rolle => rolle.RolleTyp == handlungsschritt.Rolle).First().BeginneZug("");
+                //HandlungsschrittAusführenLassen(handlungsschritt.OperationsTyp, handlungsschritt.Operand1, handlungsschritt.Operand2, handlungsschritt.ErgebnisName, handlungsschritt.Rolle);
                 if (handlungsschritt.OperationsTyp == OperationsEnum.nachrichtSenden && (eigeneRollen.Contains(RolleEnum.Eve) || (handlungsschritt.Rolle == RolleEnum.Alice && eigeneRollen.Contains(RolleEnum.Bob)) || (handlungsschritt.Rolle == RolleEnum.Bob && eigeneRollen.Contains(RolleEnum.Alice))))
                 {
                     Uebertragungskanal.SpeicherNachrichtAb(handlungsschritt.Ergebnis);
@@ -292,7 +296,7 @@ namespace quaKrypto.Models.Classes
 
             if (!eigeneRollen.Contains(naechsteRolle))
                 NetzwerkHost.UebergebeKontrolle(naechsteRolle);
-
+            
             foreach (Rolle rolle in rollen)
             {
                 if (rolle.RolleTyp == naechsteRolle)
@@ -312,7 +316,9 @@ namespace quaKrypto.Models.Classes
         {
             foreach (Handlungsschritt handlungsschritt in handlungsschritte)
             {
-                HandlungsschrittAusführenLassen(handlungsschritt.OperationsTyp, handlungsschritt.Operand1, handlungsschritt.Operand2, handlungsschritt.ErgebnisName, handlungsschritt.Rolle);
+                Aufzeichnung.HaengeHandlungsschrittAn(handlungsschritt);
+                //rollen.Where(rolle => rolle.RolleTyp == handlungsschritt.Rolle).First().BeginneZug("");
+                //HandlungsschrittAusführenLassen(handlungsschritt.OperationsTyp, handlungsschritt.Operand1, handlungsschritt.Operand2, handlungsschritt.ErgebnisName, handlungsschritt.Rolle);
                 if (handlungsschritt.OperationsTyp == OperationsEnum.nachrichtSenden && (eigeneRollen.Contains(RolleEnum.Eve) || (handlungsschritt.Rolle == RolleEnum.Alice && eigeneRollen.Contains(RolleEnum.Bob)) || (handlungsschritt.Rolle == RolleEnum.Bob && eigeneRollen.Contains(RolleEnum.Alice))))
                 {
                     Uebertragungskanal.SpeicherNachrichtAb(handlungsschritt.Ergebnis);
@@ -320,18 +326,33 @@ namespace quaKrypto.Models.Classes
             }
         }
 
-        public void KontrolleErhalten()
+        public void KontrolleErhalten(RolleEnum nächsteRolle)
         {
             //Lobbyscreenview muss Bildschirm freigeben und Passwort eingeben lassen.
-            //throw new NotImplementedException();
-            NaechsterZug();
+            for(int i = 0; i < Rollen.Count; i++)
+            {
+                if (Rollen[i].RolleTyp == nächsteRolle)
+                {
+                    aktuelleRolle = Rollen[i];
+                    PropertyHasChanged(nameof(aktuelleRolle));
+                    break;
+                }
+            }    
         }
 
-        public void UebungsszenarioWurdeGestartet()
+        public void UebungsszenarioWurdeGestartet(RolleEnum startRolle)
         {
             //Views müssen auf Spiel umschalten und den WarteBildschirm anzeigen
-            NaechsterZug();
-            //throw new NotImplementedException();
+            
+            for (int i = 0; i < Rollen.Count; i++)
+            {
+                if (Rollen[i].RolleTyp == startRolle)
+                {
+                    aktuelleRolle = Rollen[i];
+                    break;
+                }
+            }
+            HostHatGestartet = true;
         }
 
 

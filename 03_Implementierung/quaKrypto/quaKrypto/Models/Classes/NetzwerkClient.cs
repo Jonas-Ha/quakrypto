@@ -21,7 +21,7 @@ using System.Windows;
 
 namespace quaKrypto.Models.Classes
 {
-    public static class NetzwerkClient 
+    public static class NetzwerkClient
     {
         private const byte LOBBYINFORMATION = 0x01;
         private const byte LOBBY_NICHT_MEHR_VERFUEGBAR = 0x02;
@@ -47,10 +47,7 @@ namespace quaKrypto.Models.Classes
         private static Dictionary<IPAddress, UebungsszenarioNetzwerkBeitrittInfo> verfügbareLobbys = new();
 
         //Schnittstelle für Lobby Beitreten
-        public static ObservableCollection<UebungsszenarioNetzwerkBeitrittInfo> VerfuegbareLobbys
-        {
-            get;
-        } = new ObservableCollection<UebungsszenarioNetzwerkBeitrittInfo>();
+        public static ObservableCollection<UebungsszenarioNetzwerkBeitrittInfo> VerfuegbareLobbys { get; } = new();
 
         private static UebungsszenarioNetzwerk? uebungsszenario;
 
@@ -69,6 +66,7 @@ namespace quaKrypto.Models.Classes
                 {
                     try
                     {
+                        if (udpClient == null) break;
                         byte[] kompletteNachrichtAlsBytes = udpClient.Receive(ref senderAdresse);
                         Trace.WriteLine("BeginneLobbySucheNachrichtErhalten");
                         byte commandIdentifier = kompletteNachrichtAlsBytes[0];
@@ -80,11 +78,16 @@ namespace quaKrypto.Models.Classes
                                 bool aliceBesetzt = bool.Parse(empfangeneNachrichtTeile[4]);
                                 bool bobBesetzt = bool.Parse(empfangeneNachrichtTeile[5]);
                                 bool eveBesetzt = bool.Parse(empfangeneNachrichtTeile[6]);
-                                UebungsszenarioNetzwerkBeitrittInfo netzwerkBeitrittInfo = new(senderAdresse.Address, empfangeneNachrichtTeile[0], empfangeneNachrichtTeile[1], empfangeneNachrichtTeile[2], schwierigkeit, aliceBesetzt, bobBesetzt, eveBesetzt);
+                                UebungsszenarioNetzwerkBeitrittInfo netzwerkBeitrittInfo = new(senderAdresse.Address, empfangeneNachrichtTeile[0], empfangeneNachrichtTeile[1], empfangeneNachrichtTeile[2], schwierigkeit, aliceBesetzt, bobBesetzt, eveBesetzt) { StartPhase = uint.TryParse(empfangeneNachrichtTeile[7], out uint startPhase) ? startPhase : 0, EndPhase = uint.TryParse(empfangeneNachrichtTeile[8], out uint endPhase) ? endPhase : 5 };
                                 if (!verfügbareLobbys.ContainsKey(senderAdresse.Address))
                                 {
                                     verfügbareLobbys.Add(senderAdresse.Address, netzwerkBeitrittInfo);
                                     Application.Current.Dispatcher.Invoke(new Action(() => VerfuegbareLobbys.Add(netzwerkBeitrittInfo)));
+                                }
+                                else
+                                {
+                                    verfügbareLobbys[senderAdresse.Address] = netzwerkBeitrittInfo;
+                                    Application.Current.Dispatcher.Invoke(new Action(() => VerfuegbareLobbys[VerfuegbareLobbys.IndexOf(VerfuegbareLobbys.Where(lobby => lobby.IPAddress.Equals(senderAdresse.Address)).First())] = netzwerkBeitrittInfo)); ;
                                 }
 
                                 //NOTIFY CHANGED?
@@ -92,7 +95,7 @@ namespace quaKrypto.Models.Classes
                         }
                         else if (commandIdentifier == LOBBY_NICHT_MEHR_VERFUEGBAR)
                         {
-                            Application.Current.Dispatcher.Invoke(new Action(() => VerfuegbareLobbys.Remove(verfügbareLobbys[senderAdresse.Address])));
+                            Application.Current.Dispatcher.Invoke(new Action(() => { if (verfügbareLobbys.ContainsKey(senderAdresse.Address) && VerfuegbareLobbys.Contains(verfügbareLobbys[senderAdresse.Address])) VerfuegbareLobbys.Remove(verfügbareLobbys[senderAdresse.Address]); }));
                             verfügbareLobbys.Remove(senderAdresse.Address);
                             //NOTIFY CHANGED?
                         }
@@ -156,7 +159,11 @@ namespace quaKrypto.Models.Classes
         //Schnittstelle für Übungsszenario
         public static void BeendeZug(List<Handlungsschritt> handlungsschritte)
         {
-            string serializedHandlungsschritte = new("");
+            XmlSerializer xmlSerializer = new(typeof(List<Handlungsschritt>));
+            using StringWriter stringWriter = new();
+            xmlSerializer.Serialize(stringWriter, handlungsschritte);
+            //string serializedHandlungsschritte = new("");
+            /*
             XmlSerializer xmlSerializer = new(typeof(Handlungsschritt));
             for (int i = 0; i < handlungsschritte.Count; i++)
             {
@@ -164,8 +171,9 @@ namespace quaKrypto.Models.Classes
                 using StringWriter stringWriter = new();
                 xmlSerializer.Serialize(stringWriter, handlungsschritte[i]);
                 serializedHandlungsschritte += stringWriter.ToString();
-            }
-            SendeNachrichtTCP(ZUG_BEENDEN, serializedHandlungsschritte);
+            }*/
+            //SendeNachrichtTCP(ZUG_BEENDEN, serializedHandlungsschritte);
+            SendeNachrichtTCP(ZUG_BEENDEN, stringWriter.ToString());
         }
 
         //Schnittstelle fürs Übungsszenario
@@ -192,32 +200,30 @@ namespace quaKrypto.Models.Classes
                         {
                             case ROLLENINFORMATION:
                                 Rolle? rolleAlice, rolleBob, rolleEve;
-                                rolleAlice = empfangeneNachrichtTeile[0] == "" ? null : new Rolle(RolleEnum.Alice, empfangeneNachrichtTeile[0]);
-                                rolleBob = empfangeneNachrichtTeile[1] == "" ? null : new Rolle(RolleEnum.Bob, empfangeneNachrichtTeile[1]);
+                                rolleAlice = empfangeneNachrichtTeile[0] == "" ? null : new Rolle(RolleEnum.Alice, empfangeneNachrichtTeile[0], "");
+                                rolleBob = empfangeneNachrichtTeile[1] == "" ? null : new Rolle(RolleEnum.Bob, empfangeneNachrichtTeile[1], "");
                                 empfangeneNachrichtTeile[2] = empfangeneNachrichtTeile[2].TrimEnd('\0');
-                                rolleEve = empfangeneNachrichtTeile[2] == "" ? null : new Rolle(RolleEnum.Eve, empfangeneNachrichtTeile[2]);
+                                rolleEve = empfangeneNachrichtTeile[2] == "" ? null : new Rolle(RolleEnum.Eve, empfangeneNachrichtTeile[2], "");
 
                                 uebungsszenario?.NeueRollenInformation(rolleAlice, rolleBob, rolleEve);
                                 break;
                             case UEBUNGSSZENARIO_STARTEN:
-                                uebungsszenario?.UebungsszenarioWurdeGestartet();
+                                uebungsszenario?.UebungsszenarioWurdeGestartet(Enum.TryParse(empfangeneNachrichtTeile[0], out RolleEnum startRolle) ? startRolle : RolleEnum.Alice);
                                 break;
                             case KONTROLLE_UEBERGEBEN:
-                                uebungsszenario?.KontrolleErhalten();
+                                uebungsszenario?.KontrolleErhalten(Enum.TryParse(empfangeneNachrichtTeile[0], out RolleEnum nächsteRolle) ? nächsteRolle : RolleEnum.Alice);
                                 break;
                             case AUFZEICHNUNG_UPDATE:
                                 List<Handlungsschritt> listeEmpfangenerHandlungsschritte = new();
-                                XmlSerializer xmlHandlungsschrittSerializer = new(typeof(Handlungsschritt));
-                                foreach (string handlungsschritt in empfangeneNachrichtTeile)
+                                XmlSerializer xmlHandlungsschrittSerializer = new(typeof(List<Handlungsschritt>));
+                                using (StringReader stringReader = new StringReader(empfangeneNachrichtTeile[0]))
                                 {
-                                    using StringReader stringReader = new StringReader(handlungsschritt);
                                     object? deserialisiertesObjekt = xmlHandlungsschrittSerializer.Deserialize(stringReader);
                                     if (deserialisiertesObjekt != null)
                                     {
-                                        listeEmpfangenerHandlungsschritte.Add((Handlungsschritt)deserialisiertesObjekt);
+                                        uebungsszenario?.AufzeichnungUpdate((List<Handlungsschritt>)deserialisiertesObjekt);
                                     }
                                 }
-                                uebungsszenario?.AufzeichnungUpdate(listeEmpfangenerHandlungsschritte);
                                 break;
                             case UEBUNGSSZENARIO_ENDE:
                                 TrenneVerbindungMitUebungsszenario();
@@ -226,7 +232,7 @@ namespace quaKrypto.Models.Classes
                         }
                         kompletteNachrichtAlsBytes = new byte[TCP_RECEIVE_BUFFER_SIZE];
                     }
-                    catch (SocketException) { Trace.WriteLine("Eine Socket-Exception wurde beim TCP-Empfangen im Client mit dem Host geworfen"); break; }
+                    catch (IOException) { Trace.WriteLine("Eine Socket-Exception wurde beim TCP-Empfangen im Client mit dem Host geworfen"); break; }
                 }
             }).Start();
         }

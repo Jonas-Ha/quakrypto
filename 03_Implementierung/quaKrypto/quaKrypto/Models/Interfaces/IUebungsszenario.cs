@@ -46,6 +46,9 @@ namespace quaKrypto.Models.Interfaces
         public string Name
         { get; }
 
+        public bool HostHatGestartet 
+        { get; }
+
         //Diese Funktionen werden dem View Model als Interface angeboten
 
         // Füge ein Rollen Objekt zum Übungsszenario hinzu
