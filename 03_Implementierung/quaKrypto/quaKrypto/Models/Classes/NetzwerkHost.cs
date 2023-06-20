@@ -297,17 +297,15 @@ namespace quaKrypto.Models.Classes
                                 break;
                             case ZUG_BEENDEN:
                                 List<Handlungsschritt> listeEmpfangenerHandlungsschritte = new();
-                                XmlSerializer xmlSerializer = new(typeof(Handlungsschritt));
-                                foreach (string handlungsschritt in empfangeneNachrichtTeile)
+                                XmlSerializer xmlHandlungsschrittSerializer = new(typeof(List<Handlungsschritt>));
+                                using (StringReader stringReader = new StringReader(empfangeneNachrichtTeile[0]))
                                 {
-                                    using StringReader stringReader = new StringReader(handlungsschritt);
-                                    object? deserialisiertesObjekt = xmlSerializer.Deserialize(stringReader);
+                                    object? deserialisiertesObjekt = xmlHandlungsschrittSerializer.Deserialize(stringReader);
                                     if (deserialisiertesObjekt != null)
                                     {
-                                        listeEmpfangenerHandlungsschritte.Add((Handlungsschritt)deserialisiertesObjekt);
+                                        uebungsszenario?.ZugWurdeBeendet((List<Handlungsschritt>)deserialisiertesObjekt);
                                     }
                                 }
-                                uebungsszenario?.ZugWurdeBeendet(listeEmpfangenerHandlungsschritte);
                                 break;
                             case UEBUNGSSZENARIO_ENDE:
                                 uebungsszenario?.Beenden();
