@@ -34,6 +34,7 @@ namespace quaKrypto.Models.Classes
         public event PropertyChangedEventHandler? PropertyChanged;
         private bool host;
         private List<RolleEnum> eigeneRollen = new();
+        private bool hostHatGestartet = false;
 
         public UebungsszenarioNetzwerk(SchwierigkeitsgradEnum schwierigkeitsgrad, IVariante variante, uint startPhase, uint endPhase, string name, bool host)
         {
@@ -67,7 +68,7 @@ namespace quaKrypto.Models.Classes
         public Aufzeichnung Aufzeichnung { get { return aufzeichnung; } }
         public string Name { get { return name; } }
         public bool Beendet { get { return beendet; } }
-
+        public bool HostHatGestartet { get { return hostHatGestartet; } set { hostHatGestartet = value; this.PropertyHasChanged(nameof(HostHatGestartet)); } }
         public bool RolleHinzufuegen(Rolle rolle, bool eigeneRolle)
         {
             bool verfügbar = true;
@@ -338,6 +339,7 @@ namespace quaKrypto.Models.Classes
         public void UebungsszenarioWurdeGestartet(RolleEnum startRolle)
         {
             //Views müssen auf Spiel umschalten und den WarteBildschirm anzeigen
+            
             for (int i = 0; i < Rollen.Count; i++)
             {
                 if (Rollen[i].RolleTyp == startRolle)
@@ -346,6 +348,7 @@ namespace quaKrypto.Models.Classes
                     break;
                 }
             }
+            HostHatGestartet = true;
         }
 
 
