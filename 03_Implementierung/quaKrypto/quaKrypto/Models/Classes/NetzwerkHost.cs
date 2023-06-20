@@ -290,7 +290,7 @@ namespace quaKrypto.Models.Classes
                         }
                         kompletteNachrichtAlsBytes = new byte[TCP_RECEIVE_BUFFER_SIZE];
                     }
-                    catch (SocketException) { networkStream.Close(); Trace.WriteLine("Eine Socket-Exception wurde beim TCP-Empfangen mit folgender Adresse geworfen: "); break; }
+                    catch (IOException) { networkStream.Close(); Trace.WriteLine("Eine Socket-Exception wurde beim TCP-Empfangen mit folgender Adresse geworfen: "); break; }
                 }
             }).Start();
         }
