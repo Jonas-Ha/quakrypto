@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace quaKrypto.Models.Classes
 {
@@ -22,7 +23,7 @@ namespace quaKrypto.Models.Classes
         private RolleEnum? informationsEmpfaenger;
         private RolleEnum? informationsSender;
         private string informationsName;
-        private Enums.InformationsEnum informationsTyp;
+        private InformationsEnum informationsTyp;
         private object informationsInhalt;
 
         public Information() { }
@@ -33,8 +34,8 @@ namespace quaKrypto.Models.Classes
             InformationsName = informationsName;
             InformationsTyp = informationsTyp;
             InformationsInhalt = informationsInhalt;
-            if (informationsEmpfaenger != null )
-            InformationsEmpfaenger = informationsEmpfaenger;
+            if (informationsEmpfaenger != null)
+                InformationsEmpfaenger = informationsEmpfaenger;
             if (informationsSender != null)
                 InformationsSender = informationsSender;
         }
@@ -51,12 +52,13 @@ namespace quaKrypto.Models.Classes
             init { informationsName = value; }
         }
 
-        public Enums.InformationsEnum InformationsTyp 
-        { 
-            get { return informationsTyp; } 
+        public InformationsEnum InformationsTyp
+        {
+            get { return informationsTyp; }
             init { informationsTyp = value; }
         }
 
+        [XmlIgnore]
         public object InformationsInhalt
         {
             get { return informationsInhalt; }
@@ -75,12 +77,13 @@ namespace quaKrypto.Models.Classes
             init { informationsSender = value; }
         }
 
+        [XmlIgnore]
         public string InformationsInhaltToString
         {
             get
             {
                 string erg = string.Empty;
-                if (InformationsInhalt == null) ;
+                if (InformationsInhalt == null) return erg;
                 else if (InformationsTyp == InformationsEnum.zahl && InformationsInhalt.GetType() == typeof(int))
                 {
                     erg = ((int)InformationsInhalt).ToString();
@@ -120,6 +123,82 @@ namespace quaKrypto.Models.Classes
                     erg = (string)InformationsInhalt;
                 }
                 return erg;
+            }
+        }
+
+        public string InformationsinhaltSerialized
+        {
+            get
+            {
+                string erg = string.Empty;
+                if (InformationsTyp == InformationsEnum.zahl && InformationsInhalt.GetType() == typeof(int))
+                {
+                    erg = ((int)InformationsInhalt).ToString();
+                }
+                else if (InformationsTyp == InformationsEnum.bitfolge && InformationsInhalt.GetType() == typeof(bool[]))
+                {
+                    bool[] bitArray = (bool[])InformationsInhalt;
+                    for (int i = 0; i < bitArray.Length; i++)
+                    {
+                        erg += bitArray[i] ? 1 : 0;
+                    }
+                }
+                else if (InformationsTyp == InformationsEnum.photonen && InformationsInhalt.GetType() == typeof(byte[]))
+                {
+                    erg = Encoding.Default.GetString((byte[])InformationsInhalt);
+                }
+                else if (InformationsTyp == InformationsEnum.polarisationsschemata && InformationsInhalt.GetType() == typeof(bool[]))
+                {
+                    bool[] bitArray = (bool[])InformationsInhalt;
+                    for (int i = 0; i < bitArray.Length; i++)
+                    {
+                        erg += bitArray[i] ? 1 : 0;
+                    }
+                }
+                else if (InformationsTyp == InformationsEnum.unscharfePhotonen && InformationsInhalt.GetType() == typeof(byte[]))
+                {
+                    erg = Encoding.Default.GetString((byte[])InformationsInhalt);
+                }
+                else if (InformationsTyp == InformationsEnum.asciiText && InformationsInhalt.GetType() == typeof(string))
+                {
+                    erg = (string)InformationsInhalt;
+                }
+                else if (InformationsTyp == InformationsEnum.verschluesselterText && InformationsInhalt.GetType() == typeof(string))
+                {
+                    erg = (string)InformationsInhalt;
+                }
+                return erg;
+            }
+            set
+            {
+                string[] teile = value.Split('\t');
+
+                Type? type = Type.GetType(teile[0]);
+                if (type != null)
+                {
+                    if (type.Equals(new bool[0].GetType()))
+                    {
+                        bool[] returnArray = new bool[teile[1].Length];
+                        for(int i = 0; i < returnArray.Length; i++)
+                        {
+                            returnArray[i] = teile[1][i] == '1';
+                        }
+                        informationsInhalt = returnArray;
+                    }
+                    else if (type.Equals(new byte[0].GetType()))
+                    {
+                        informationsInhalt = Encoding.Default.GetBytes(teile[1]);
+                    }
+                    else if (type.Equals(new string("").GetType()))
+                    {
+                        informationsInhalt = teile[1];
+                    }
+                    else if (type.Equals(new int().GetType()))
+                    {
+                        informationsInhalt = int.TryParse(teile[1], out int integer) ? integer : -1;
+                    }
+                }
+
             }
         }
 

@@ -85,7 +85,6 @@ namespace quaKrypto.Models.Classes
         {
             if(freigeschaltet)
             {
-
                 var handlungsschritt = new Handlungsschritt(informationszaehler++, operationsTyp, operand1, operand2, ergebnisInformationsName, rolle);
                 if (operationsTyp == OperationsEnum.zugBeenden) freigeschaltet = false;
                 Add(handlungsschritt);
