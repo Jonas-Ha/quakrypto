@@ -58,11 +58,14 @@ namespace quaKrypto.ViewModels
             
 
             uebungsszenario.PropertyChanged += new((o, a) => {
-                SpielEveViewModel eveViewModel = new SpielEveViewModel(navigator, uebungsszenario, EigeneRollen);
-                SpielViewModel spielViewModel = new SpielViewModel(navigator, uebungsszenario, EigeneRollen);
-                spielViewModel.SpielEveViewModel = eveViewModel;
-                eveViewModel.SpielViewModel = spielViewModel;
-                navigator.aktuellesViewModel = spielViewModel;
+                if (uebungsszenario.HostHatGestartet)
+                {
+                    SpielEveViewModel eveViewModel = new SpielEveViewModel(navigator, uebungsszenario, EigeneRollen);
+                    SpielViewModel spielViewModel = new SpielViewModel(navigator, uebungsszenario, EigeneRollen);
+                    spielViewModel.SpielEveViewModel = eveViewModel;
+                    eveViewModel.SpielViewModel = spielViewModel;
+                    navigator.aktuellesViewModel = spielViewModel;
+                }
             });
 
             ((INotifyCollectionChanged)this.uebungsszenario.Rollen).CollectionChanged += new NotifyCollectionChangedEventHandler(RollenChanged);
