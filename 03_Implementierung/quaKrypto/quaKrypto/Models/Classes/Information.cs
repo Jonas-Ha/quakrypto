@@ -85,9 +85,9 @@ namespace quaKrypto.Models.Classes
                 {
                     erg = ((int)InformationsInhalt).ToString();
                 }
-                else if (InformationsTyp == InformationsEnum.bitfolge && InformationsInhalt.GetType() == typeof(BitArray))
+                else if (InformationsTyp == InformationsEnum.bitfolge && InformationsInhalt.GetType() == typeof(bool[]))
                 {
-                    BitArray bitArray = (BitArray)InformationsInhalt;
+                    bool[] bitArray = (bool[])InformationsInhalt;
                     for (int i = 0; i < bitArray.Length; i++)
                     {
                         erg += bitArray[i] ? 1 : 0;
@@ -98,9 +98,9 @@ namespace quaKrypto.Models.Classes
                     byte[] photonenArray = (byte[])InformationsInhalt;
                     erg = Photonen_ToString(photonenArray);
                 }
-                else if (InformationsTyp == InformationsEnum.polarisationsschemata && InformationsInhalt.GetType() == typeof(BitArray))
+                else if (InformationsTyp == InformationsEnum.polarisationsschemata && InformationsInhalt.GetType() == typeof(bool[]))
                 {
-                    BitArray bitArray = (BitArray)InformationsInhalt;
+                    bool[] bitArray = (bool[])InformationsInhalt;
                     for (int i = 0; i < bitArray.Length; i++)
                     {
                         erg += bitArray[i] ? '✛' : '✕';

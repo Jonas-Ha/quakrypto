@@ -33,15 +33,17 @@ namespace TestLibrary
         public void NachrichtSenden_Erfolg()
         {
             //Arrange
-            RolleEnum sender = RolleEnum.Alice;
-            Information information = new Information(1, "Bitfolge", InformationsEnum.bitfolge, new BitArray(10, true), null);
+            RolleEnum sender = RolleEnum.Alice; 
+            bool[] arrpol1 = new bool[10];
+            for(int i = 0; i < arrpol1.Length; i++)arrpol1[i] = true;
+            Information information = new Information(1, "Bitfolge", InformationsEnum.bitfolge, arrpol1, null);
             Information empfaenger = new Information(0, "Empfaenger", InformationsEnum.zahl, RolleEnum.Bob, null);
 
             //Act
             Information gesendeteInformation = operationen.NachrichtSenden(2, information, empfaenger, "GesendeteNachricht", RolleEnum.Alice);
 
             //Assert
-            Information erwarteteInformation = new Information(2, "GesendeteNachricht", InformationsEnum.bitfolge, new BitArray(10, true), (RolleEnum) empfaenger.InformationsInhalt, sender);
+            Information erwarteteInformation = new Information(2, "GesendeteNachricht", InformationsEnum.bitfolge, arrpol1, (RolleEnum) empfaenger.InformationsInhalt, sender);
             Assert.AreEqual(erwarteteInformation.InformationsID, gesendeteInformation.InformationsID);
             Assert.AreEqual(erwarteteInformation.InformationsName, gesendeteInformation.InformationsName);
             Assert.AreEqual(erwarteteInformation.InformationsTyp, gesendeteInformation.InformationsTyp);
@@ -81,7 +83,9 @@ namespace TestLibrary
         public void NachrichtSenden_Failed()
         {
             //Arrange
-            Information information = new Information(1, "Bitfolge", InformationsEnum.bitfolge, new BitArray(10, true), null);
+            bool[] arrpol1 = new bool[10];
+            for (int i = 0; i < arrpol1.Length; i++) arrpol1[i] = true;
+            Information information = new Information(1, "Bitfolge", InformationsEnum.bitfolge, arrpol1, null);
             RolleEnum empfaenger = RolleEnum.Bob;
 
             //Act
@@ -95,13 +99,15 @@ namespace TestLibrary
         public void NachrichtEmpfangen_Erfolg()
         {
             //Arrange
-            Information information = new Information(1, "Bitfolge", InformationsEnum.bitfolge, new BitArray(10, true), RolleEnum.Bob);
+            bool[] arrpol1 = new bool[10];
+            for (int i = 0; i < arrpol1.Length; i++) arrpol1[i] = true;
+            Information information = new Information(1, "Bitfolge", InformationsEnum.bitfolge, arrpol1, RolleEnum.Bob);
 
             //Act
             Information empfangeneInformation = operationen.NachrichtEmpfangen(2, information, null, "EmpfangeneNachricht", null);
 
             //Assert
-            Information erwarteteInformation = new Information(2, "EmpfangeneNachricht", InformationsEnum.bitfolge, new BitArray(10, true), null);
+            Information erwarteteInformation = new Information(2, "EmpfangeneNachricht", InformationsEnum.bitfolge, arrpol1, null);
             Assert.AreEqual(erwarteteInformation.InformationsID,empfangeneInformation.InformationsID);
             Assert.AreEqual(erwarteteInformation.InformationsName, empfangeneInformation.InformationsName);
             Assert.AreEqual(erwarteteInformation.InformationsTyp, empfangeneInformation.InformationsTyp);
@@ -114,17 +120,19 @@ namespace TestLibrary
         {
             //Arrange
             int length = 10;
+            bool[] arrpol1 = new bool[10];
+            for (int i = 0; i < arrpol1.Length; i++) arrpol1[i] = true;
             Information information = new Information(1, "Zahl", InformationsEnum.zahl, length, RolleEnum.Bob);
 
             //Act
             Information empfangeneInformation = operationen.BitfolgeGenerierenZahl(2, information, null, "Bitfolge", null);
 
             //Assert
-            Information erwarteteInformation = new Information(2, "Bitfolge", InformationsEnum.bitfolge, new BitArray(10, true), null);
+            Information erwarteteInformation = new Information(2, "Bitfolge", InformationsEnum.bitfolge, arrpol1, null);
             Assert.AreEqual(erwarteteInformation.InformationsID, empfangeneInformation.InformationsID);
             Assert.AreEqual(erwarteteInformation.InformationsName, empfangeneInformation.InformationsName);
             Assert.AreEqual(erwarteteInformation.InformationsTyp, empfangeneInformation.InformationsTyp);
-            Assert.AreEqual(length, ((BitArray)empfangeneInformation.InformationsInhalt).Length);
+            Assert.AreEqual(length, ((bool[])empfangeneInformation.InformationsInhalt).Length);
             Assert.AreEqual(erwarteteInformation.InformationsEmpfaenger, empfangeneInformation.InformationsEmpfaenger);
         }
 
@@ -146,7 +154,7 @@ namespace TestLibrary
         public void BitfolgeGenerierenZahl_Failed_KeineZahl()
         {
             //Arrange
-            BitArray arr = new BitArray(10);
+            bool[] arr = new bool[10];
             Information information = new Information(1, "Zahl", InformationsEnum.zahl, arr, null);
 
             //Act
@@ -160,7 +168,7 @@ namespace TestLibrary
         public void BitfolgeGenerierenAngabe_Erfolg()
         {
             //Arrange
-            BitArray arr = new BitArray(10, false);
+            bool[] arr = new bool[10];
             arr[1] = true;
             arr[2] = true;
             int length = 20;
@@ -171,7 +179,7 @@ namespace TestLibrary
             Information empfangeneInformation = operationen.BitfolgeGenerierenAngabe(2, information1, information2, "Bitfolge", null);
 
             //Assert
-            BitArray erwartetarr = new BitArray(20, false);
+            bool[] erwartetarr = new bool[20];
             erwartetarr[1] = true;
             erwartetarr[2] = true;
             erwartetarr[11] = true;
@@ -196,14 +204,14 @@ namespace TestLibrary
             var ex = Assert.Throws<Exception>(() => operationen.BitfolgeGenerierenAngabe(2, information1, information2, "Bitfolge", null));
 
             //Assert
-            Assert.That(ex.Message == "operand1 nicht vom Typ Bitfolge oder ist kein BitArray");
+            Assert.That(ex.Message == "operand1 nicht vom Typ Bitfolge oder ist kein bool[]");
         }
 
         [Test]
         public void BitfolgeGenerierenAngabe_Failed_Keine_Zahl()
         {
             //Arrange
-            BitArray arr = new BitArray(10, false);
+            bool[] arr = new bool[10];
             arr[1] = true;
             arr[2] = true;
             Information information1 = new Information(1, "Angabe", InformationsEnum.bitfolge, arr, null);
@@ -220,7 +228,7 @@ namespace TestLibrary
         public void BitfolgeGenerierenAngabe_Failed_Zahl_Null()
         {
             //Arrange
-            BitArray arr = new BitArray(10, false);
+            bool[] arr = new bool[10];
             arr[1] = true;
             arr[2] = true;
             int length = 0;
@@ -239,17 +247,19 @@ namespace TestLibrary
         {
             //Arrange
             int length = 10;
+            bool[] arr = new bool[length];
+            for (int i = 0; i < length; i++) arr[i] = true;
             Information information = new Information(1, "Zahl", InformationsEnum.zahl, length, RolleEnum.Bob);
 
             //Act
             Information empfangeneInformation = operationen.PolarisationsschemataGenerierenZahl(2, information, null, "Bitfolge", null);
 
             //Assert
-            Information erwarteteInformation = new Information(2, "Bitfolge", InformationsEnum.polarisationsschemata, new BitArray(10, true), null);
+            Information erwarteteInformation = new Information(2, "Bitfolge", InformationsEnum.polarisationsschemata, arr, null);
             Assert.AreEqual(erwarteteInformation.InformationsID, empfangeneInformation.InformationsID);
             Assert.AreEqual(erwarteteInformation.InformationsName, empfangeneInformation.InformationsName);
             Assert.AreEqual(erwarteteInformation.InformationsTyp, empfangeneInformation.InformationsTyp);
-            Assert.AreEqual(length, ((BitArray)empfangeneInformation.InformationsInhalt).Length);
+            Assert.AreEqual(length, ((bool[])empfangeneInformation.InformationsInhalt).Length);
             Assert.AreEqual(erwarteteInformation.InformationsEmpfaenger, empfangeneInformation.InformationsEmpfaenger);
         }
 
@@ -271,7 +281,7 @@ namespace TestLibrary
         public void PolarisationsschemataGenerierenZahl_Failed_KeineZahl()
         {
             //Arrange
-            BitArray arr = new BitArray(10);
+            bool[] arr = new bool[10];
             Information information = new Information(1, "Zahl", InformationsEnum.zahl, arr, null);
 
             //Act
@@ -285,7 +295,7 @@ namespace TestLibrary
         public void PolarisationsschemataGenerierenAngabe_Erfolg()
         {
             //Arrange
-            BitArray arr = new BitArray(10, false);
+            bool[] arr = new bool[10];
             arr[1] = true;
             arr[2] = true;
             int length = 20;
@@ -296,7 +306,7 @@ namespace TestLibrary
             Information empfangeneInformation = operationen.PolarisationsschemataGenerierenAngabe(2, information1, information2, "Bitfolge", null);
 
             //Assert
-            BitArray erwartetarr = new BitArray(20, false);
+            bool[] erwartetarr = new bool[20];
             erwartetarr[1] = true;
             erwartetarr[2] = true;
             erwartetarr[11] = true;
@@ -321,14 +331,14 @@ namespace TestLibrary
             var ex = Assert.Throws<Exception>(() => operationen.PolarisationsschemataGenerierenAngabe(2, information1, information2, "Bitfolge", null));
 
             //Assert
-            Assert.That(ex.Message == "operand1 nicht vom Typ Bitfolge oder ist kein BitArray");
+            Assert.That(ex.Message == "operand1 nicht vom Typ Bitfolge oder ist kein bool[]");
         }
 
         [Test]
         public void PolarisationsschemataGenerierenAngabe_Failed_Keine_Zahl()
         {
             //Arrange
-            BitArray arr = new BitArray(10, false);
+            bool[] arr = new bool[10];
             arr[1] = true;
             arr[2] = true;
             Information information1 = new Information(1, "Angabe", InformationsEnum.bitfolge, arr, null);
@@ -345,7 +355,7 @@ namespace TestLibrary
         public void PolarisationsschemataGenerierenAngabe_Failed_Zahl_Null()
         {
             //Arrange
-            BitArray arr = new BitArray(10, false);
+            bool[] arr = new bool[10];
             arr[1] = true;
             arr[2] = true;
             int length = 0;
@@ -363,10 +373,10 @@ namespace TestLibrary
         public void PhotonenGenerieren_Erfolg()
         {
             //Arrange
-            BitArray arrpol = new BitArray(10, false);
+            bool[] arrpol = new bool[10];
             arrpol[1] = true;
             arrpol[2] = true;
-            BitArray arrkey = new BitArray(10, false);
+            bool[] arrkey = new bool[10];
             arrkey[1] = true;
             arrkey[2] = true;
             Information information1 = new Information(1, "Polarisationsschemata", InformationsEnum.polarisationsschemata, arrpol, null);
@@ -390,7 +400,7 @@ namespace TestLibrary
         public void PhotonenGenerieren_Failed_Kein_Pol()
         {
             //Arrange
-            BitArray arrkey = new BitArray(10, false);
+            bool[] arrkey = new bool[10];
             arrkey[1] = true;
             arrkey[2] = true;
             Information information1 = new Information(1, "Polarisationsschemata", InformationsEnum.zahl, 4, null);
@@ -400,14 +410,14 @@ namespace TestLibrary
             var ex = Assert.Throws<Exception>(() => operationen.PhotonenGenerieren(2, information1, information2, "Bitfolge", null));
 
             //Assert
-            Assert.That(ex.Message == "operand1 nicht vom Typ polarisationsschemata oder ist kein BitArray");
+            Assert.That(ex.Message == "operand1 nicht vom Typ polarisationsschemata oder ist kein bool[]");
         }
 
         [Test]
         public void PhotonenGenerieren_Failed_Kein_Key()
         {
             //Arrange
-            BitArray arrpol = new BitArray(10, false);
+            bool[] arrpol = new bool[10];
             arrpol[1] = true;
             arrpol[2] = true;
             Information information1 = new Information(1, "Polarisationsschemata", InformationsEnum.polarisationsschemata, arrpol, null);
@@ -417,17 +427,17 @@ namespace TestLibrary
             var ex = Assert.Throws<Exception>(() => operationen.PhotonenGenerieren(2, information1, information2, "Bitfolge", null));
 
             //Assert
-            Assert.That(ex.Message == "operand2 nicht vom Typ bitfolge oder ist kein BitArray");
+            Assert.That(ex.Message == "operand2 nicht vom Typ bitfolge oder ist kein bool[]");
         }
 
         [Test]
         public void PhotonenGenerieren_Failed_Ungleiche_Laenge()
         {
             //Arrange
-            BitArray arrpol = new BitArray(10, false);
+            bool[] arrpol = new bool[10];
             arrpol[1] = true;
             arrpol[2] = true;
-            BitArray arrkey = new BitArray(11, false);
+            bool[] arrkey = new bool[11];
             arrkey[1] = true;
             arrkey[2] = true;
             Information information1 = new Information(1, "Polarisationsschemata", InformationsEnum.polarisationsschemata, arrpol, null);
@@ -453,14 +463,14 @@ namespace TestLibrary
             Information empfangeneInformation = operationen.BitmaskeGenerieren(2, information1, information2, "Bitmaske", null);
 
             //Assert
-            Information erwarteteInformation = new Information(2, "Bitmaske", InformationsEnum.bitfolge, new BitArray(maskenLaenge, false), null);
+            Information erwarteteInformation = new Information(2, "Bitmaske", InformationsEnum.bitfolge, new bool[maskenLaenge], null);
             Assert.AreEqual(erwarteteInformation.InformationsID, empfangeneInformation.InformationsID);
             Assert.AreEqual(erwarteteInformation.InformationsName, empfangeneInformation.InformationsName);
             Assert.AreEqual(erwarteteInformation.InformationsTyp, empfangeneInformation.InformationsTyp);
-            Assert.AreEqual(maskenLaenge, ((BitArray)empfangeneInformation.InformationsInhalt).Length);
+            Assert.AreEqual(maskenLaenge, ((bool[])empfangeneInformation.InformationsInhalt).Length);
             Assert.AreEqual(erwarteteInformation.InformationsEmpfaenger, empfangeneInformation.InformationsEmpfaenger);
 
-            BitArray bits = (BitArray)empfangeneInformation.InformationsInhalt;
+            bool[] bits = (bool[])empfangeneInformation.InformationsInhalt;
             int count = 0;
             for(int i  = 0; i < bits.Length; i++)
             {
@@ -475,7 +485,7 @@ namespace TestLibrary
             //Arrange
             int maskenLaenge = 10;
             int anzahlEinser = 4;
-            Information information1 = new Information(1, "maskenLaenge", InformationsEnum.zahl, new BitArray(2,false), null);
+            Information information1 = new Information(1, "maskenLaenge", InformationsEnum.zahl, new bool[2], null);
             Information information2 = new Information(2, "anzahlEinser", InformationsEnum.zahl, anzahlEinser, null);
 
             //Act
@@ -537,10 +547,10 @@ namespace TestLibrary
         public void PolschataVergleichen_Erfolg()
         {
             //Arrange
-            BitArray arrpol1 = new BitArray(10, false);
+            bool[] arrpol1 = new bool[10];
             arrpol1[1] = true;
             arrpol1[2] = true;
-            BitArray arrpol2 = new BitArray(10, false);
+            bool[] arrpol2 = new bool[10];
             arrpol2[2] = true;
             arrpol2[3] = true;
             Information information1 = new Information(1, "Polarisationsschemata", InformationsEnum.polarisationsschemata, arrpol1, null);
@@ -550,7 +560,7 @@ namespace TestLibrary
             Information empfangeneInformation = operationen.PolschataVergleichen(2, information1, information2, "Bitfolge", null);
 
             //Assert
-            BitArray erwarteteBitfolge = new BitArray(10, false);
+            bool[] erwarteteBitfolge = new bool[10];
             erwarteteBitfolge[1] = true;
             erwarteteBitfolge[3] = true;
             Information erwarteteInformation = new Information(2, "Bitfolge", InformationsEnum.bitfolge, erwarteteBitfolge, null);
@@ -565,7 +575,7 @@ namespace TestLibrary
         public void PolschataVergleichen_Failed_KeinBitArray()
         {
             //Arrange
-            BitArray arrpol2 = new BitArray(10, false);
+            bool[] arrpol2 = new bool[10];
             arrpol2[2] = true;
             arrpol2[3] = true;
             Information information1 = new Information(1, "Polarisationsschemata", InformationsEnum.polarisationsschemata, 4, null);
@@ -575,17 +585,17 @@ namespace TestLibrary
             var ex = Assert.Throws<Exception>(() => operationen.PolschataVergleichen(2, information1, information2, "Bitfolge", null));
 
             //Assert
-            Assert.That(ex.Message == "operand1 nicht vom Typ Polarisationsschemata oder ist kein Bitarray");
+            Assert.That(ex.Message == "operand1 nicht vom Typ Polarisationsschemata oder ist kein bool[]");
         }
 
         [Test]
         public void PolschataVergleichen_Failed_UngleicheLaenge()
         {
             //Arrange
-            BitArray arrpol1 = new BitArray(11, false);
+            bool[] arrpol1 = new bool[11];
             arrpol1[1] = true;
             arrpol1[2] = true;
-            BitArray arrpol2 = new BitArray(10, false);
+            bool[] arrpol2 = new bool[10];
             arrpol2[2] = true;
             arrpol2[3] = true;
             Information information1 = new Information(1, "Polarisationsschemata", InformationsEnum.polarisationsschemata, arrpol1, null);
@@ -602,10 +612,10 @@ namespace TestLibrary
         public void BitfolgenVergleichen_Erfolg()
         {
             //Arrange
-            BitArray arrpol1 = new BitArray(10, false);
+            bool[] arrpol1 = new bool[10];
             arrpol1[1] = true;
             arrpol1[2] = true;
-            BitArray arrpol2 = new BitArray(10, false);
+            bool[] arrpol2 = new bool[10];
             arrpol2[2] = true;
             arrpol2[3] = true;
             Information information1 = new Information(1, "Bitfolge", InformationsEnum.bitfolge, arrpol1, null);
@@ -615,7 +625,7 @@ namespace TestLibrary
             Information empfangeneInformation = operationen.BitfolgenVergleichen(2, information1, information2, "Bitfolge", null);
 
             //Assert
-            BitArray erwarteteBitfolge = new BitArray(10, false);
+            bool[] erwarteteBitfolge = new bool[10];
             erwarteteBitfolge[1] = true;
             erwarteteBitfolge[3] = true;
             Information erwarteteInformation = new Information(2, "Bitfolge", InformationsEnum.bitfolge, erwarteteBitfolge, null);
@@ -630,7 +640,7 @@ namespace TestLibrary
         public void BitfolgenVergleichen_Failed_KeinBitArray()
         {
             //Arrange
-            BitArray arrpol2 = new BitArray(10, false);
+            bool[] arrpol2 = new bool[10];
             arrpol2[2] = true;
             arrpol2[3] = true;
             Information information1 = new Information(1, "Bitfolge", InformationsEnum.bitfolge, 4, null);
@@ -640,17 +650,17 @@ namespace TestLibrary
             var ex = Assert.Throws<Exception>(() => operationen.BitfolgenVergleichen(2, information1, information2, "Bitfolge", null));
 
             //Assert
-            Assert.That(ex.Message == "operand1 nicht vom Typ Bitfolge oder ist kein Bitarray");
+            Assert.That(ex.Message == "operand1 nicht vom Typ Bitfolge oder ist kein bool[]");
         }
 
         [Test]
         public void BitfolgenVergleichen_Failed_UngleicheLaenge()
         {
             //Arrange
-            BitArray arrpol1 = new BitArray(11, false);
+            bool[] arrpol1 = new bool[11];
             arrpol1[1] = true;
             arrpol1[2] = true;
-            BitArray arrpol2 = new BitArray(10, false);
+            bool[] arrpol2 = new bool[10];
             arrpol2[2] = true;
             arrpol2[3] = true;
             Information information1 = new Information(1, "Bitfolge", InformationsEnum.bitfolge, arrpol1, null);
@@ -667,7 +677,7 @@ namespace TestLibrary
         public void BitfolgeNegieren_Erfolg()
         {
             //Arrange
-            BitArray arrpol1 = new BitArray(10, false);
+            bool[] arrpol1 = new bool[10];
             arrpol1[1] = true;
             arrpol1[2] = true;
             Information information1 = new Information(1, "Bitfolge", InformationsEnum.bitfolge, arrpol1, null);
@@ -676,7 +686,8 @@ namespace TestLibrary
             Information empfangeneInformation = operationen.BitfolgeNegieren(2, information1, null, "Bitfolge", null);
 
             //Assert
-            BitArray erwarteteBitfolge = new BitArray(10, true);
+            bool[] erwarteteBitfolge = new bool[10];
+            for(int i = 0; i < erwarteteBitfolge.Length; i++)erwarteteBitfolge[i] = true;
             erwarteteBitfolge[1] = false;
             erwarteteBitfolge[2] = false;
             Information erwarteteInformation = new Information(2, "Bitfolge", InformationsEnum.bitfolge, erwarteteBitfolge, null);
@@ -698,14 +709,14 @@ namespace TestLibrary
             var ex = Assert.Throws<Exception>(() => operationen.BitfolgeNegieren(2, information1, null, "Bitfolge", null));
 
             //Assert
-            Assert.That(ex.Message == "operand1 nicht vom Typ Bitfolge oder ist kein Bitarray");
+            Assert.That(ex.Message == "operand1 nicht vom Typ Bitfolge oder ist kein bool[]");
         }
 
         [Test]
         public void PhotonenZuBitfolge_Erfolg()
         {
             //Arrange
-            BitArray arrpol1 = new BitArray(10, false);
+            bool[] arrpol1 = new bool[10];
             arrpol1[1] = true;
             arrpol1[2] = true;
             byte[] Photonen = new byte[10] { 0, 3, 1, 0, 0, 0, 0, 0, 0, 0};
@@ -716,7 +727,7 @@ namespace TestLibrary
             Information empfangeneInformation = operationen.PhotonenZuBitfolge(2, information1, information2, "Bitfolge", null);
 
             //Assert
-            BitArray erwarteteBitfolge = new BitArray(10, false);
+            bool[] erwarteteBitfolge = new bool[10];
             erwarteteBitfolge[1] = true;
             erwarteteBitfolge[2] = true;
             Information erwarteteInformation = new Information(2, "Bitfolge", InformationsEnum.bitfolge, erwarteteBitfolge, null);
@@ -731,7 +742,7 @@ namespace TestLibrary
         public void PhotonenZuBitfolge_Erfolg_Random()
         {
             //Arrange
-            BitArray arrpol1 = new BitArray(10, false);
+            bool[] arrpol1 = new bool[10];
             arrpol1[1] = true;
             arrpol1[2] = true;
             byte[] Photonen = new byte[10] { 0, 3, 1, 0, 0, 1, 0, 1, 1, 0 };
@@ -742,8 +753,8 @@ namespace TestLibrary
             Information empfangeneInformation = operationen.PhotonenZuBitfolge(2, information1, information2, "Bitfolge", null);
 
             //Assert
-            BitArray erwarteteBitfolge = new BitArray(10, false);
-            BitArray ausles = (BitArray)empfangeneInformation.InformationsInhalt;
+            bool[] erwarteteBitfolge = new bool[10];
+            bool[] ausles = (bool[])empfangeneInformation.InformationsInhalt;
             erwarteteBitfolge[1] = true;
             erwarteteBitfolge[2] = ausles[2];
             erwarteteBitfolge[5] = ausles[5];
@@ -778,7 +789,7 @@ namespace TestLibrary
         public void PhotonenZuBitfolge_Failed_KeinePhotonen()
         {
             //Arrange
-            BitArray arrpol1 = new BitArray(10, false);
+            bool[] arrpol1 = new bool[10];
             arrpol1[1] = true;
             arrpol1[2] = true;
             Information information1 = new Information(1, "Polarisationsschemata", InformationsEnum.polarisationsschemata, arrpol1, null);
@@ -795,7 +806,7 @@ namespace TestLibrary
         public void PhotonenZuBitfolge_Failed_Ungleiche_Laenge()
         {
             //Arrange
-            BitArray arrpol1 = new BitArray(11, false);
+            bool[] arrpol1 = new bool[11];
             arrpol1[1] = true;
             arrpol1[2] = true;
             byte[] Photonen = new byte[10] { 0, 3, 1, 0, 0, 0, 0, 0, 0, 0 };
@@ -813,7 +824,7 @@ namespace TestLibrary
         public void PhotonenZuBitfolge_Failed_FalscherTyp()
         {
             //Arrange
-            BitArray arrpol1 = new BitArray(10, false);
+            bool[] arrpol1 = new bool[10];
             arrpol1[1] = true;
             arrpol1[2] = true;
             byte[] Photonen = new byte[10] { 0, 3, 1, 0, 0, 0, 0, 0, 0, 0 };
@@ -895,7 +906,8 @@ namespace TestLibrary
             //Arrange
             string text = "Hällo";
             int length = 50;
-            BitArray schluessel = new BitArray(length, false);
+            bool[] schluessel = new bool[length];
+
             for(int i = 0; i < length; i++) 
             {
                 schluessel[i] = (i % 2)==1? true:false;
@@ -917,7 +929,7 @@ namespace TestLibrary
         {
             //Arrange
             int length = 50;
-            BitArray schluessel = new BitArray(length, false);
+            bool[] schluessel = new bool[length];
             for (int i = 0; i < length; i++)
             {
                 schluessel[i] = (i % 2) == 1 ? true : false;
@@ -944,7 +956,7 @@ namespace TestLibrary
             var ex = Assert.Throws<Exception>(() => operationen.TextVerschluesseln(2, information1, information2, "VerschlüsselterText", null));
 
             //Assert
-            Assert.That(ex.Message == "operand2 nicht vom Typ bitfolge oder ist kein BitArray");
+            Assert.That(ex.Message == "operand2 nicht vom Typ bitfolge oder ist kein bool[]");
         }
 
         [Test]
@@ -953,7 +965,7 @@ namespace TestLibrary
             //Arrange
             string text = "Hällo";
             int length = 10;
-            BitArray schluessel = new BitArray(length, false);
+            bool[] schluessel = new bool[length];
             for (int i = 0; i < length; i++)
             {
                 schluessel[i] = (i % 2) == 1 ? true : false;
@@ -973,7 +985,7 @@ namespace TestLibrary
         {
             //Arrange
             int length = 50;
-            BitArray schluessel = new BitArray(length, false);
+            bool[] schluessel = new bool[length];
             for (int i = 0; i < length; i++)
             {
                 schluessel[i] = (i % 2) == 1 ? true : false;
@@ -994,7 +1006,7 @@ namespace TestLibrary
             //Arrange
             string text = "Hällo";
             int length = 50;
-            BitArray schluessel = new BitArray(length, false);
+            bool[] schluessel = new bool[length];
             for (int i = 0; i < length; i++)
             {
                 schluessel[i] = (i % 2) == 1 ? true : false;
@@ -1008,7 +1020,7 @@ namespace TestLibrary
             var ex = Assert.Throws<Exception>(() => operationen.TextEntschluesseln(2, empfangeneInformation, KeinKey, "VerschlüsselterText", null));
 
             //Assert
-            Assert.That(ex.Message == "operand2 nicht vom Typ bitfolge oder ist kein BitArray");
+            Assert.That(ex.Message == "operand2 nicht vom Typ bitfolge oder ist kein bool[]");
         }
 
         [Test]
@@ -1017,7 +1029,7 @@ namespace TestLibrary
             //Arrange
             string text = "Hällo";
             int length = 50;
-            BitArray schluessel = new BitArray(length, false);
+            bool[] schluessel = new bool[length];
             for (int i = 0; i < length; i++)
             {
                 schluessel[i] = (i % 2) == 1 ? true : false;
@@ -1026,7 +1038,7 @@ namespace TestLibrary
             Information information2 = new Information(2, "schluessel", InformationsEnum.bitfolge, schluessel, null);
             Information empfangeneInformation = operationen.TextVerschluesseln(2, information1, information2, "VerschlüsselterText", null);
             int length2 = 10;
-            BitArray schluessel2 = new BitArray(length2, false);
+            bool[] schluessel2 = new bool[length2];
             for (int i = 0; i < length2; i++)
             {
                 schluessel2[i] = (i % 2) == 1 ? true : false;
@@ -1044,9 +1056,9 @@ namespace TestLibrary
         public void BitsStreichen_Erfolg()
         {
             //Arrange
-            BitArray zielArray = new BitArray(10, false);
-            for(int i = 0; i < 10; i++) zielArray[i] = (i % 2) == 1; //0101010101
-            BitArray zustreichen = new BitArray(10, false);
+            bool[] zielArray = new bool[10];
+            for (int i = 0; i < 10; i++) zielArray[i] = (i % 2) == 1; //0101010101
+            bool[] zustreichen = new bool[10];
             zustreichen[1] = true;
             zustreichen[3] = true;
             Information information1 = new Information(1, "zielArray", InformationsEnum.bitfolge, zielArray, null);
@@ -1057,7 +1069,7 @@ namespace TestLibrary
 
 
             //Assert
-            BitArray erwartetArr = new BitArray(8, false); //00010101
+            bool[] erwartetArr = new bool[8]; //00010101
             erwartetArr[3] = true;
             erwartetArr[5] = true;
             erwartetArr[7] = true;
@@ -1073,7 +1085,7 @@ namespace TestLibrary
         public void BitsStreichen_Failed_keinZielarr()
         {
             //Arrange
-            BitArray zustreichen = new BitArray(10, false);
+            bool[] zustreichen = new bool[10];
             zustreichen[1] = true;
             zustreichen[3] = true;
             Information information1 = new Information(1, "zielArray", InformationsEnum.bitfolge, 4, null);
@@ -1083,16 +1095,16 @@ namespace TestLibrary
             var ex = Assert.Throws<Exception>(() => operationen.BitsStreichen(2, information1, information2, "GekürzteFolge", null));
 
             //Assert
-            Assert.That(ex.Message == "operand1 nicht vom Typ bitfolge oder ist kein BitArray");
+            Assert.That(ex.Message == "operand1 nicht vom Typ bitfolge oder ist kein bool[]");
         }
 
         [Test]
         public void BitsStreichen_Failed_falscherTyp()
         {
             //Arrange
-            BitArray zielArray = new BitArray(10, false);
+            bool[] zielArray = new bool[10];
             for (int i = 0; i < 10; i++) zielArray[i] = (i % 2) == 1; //0101010101
-            BitArray zustreichen = new BitArray(10, false);
+            bool[] zustreichen = new bool[10];
             zustreichen[1] = true;
             zustreichen[3] = true;
             Information information1 = new Information(1, "zielArray", InformationsEnum.photonen, zielArray, null);
@@ -1102,16 +1114,16 @@ namespace TestLibrary
             var ex = Assert.Throws<Exception>(() => operationen.BitsStreichen(2, information1, information2, "GekürzteFolge", null));
 
             //Assert
-            Assert.That(ex.Message == "operand1 nicht vom Typ bitfolge oder ist kein BitArray");
+            Assert.That(ex.Message == "operand1 nicht vom Typ bitfolge oder ist kein bool[]");
         }
 
         [Test]
         public void BitsStreichen_Failed_ungleicheLaenge()
         {
             //Arrange
-            BitArray zielArray = new BitArray(11, false);
+            bool[] zielArray = new bool[11];
             for (int i = 0; i < 10; i++) zielArray[i] = (i % 2) == 1; //0101010101
-            BitArray zustreichen = new BitArray(10, false);
+            bool[] zustreichen = new bool[10];
             zustreichen[1] = true;
             zustreichen[3] = true;
             Information information1 = new Information(1, "zielArray", InformationsEnum.bitfolge, zielArray, null);
@@ -1128,7 +1140,7 @@ namespace TestLibrary
         public void BitsFreiBearbeiten_Erfolg()
         {
             //Arrange
-            BitArray zielArray = new BitArray(10, false);
+            bool[] zielArray = new bool[10];
             for (int i = 0; i < 10; i++) zielArray[i] = (i % 2) == 1; //0101010101
             
             Information information1 = new Information(1, "zielArray", InformationsEnum.bitfolge, zielArray, null);
@@ -1137,7 +1149,7 @@ namespace TestLibrary
             Information empfangeneInformation = operationen.BitsFreiBearbeiten(2, information1, null, "BearbeiteteBits", null);
 
             //Assert
-            BitArray erwartetArr = new BitArray(10, false);
+            bool[] erwartetArr = new bool[10];
             for (int i = 0; i < 10; i++) erwartetArr[i] = (i % 2) == 1;
             Information erwarteteInformation = new Information(2, "BearbeiteteBits", InformationsEnum.bitfolge, erwartetArr, null);
             Assert.AreEqual(erwarteteInformation.InformationsID, empfangeneInformation.InformationsID);
@@ -1151,7 +1163,7 @@ namespace TestLibrary
         public void BitsFreiBearbeiten_Failed_falscherTyp()
         {
             //Arrange
-            BitArray zielArray = new BitArray(10, false);
+            bool[] zielArray = new bool[10];
             for (int i = 0; i < 10; i++) zielArray[i] = (i % 2) == 1; //0101010101
 
             Information information1 = new Information(1, "zielArray", InformationsEnum.asciiText, zielArray, null);
@@ -1160,7 +1172,7 @@ namespace TestLibrary
             var ex = Assert.Throws<Exception>(() => operationen.BitsFreiBearbeiten(2, information1, null, "BearbeiteteBits", null));
 
             //Assert
-            Assert.That(ex.Message == "operand1 nicht vom Typ bitfolge oder ist kein BitArray");
+            Assert.That(ex.Message == "operand1 nicht vom Typ bitfolge oder ist kein bool[]");
         }
 
         [Test]
@@ -1173,7 +1185,7 @@ namespace TestLibrary
             var ex = Assert.Throws<Exception>(() => operationen.BitsFreiBearbeiten(2, information1, null, "BearbeiteteBits", null));
 
             //Assert
-            Assert.That(ex.Message == "operand1 nicht vom Typ bitfolge oder ist kein BitArray");
+            Assert.That(ex.Message == "operand1 nicht vom Typ bitfolge oder ist kein bool[]");
         }
 
         [Test]

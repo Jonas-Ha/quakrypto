@@ -223,7 +223,7 @@ namespace quaKrypto.Models.Classes
 
             //Wird das darunter noch gebraucht?
             aktuelleRolle.handlungsschritte.Clear();
-
+            /*
             for (int i = 0; i < Rollen.Count; i++)
             {
                 if (aktRolle == Rollen[i].RolleTyp)
@@ -234,7 +234,7 @@ namespace quaKrypto.Models.Classes
                     break;
                 }
             }
-            PropertyHasChanged(nameof(aktuelleRolle));
+            PropertyHasChanged(nameof(aktuelleRolle));*/
         }
 
         public bool GebeBildschirmFrei(string Passwort)
@@ -283,6 +283,7 @@ namespace quaKrypto.Models.Classes
             foreach (Handlungsschritt handlungsschritt in handlungsschritte)
             {
                 Aufzeichnung.HaengeHandlungsschrittAn(handlungsschritt);
+
                 //rollen.Where(rolle => rolle.RolleTyp == handlungsschritt.Rolle).First().BeginneZug("");
                 //HandlungsschrittAusführenLassen(handlungsschritt.OperationsTyp, handlungsschritt.Operand1, handlungsschritt.Operand2, handlungsschritt.ErgebnisName, handlungsschritt.Rolle);
                 if (handlungsschritt.OperationsTyp == OperationsEnum.nachrichtSenden && (eigeneRollen.Contains(RolleEnum.Eve) || (handlungsschritt.Rolle == RolleEnum.Alice && eigeneRollen.Contains(RolleEnum.Bob)) || (handlungsschritt.Rolle == RolleEnum.Bob && eigeneRollen.Contains(RolleEnum.Alice))))
@@ -333,9 +334,10 @@ namespace quaKrypto.Models.Classes
                 if (Rollen[i].RolleTyp == nächsteRolle)
                 {
                     aktuelleRolle = Rollen[i];
+                    PropertyHasChanged(nameof(aktuelleRolle));
                     break;
                 }
-            }
+            }    
         }
 
         public void UebungsszenarioWurdeGestartet(RolleEnum startRolle)

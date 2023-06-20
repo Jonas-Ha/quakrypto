@@ -30,7 +30,7 @@ namespace TestLibrary
         public void Information_BitArray_Erfolg()
         {
             //Arrange
-            BitArray arrpol1 = new BitArray(10, false);
+            bool[] arrpol1 = new bool[10];
             arrpol1[1] = true;
             arrpol1[2] = true;
             Information information1 = new Information(1, "Bitfolge", InformationsEnum.bitfolge, arrpol1, null);
@@ -63,7 +63,7 @@ namespace TestLibrary
         public void Information_Polschata_Erfolg()
         {
             //Arrange
-            BitArray arrpol1 = new BitArray(10, false);
+            bool[] arrpol1 = new bool[10];
             arrpol1[1] = true;
             arrpol1[2] = true;
             Information information1 = new Information(1, "Bitfolge", InformationsEnum.polarisationsschemata, arrpol1, null);
