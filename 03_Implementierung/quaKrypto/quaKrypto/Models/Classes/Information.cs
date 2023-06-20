@@ -65,10 +65,19 @@ namespace quaKrypto.Models.Classes
             init { informationsInhalt = value; }
         }
 
+        public bool ShouldSerializeInformationsEmpfaenger()
+        {
+            return informationsEmpfaenger != null;
+        }
+
         public RolleEnum? InformationsEmpfaenger
         {
             get { return informationsEmpfaenger; }
             init { informationsEmpfaenger = value; }
+        }
+        public bool ShouldSerializeInformationsSender()
+        {
+            return InformationsSender != null;
         }
 
         public RolleEnum? InformationsSender

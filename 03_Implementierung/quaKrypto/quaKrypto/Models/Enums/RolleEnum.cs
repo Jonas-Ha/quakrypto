@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace quaKrypto.Models.Enums
 {
+    [Serializable]
     public enum RolleEnum
     {
         Alice,

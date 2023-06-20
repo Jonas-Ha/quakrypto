@@ -159,7 +159,11 @@ namespace quaKrypto.Models.Classes
         //Schnittstelle für Übungsszenario
         public static void BeendeZug(List<Handlungsschritt> handlungsschritte)
         {
-            string serializedHandlungsschritte = new("");
+            XmlSerializer xmlSerializer = new(typeof(List<Handlungsschritt>));
+            using StringWriter stringWriter = new();
+            xmlSerializer.Serialize(stringWriter, handlungsschritte);
+            //string serializedHandlungsschritte = new("");
+            /*
             XmlSerializer xmlSerializer = new(typeof(Handlungsschritt));
             for (int i = 0; i < handlungsschritte.Count; i++)
             {
@@ -167,8 +171,9 @@ namespace quaKrypto.Models.Classes
                 using StringWriter stringWriter = new();
                 xmlSerializer.Serialize(stringWriter, handlungsschritte[i]);
                 serializedHandlungsschritte += stringWriter.ToString();
-            }
-            SendeNachrichtTCP(ZUG_BEENDEN, serializedHandlungsschritte);
+            }*/
+            //SendeNachrichtTCP(ZUG_BEENDEN, serializedHandlungsschritte);
+            SendeNachrichtTCP(ZUG_BEENDEN, stringWriter.ToString());
         }
 
         //Schnittstelle fürs Übungsszenario

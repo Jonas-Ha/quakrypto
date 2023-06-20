@@ -200,6 +200,22 @@ namespace quaKrypto.Models.Classes
         //Schnittstelle fürs Übungsszenario
         public static void SendeAufzeichnungsUpdate(List<Handlungsschritt> neueHandlungsschritte, RolleEnum? empfänger = null)
         {
+            XmlSerializer xmlSerializer = new(typeof(List<Handlungsschritt>));
+            using StringWriter stringWriter = new();
+            xmlSerializer.Serialize(stringWriter, neueHandlungsschritte);
+            //string serializedHandlungsschritte = new("");
+            /*
+            XmlSerializer xmlSerializer = new(typeof(Handlungsschritt));
+            for (int i = 0; i < handlungsschritte.Count; i++)
+            {
+                if (i != 0) serializedHandlungsschritte += '\t';
+                using StringWriter stringWriter = new();
+                xmlSerializer.Serialize(stringWriter, handlungsschritte[i]);
+                serializedHandlungsschritte += stringWriter.ToString();
+            }*/
+            //SendeNachrichtTCP(ZUG_BEENDEN, serializedHandlungsschritte);
+            SendeNachrichtTCP(AUFZEICHNUNG_UPDATE, stringWriter.ToString(), empfänger);
+            /*
             string serializedHandlungsschritte = new("");
             XmlSerializer xmlSerializer = new(typeof(Handlungsschritt));
             for (int i = 0; i < neueHandlungsschritte.Count; i++)
@@ -209,7 +225,7 @@ namespace quaKrypto.Models.Classes
                 xmlSerializer.Serialize(stringWriter, neueHandlungsschritte[i]);
                 serializedHandlungsschritte += stringWriter.ToString();
             }
-            SendeNachrichtTCP(AUFZEICHNUNG_UPDATE, serializedHandlungsschritte, empfänger);
+            SendeNachrichtTCP(AUFZEICHNUNG_UPDATE, serializedHandlungsschritte, empfänger);*/
         }
 
         //Schnittstelle fürs Übungsszenario

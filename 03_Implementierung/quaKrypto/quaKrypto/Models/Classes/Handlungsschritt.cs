@@ -20,7 +20,7 @@ namespace quaKrypto.Models.Classes
         private OperationsEnum operationsTyp;
         private Information operand1;
         private object operand2;
-        private String ergebnisName;
+        private string ergebnisName;
         private Information ergebnis;
         private RolleEnum rolle;
         private uint aktuellePhase;
@@ -87,7 +87,7 @@ namespace quaKrypto.Models.Classes
             init { operand2 = value; }
         }
 
-        public String ErgebnisName
+        public string ErgebnisName
         {
             get { return ergebnisName; }
             set { ergebnisName = value; }
