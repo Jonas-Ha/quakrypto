@@ -323,15 +323,27 @@ namespace quaKrypto.Models.Classes
         public void KontrolleErhalten(RolleEnum nächsteRolle)
         {
             //Lobbyscreenview muss Bildschirm freigeben und Passwort eingeben lassen.
-            //throw new NotImplementedException();
-            NaechsterZug();
+            for(int i = 0; i < Rollen.Count; i++)
+            {
+                if (Rollen[i].RolleTyp == nächsteRolle)
+                {
+                    aktuelleRolle = Rollen[i];
+                    break;
+                }
+            }
         }
 
         public void UebungsszenarioWurdeGestartet(RolleEnum startRolle)
         {
             //Views müssen auf Spiel umschalten und den WarteBildschirm anzeigen
-            NaechsterZug();
-            //throw new NotImplementedException();
+            for (int i = 0; i < Rollen.Count; i++)
+            {
+                if (Rollen[i].RolleTyp == startRolle)
+                {
+                    aktuelleRolle = Rollen[i];
+                    break;
+                }
+            }
         }
 
 
