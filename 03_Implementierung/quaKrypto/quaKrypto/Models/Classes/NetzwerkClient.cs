@@ -194,10 +194,10 @@ namespace quaKrypto.Models.Classes
                         {
                             case ROLLENINFORMATION:
                                 Rolle? rolleAlice, rolleBob, rolleEve;
-                                rolleAlice = empfangeneNachrichtTeile[0] == "" ? null : new Rolle(RolleEnum.Alice, empfangeneNachrichtTeile[0]);
-                                rolleBob = empfangeneNachrichtTeile[1] == "" ? null : new Rolle(RolleEnum.Bob, empfangeneNachrichtTeile[1]);
+                                rolleAlice = empfangeneNachrichtTeile[0] == "" ? null : new Rolle(RolleEnum.Alice, empfangeneNachrichtTeile[0], "");
+                                rolleBob = empfangeneNachrichtTeile[1] == "" ? null : new Rolle(RolleEnum.Bob, empfangeneNachrichtTeile[1], "");
                                 empfangeneNachrichtTeile[2] = empfangeneNachrichtTeile[2].TrimEnd('\0');
-                                rolleEve = empfangeneNachrichtTeile[2] == "" ? null : new Rolle(RolleEnum.Eve, empfangeneNachrichtTeile[2]);
+                                rolleEve = empfangeneNachrichtTeile[2] == "" ? null : new Rolle(RolleEnum.Eve, empfangeneNachrichtTeile[2], "");
 
                                 uebungsszenario?.NeueRollenInformation(rolleAlice, rolleBob, rolleEve);
                                 break;
