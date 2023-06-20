@@ -21,7 +21,7 @@ using System.Windows;
 
 namespace quaKrypto.Models.Classes
 {
-    public static class NetzwerkClient 
+    public static class NetzwerkClient
     {
         private const byte LOBBYINFORMATION = 0x01;
         private const byte LOBBY_NICHT_MEHR_VERFUEGBAR = 0x02;
@@ -47,10 +47,7 @@ namespace quaKrypto.Models.Classes
         private static Dictionary<IPAddress, UebungsszenarioNetzwerkBeitrittInfo> verfügbareLobbys = new();
 
         //Schnittstelle für Lobby Beitreten
-        public static ObservableCollection<UebungsszenarioNetzwerkBeitrittInfo> VerfuegbareLobbys
-        {
-            get;
-        } = new ObservableCollection<UebungsszenarioNetzwerkBeitrittInfo>();
+        public static ObservableCollection<UebungsszenarioNetzwerkBeitrittInfo> VerfuegbareLobbys { get; } = new();
 
         private static UebungsszenarioNetzwerk? uebungsszenario;
 
@@ -86,13 +83,18 @@ namespace quaKrypto.Models.Classes
                                     verfügbareLobbys.Add(senderAdresse.Address, netzwerkBeitrittInfo);
                                     Application.Current.Dispatcher.Invoke(new Action(() => VerfuegbareLobbys.Add(netzwerkBeitrittInfo)));
                                 }
+                                else
+                                {
+                                    verfügbareLobbys[senderAdresse.Address] = netzwerkBeitrittInfo;
+                                    Application.Current.Dispatcher.Invoke(new Action(() => VerfuegbareLobbys[VerfuegbareLobbys.IndexOf(VerfuegbareLobbys.Where(lobby => lobby.IPAddress.Equals(senderAdresse.Address)).First())] = netzwerkBeitrittInfo)); ;
+                                }
 
                                 //NOTIFY CHANGED?
                             }
                         }
                         else if (commandIdentifier == LOBBY_NICHT_MEHR_VERFUEGBAR)
                         {
-                            Application.Current.Dispatcher.Invoke(new Action(() => VerfuegbareLobbys.Remove(verfügbareLobbys[senderAdresse.Address])));
+                            Application.Current.Dispatcher.Invoke(new Action(() => { if (verfügbareLobbys.ContainsKey(senderAdresse.Address) && VerfuegbareLobbys.Contains(verfügbareLobbys[senderAdresse.Address])) VerfuegbareLobbys.Remove(verfügbareLobbys[senderAdresse.Address]); }));
                             verfügbareLobbys.Remove(senderAdresse.Address);
                             //NOTIFY CHANGED?
                         }
