@@ -72,7 +72,9 @@ namespace quaKrypto.Models.Classes
                     + uebungsszenarioNetzwerkBeitrittInfo.Schwierigkeitsgrad.ToString() + '\t'
                     + uebungsszenarioNetzwerkBeitrittInfo.AliceState.ToString() + '\t'
                     + uebungsszenarioNetzwerkBeitrittInfo.BobState.ToString() + '\t'
-                    + uebungsszenarioNetzwerkBeitrittInfo.EveState.ToString();
+                    + uebungsszenarioNetzwerkBeitrittInfo.EveState.ToString() + '\t'
+                    + uebungsszenarioNetzwerkBeitrittInfo.StartPhase + '\t'
+                    + uebungsszenarioNetzwerkBeitrittInfo.EndPhase;
 
                 byte[] nachrichtAlsByteArray = Encoding.UTF8.GetBytes(netzwerkBeitrittInfoAsString);
                 byte[] nachrichtZumSenden = new byte[nachrichtAlsByteArray.Length + 1];

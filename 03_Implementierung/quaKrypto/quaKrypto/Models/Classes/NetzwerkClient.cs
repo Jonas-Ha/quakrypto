@@ -80,7 +80,7 @@ namespace quaKrypto.Models.Classes
                                 bool aliceBesetzt = bool.Parse(empfangeneNachrichtTeile[4]);
                                 bool bobBesetzt = bool.Parse(empfangeneNachrichtTeile[5]);
                                 bool eveBesetzt = bool.Parse(empfangeneNachrichtTeile[6]);
-                                UebungsszenarioNetzwerkBeitrittInfo netzwerkBeitrittInfo = new(senderAdresse.Address, empfangeneNachrichtTeile[0], empfangeneNachrichtTeile[1], empfangeneNachrichtTeile[2], schwierigkeit, aliceBesetzt, bobBesetzt, eveBesetzt);
+                                UebungsszenarioNetzwerkBeitrittInfo netzwerkBeitrittInfo = new(senderAdresse.Address, empfangeneNachrichtTeile[0], empfangeneNachrichtTeile[1], empfangeneNachrichtTeile[2], schwierigkeit, aliceBesetzt, bobBesetzt, eveBesetzt) { StartPhase = uint.TryParse(empfangeneNachrichtTeile[7], out uint startPhase) ? startPhase : 0, EndPhase = uint.TryParse(empfangeneNachrichtTeile[8], out uint endPhase) ? endPhase : 5 };
                                 if (!verfügbareLobbys.ContainsKey(senderAdresse.Address))
                                 {
                                     verfügbareLobbys.Add(senderAdresse.Address, netzwerkBeitrittInfo);
