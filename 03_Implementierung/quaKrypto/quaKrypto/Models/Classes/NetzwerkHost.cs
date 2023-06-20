@@ -92,11 +92,16 @@ namespace quaKrypto.Models.Classes
         private static void BeendeZyklischesSendenVonLobbyinformation()
         {
             if (udpClient == null) return;
-            periodicTimer?.Dispose();
-            periodicTimer = null;
-            udpClient.Send(new byte[] { LOBBY_NICHT_MEHR_VERFUEGBAR }, 1, "255.255.255.255", UDP_PORT);
-            udpClient.Close();
-            udpClient = null;
+            try
+            {
+                udpClient.Send(new byte[] { LOBBY_NICHT_MEHR_VERFUEGBAR }, 1, "255.255.255.255", UDP_PORT);
+                periodicTimer?.Dispose();
+                periodicTimer = null;
+                udpClient.Close();
+                udpClient = null;
+            }
+            catch (ObjectDisposedException) { }
+            
         }
 
         #endregion
@@ -290,7 +295,7 @@ namespace quaKrypto.Models.Classes
                         }
                         kompletteNachrichtAlsBytes = new byte[TCP_RECEIVE_BUFFER_SIZE];
                     }
-                    catch (SocketException) { networkStream.Close(); Trace.WriteLine("Eine Socket-Exception wurde beim TCP-Empfangen mit folgender Adresse geworfen: "); break; }
+                    catch (IOException) { networkStream.Close(); Trace.WriteLine("Eine Socket-Exception wurde beim TCP-Empfangen mit folgender Adresse geworfen: "); break; }
                 }
             }).Start();
         }
