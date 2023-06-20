@@ -174,16 +174,16 @@ namespace quaKrypto.Models.Classes
         }
 
         //Schnittstelle für LobbyScreenView
-        public static void StarteUebungsszenario()
+        public static void StarteUebungsszenario(RolleEnum startRolle)
         {
-            SendeNachrichtTCP(UEBUNGSSZENARIO_STARTEN, "");
+            SendeNachrichtTCP(UEBUNGSSZENARIO_STARTEN, startRolle.ToString());
             BeendeZyklischesSendenVonLobbyinformation();
         }
 
         //Schnittstelle fürs Übungsszenario
         public static void UebergebeKontrolle(RolleEnum nächsteRolle)
         {
-            SendeNachrichtTCP(KONTROLLE_UEBERGEBEN, "", nächsteRolle);
+            SendeNachrichtTCP(KONTROLLE_UEBERGEBEN, nächsteRolle.ToString(), nächsteRolle);
         }
 
         //Schnittstelle fürs Übungsszenario

@@ -176,7 +176,7 @@ namespace quaKrypto.Models.Classes
                     }
                 }
 
-                NetzwerkHost.StarteUebungsszenario();
+                NetzwerkHost.StarteUebungsszenario(aktRolle);
 
                 if (!eigeneRollen.Contains(aktRolle))
                 {
@@ -320,14 +320,14 @@ namespace quaKrypto.Models.Classes
             }
         }
 
-        public void KontrolleErhalten()
+        public void KontrolleErhalten(RolleEnum nächsteRolle)
         {
             //Lobbyscreenview muss Bildschirm freigeben und Passwort eingeben lassen.
             //throw new NotImplementedException();
             NaechsterZug();
         }
 
-        public void UebungsszenarioWurdeGestartet()
+        public void UebungsszenarioWurdeGestartet(RolleEnum startRolle)
         {
             //Views müssen auf Spiel umschalten und den WarteBildschirm anzeigen
             NaechsterZug();

@@ -200,10 +200,10 @@ namespace quaKrypto.Models.Classes
                                 uebungsszenario?.NeueRollenInformation(rolleAlice, rolleBob, rolleEve);
                                 break;
                             case UEBUNGSSZENARIO_STARTEN:
-                                uebungsszenario?.UebungsszenarioWurdeGestartet();
+                                uebungsszenario?.UebungsszenarioWurdeGestartet(Enum.TryParse(empfangeneNachrichtTeile[0], out RolleEnum startRolle) ? startRolle : RolleEnum.Alice);
                                 break;
                             case KONTROLLE_UEBERGEBEN:
-                                uebungsszenario?.KontrolleErhalten();
+                                uebungsszenario?.KontrolleErhalten(Enum.TryParse(empfangeneNachrichtTeile[0], out RolleEnum nächsteRolle) ? nächsteRolle : RolleEnum.Alice);
                                 break;
                             case AUFZEICHNUNG_UPDATE:
                                 List<Handlungsschritt> listeEmpfangenerHandlungsschritte = new();
