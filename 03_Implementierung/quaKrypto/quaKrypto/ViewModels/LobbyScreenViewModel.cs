@@ -42,6 +42,7 @@ namespace quaKrypto.ViewModels
         private Visibility _eveboxesvisible = Visibility.Collapsed;
         private Visibility _eveselected = Visibility.Collapsed;
         private Visibility _evelabel = Visibility.Collapsed;
+        DependencyPropertyChangedEventHandler UebungszenarioStarten;
         public DelegateCommand HauptMenu { get; set; }
         public DelegateCommand LobbyErstellen { get; set; }
         public DelegateCommand Alicebestaetigen { get; set; }
@@ -54,6 +55,15 @@ namespace quaKrypto.ViewModels
         public LobbyScreenViewModel(Navigator navigator, IUebungsszenario uebungsszenario, bool ishost)
         {
             this.uebungsszenario = uebungsszenario;
+            
+
+            uebungsszenario.PropertyChanged += new((o, a) => {
+                SpielEveViewModel eveViewModel = new SpielEveViewModel(navigator, uebungsszenario, EigeneRollen);
+                SpielViewModel spielViewModel = new SpielViewModel(navigator, uebungsszenario, EigeneRollen);
+                spielViewModel.SpielEveViewModel = eveViewModel;
+                eveViewModel.SpielViewModel = spielViewModel;
+                navigator.aktuellesViewModel = spielViewModel;
+            });
 
             ((INotifyCollectionChanged)this.uebungsszenario.Rollen).CollectionChanged += new NotifyCollectionChangedEventHandler(RollenChanged);
             
@@ -86,8 +96,8 @@ namespace quaKrypto.ViewModels
                 SpielViewModel spielViewModel = new SpielViewModel(navigator, uebungsszenario, EigeneRollen);
                 spielViewModel.SpielEveViewModel = eveViewModel;
                 eveViewModel.SpielViewModel = spielViewModel;
-                
-                
+
+
                 navigator.aktuellesViewModel = spielViewModel;
 
             }, (o) => ishost && LobbyErstellenStartBedingung());

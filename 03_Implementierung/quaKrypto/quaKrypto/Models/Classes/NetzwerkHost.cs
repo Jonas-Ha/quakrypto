@@ -92,11 +92,16 @@ namespace quaKrypto.Models.Classes
         private static void BeendeZyklischesSendenVonLobbyinformation()
         {
             if (udpClient == null) return;
-            periodicTimer?.Dispose();
-            periodicTimer = null;
-            udpClient.Send(new byte[] { LOBBY_NICHT_MEHR_VERFUEGBAR }, 1, "255.255.255.255", UDP_PORT);
-            udpClient.Close();
-            udpClient = null;
+            try
+            {
+                udpClient.Send(new byte[] { LOBBY_NICHT_MEHR_VERFUEGBAR }, 1, "255.255.255.255", UDP_PORT);
+                periodicTimer?.Dispose();
+                periodicTimer = null;
+                udpClient.Close();
+                udpClient = null;
+            }
+            catch (ObjectDisposedException) { }
+            
         }
 
         #endregion
