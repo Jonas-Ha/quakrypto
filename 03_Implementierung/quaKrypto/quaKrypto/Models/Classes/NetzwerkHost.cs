@@ -113,22 +113,26 @@ namespace quaKrypto.Models.Classes
             byte[] nachrichtZumSenden = new byte[nachrichtAlsByteArray.Length + 1];
             nachrichtZumSenden[0] = commandIdentifier;
             Array.Copy(nachrichtAlsByteArray, 0, nachrichtZumSenden, 1, nachrichtAlsByteArray.Length);
-            if (empfänger == null)
+            try
             {
-                foreach (NetworkStream networkStream in networkStreams)
+                if (empfänger == null)
                 {
-                    networkStream.Write(nachrichtZumSenden, 0, nachrichtZumSenden.Length);
+                    foreach (NetworkStream networkStream in networkStreams)
+                    {
+                        networkStream.Write(nachrichtZumSenden, 0, nachrichtZumSenden.Length);
+                    }
+                    foreach (NetworkStream networkStream in rolleNetworkStreams.Values)
+                    {
+                        networkStream.Write(nachrichtZumSenden, 0, nachrichtZumSenden.Length);
+                    }
                 }
-                foreach (NetworkStream networkStream in rolleNetworkStreams.Values)
+                else
                 {
+                    NetworkStream networkStream = rolleNetworkStreams[(RolleEnum)empfänger];
                     networkStream.Write(nachrichtZumSenden, 0, nachrichtZumSenden.Length);
                 }
             }
-            else
-            {
-                NetworkStream networkStream = rolleNetworkStreams[(RolleEnum)empfänger];
-                networkStream.Write(nachrichtZumSenden, 0, nachrichtZumSenden.Length);
-            }
+            catch (ObjectDisposedException) { }
         }
 
         private static void ErstelleTCPLobby()
