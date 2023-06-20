@@ -97,7 +97,7 @@ namespace quaKrypto.Models.Classes
                 udpClient.Send(new byte[] { LOBBY_NICHT_MEHR_VERFUEGBAR }, 1, "255.255.255.255", UDP_PORT);
                 periodicTimer?.Dispose();
                 periodicTimer = null;
-                udpClient.Close();
+                udpClient?.Close();
                 udpClient = null;
             }
             catch (ObjectDisposedException) { }
