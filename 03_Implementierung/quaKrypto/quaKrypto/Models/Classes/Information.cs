@@ -154,7 +154,11 @@ namespace quaKrypto.Models.Classes
                 }
                 else if (InformationsTyp == InformationsEnum.photonen && InformationsInhalt.GetType() == typeof(byte[]))
                 {
-                    erg = Encoding.Default.GetString((byte[])InformationsInhalt);
+                    byte[] byteArr = (byte[])InformationsInhalt;
+                    for (int i = 0; i < ((byte[])InformationsInhalt).Length; i++)
+                    {
+                        erg += byteArr[i].ToString();
+                    }
                 }
                 else if (InformationsTyp == InformationsEnum.polarisationsschemata && InformationsInhalt.GetType() == typeof(bool[]))
                 {
@@ -166,7 +170,11 @@ namespace quaKrypto.Models.Classes
                 }
                 else if (InformationsTyp == InformationsEnum.unscharfePhotonen && InformationsInhalt.GetType() == typeof(byte[]))
                 {
-                    erg = Encoding.Default.GetString((byte[])InformationsInhalt);
+                    byte[] byteArr = (byte[])InformationsInhalt;
+                    for (int i = 0; i < ((byte[])InformationsInhalt).Length; i++)
+                    {
+                        erg += byteArr[i].ToString();
+                    }
                 }
                 else if (InformationsTyp == InformationsEnum.asciiText && InformationsInhalt.GetType() == typeof(string))
                 {
@@ -196,7 +204,12 @@ namespace quaKrypto.Models.Classes
                     }
                     else if (type.Equals(new byte[0].GetType()))
                     {
-                        informationsInhalt = Encoding.Default.GetBytes(teile[1]);
+                        byte[] returnArray = new byte[teile[1].Length];
+                        for (int i = 0; i < returnArray.Length; i++)
+                        {
+                            returnArray[i] = byte.TryParse(new string (new char[1] { teile[1][i] }), out byte res) ? res : (byte)0;
+                        }
+                        informationsInhalt = returnArray;
                     }
                     else if (type.Equals(new string("").GetType()))
                     {
