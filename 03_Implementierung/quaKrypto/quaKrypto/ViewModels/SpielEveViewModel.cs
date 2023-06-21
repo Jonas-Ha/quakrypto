@@ -41,6 +41,7 @@ namespace quaKrypto.ViewModels
         public DelegateCommand ZugBeenden { get; set; }
         public SpielEveViewModel(Navigator navigator, IUebungsszenario uebungsszenario, List<Rolle> eigeneRollen) : base(navigator, uebungsszenario, eigeneRollen)
         {
+            setzeAktPhaseView();
             setzeAktRolleView();
             this.BituebertragungEingangAlice = new ObservableCollection<Information>();
             this.BituebertragungEingangBob = new ObservableCollection<Information>();
@@ -65,6 +66,7 @@ namespace quaKrypto.ViewModels
             ZugBeenden = new((o) =>
             {
                 zugBeenden();
+                setzeAktPhaseView();
             }, (o) => ZugBeendenStartBedingung());
 
             PasswortEingabe = new((o) =>

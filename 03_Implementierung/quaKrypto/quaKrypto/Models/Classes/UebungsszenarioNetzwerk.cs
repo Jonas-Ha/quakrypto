@@ -207,7 +207,7 @@ namespace quaKrypto.Models.Classes
                         }
                     }
                 }
-                if (variante.AktuellePhase > endPhase)
+                if (variante.AktuellePhase >= endPhase)
                 {
                     Beenden();
                     return;

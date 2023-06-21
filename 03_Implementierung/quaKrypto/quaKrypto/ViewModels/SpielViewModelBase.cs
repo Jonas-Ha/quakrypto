@@ -92,8 +92,11 @@ namespace quaKrypto.ViewModels
         {
             set
             {
-                aktuellePhaseAnzeige = value;
-                this.EigenschaftWurdeGeändert();
+                if(aktuellePhaseAnzeige != value)
+                {
+                    aktuellePhaseAnzeige = value;
+                    this.EigenschaftWurdeGeändert();
+                }
             }
             get
             {
@@ -243,78 +246,91 @@ namespace quaKrypto.ViewModels
             {
                 Ergebnis.Clear();
                 Ergebnis.Add(bitfolgeErzeugen());
+                setzeAktPhaseView();
             }, (o) => bitfolgeErzeugenStartBedingung());
 
             EntVerschlüsseln = new((o) =>
             {
                 Ergebnis.Clear();
                 Ergebnis.Add(entVerschlüsseln());
+                setzeAktPhaseView();
             }, (o) => entVerschlüsselnStartBedingung());
 
             PhotonenErzeugen = new((o) =>
             {
                 Ergebnis.Clear();
                 Ergebnis.Add(photonenErzeugen());
+                setzeAktPhaseView();
             }, (o) => photonenErzeugenStartBedingung());
 
             PolschaErzeugen = new((o) =>
             {
                 Ergebnis.Clear();
                 Ergebnis.Add(polschaErzeugen());
+                setzeAktPhaseView();
             }, (o) => polschaErzeugenStartBedingung());
 
             Streichen = new((o) =>
             {
                 Ergebnis.Clear();
                 Ergebnis.Add(streichen());
+                setzeAktPhaseView();
             }, (o) => streichenStartBedingung());
 
             Vergleichen = new((o) =>
             {
                 Ergebnis.Clear();
                 Ergebnis.Add(vergleichen());
+                setzeAktPhaseView();
             }, (o) => vergleichenStartBedingung());
 
             ZahlErzeugen = new((o) =>
             {
                 Ergebnis.Clear();
                 Ergebnis.Add(zahlErzeugen());
+                setzeAktPhaseView();
             }, (o) => zahlErzeugenStartBedingung());
 
             BitMaskeGenerieren = new((o) =>
             {
                 Ergebnis.Clear();
                 Ergebnis.Add(bitMaskeGenerieren());
+                setzeAktPhaseView();
             }, (o) => bitMaskeGenerierenStartBedingung());
 
             BitfolgeNegieren = new((o) =>
             {
                 Ergebnis.Clear();
                 Ergebnis.Add(bitfolgeNegieren());
+                setzeAktPhaseView();
             }, (o) => bitfolgeNegierenStartBedingung());
 
             PhotonenZuBitfolge = new((o) =>
             {
                 Ergebnis.Clear();
                 Ergebnis.Add(photonenZuBitfolge());
+                setzeAktPhaseView();
             }, (o) => photonenZuBitfolgeStartBedingung());
 
             TextGenerieren = new((o) =>
             {
                 Ergebnis.Clear();
                 Ergebnis.Add(textGenerieren());
+                setzeAktPhaseView();
             }, (o) => textGenerierenStartBedingung());
 
             TextLaengeBestimmen = new((o) =>
             {
                 Ergebnis.Clear();
                 Ergebnis.Add(textLaengeBestimmen());
+                setzeAktPhaseView();
             }, (o) => textLaengeBestimmenStartBedingung());
 
             BitsFreiBearbeiten = new((o) =>
             {
                 Ergebnis.Clear();
                 Ergebnis.Add(bitsFreiBearbeiten());
+                setzeAktPhaseView();
             }, (o) => bitsFreiBearbeitenStartBedingung());
 
             Operand1 = new ObservableCollection<Information>();

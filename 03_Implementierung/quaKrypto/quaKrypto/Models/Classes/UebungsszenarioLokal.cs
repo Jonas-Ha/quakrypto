@@ -129,7 +129,7 @@ namespace quaKrypto.Models.Classes
             //Aufzeichnung.HaengeListeHandlungsschritteAn(handlungsschritte.ToList());
             //Die Handlungsschritte müssen hier noch überprüft werden um die Informationsablage auf den richtigen Stand zu bekommen
             aktuelleRolle.handlungsschritte.Clear();
-            if(variante.AktuellePhase > endPhase) 
+            if(variante.AktuellePhase >= endPhase) 
             { 
                 Beenden();
                 return; 
