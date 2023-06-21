@@ -339,6 +339,7 @@ namespace quaKrypto.ViewModels
             {
                 Ergebnis.Clear();
                 Ergebnis.Add(informationUmbenennen());
+                setzeAktPhaseView();
             }, (o) => informationUmbenennenStartBedingung());
 
             Operand1 = new ObservableCollection<Information>();
