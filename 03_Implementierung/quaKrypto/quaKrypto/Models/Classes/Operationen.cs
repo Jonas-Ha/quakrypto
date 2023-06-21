@@ -407,7 +407,7 @@ namespace quaKrypto.Models.Classes
                 if ((op1[i] ? 1 : 0) == (op2[i] & 1))
                 {
                     //Polarisationsschemata waren gleich => es kommt das wahre Bit raus
-                    erg[i] = (op2[i] & 1) > 0;
+                    erg[i] = (op2[i] & 2) > 0; //vorher 1
                 }
                 else
                 {
@@ -443,15 +443,28 @@ namespace quaKrypto.Models.Classes
                 throw new ArgumentNullException("Object reference not set to an instance of an object");
             }
 
-            if (!(operand1.InformationsTyp.Equals(InformationsEnum.asciiText)) || !((operand1.InformationsInhalt.GetType().Equals(typeof(string)))))
+            if ((!operand1.InformationsTyp.Equals(InformationsEnum.asciiText) && !operand1.InformationsTyp.Equals(InformationsEnum.bitfolge)) ||
+                (operand1.InformationsInhalt is not (string or bool[])))
             {
                 throw new Exception("operand1 nicht vom Typ asciiText oder ist kein string");
             }
 
-            string text = (string)operand1.InformationsInhalt;
-            var bytes = System.Text.Encoding.UTF8.GetBytes(text);
-            int length = bytes.Length * 8;
-           
+            int length = -1;
+            if (operand1.InformationsTyp.Equals(InformationsEnum.asciiText))
+            {
+                string text = (string)operand1.InformationsInhalt;
+                var bytes = System.Text.Encoding.UTF8.GetBytes(text);
+                length = bytes.Length * 8;
+            } else if (operand1.InformationsTyp.Equals(InformationsEnum.bitfolge))
+            { 
+                length = (operand1.InformationsInhalt as bool[]).Length;
+            }
+
+            if (length == -1)
+            {
+                throw new Exception("This should not be possible");
+            }
+
             return new Information(informationsID, ergebnisName, InformationsEnum.zahl, length, null);
         }
 
