@@ -87,6 +87,19 @@ namespace quaKrypto.ViewModels
             }
         }
 
+        private string aktuellePhaseAnzeige;
+        public string AktuellePhaseAnzeige
+        {
+            set
+            {
+                aktuellePhaseAnzeige = value;
+                this.EigenschaftWurdeGeändert();
+            }
+            get
+            {
+                return aktuellePhaseAnzeige;
+            }
+        }
         #region CraftingFeld
 
         private string informationsname;
@@ -347,6 +360,13 @@ namespace quaKrypto.ViewModels
                 AktuelleRolleAnzeige = "Eve";
                 RolleIcon = "/quaKrypto;component/Icons/Spiel/Eve/Eve_128px.png";
             }
+        }
+
+        protected void setzeAktPhaseView()
+        {
+            uint aktphase = uebungsszenario.Variante.AktuellePhase;
+
+            AktuellePhaseAnzeige = "Phase: " + aktphase.ToString();    
         }
 
         #region OperationenAusführen

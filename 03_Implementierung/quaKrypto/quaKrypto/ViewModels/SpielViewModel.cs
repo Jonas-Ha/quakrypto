@@ -45,7 +45,7 @@ namespace quaKrypto.ViewModels
 
         public SpielViewModel(Navigator navigator, IUebungsszenario uebungsszenario, List<Rolle> eigeneRollen) : base(navigator, uebungsszenario, eigeneRollen)
         {
-
+            setzeAktPhaseView();
             setzeAktRolleView();
             this.BituebertragungEingang = new ObservableCollection<Information>();
             this.PhotonenuebertragungEingang = new ObservableCollection<Information>();
@@ -136,6 +136,9 @@ namespace quaKrypto.ViewModels
 
             //leeren aller Listen für die View
             ClearViewListen();
+
+            //leeren aller TextBoxen
+            ClearViewTextBox();
 
             uebungsszenario.HandlungsschrittAusführenLassen(
                                     OperationsEnum.zugBeenden,
@@ -245,6 +248,13 @@ namespace quaKrypto.ViewModels
                 if (uebungsszenario.Uebertragungskanal.PhotonenKanal[i].InformationsEmpfaenger == uebungsszenario.AktuelleRolle.RolleTyp)
                     PhotonenuebertragungEingang.Add(uebungsszenario.Uebertragungskanal.PhotonenKanal[i]);
             }
+        }
+
+        private void ClearViewTextBox()
+        {
+            passwortFeld = "";
+            Informationsname = "";
+            Eingabe = "";
         }
     }
 }
