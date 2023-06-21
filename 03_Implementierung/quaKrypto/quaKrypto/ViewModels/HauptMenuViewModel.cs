@@ -31,7 +31,7 @@ namespace quaKrypto.ViewModels
 
                 /*
                  * ZUM TESTEN FÜR DIE AUFZEICHNUNG
-                 * 
+                 *
                 RolleEnum rolleEnum = RolleEnum.Alice;
                 string alias = "alias_alice";
                 string passwort = "passwort_alice";
