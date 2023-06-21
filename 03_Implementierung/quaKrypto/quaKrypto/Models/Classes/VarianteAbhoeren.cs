@@ -14,6 +14,7 @@ using quaKrypto.Models.Interfaces;
 using quaKrypto.Models.Enums;
 using System.Collections.Specialized;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace quaKrypto.Models.Classes
 {
