@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Collections;
 using System.Windows.Documents;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace quaKrypto
 {
@@ -135,6 +136,13 @@ namespace quaKrypto
         {
             sourceItemsControl = (ItemsControl)sender;
             Visual visual = e.OriginalSource as Visual;
+
+            if (visual == null)
+            {
+                // Programm Stürzt ab wenn Visual Null ist, deswegen dieser Fix 
+                Debug.WriteLine("Visual is null.");
+                return;
+            }
 
             topWindow = Window.GetWindow(sourceItemsControl);
             initialMousePosition = e.GetPosition(topWindow);
