@@ -925,6 +925,55 @@
                             </Border>
                         </StackPanel>
                     </TabItem>
+                    
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock TextWrapping="Wrap" ToolTip="Information umbenennen">
+                            <InlineUIContainer>
+                                <Image Source="../Icons/Spiel/InformationUmbenennen/icons8-signature-24.png" Width="30" Height="30"/>
+                            </InlineUIContainer>
+                            </TextBlock>
+                        </TabItem.Header>
+                        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" DockPanel.Dock="Top">
+                            <Label Content="Information umbenennen" FontSize="20" HorizontalContentAlignment="Center" FontWeight="Bold"/>
+                            <DockPanel Margin="10,0,10,0">
+                                <Border BorderBrush="Black" BorderThickness="1">
+                                    <Label Content="Name" FontSize="15"/>
+                                </Border>
+                                <Border BorderBrush="Black" BorderThickness="1">
+                                    <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center"/>
+                                </Border>
+                            </DockPanel>
+                            <Border Width="50" Height="50" Margin="10"  BorderBrush="Black" BorderThickness="1">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="../Icons/Spiel/InformationUmbenennen/icons8-signature-24.png" Width="50" Height="50"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
+                                <Label Content="Photon: " FontSize="15"/>
+                            </Border>
+                            <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,10">
+                                <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
+                                </ListView>
+                            </Border>
+
+                            <Button HorizontalAlignment="Center" Command="{Binding InformationUmbenennen}" VerticalAlignment="Center" Width="50" Height="50">
+                                <Image Source="../Icons/Spiel/Equal/equal.png" Width="40" Height="40"/>
+                            </Button>
+
+                            <Border BorderBrush="Black" BorderThickness="1" Margin="10,10,10,0">
+                                <Label Content="Ergebnis:" FontSize="15"/>
+                            </Border>
+                            <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
+                                <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                        glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
+                                </ListView>
+                            </Border>
+
+                        </StackPanel>
+                    </TabItem>
                 </TabControl>
             </Border>
 
