@@ -698,7 +698,8 @@ namespace quaKrypto.ViewModels
             if (Informationsname == null ||
                 Informationsname == "" ||
                 Operand1.Count != 1 ||
-                (Operand1[0].InformationsTyp != InformationsEnum.asciiText)) return false;
+                (Operand1[0].InformationsTyp != InformationsEnum.asciiText &&
+                 Operand1[0].InformationsTyp != InformationsEnum.bitfolge)) return false;
             return true;
         }
 
