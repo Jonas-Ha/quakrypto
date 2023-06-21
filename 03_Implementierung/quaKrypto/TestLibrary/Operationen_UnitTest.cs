@@ -1234,6 +1234,43 @@ namespace TestLibrary
         }
 
         [Test]
+        public void InformationUmbenennen_Erfolg()
+        {
+            //Arrange
+            string name1 = "Zahl";
+            string name2 = "KeineZahl";
+            Information zahl = new Information(0, name1, InformationsEnum.zahl, 24234234, null);
+            Information neuerName = new Information(0, "DummyName", InformationsEnum.asciiText, name2, null);
+
+            //Act
+            Information empfangeneInformation = operationen.InformationUmbenennen(2, zahl, neuerName, zahl.InformationsName, null);
+
+            //Assert
+            Information erwarteteInformation = new Information(2, (string) neuerName.InformationsInhalt, InformationsEnum.zahl, zahl.InformationsInhalt, null);
+            Assert.AreEqual(erwarteteInformation.InformationsID, empfangeneInformation.InformationsID);
+            Assert.AreEqual(erwarteteInformation.InformationsName, empfangeneInformation.InformationsName);
+            Assert.AreEqual(erwarteteInformation.InformationsTyp, empfangeneInformation.InformationsTyp);
+            Assert.AreEqual(erwarteteInformation.InformationsInhalt, empfangeneInformation.InformationsInhalt);
+            Assert.AreEqual(erwarteteInformation.InformationsEmpfaenger, empfangeneInformation.InformationsEmpfaenger);
+        }
+
+        [Test]
+        public void InformationUmbenennen_Failed()
+        {
+            //Arrange
+            string name1 = "Zahl";
+            string name2 = "KeineZahl";
+            Information zahl = new Information(0, name1, InformationsEnum.zahl, 24234234, null);
+            Information neuerName = new Information(0, "DummyName", InformationsEnum.asciiText, 2332, null);
+
+            //Act
+            var ex = Assert.Throws<Exception>(() => operationen.InformationUmbenennen(2, zahl, neuerName, zahl.InformationsName, null));
+
+            //Assert
+            Assert.That(ex.Message == "operand2 ist nicht vom Typ string");
+        }
+
+        [Test]
         public void ZugBeenden_Erfolg()
         {
             //Arrange

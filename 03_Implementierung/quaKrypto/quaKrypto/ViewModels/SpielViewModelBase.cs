@@ -175,6 +175,8 @@ namespace quaKrypto.ViewModels
         public DelegateCommand TextGenerieren { get; set; }
         public DelegateCommand TextLaengeBestimmen { get; set; }
         public DelegateCommand BitsFreiBearbeiten { get; set; }
+        public DelegateCommand InformationUmbenennen { get; set; }
+        
 
         #endregion
         public SpielViewModelBase(Navigator navigator, IUebungsszenario uebungsszenario, List<Rolle> eigeneRollen)
@@ -304,6 +306,12 @@ namespace quaKrypto.ViewModels
                 Ergebnis.Add(bitsFreiBearbeiten());
             }, (o) => bitsFreiBearbeitenStartBedingung());
 
+            InformationUmbenennen = new((o) =>
+            {
+                Ergebnis.Clear();
+                Ergebnis.Add(informationUmbenennen());
+            }, (o) => informationUmbenennenStartBedingung());
+
             Operand1 = new ObservableCollection<Information>();
             Operand2 = new ObservableCollection<Information>();
             OperandBitsFrei = new ObservableCollection<Information>();
@@ -365,6 +373,7 @@ namespace quaKrypto.ViewModels
             this.TextGenerieren.RaiseCanExecuteChanged();
             this.TextLaengeBestimmen.RaiseCanExecuteChanged();
             this.BitsFreiBearbeiten.RaiseCanExecuteChanged();
+            this.InformationUmbenennen.RaiseCanExecuteChanged();
         }
 
         private Information bitfolgeErzeugen()
@@ -702,6 +711,24 @@ namespace quaKrypto.ViewModels
                 OperandBitsFrei[0].InformationsTyp != InformationsEnum.bitfolge ||
                 Eingabe == "" ||
                 !StringToBitArray(Eingabe)) return false;
+            return true;
+        }
+
+        private Information informationUmbenennen()
+        {
+            Information angabe = new Information(-1, "ManuelleEingabeText", InformationsEnum.asciiText, Informationsname, null);
+            return uebungsszenario.HandlungsschrittAusführenLassen(
+                                OperationsEnum.informationUmbenennen,
+                                Operand1[0],
+                                angabe,
+                                Informationsname,
+                                uebungsszenario.AktuelleRolle.RolleTyp
+                                );
+        }
+        private bool informationUmbenennenStartBedingung()
+        {
+            if (Informationsname == null ||
+                Informationsname == "") return false;
             return true;
         }
         #endregion

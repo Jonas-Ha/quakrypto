@@ -36,6 +36,7 @@ namespace quaKrypto.Models.Enums
 		bitsStreichen,
 		bitsFreiBearbeiten,
 		zahlGenerieren,
-		zugBeenden,
+        informationUmbenennen,
+        zugBeenden,
 	}
 }
