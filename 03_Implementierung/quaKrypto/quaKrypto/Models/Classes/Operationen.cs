@@ -616,6 +616,22 @@ namespace quaKrypto.Models.Classes
             return new Information(informationsID, ergebnisName, InformationsEnum.zahl, operand2.InformationsInhalt, null);
         }
 
+        //Operand1 = Information die umbenannt werden soll,  Operand2 = Name der Information
+        public Information InformationUmbenennen(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
+        {
+            if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
+            {
+                throw new ArgumentNullException("Object reference not set to an instance of an object");
+            }
+
+            if (!operand2.InformationsInhalt.GetType().Equals(typeof(string)))
+            {
+                throw new Exception("operand2 ist nicht vom Typ string");
+            }
+
+            return new Information(informationsID, (string) operand2.InformationsInhalt, operand1.InformationsTyp, operand1.InformationsInhalt);
+        }
+
         //Operand1 = null, Operand2 = null
         public Information? ZugBeenden(int? informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
         {

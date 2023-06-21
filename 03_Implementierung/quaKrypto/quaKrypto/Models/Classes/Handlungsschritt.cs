@@ -48,6 +48,7 @@ namespace quaKrypto.Models.Classes
                 { OperationsEnum.bitsStreichen, op.BitsStreichen },
                 { OperationsEnum.bitsFreiBearbeiten, op.BitsFreiBearbeiten },
                 { OperationsEnum.zahlGenerieren, op.ZahlGenerieren },
+                { OperationsEnum.informationUmbenennen, op.InformationUmbenennen },
                 { OperationsEnum.zugBeenden, op.ZugBeenden },
             };
         public Handlungsschritt() { }
