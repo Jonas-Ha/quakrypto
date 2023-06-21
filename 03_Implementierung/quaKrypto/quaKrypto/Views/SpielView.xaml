@@ -73,7 +73,7 @@
                 <Image  Source="{Binding RolleIcon}" Margin="5"/>
                 <StackPanel Orientation="Vertical">
                     <Label FontWeight="Bold" Content="{Binding AktuelleRolleAnzeige}" FontSize="24"/>
-                    <Label Content="Phase: 1" FontSize="15"/>
+                    <Label Content="{Binding AktuellePhaseAnzeige}" FontSize="15"/>
                 </StackPanel>
             </StackPanel>
             <Button Width="200" Height="30" FontSize="15" x:Name="ZugBeendenButton" Command="{Binding ZugBeenden}" Content="Zug beenden" Grid.Column="3" Grid.Row="0" Visibility="{Binding SpielVisibility}"/>
