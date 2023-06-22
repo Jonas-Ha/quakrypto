@@ -184,11 +184,11 @@ namespace quaKrypto.Models.Classes
                 {
                     erg = (string)InformationsInhalt;
                 }
-                return $"{InformationsInhalt.GetType()}{(char)1}{erg}";
+                return $"{InformationsInhalt.GetType()}{(char)243}{erg}";
             }
             set
             {
-                string[] teile = value.Split((char)1);
+                string[] teile = value.Split((char)243);
 
                 Type? type = Type.GetType(teile[0]);
                 if (type != null)
