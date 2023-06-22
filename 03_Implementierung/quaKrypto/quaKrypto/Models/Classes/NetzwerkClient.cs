@@ -197,7 +197,7 @@ namespace quaKrypto.Models.Classes
                     try
                     {
                         networkStream.Read(kompletteNachrichtAlsBytes, 0, TCP_RECEIVE_BUFFER_SIZE);
-                        string[] empfangeneGanzeNachrichten = Encoding.UTF8.GetString(kompletteNachrichtAlsBytes).Split("\0\0\0");
+                            string[] empfangeneGanzeNachrichten = Encoding.UTF8.GetString(kompletteNachrichtAlsBytes).Split("\0\0\0");
                         foreach (string ganzeNachricht in empfangeneGanzeNachrichten)
                         {
                             if (ganzeNachricht == "") break;
