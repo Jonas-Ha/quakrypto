@@ -87,7 +87,14 @@ namespace quaKrypto.Models.Classes
                                 else
                                 {
                                     verfügbareLobbys[senderAdresse.Address] = netzwerkBeitrittInfo;
-                                    Application.Current.Dispatcher.Invoke(new Action(() => VerfuegbareLobbys[VerfuegbareLobbys.IndexOf(VerfuegbareLobbys.Where(lobby => lobby.IPAddress.Equals(senderAdresse.Address)).First())] = netzwerkBeitrittInfo)); ;
+                                    Application.Current.Dispatcher.Invoke(new Action(() =>
+                                    {
+                                        int index = VerfuegbareLobbys.IndexOf(VerfuegbareLobbys.Where(lobby => lobby.IPAddress.Equals(senderAdresse.Address)).First());
+                                        VerfuegbareLobbys[index].AliceState = netzwerkBeitrittInfo.AliceState;
+                                        VerfuegbareLobbys[index].BobState = netzwerkBeitrittInfo.BobState;
+                                        VerfuegbareLobbys[index].EveState = netzwerkBeitrittInfo.EveState;
+                                    }
+                                    ));
                                 }
 
                                 //NOTIFY CHANGED?
@@ -110,6 +117,7 @@ namespace quaKrypto.Models.Classes
         {
             udpClient?.Close();
             udpClient = null;
+            VerfuegbareLobbys.Clear();
         }
 
         #endregion
@@ -197,7 +205,7 @@ namespace quaKrypto.Models.Classes
                     try
                     {
                         networkStream.Read(kompletteNachrichtAlsBytes, 0, TCP_RECEIVE_BUFFER_SIZE);
-                            string[] empfangeneGanzeNachrichten = Encoding.UTF8.GetString(kompletteNachrichtAlsBytes).Split("\0\0\0");
+                        string[] empfangeneGanzeNachrichten = Encoding.UTF8.GetString(kompletteNachrichtAlsBytes).Split("\0\0\0");
                         foreach (string ganzeNachricht in empfangeneGanzeNachrichten)
                         {
                             if (ganzeNachricht == "") break;
