@@ -36,7 +36,7 @@ namespace quaKrypto.Models.Classes
         private static UdpClient? udpClient = null;
         private static TcpListener? tcpListener = null;
 
-        private const int TCP_RECEIVE_BUFFER_SIZE = 8192;
+        private const int TCP_RECEIVE_BUFFER_SIZE = 131072;
 
         private static readonly Dictionary<RolleEnum, NetworkStream> rolleNetworkStreams = new();
         private static readonly List<NetworkStream> networkStreams = new();

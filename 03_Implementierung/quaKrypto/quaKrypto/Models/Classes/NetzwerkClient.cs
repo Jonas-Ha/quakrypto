@@ -40,7 +40,7 @@ namespace quaKrypto.Models.Classes
         private static UdpClient? udpClient = null;
         private static TcpClient? tcpClient = null;
 
-        private const int TCP_RECEIVE_BUFFER_SIZE = 8192;
+        private const int TCP_RECEIVE_BUFFER_SIZE = 131072;
 
         private static NetworkStream? networkStream = null;
 
