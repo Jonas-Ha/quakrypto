@@ -119,7 +119,7 @@ namespace quaKrypto.Models.Classes
         {
             if (networkStream == null) return;
             byte[] nachrichtAlsByteArray = Encoding.UTF8.GetBytes(nachricht);
-            byte[] nachrichtZumSenden = new byte[nachrichtAlsByteArray.Length + 1];
+            byte[] nachrichtZumSenden = new byte[nachrichtAlsByteArray.Length + 4];
             nachrichtZumSenden[0] = commandIdentifier;
             Array.Copy(nachrichtAlsByteArray, 0, nachrichtZumSenden, 1, nachrichtAlsByteArray.Length);
             for (int i = 0; i < 3; i++)
