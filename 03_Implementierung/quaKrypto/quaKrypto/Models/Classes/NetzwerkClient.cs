@@ -53,6 +53,8 @@ namespace quaKrypto.Models.Classes
 
         public static UebungsszenarioNetzwerk Ubungsszenario { set { uebungsszenario = value; } }
 
+        private static bool sending = false;
+
         #region UDP
         //Schnittstelle LobyyBeitrittView
         public static void BeginneSucheNachLobbys()
@@ -122,7 +124,10 @@ namespace quaKrypto.Models.Classes
             byte[] nachrichtZumSenden = new byte[nachrichtAlsByteArray.Length + 1];
             nachrichtZumSenden[0] = commandIdentifier;
             Array.Copy(nachrichtAlsByteArray, 0, nachrichtZumSenden, 1, nachrichtAlsByteArray.Length);
+            while (sending) { Thread.Sleep(10); }
+            sending = true;
             networkStream.Write(nachrichtZumSenden, 0, nachrichtZumSenden.Length);
+            sending = false;
         }
 
         //Schnittstelle mit Lobby Beitreten

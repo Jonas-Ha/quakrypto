@@ -50,6 +50,7 @@ namespace quaKrypto.Models.Classes
         private static UebungsszenarioNetzwerk? uebungsszenario;
         public static UebungsszenarioNetzwerk Ubungsszenario { set { uebungsszenario = value; } }
 
+        private static bool sending = false;
 
         private static UebungsszenarioNetzwerkBeitrittInfo? uebungsszenarioNetzwerkBeitrittInfo;
 
@@ -101,7 +102,7 @@ namespace quaKrypto.Models.Classes
                 udpClient = null;
             }
             catch (ObjectDisposedException) { }
-            
+
         }
 
         #endregion
@@ -113,6 +114,8 @@ namespace quaKrypto.Models.Classes
             byte[] nachrichtZumSenden = new byte[nachrichtAlsByteArray.Length + 1];
             nachrichtZumSenden[0] = commandIdentifier;
             Array.Copy(nachrichtAlsByteArray, 0, nachrichtZumSenden, 1, nachrichtAlsByteArray.Length);
+            while (sending) { Thread.Sleep(10); }
+            sending = true;
             try
             {
                 if (empfänger == null)
@@ -133,6 +136,7 @@ namespace quaKrypto.Models.Classes
                 }
             }
             catch (ObjectDisposedException) { }
+            sending = false;
         }
 
         private static void ErstelleTCPLobby()
@@ -247,7 +251,7 @@ namespace quaKrypto.Models.Classes
                         networkStream.Read(kompletteNachrichtAlsBytes, 0, TCP_RECEIVE_BUFFER_SIZE);
                         byte commandIdentifier = kompletteNachrichtAlsBytes[0];
                         string[] empfangeneNachrichtTeile = Encoding.UTF8.GetString(kompletteNachrichtAlsBytes[1..]).Split('\t');
-                        for(int i = 0; i <empfangeneNachrichtTeile.Length; i++)empfangeneNachrichtTeile[i] = empfangeneNachrichtTeile[i].TrimEnd('\0');
+                        for (int i = 0; i < empfangeneNachrichtTeile.Length; i++) empfangeneNachrichtTeile[i] = empfangeneNachrichtTeile[i].TrimEnd('\0');
                         switch (commandIdentifier)
                         {
                             case ROLLE_WAEHLEN:
