@@ -200,6 +200,7 @@ namespace quaKrypto.Models.Classes
                         string[] empfangeneGanzeNachrichten = Encoding.UTF8.GetString(kompletteNachrichtAlsBytes).Split("\0\0\0");
                         foreach (string ganzeNachricht in empfangeneGanzeNachrichten)
                         {
+                            if (ganzeNachricht == "") break;
                             byte commandIdentifier = (byte)ganzeNachricht[0];
                             string[] empfangeneNachrichtTeile = ganzeNachricht[1..].Split('\t');
                             for (int i = 0; i < empfangeneNachrichtTeile.Length; i++) empfangeneNachrichtTeile[i] = empfangeneNachrichtTeile[i].TrimEnd('\0');
