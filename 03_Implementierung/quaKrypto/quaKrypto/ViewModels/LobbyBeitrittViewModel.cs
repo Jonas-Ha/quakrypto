@@ -25,13 +25,13 @@ namespace quaKrypto.ViewModels
         //private DispatcherTimer timer;
         public DelegateCommand HauptMenu { get; set; }
         public DelegateCommand LobbyBeitreten { get; set; }
-        //default value: keine Lobby im DataGrid ausgewählt
-        private int _ausgewaehlteLobby = -1;
-        //Property welches den SelectedIndex des Datagrids erhält
-        public int AusgewaehlteLobby { get { return _ausgewaehlteLobby; } set { _ausgewaehlteLobby = value; this.EigenschaftWurdeGeändert(); this.LobbyBeitreten.RaiseCanExecuteChanged(); } }
+
+        private UebungsszenarioNetzwerkBeitrittInfo? uebungsszenarioNetzwerkBeitrittInfo = null;
+        public UebungsszenarioNetzwerkBeitrittInfo? SelectedLobby { get {return uebungsszenarioNetzwerkBeitrittInfo;} set { uebungsszenarioNetzwerkBeitrittInfo = value; EigenschaftWurdeGeändert(); LobbyBeitreten.RaiseCanExecuteChanged(); } }
+
         //Gettet die Verfuegbaren Netzwerklobbys und reicht sie an das DataGrid durch
-        public ObservableCollection<UebungsszenarioNetzwerkBeitrittInfo> VerfuegbarLobbys { get { return NetzwerkClient.VerfuegbareLobbys; }}
-        
+        public ObservableCollection<UebungsszenarioNetzwerkBeitrittInfo> VerfuegbarLobbys { get { return NetzwerkClient.VerfuegbareLobbys; } }
+
         public LobbyBeitrittViewModel(Navigator navigator)
         {
             /*
@@ -53,8 +53,9 @@ namespace quaKrypto.ViewModels
             LobbyBeitreten = new((o) =>
             {
                 //Hier wird sich mit dem ausgwählten Übungsszeanrio verbunden, die Suche beendet und dann weiter zum Lobbyscreen gegangen
-                UebungsszenarioNetzwerkBeitrittInfo uebungsszenarioInfo =
-                    NetzwerkClient.VerfuegbareLobbys[AusgewaehlteLobby];
+                //UebungsszenarioNetzwerkBeitrittInfo uebungsszenarioInfo = NetzwerkClient.VerfuegbareLobbys[AusgewaehlteLobby];
+                if (SelectedLobby == null) return;
+                UebungsszenarioNetzwerkBeitrittInfo uebungsszenarioInfo = SelectedLobby;
                 IVariante variante = uebungsszenarioInfo.Variante switch
                 {
                     "Normaler Ablauf" => new VarianteNormalerAblauf(uebungsszenarioInfo.StartPhase),
@@ -62,18 +63,16 @@ namespace quaKrypto.ViewModels
                     "Man-In-The-Middle" => new VarianteManInTheMiddle(uebungsszenarioInfo.StartPhase),
                     _ => new VarianteNormalerAblauf(uebungsszenarioInfo.StartPhase),
                 };
-                IUebungsszenario uebungsszenario = new UebungsszenarioNetzwerk(uebungsszenarioInfo.Schwierigkeitsgrad,
-                    variante, uebungsszenarioInfo.StartPhase, uebungsszenarioInfo.EndPhase,
-                    uebungsszenarioInfo.Lobbyname, false);
+                IUebungsszenario uebungsszenario = new UebungsszenarioNetzwerk(uebungsszenarioInfo.Schwierigkeitsgrad, variante, uebungsszenarioInfo.StartPhase, uebungsszenarioInfo.EndPhase, uebungsszenarioInfo.Lobbyname, false);
                 NetzwerkClient.Ubungsszenario = (UebungsszenarioNetzwerk)uebungsszenario;
 
                 NetzwerkClient.VerbindeMitUebungsszenario(uebungsszenarioInfo);
-                
+
 
                 navigator.aktuellesViewModel = new LobbyScreenViewModel(navigator, uebungsszenario, false);
-               
 
-            }, (o) => _ausgewaehlteLobby != -1);
+
+            }, (o) => SelectedLobby != null);
         }
 
     }

@@ -40,7 +40,7 @@ namespace quaKrypto.Models.Classes
         private static UdpClient? udpClient = null;
         private static TcpClient? tcpClient = null;
 
-        private const int TCP_RECEIVE_BUFFER_SIZE = 8192;
+        private const int TCP_RECEIVE_BUFFER_SIZE = 131072;
 
         private static NetworkStream? networkStream = null;
 
@@ -87,7 +87,14 @@ namespace quaKrypto.Models.Classes
                                 else
                                 {
                                     verfügbareLobbys[senderAdresse.Address] = netzwerkBeitrittInfo;
-                                    Application.Current.Dispatcher.Invoke(new Action(() => VerfuegbareLobbys[VerfuegbareLobbys.IndexOf(VerfuegbareLobbys.Where(lobby => lobby.IPAddress.Equals(senderAdresse.Address)).First())] = netzwerkBeitrittInfo)); ;
+                                    Application.Current.Dispatcher.Invoke(new Action(() =>
+                                    {
+                                        int index = VerfuegbareLobbys.IndexOf(VerfuegbareLobbys.Where(lobby => lobby.IPAddress.Equals(senderAdresse.Address)).First());
+                                        VerfuegbareLobbys[index].AliceState = netzwerkBeitrittInfo.AliceState;
+                                        VerfuegbareLobbys[index].BobState = netzwerkBeitrittInfo.BobState;
+                                        VerfuegbareLobbys[index].EveState = netzwerkBeitrittInfo.EveState;
+                                    }
+                                    ));
                                 }
 
                                 //NOTIFY CHANGED?
@@ -110,6 +117,7 @@ namespace quaKrypto.Models.Classes
         {
             udpClient?.Close();
             udpClient = null;
+            VerfuegbareLobbys.Clear();
         }
 
         #endregion
@@ -119,9 +127,13 @@ namespace quaKrypto.Models.Classes
         {
             if (networkStream == null) return;
             byte[] nachrichtAlsByteArray = Encoding.UTF8.GetBytes(nachricht);
-            byte[] nachrichtZumSenden = new byte[nachrichtAlsByteArray.Length + 1];
+            byte[] nachrichtZumSenden = new byte[nachrichtAlsByteArray.Length + 4];
             nachrichtZumSenden[0] = commandIdentifier;
             Array.Copy(nachrichtAlsByteArray, 0, nachrichtZumSenden, 1, nachrichtAlsByteArray.Length);
+            for (int i = 0; i < 3; i++)
+            {
+                nachrichtZumSenden[^(1 + i)] = (byte)'\0';
+            }
             networkStream.Write(nachrichtZumSenden, 0, nachrichtZumSenden.Length);
         }
 
@@ -193,42 +205,47 @@ namespace quaKrypto.Models.Classes
                     try
                     {
                         networkStream.Read(kompletteNachrichtAlsBytes, 0, TCP_RECEIVE_BUFFER_SIZE);
-                        byte commandIdentifier = kompletteNachrichtAlsBytes[0];
-                        string ales = Encoding.UTF8.GetString(kompletteNachrichtAlsBytes[1..]);
-                        string[] empfangeneNachrichtTeile = Encoding.UTF8.GetString(kompletteNachrichtAlsBytes[1..]).Split('\t');
-                        switch (commandIdentifier)
+                        string[] empfangeneGanzeNachrichten = Encoding.UTF8.GetString(kompletteNachrichtAlsBytes).Split("\0\0\0");
+                        foreach (string ganzeNachricht in empfangeneGanzeNachrichten)
                         {
-                            case ROLLENINFORMATION:
-                                Rolle? rolleAlice, rolleBob, rolleEve;
-                                rolleAlice = empfangeneNachrichtTeile[0] == "" ? null : new Rolle(RolleEnum.Alice, empfangeneNachrichtTeile[0], "");
-                                rolleBob = empfangeneNachrichtTeile[1] == "" ? null : new Rolle(RolleEnum.Bob, empfangeneNachrichtTeile[1], "");
-                                empfangeneNachrichtTeile[2] = empfangeneNachrichtTeile[2].TrimEnd('\0');
-                                rolleEve = empfangeneNachrichtTeile[2] == "" ? null : new Rolle(RolleEnum.Eve, empfangeneNachrichtTeile[2], "");
+                            if (ganzeNachricht == "") break;
+                            byte commandIdentifier = (byte)ganzeNachricht[0];
+                            string[] empfangeneNachrichtTeile = ganzeNachricht[1..].Split('\t');
+                            for (int i = 0; i < empfangeneNachrichtTeile.Length; i++) empfangeneNachrichtTeile[i] = empfangeneNachrichtTeile[i].TrimEnd('\0');
+                            switch (commandIdentifier)
+                            {
+                                case ROLLENINFORMATION:
+                                    Rolle? rolleAlice, rolleBob, rolleEve;
+                                    rolleAlice = empfangeneNachrichtTeile[0] == "" ? null : new Rolle(RolleEnum.Alice, empfangeneNachrichtTeile[0], "");
+                                    rolleBob = empfangeneNachrichtTeile[1] == "" ? null : new Rolle(RolleEnum.Bob, empfangeneNachrichtTeile[1], "");
+                                    empfangeneNachrichtTeile[2] = empfangeneNachrichtTeile[2].TrimEnd('\0');
+                                    rolleEve = empfangeneNachrichtTeile[2] == "" ? null : new Rolle(RolleEnum.Eve, empfangeneNachrichtTeile[2], "");
 
-                                uebungsszenario?.NeueRollenInformation(rolleAlice, rolleBob, rolleEve);
-                                break;
-                            case UEBUNGSSZENARIO_STARTEN:
-                                uebungsszenario?.UebungsszenarioWurdeGestartet(Enum.TryParse(empfangeneNachrichtTeile[0], out RolleEnum startRolle) ? startRolle : RolleEnum.Alice);
-                                break;
-                            case KONTROLLE_UEBERGEBEN:
-                                uebungsszenario?.KontrolleErhalten(Enum.TryParse(empfangeneNachrichtTeile[0], out RolleEnum nächsteRolle) ? nächsteRolle : RolleEnum.Alice);
-                                break;
-                            case AUFZEICHNUNG_UPDATE:
-                                List<Handlungsschritt> listeEmpfangenerHandlungsschritte = new();
-                                XmlSerializer xmlHandlungsschrittSerializer = new(typeof(List<Handlungsschritt>));
-                                using (StringReader stringReader = new StringReader(empfangeneNachrichtTeile[0]))
-                                {
-                                    object? deserialisiertesObjekt = xmlHandlungsschrittSerializer.Deserialize(stringReader);
-                                    if (deserialisiertesObjekt != null)
+                                    uebungsszenario?.NeueRollenInformation(rolleAlice, rolleBob, rolleEve);
+                                    break;
+                                case UEBUNGSSZENARIO_STARTEN:
+                                    uebungsszenario?.UebungsszenarioWurdeGestartet(Enum.TryParse(empfangeneNachrichtTeile[0], out RolleEnum startRolle) ? startRolle : RolleEnum.Alice);
+                                    break;
+                                case KONTROLLE_UEBERGEBEN:
+                                    uebungsszenario?.KontrolleErhalten(Enum.TryParse(empfangeneNachrichtTeile[0], out RolleEnum nächsteRolle) ? nächsteRolle : RolleEnum.Alice);
+                                    break;
+                                case AUFZEICHNUNG_UPDATE:
+                                    List<Handlungsschritt> listeEmpfangenerHandlungsschritte = new();
+                                    XmlSerializer xmlHandlungsschrittSerializer = new(typeof(List<Handlungsschritt>));
+                                    using (StringReader stringReader = new StringReader(empfangeneNachrichtTeile[0]))
                                     {
-                                        uebungsszenario?.AufzeichnungUpdate((List<Handlungsschritt>)deserialisiertesObjekt);
+                                        object? deserialisiertesObjekt = xmlHandlungsschrittSerializer.Deserialize(stringReader);
+                                        if (deserialisiertesObjekt != null)
+                                        {
+                                            uebungsszenario?.AufzeichnungUpdate((List<Handlungsschritt>)deserialisiertesObjekt);
+                                        }
                                     }
-                                }
-                                break;
-                            case UEBUNGSSZENARIO_ENDE:
-                                TrenneVerbindungMitUebungsszenario();
-                                uebungsszenario?.Beenden();
-                                break;
+                                    break;
+                                case UEBUNGSSZENARIO_ENDE:
+                                    TrenneVerbindungMitUebungsszenario();
+                                    uebungsszenario?.Beenden();
+                                    break;
+                            }
                         }
                         kompletteNachrichtAlsBytes = new byte[TCP_RECEIVE_BUFFER_SIZE];
                     }
