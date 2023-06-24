@@ -41,7 +41,6 @@ namespace quaKrypto.ViewModels
             */
             //Hier wird der Anstoß gegeben nach verfübaren Lobbys zu suchen
             NetzwerkClient.BeginneSucheNachLobbys();
-            NetzwerkClient.VerfuegbareLobbys.CollectionChanged += (a, b) => { Trace.WriteLine("IchwarHier"); EigenschaftWurdeGeändert(nameof(VerfuegbarLobbys)); };
             HauptMenu = new((o) =>
             {
                 //Hier wird die suche beendet und dann zum Hauptmenü zurück navigiert
@@ -66,7 +65,7 @@ namespace quaKrypto.ViewModels
                 IUebungsszenario uebungsszenario = new UebungsszenarioNetzwerk(uebungsszenarioInfo.Schwierigkeitsgrad, variante, uebungsszenarioInfo.StartPhase, uebungsszenarioInfo.EndPhase, uebungsszenarioInfo.Lobbyname, false);
 
                 NetzwerkClient.Ubungsszenario = (UebungsszenarioNetzwerk)uebungsszenario;
-
+                NetzwerkClient.BeendeSucheNachLobbys();
                 NetzwerkClient.VerbindeMitUebungsszenario(uebungsszenarioInfo);
 
 

@@ -1,12 +1,10 @@
 ﻿using quaKrypto.Models.Enums;
-using quaKrypto.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.Security;
 using System.Text;
 using System.Threading;
 using System.Xml.Serialization;
@@ -28,10 +26,11 @@ namespace quaKrypto.Models.Classes
 
         private const int ZEIT_ZWISCHEN_LOBBYINFORMATION_SENDEN_IN_MS = 1000;
 
-        private static PeriodicTimer? periodicTimer;
+        private const int UDP_LISTEN_PORT = 18523;
+        private const int UDP_SEND_PORT = 18524;
 
-        private const int UDP_PORT = 18523;
-        private const int TCP_PORT = 32581;
+        private const int TCP_HOST_PORT = 32581;
+        private const int TCP_CLIENT_PORT = 32582;
 
         private static UdpClient? udpClient = null;
         private static TcpListener? tcpListener = null;
@@ -56,51 +55,40 @@ namespace quaKrypto.Models.Classes
         #region UDP
 
         //Schnittstelle für LobbyScreenView im Konstruktor oder LobbyerstellenView am Ende
-        public static async void BeginneZyklischesSendenVonLobbyinformation(UebungsszenarioNetzwerkBeitrittInfo netzwerkBeitrittInfo, int portToSendTo = UDP_PORT)
+        public static async void BeginneZyklischesSendenVonLobbyinformation(UebungsszenarioNetzwerkBeitrittInfo netzwerkBeitrittInfo, int portToSendTo = UDP_LISTEN_PORT)
         {
             if (udpClient != null) return;
             uebungsszenarioNetzwerkBeitrittInfo = netzwerkBeitrittInfo;
-            udpClient = new UdpClient(UDP_PORT);
-            periodicTimer = new PeriodicTimer(TimeSpan.FromMilliseconds(ZEIT_ZWISCHEN_LOBBYINFORMATION_SENDEN_IN_MS));
+            udpClient = new UdpClient(UDP_SEND_PORT);
+            using PeriodicTimer periodicTimer = new(TimeSpan.FromMilliseconds(ZEIT_ZWISCHEN_LOBBYINFORMATION_SENDEN_IN_MS));
             ErstelleTCPLobby();
             while (await periodicTimer.WaitForNextTickAsync())
             {
-                string netzwerkBeitrittInfoAsString = uebungsszenarioNetzwerkBeitrittInfo.Lobbyname.Replace("\t", "") + '\t'
-                    + uebungsszenarioNetzwerkBeitrittInfo.Protokoll + '\t'
-                    + uebungsszenarioNetzwerkBeitrittInfo.Variante + '\t'
-                    + uebungsszenarioNetzwerkBeitrittInfo.Schwierigkeitsgrad.ToString() + '\t'
-                    + uebungsszenarioNetzwerkBeitrittInfo.AliceState.ToString() + '\t'
-                    + uebungsszenarioNetzwerkBeitrittInfo.BobState.ToString() + '\t'
-                    + uebungsszenarioNetzwerkBeitrittInfo.EveState.ToString() + '\t'
-                    + uebungsszenarioNetzwerkBeitrittInfo.StartPhase + '\t'
-                    + uebungsszenarioNetzwerkBeitrittInfo.EndPhase;
-
+                if (udpClient == null) break;
+                string netzwerkBeitrittInfoAsString = $"{uebungsszenarioNetzwerkBeitrittInfo.Lobbyname.Replace("\t", "")}\t{uebungsszenarioNetzwerkBeitrittInfo.Protokoll}\t{uebungsszenarioNetzwerkBeitrittInfo.Variante}\t{uebungsszenarioNetzwerkBeitrittInfo.Schwierigkeitsgrad}\t{uebungsszenarioNetzwerkBeitrittInfo.AliceState}\t{uebungsszenarioNetzwerkBeitrittInfo.BobState}\t{uebungsszenarioNetzwerkBeitrittInfo.EveState}\t{uebungsszenarioNetzwerkBeitrittInfo.StartPhase}\t{uebungsszenarioNetzwerkBeitrittInfo.EndPhase}";
                 byte[] nachrichtAlsByteArray = Encoding.UTF8.GetBytes(netzwerkBeitrittInfoAsString);
                 byte[] nachrichtZumSenden = new byte[nachrichtAlsByteArray.Length + 1];
                 nachrichtZumSenden[0] = LOBBYINFORMATION;
                 Array.Copy(nachrichtAlsByteArray, 0, nachrichtZumSenden, 1, nachrichtAlsByteArray.Length);
                 try
                 {
-                    udpClient.Send(nachrichtZumSenden, nachrichtZumSenden.Length, "255.255.255.255", portToSendTo);
+                    udpClient?.Send(nachrichtZumSenden, nachrichtZumSenden.Length, "255.255.255.255", portToSendTo);
                 }
                 catch (SocketException) { Trace.WriteLine("Eine Socket-Exception wurde beim UDP-Senden vom Host geworfen"); break; }
-
             }
-
+            BeendeZyklischesSendenVonLobbyinformation();
         }
-        private static void BeendeZyklischesSendenVonLobbyinformation()
+        public static void BeendeZyklischesSendenVonLobbyinformation()
         {
             if (udpClient == null) return;
             try
             {
-                udpClient.Send(new byte[] { LOBBY_NICHT_MEHR_VERFUEGBAR }, 1, "255.255.255.255", UDP_PORT);
-                periodicTimer?.Dispose();
-                periodicTimer = null;
+                udpClient?.Send(new byte[] { LOBBY_NICHT_MEHR_VERFUEGBAR }, 1, "255.255.255.255", UDP_LISTEN_PORT);
                 udpClient?.Close();
+                udpClient?.Dispose();
                 udpClient = null;
             }
             catch (ObjectDisposedException) { }
-
         }
 
         #endregion
@@ -112,7 +100,7 @@ namespace quaKrypto.Models.Classes
             byte[] nachrichtZumSenden = new byte[nachrichtAlsByteArray.Length + 4];
             nachrichtZumSenden[0] = commandIdentifier;
             Array.Copy(nachrichtAlsByteArray, 0, nachrichtZumSenden, 1, nachrichtAlsByteArray.Length);
-            for(int i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++)
             {
                 nachrichtZumSenden[^(1 + i)] = (byte)'\0';
             }
@@ -145,7 +133,7 @@ namespace quaKrypto.Models.Classes
             {
                 try
                 {
-                    tcpListener = new(IPAddress.Any, TCP_PORT);
+                    tcpListener = new(IPAddress.Any, TCP_HOST_PORT);
                     tcpListener.Start();
                     while (true)
                     {
@@ -206,29 +194,7 @@ namespace quaKrypto.Models.Classes
             XmlSerializer xmlSerializer = new(typeof(List<Handlungsschritt>));
             using StringWriter stringWriter = new();
             xmlSerializer.Serialize(stringWriter, neueHandlungsschritte);
-            //string serializedHandlungsschritte = new("");
-            /*
-            XmlSerializer xmlSerializer = new(typeof(Handlungsschritt));
-            for (int i = 0; i < handlungsschritte.Count; i++)
-            {
-                if (i != 0) serializedHandlungsschritte += '\t';
-                using StringWriter stringWriter = new();
-                xmlSerializer.Serialize(stringWriter, handlungsschritte[i]);
-                serializedHandlungsschritte += stringWriter.ToString();
-            }*/
-            //SendeNachrichtTCP(ZUG_BEENDEN, serializedHandlungsschritte);
             SendeNachrichtTCP(AUFZEICHNUNG_UPDATE, stringWriter.ToString(), empfänger);
-            /*
-            string serializedHandlungsschritte = new("");
-            XmlSerializer xmlSerializer = new(typeof(Handlungsschritt));
-            for (int i = 0; i < neueHandlungsschritte.Count; i++)
-            {
-                if (i != 0) serializedHandlungsschritte += '\t';
-                using StringWriter stringWriter = new();
-                xmlSerializer.Serialize(stringWriter, neueHandlungsschritte[i]);
-                serializedHandlungsschritte += stringWriter.ToString();
-            }
-            SendeNachrichtTCP(AUFZEICHNUNG_UPDATE, serializedHandlungsschritte, empfänger);*/
         }
 
         //Schnittstelle fürs Übungsszenario
@@ -249,7 +215,7 @@ namespace quaKrypto.Models.Classes
                     {
                         networkStream.Read(kompletteNachrichtAlsBytes, 0, TCP_RECEIVE_BUFFER_SIZE);
                         string[] empfangeneGanzeNachrichten = Encoding.UTF8.GetString(kompletteNachrichtAlsBytes).Split("\0\0\0");
-                        foreach(string ganzeNachricht in empfangeneGanzeNachrichten)
+                        foreach (string ganzeNachricht in empfangeneGanzeNachrichten)
                         {
                             if (ganzeNachricht == "") break;
                             byte commandIdentifier = (byte)ganzeNachricht[0];
