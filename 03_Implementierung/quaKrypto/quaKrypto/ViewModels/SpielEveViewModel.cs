@@ -65,6 +65,7 @@ namespace quaKrypto.ViewModels
 
             ZugBeenden = new((o) =>
             {
+                AenderZustand(Enums.SpielEnum.warten);
                 zugBeenden();
                 setzeAktPhaseView();
             }, (o) => ZugBeendenStartBedingung());
@@ -138,6 +139,9 @@ namespace quaKrypto.ViewModels
 
             //leeren aller Listen für die View
             ClearViewListen();
+
+            //leeren aller TextBoxen
+            ClearViewTextBox();
 
             uebungsszenario.HandlungsschrittAusführenLassen(
                                     OperationsEnum.zugBeenden,
@@ -284,19 +288,60 @@ namespace quaKrypto.ViewModels
             {
                 Informationsablage.Add(uebungsszenario.AktuelleRolle.Informationsablage[i]);
             }
+            InformationenEmpfangen();
+            InformationenLöschen();
+        }
+
+        //Lädt die Informationen aus den Übertragungskanälen ein
+        private void InformationenEmpfangen()
+        {
+            //Nachrichten Empfangen Handlungsschritte durchführen
             for (int i = 0; i < uebungsszenario.Uebertragungskanal.BitKanal.Count; i++)
             {
-                if (uebungsszenario.Uebertragungskanal.BitKanal[i].InformationsSender == RolleEnum.Alice)
-                    BituebertragungEingangAlice.Add(uebungsszenario.Uebertragungskanal.BitKanal[i]);
-                else if (uebungsszenario.Uebertragungskanal.BitKanal[i].InformationsSender == RolleEnum.Bob)
-                    BituebertragungEingangBob.Add(uebungsszenario.Uebertragungskanal.BitKanal[i]);
+                Information empfinfo = uebungsszenario.Uebertragungskanal.BitKanal[i];
+                if(empfinfo.InformationsSender != uebungsszenario.AktuelleRolle.RolleTyp)
+                {
+                    if (empfinfo.InformationsSender == RolleEnum.Alice)
+                        BituebertragungEingangAlice.Add(empfinfo);
+                    else if (empfinfo.InformationsSender == RolleEnum.Bob)
+                        BituebertragungEingangBob.Add(empfinfo);
+                }
+                
             }
+            //Nachrichten Empfangen Handlungsschritte durchführen
             for (int i = 0; i < uebungsszenario.Uebertragungskanal.PhotonenKanal.Count; i++)
             {
-                if (uebungsszenario.Uebertragungskanal.PhotonenKanal[i].InformationsEmpfaenger == RolleEnum.Alice)
-                    PhotonenuebertragungEingangAlice.Add(uebungsszenario.Uebertragungskanal.PhotonenKanal[i]);
-                else if (uebungsszenario.Uebertragungskanal.PhotonenKanal[i].InformationsEmpfaenger == RolleEnum.Bob)
-                    PhotonenuebertragungEingangBob.Add(uebungsszenario.Uebertragungskanal.PhotonenKanal[i]);
+                Information empfinfo = uebungsszenario.Uebertragungskanal.PhotonenKanal[i];
+                if(empfinfo.InformationsSender != uebungsszenario.AktuelleRolle.RolleTyp)
+                {
+                    if (empfinfo.InformationsEmpfaenger == RolleEnum.Alice)
+                        PhotonenuebertragungEingangAlice.Add(empfinfo);
+                    else if (empfinfo.InformationsEmpfaenger == RolleEnum.Bob)
+                        PhotonenuebertragungEingangBob.Add(empfinfo);
+                }
+            }
+        }
+
+        //Löscht die Empfangenen Informationen aus den Übertragungskanälen
+        private void InformationenLöschen()
+        {
+            //Löschen der Empfangenen Nachrichten aus dem Übertragungskanälen
+            foreach (Information info in BituebertragungEingangAlice)
+            {
+                uebungsszenario.LoescheInformationAusUebertragungskanal(KanalEnum.bitKanal, info.InformationsID);
+            }
+            foreach (Information info in BituebertragungEingangBob)
+            {
+                uebungsszenario.LoescheInformationAusUebertragungskanal(KanalEnum.bitKanal, info.InformationsID);
+            }
+
+            foreach (Information info in PhotonenuebertragungEingangAlice)
+            {
+                uebungsszenario.LoescheInformationAusUebertragungskanal(KanalEnum.photonenKanal, info.InformationsID);
+            }
+            foreach (Information info in PhotonenuebertragungEingangBob)
+            {
+                uebungsszenario.LoescheInformationAusUebertragungskanal(KanalEnum.photonenKanal, info.InformationsID);
             }
         }
     }

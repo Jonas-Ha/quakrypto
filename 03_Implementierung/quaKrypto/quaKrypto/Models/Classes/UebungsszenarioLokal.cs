@@ -172,6 +172,11 @@ namespace quaKrypto.Models.Classes
             aktuelleRolle.LoescheInformation(informationID);
         }
 
+        public void LoescheInformationAusUebertragungskanal(KanalEnum kanal, int informatonsID)
+        {
+            Uebertragungskanal.LoescheNachricht(kanal, informatonsID);
+        }
+
         public void Beenden()
         {
             beendet = true;
