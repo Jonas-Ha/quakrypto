@@ -30,7 +30,13 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="10*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <DataGrid Grid.Row="2" Grid.ColumnSpan="4" Margin="20" CanUserAddRows="False" AutoGenerateColumns="False" IsReadOnly="True" SelectedItem="{Binding SelectedLobby, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source = {x:Static classes:NetzwerkClient.VerfuegbareLobbys}, UpdateSourceTrigger=PropertyChanged}">
+                <DataGrid Grid.Row="2" Grid.ColumnSpan="4" Margin="20" CanUserAddRows="False" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow"
+                          SelectedItem="{Binding SelectedLobby, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source = {x:Static classes:NetzwerkClient.VerfuegbareLobbys}, UpdateSourceTrigger=PropertyChanged}">
+                    <DataGrid.InputBindings>
+                        <MouseBinding Gesture="LeftDoubleClick"
+                                      Command="{Binding LobbyBeitreten}"/>
+
+                    </DataGrid.InputBindings>
                     <DataGrid.Columns>
                         <DataGridTextColumn  Width="*" Binding="{Binding Lobbyname}">
                             <DataGridTextColumn.Header>

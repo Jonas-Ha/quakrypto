@@ -64,6 +64,7 @@ namespace quaKrypto.ViewModels
                     _ => new VarianteNormalerAblauf(uebungsszenarioInfo.StartPhase),
                 };
                 IUebungsszenario uebungsszenario = new UebungsszenarioNetzwerk(uebungsszenarioInfo.Schwierigkeitsgrad, variante, uebungsszenarioInfo.StartPhase, uebungsszenarioInfo.EndPhase, uebungsszenarioInfo.Lobbyname, false);
+
                 NetzwerkClient.Ubungsszenario = (UebungsszenarioNetzwerk)uebungsszenario;
 
                 NetzwerkClient.VerbindeMitUebungsszenario(uebungsszenarioInfo);

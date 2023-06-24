@@ -45,6 +45,8 @@ namespace quaKrypto.ViewModels
                 if (NetzwerkBasiert)
                 {
                     UebungsszenarioNetzwerkBeitrittInfo ErstelltesSzenarioInfo = new UebungsszenarioNetzwerkBeitrittInfo(IPAddress.Any, LobbyName, Protokoll[AusgProtokoll], VarianteAuswahl[AusgVariante], AusgSchwierigkeit == 0 ? SchwierigkeitsgradEnum.Leicht : AusgSchwierigkeit == 1 ? SchwierigkeitsgradEnum.Mittel : SchwierigkeitsgradEnum.Schwer, false, false, false);
+                    ErstelltesSzenarioInfo.StartPhase = (uint)AusgPhaseStart;
+                    ErstelltesSzenarioInfo.EndPhase = (uint)AusgPhaseEnd;
                     NetzwerkHost.BeginneZyklischesSendenVonLobbyinformation(ErstelltesSzenarioInfo);
                     UebungsszenarioNetzwerk uebungsszenarioNetzwerk = new UebungsszenarioNetzwerk(AusgSchwierigkeit == 0 ? SchwierigkeitsgradEnum.Leicht : AusgSchwierigkeit == 1 ? SchwierigkeitsgradEnum.Mittel : SchwierigkeitsgradEnum.Schwer, ausgewaehlteVariante, (uint)AusgPhaseStart, (uint)AusgPhaseEnd, LobbyName, true);
                     navigator.aktuellesViewModel = new LobbyScreenViewModel(navigator, uebungsszenarioNetzwerk, true);
