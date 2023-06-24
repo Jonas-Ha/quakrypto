@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 using System.Collections.ObjectModel;
 
@@ -12,11 +9,11 @@ namespace quaKrypto.Models.Classes
     {
         private static readonly string WIKI_ORDNERNAME = Path.Combine(Environment.CurrentDirectory, "Wiki");
         private static ObservableCollection<WikiSeite> wikiSeiten = new() { new WikiSeite("Neue Seite", "") };
-        public static ObservableCollection<WikiSeite> WikiSeiten { get { return wikiSeiten; } }
+        public static ObservableCollection<WikiSeite> WikiSeiten => wikiSeiten;
         private static int indexDerSelektiertenSeite = 0;
         private static int IndexDerSelektiertenSeite
         {
-            get { return indexDerSelektiertenSeite; }
+            get => indexDerSelektiertenSeite;
             set
             {
                 wikiSeiten.ElementAt(indexDerSelektiertenSeite < wikiSeiten.Count ? indexDerSelektiertenSeite : 0).SetzeAktivStatus(false);
@@ -24,10 +21,10 @@ namespace quaKrypto.Models.Classes
                 wikiSeiten.ElementAt(indexDerSelektiertenSeite).SetzeAktivStatus(true);
             }
         }
-        public static WikiSeite SelektierteWikiSeite { get { return wikiSeiten.ElementAt(indexDerSelektiertenSeite); } }
+        public static WikiSeite SelektierteWikiSeite => wikiSeiten.ElementAt(indexDerSelektiertenSeite);
 
         private static bool wikiIstOffen = false;
-        public static bool WikiIstOffen { get { return wikiIstOffen; } set { wikiIstOffen = value; } }
+        public static bool WikiIstOffen { get => wikiIstOffen; set => wikiIstOffen = value; }
 
         static Wiki()
         {
@@ -39,7 +36,7 @@ namespace quaKrypto.Models.Classes
         private static void LadeAlleWikiSeiten()
         {
             string[] dateien = Directory.GetFiles(WIKI_ORDNERNAME);
-            wikiSeiten = new();
+            wikiSeiten.Clear();
             foreach (string datei in dateien)
             {
                 if (File.Exists(datei))
@@ -60,13 +57,14 @@ namespace quaKrypto.Models.Classes
             }
             foreach (WikiSeite wikiSeite in WikiSeiten)
             {
-                File.WriteAllText(Path.Combine(WIKI_ORDNERNAME, "(" + wikiSeite.Identifier + ") " + EntferneVerbotenesVonDateiNamen(wikiSeite.WikiSeiteName)), wikiSeite.Inhalt);
+                File.WriteAllText(Path.Combine(WIKI_ORDNERNAME, $"({wikiSeite.Identifier}) {EntferneVerbotenesVonDateiNamen(wikiSeite.WikiSeiteName)}"), wikiSeite.Inhalt);
+                wikiSeite.SetzeAktivStatus(false);
+                wikiSeite.SetzeEditierModus(false);
             }
+            indexDerSelektiertenSeite = 0;
         }
-        private static int BekommeIndexVonIdentifier(string identifier)
-        {
-            return WikiSeiten.IndexOf(WikiSeiten.Where(wikiSeite => { return wikiSeite.Identifier == identifier; }).First());
-        }
+        private static int BekommeIndexVonIdentifier(string identifier) => WikiSeiten.IndexOf(WikiSeiten.Where(wikiSeite => wikiSeite.Identifier == identifier).First());
+
 
         public static void SeitenErweitern()
         {
@@ -81,10 +79,9 @@ namespace quaKrypto.Models.Classes
             IndexDerSelektiertenSeite = IndexDerSelektiertenSeite >= WikiSeiten.Count ? --IndexDerSelektiertenSeite : IndexDerSelektiertenSeite;
         }
 
-        public static void SeiteSelektieren(string identifier)
-        {
-            IndexDerSelektiertenSeite = BekommeIndexVonIdentifier(identifier);
-        }
+        public static void SeiteSelektieren(string identifier) => IndexDerSelektiertenSeite = BekommeIndexVonIdentifier(identifier);
+
+        public static void SelektiereDieErsteSeite() => IndexDerSelektiertenSeite = 0;
 
         private static string EntferneVerbotenesVonDateiNamen(string stringWelcherBereinigtWerdenSoll)
         {

@@ -26,7 +26,7 @@
                 </Grid.RowDefinitions>
 
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" SnapsToDevicePixels="True">
-                    <ItemsControl ItemsSource="{Binding Source={x:Static viewmodel:WikiViewModel.WikiSeiten}}" Tag="{Binding .}">
+                    <ItemsControl ItemsSource="{Binding Source={x:Static viewmodel:WikiViewModel.WikiSeiten}}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border BorderThickness="2" BorderBrush="{Binding BorderBrush}" CornerRadius="4">
@@ -45,17 +45,17 @@
                 </ScrollViewer>
                 <GroupBox VerticalAlignment="Bottom" Grid.Row="1" Header="Optionen" FontWeight="SemiBold" FontSize="20">
                     <StackPanel Orientation="Horizontal" Margin="10">
-                        <Image Source="../Icons/Wiki/erweitern.png" ToolTip="Das Wiki durch eine neue Seite Erweitern" Focusable="True">
+                        <Image Source="../Icons/Wiki/erweitern.png" ToolTip="Das Wiki durch eine neue Seite Erweitern" Focusable="True" Cursor="{Binding Cursor}">
                             <Image.InputBindings>
                                 <MouseBinding Gesture="LeftClick" Command="{Binding SeitenErweitern}"/>
                             </Image.InputBindings>
                         </Image>
-                        <Image Source="../Icons/Wiki/bearbeiten.png" Margin="10,0" ToolTip="Die Aktive Seite des Wikis Bearbeiten" Focusable="True">
+                        <Image Source="../Icons/Wiki/bearbeiten.png" Margin="10,0" ToolTip="Die Aktive Seite des Wikis Bearbeiten" Focusable="True" Cursor="Hand">
                             <Image.InputBindings>
                                 <MouseBinding Gesture="LeftClick" Command="{Binding SeiteBearbeiten}"/>
                             </Image.InputBindings>
                         </Image>
-                        <Image Source="../Icons/Wiki/entfernen.png" ToolTip="Entfernen der Aktiven Seite des Wikis" Focusable="True">
+                        <Image Source="../Icons/Wiki/entfernen.png" ToolTip="Entfernen der Aktiven Seite des Wikis" Focusable="True" Cursor="{Binding Cursor}">
                             <Image.InputBindings>
                                 <MouseBinding Gesture="LeftClick" Command="{Binding SeiteEntfernen}"/>
                             </Image.InputBindings>

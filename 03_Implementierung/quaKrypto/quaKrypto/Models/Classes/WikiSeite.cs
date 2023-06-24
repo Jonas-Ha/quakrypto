@@ -1,23 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
-using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
-using static System.Net.WebRequestMethods;
 
 namespace quaKrypto.Models.Classes
 {
     public class WikiSeite : INotifyPropertyChanged
     {
         private ObservableCollection<Inline> inlineList = new();
-        public ObservableCollection<Inline> InlineList { get { return inlineList; } set { inlineList = value; } }
+        public ObservableCollection<Inline> InlineList
+        {
+            get => inlineList;
+            set => inlineList = value;
+        }
 
         private static int nextAvailableIdentifier = 0;
         private readonly int identifier;
@@ -29,11 +27,11 @@ namespace quaKrypto.Models.Classes
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public string Identifier { get { return identifier.ToString(); } }
+        public string Identifier => identifier.ToString();
         public string WikiSeiteName { get { return wikiSeiteName; } set { wikiSeiteName = value; PropertyHasChanged(nameof(WikiSeiteName)); } }
         public Brush BorderBrush { get { return istAktiv ? Brushes.Black : Brushes.White; } }
         public string Inhalt { get { return inhalt; } set { inhalt = value; PropertyHasChanged(nameof(Inhalt)); } }
-        public double Durchschein { get { return istAktiv ? 1.0d : editierModus ? 0.5d : 1.0d; } }
+        public double Durchschein => istAktiv ? 1.0d : editierModus ? 0.5d : 1.0d;
 
         public WikiSeite(string wikiSeiteName, string inhalt)
         {
@@ -58,7 +56,7 @@ namespace quaKrypto.Models.Classes
                         Trace.WriteLine("Match success");
                         string[] parts = zeile.Split(match.Value);
                         inlineList.Add(new Run { Text = parts[0] });
-                        Hyperlink hyperlink = new(new Run(match.Value)) { NavigateUri = new Uri(match.Value.StartsWith("https://") || match.Value.StartsWith("http://")? match.Value : "https://" + match.Value) };
+                        Hyperlink hyperlink = new(new Run(match.Value)) { NavigateUri = new Uri(match.Value.StartsWith("https://") || match.Value.StartsWith("http://") ? match.Value : "https://" + match.Value) };
                         hyperlink.RequestNavigate += new System.Windows.Navigation.RequestNavigateEventHandler((sender, e) =>
                         {
                             Process.Start(new ProcessStartInfo { FileName = e.Uri.AbsoluteUri, UseShellExecute = true }); ;
