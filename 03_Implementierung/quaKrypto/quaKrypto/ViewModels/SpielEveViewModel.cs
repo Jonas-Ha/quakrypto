@@ -65,9 +65,9 @@ namespace quaKrypto.ViewModels
 
             ZugBeenden = new((o) =>
             {
+                AenderZustand(Enums.SpielEnum.warten);
                 zugBeenden();
                 setzeAktPhaseView();
-                AenderZustand(Enums.SpielEnum.warten);
             }, (o) => ZugBeendenStartBedingung());
 
             PasswortEingabe = new((o) =>
