@@ -62,9 +62,9 @@ namespace quaKrypto.ViewModels
 
             ZugBeenden = new((o) =>
             {
+                AenderZustand(Enums.SpielEnum.warten);
                 zugBeenden();
                 setzeAktPhaseView();
-                AenderZustand(Enums.SpielEnum.warten);
             }, (o) => ZugBeendenStartBedingung());
 
             PasswortEingabe = new((o) =>
@@ -236,27 +236,63 @@ namespace quaKrypto.ViewModels
 
         private void InformationenLaden()
         {
+            //Informationsablage wiederherstellen
             for (int i = 0; i < uebungsszenario.AktuelleRolle.Informationsablage.Count; i++)
             {
                 Informationsablage.Add(uebungsszenario.AktuelleRolle.Informationsablage[i]);
             }
-            for(int i = 0; i < uebungsszenario.Uebertragungskanal.BitKanal.Count; i++)
+
+            InformationenEmpfangen();
+            InformationenLöschen();
+
+        }
+        //Lädt die Informationen aus den Übertragungskanälen ein
+        private void InformationenEmpfangen()
+        {
+            //Nachrichten Empfangen Handlungsschritte durchführen
+            for (int i = 0; i < uebungsszenario.Uebertragungskanal.BitKanal.Count; i++)
             {
-                if(uebungsszenario.Uebertragungskanal.BitKanal[i].InformationsEmpfaenger == uebungsszenario.AktuelleRolle.RolleTyp)
-                    BituebertragungEingang.Add(uebungsszenario.Uebertragungskanal.BitKanal[i]);
+                Information empfinfo = uebungsszenario.Uebertragungskanal.BitKanal[i];
+                if (empfinfo.InformationsEmpfaenger == uebungsszenario.AktuelleRolle.RolleTyp)
+                {
+                    uebungsszenario.HandlungsschrittAusführenLassen(OperationsEnum.nachrichtEmpfangen,
+                        empfinfo,
+                        null,
+                        empfinfo.InformationsName,
+                        uebungsszenario.AktuelleRolle.RolleTyp);
+                    BituebertragungEingang.Add(empfinfo);
+                }
+
             }
+            //Nachrichten Empfangen Handlungsschritte durchführen
             for (int i = 0; i < uebungsszenario.Uebertragungskanal.PhotonenKanal.Count; i++)
             {
-                if (uebungsszenario.Uebertragungskanal.PhotonenKanal[i].InformationsEmpfaenger == uebungsszenario.AktuelleRolle.RolleTyp)
-                    PhotonenuebertragungEingang.Add(uebungsszenario.Uebertragungskanal.PhotonenKanal[i]);
+                Information empfinfo = uebungsszenario.Uebertragungskanal.PhotonenKanal[i];
+                if (empfinfo.InformationsEmpfaenger == uebungsszenario.AktuelleRolle.RolleTyp)
+                {
+                    uebungsszenario.HandlungsschrittAusführenLassen(OperationsEnum.nachrichtEmpfangen,
+                        empfinfo,
+                        null,
+                        empfinfo.InformationsName,
+                        uebungsszenario.AktuelleRolle.RolleTyp);
+                    PhotonenuebertragungEingang.Add(empfinfo);
+                }
+
             }
         }
 
-        private void ClearViewTextBox()
+        //Löscht die Empfangenen Informationen aus den Übertragungskanälen
+        private void InformationenLöschen()
         {
-            passwortFeld = "";
-            Informationsname = "";
-            Eingabe = "";
+            //Löschen der Empfangenen Nachrichten aus dem Übertragungskanälen
+            foreach (Information info in BituebertragungEingang)
+            {
+                uebungsszenario.LoescheInformation(info.InformationsID);
+            }
+            foreach (Information info in PhotonenuebertragungEingang)
+            {
+                uebungsszenario.LoescheInformation(info.InformationsID);
+            }
         }
     }
 }

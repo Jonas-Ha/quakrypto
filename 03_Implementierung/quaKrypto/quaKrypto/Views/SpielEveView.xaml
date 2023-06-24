@@ -951,7 +951,7 @@
                             </Border>
 
                             <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                                <Label Content="Photon: " FontSize="15"/>
+                                <Label Content="Information: " FontSize="15"/>
                             </Border>
                             <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,10">
                                 <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"

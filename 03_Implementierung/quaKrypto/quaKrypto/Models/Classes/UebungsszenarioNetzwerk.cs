@@ -214,6 +214,18 @@ namespace quaKrypto.Models.Classes
                 }
                 else if (!eigeneRollen.Contains(aktRolle))
                     NetzwerkHost.UebergebeKontrolle(aktRolle);
+                else
+                {
+                    foreach (Rolle rolle in rollen)
+                    {
+                        if (rolle.RolleTyp == aktRolle)
+                        {
+                            aktuelleRolle = rolle;
+                            break;
+                        }
+                    }
+                    PropertyHasChanged(nameof(aktuelleRolle));
+                }
             }
             else
             {

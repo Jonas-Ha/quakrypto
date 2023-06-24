@@ -71,7 +71,7 @@ namespace quaKrypto.Models.Interfaces
 
         //Gibt ein Handlungsschritt objekt and die aktuelle rolle weiter, die ihn dann ausführt
         //Gibt das dadurch erstellte Informationsobjekt zurück
-        public Information HandlungsschrittAusführenLassen(Enums.OperationsEnum operationsTyp, Information operand1, object operand2, String ergebnisInformationsName, Enums.RolleEnum rolle);
+        public Information HandlungsschrittAusführenLassen(Enums.OperationsEnum operationsTyp, Information operand1, object? operand2, String ergebnisInformationsName, Enums.RolleEnum ausfuerendeRolle);
 
         //Speichert die Information mit der übergebenen ID im Speicher der aktuellen Rolle ab
         public void SpeichereInformationenAb(Information information);

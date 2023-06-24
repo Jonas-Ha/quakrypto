@@ -246,100 +246,88 @@ namespace quaKrypto.ViewModels
 
             BitFolgeErzeugen = new((o) =>
             {
-                Ergebnis.Clear();
                 Ergebnis.Add(bitfolgeErzeugen());
                 setzeAktPhaseView();
             }, (o) => bitfolgeErzeugenStartBedingung());
 
             EntVerschlüsseln = new((o) =>
             {
-                Ergebnis.Clear();
                 Ergebnis.Add(entVerschlüsseln());
                 setzeAktPhaseView();
             }, (o) => entVerschlüsselnStartBedingung());
 
             PhotonenErzeugen = new((o) =>
             {
-                Ergebnis.Clear();
                 Ergebnis.Add(photonenErzeugen());
                 setzeAktPhaseView();
             }, (o) => photonenErzeugenStartBedingung());
 
             PolschaErzeugen = new((o) =>
             {
-                Ergebnis.Clear();
                 Ergebnis.Add(polschaErzeugen());
                 setzeAktPhaseView();
             }, (o) => polschaErzeugenStartBedingung());
 
             Streichen = new((o) =>
             {
-                Ergebnis.Clear();
                 Ergebnis.Add(streichen());
                 setzeAktPhaseView();
             }, (o) => streichenStartBedingung());
 
             Vergleichen = new((o) =>
             {
-                Ergebnis.Clear();
                 Ergebnis.Add(vergleichen());
                 setzeAktPhaseView();
             }, (o) => vergleichenStartBedingung());
 
             ZahlErzeugen = new((o) =>
             {
-                Ergebnis.Clear();
                 Ergebnis.Add(zahlErzeugen());
                 setzeAktPhaseView();
             }, (o) => zahlErzeugenStartBedingung());
 
             BitMaskeGenerieren = new((o) =>
             {
-                Ergebnis.Clear();
                 Ergebnis.Add(bitMaskeGenerieren());
                 setzeAktPhaseView();
             }, (o) => bitMaskeGenerierenStartBedingung());
 
             BitfolgeNegieren = new((o) =>
             {
-                Ergebnis.Clear();
                 Ergebnis.Add(bitfolgeNegieren());
                 setzeAktPhaseView();
             }, (o) => bitfolgeNegierenStartBedingung());
 
             PhotonenZuBitfolge = new((o) =>
             {
-                Ergebnis.Clear();
                 Ergebnis.Add(photonenZuBitfolge());
                 setzeAktPhaseView();
+                Operand1.Clear();
             }, (o) => photonenZuBitfolgeStartBedingung());
 
             TextGenerieren = new((o) =>
             {
-                Ergebnis.Clear();
                 Ergebnis.Add(textGenerieren());
                 setzeAktPhaseView();
             }, (o) => textGenerierenStartBedingung());
 
             TextLaengeBestimmen = new((o) =>
             {
-                Ergebnis.Clear();
                 Ergebnis.Add(textLaengeBestimmen());
                 setzeAktPhaseView();
             }, (o) => textLaengeBestimmenStartBedingung());
 
             BitsFreiBearbeiten = new((o) =>
             {
-                Ergebnis.Clear();
                 Ergebnis.Add(bitsFreiBearbeiten());
                 setzeAktPhaseView();
             }, (o) => bitsFreiBearbeitenStartBedingung());
 
             InformationUmbenennen = new((o) =>
             {
-                Ergebnis.Clear();
                 Ergebnis.Add(informationUmbenennen());
                 setzeAktPhaseView();
+                Operand1.Clear();
             }, (o) => informationUmbenennenStartBedingung());
 
             Operand1 = new ObservableCollection<Information>();
@@ -392,6 +380,12 @@ namespace quaKrypto.ViewModels
             uint aktphase = uebungsszenario.Variante.AktuellePhase;
 
             AktuellePhaseAnzeige = "Phase: " + aktphase.ToString();    
+        }
+        protected void ClearViewTextBox()
+        {
+            passwortFeld = "";
+            Informationsname = "";
+            Eingabe = "";
         }
 
         #region OperationenAusführen
@@ -766,7 +760,8 @@ namespace quaKrypto.ViewModels
         private bool informationUmbenennenStartBedingung()
         {
             if (Informationsname == null ||
-                Informationsname == "") return false;
+                Informationsname == "" ||
+                Operand1.Count != 1) return false;
             return true;
         }
         #endregion
