@@ -719,7 +719,7 @@ namespace TestLibrary
             bool[] arrpol1 = new bool[10];
             arrpol1[1] = true;
             arrpol1[2] = true;
-            byte[] Photonen = new byte[10] { 0, 3, 1, 0, 0, 0, 0, 0, 0, 0};
+            byte[] Photonen = new byte[10] { 0, 3, 2, 0, 0, 0, 0, 0, 0, 0};
             Information information1 = new Information(1, "Polarisationsschemata", InformationsEnum.polarisationsschemata, arrpol1, null);
             Information information2 = new Information(2, "unscharfePhotonen", InformationsEnum.unscharfePhotonen, Photonen, null);
 
