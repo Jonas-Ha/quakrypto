@@ -238,7 +238,8 @@ namespace quaKrypto.ViewModels
 
             HauptMenu = new((o) =>
             {
-                navigator.aktuellesViewModel = new HauptMenuViewModel(navigator);
+                //navigator.aktuellesViewModel = new HauptMenuViewModel(navigator);
+                navigator.aktuellesViewModel = new AufzeichnungViewModel(navigator, uebungsszenario);
 
             }, null);
 
