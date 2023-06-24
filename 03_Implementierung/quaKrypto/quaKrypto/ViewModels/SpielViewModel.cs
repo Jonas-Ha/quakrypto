@@ -287,11 +287,11 @@ namespace quaKrypto.ViewModels
             //Löschen der Empfangenen Nachrichten aus dem Übertragungskanälen
             foreach (Information info in BituebertragungEingang)
             {
-                uebungsszenario.LoescheInformation(info.InformationsID);
+                uebungsszenario.LoescheInformationAusUebertragungskanal(KanalEnum.bitKanal, info.InformationsID);
             }
             foreach (Information info in PhotonenuebertragungEingang)
             {
-                uebungsszenario.LoescheInformation(info.InformationsID);
+                uebungsszenario.LoescheInformationAusUebertragungskanal(KanalEnum.photonenKanal, info.InformationsID);
             }
         }
     }

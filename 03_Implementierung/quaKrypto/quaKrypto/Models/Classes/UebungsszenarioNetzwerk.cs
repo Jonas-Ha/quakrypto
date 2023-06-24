@@ -229,24 +229,11 @@ namespace quaKrypto.Models.Classes
             }
             else
             {
-                
                 NetzwerkClient.BeendeZug(aktuelleRolle.handlungsschritte);
             }
 
             //Wird das darunter noch gebraucht?
             aktuelleRolle.handlungsschritte.Clear();
-            /*
-            for (int i = 0; i < Rollen.Count; i++)
-            {
-                if (aktRolle == Rollen[i].RolleTyp)
-                {
-                    int zaehlerstand = aktuelleRolle.InformationsZaehler;
-                    aktuelleRolle = Rollen[i];
-                    aktuelleRolle.AktualisiereInformationsZaehler(zaehlerstand);
-                    break;
-                }
-            }
-            PropertyHasChanged(nameof(aktuelleRolle));*/
         }
 
         public bool GebeBildschirmFrei(string Passwort)
@@ -269,6 +256,11 @@ namespace quaKrypto.Models.Classes
         public void LoescheInformation(int informationsID)
         {
             aktuelleRolle.LoescheInformation(informationsID);
+        }
+
+        public void LoescheInformationAusUebertragungskanal(KanalEnum kanal, int informatonsID)
+        {
+            Uebertragungskanal.LoescheNachricht(kanal, informatonsID);
         }
 
         public void Beenden()

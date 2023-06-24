@@ -698,7 +698,9 @@ namespace quaKrypto.ViewModels
         }
         private bool textGenerierenStartBedingung()
         {
-            if (Eingabe == null ||
+            if (Informationsname == null ||
+                Informationsname == "" || 
+                Eingabe == null ||
                 Eingabe == "") return false;
             return true;
         }
