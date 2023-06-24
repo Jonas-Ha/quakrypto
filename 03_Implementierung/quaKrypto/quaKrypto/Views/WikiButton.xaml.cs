@@ -11,7 +11,7 @@ namespace quaKrypto.Views
     public partial class WikiButton : UserControl
     {
         //Wiki-Button Zeug Anfang
-        private readonly int zeitInMsBisWikiButtonBewegtWird = 100;
+        private readonly int zeitInMsBisWikiButtonBewegtWird = 250;
         private long zeitStempelLetztesMalWikiButtonAngeklickt = 0;
         private bool letzterClickWarNachUnten = false;
         private Point positionDesWikiButton = new(25, 25);
