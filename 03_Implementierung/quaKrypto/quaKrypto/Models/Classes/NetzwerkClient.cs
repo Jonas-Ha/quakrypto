@@ -242,7 +242,6 @@ namespace quaKrypto.Models.Classes
                                     }
                                     break;
                                 case UEBUNGSSZENARIO_ENDE:
-                                    TrenneVerbindungMitUebungsszenario();
                                     uebungsszenario?.Beenden();
                                     break;
                                 case LOBBY_NICHT_MEHR_VERFUEGBAR:

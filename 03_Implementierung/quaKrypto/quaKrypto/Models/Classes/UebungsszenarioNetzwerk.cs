@@ -261,10 +261,12 @@ namespace quaKrypto.Models.Classes
 
         public void Beenden()
         {
-            if (host) NetzwerkHost.BeendeUebungsszenario();
-            else NetzwerkClient.BeendeUebungsszenario();
+            NetzwerkHost.BeendenErlaubt = false;
             beendet = true;
             PropertyHasChanged(nameof(Beendet));
+            NetzwerkHost.BeendenErlaubt = true;
+            if (host) NetzwerkHost.BeendeUebungsszenario();
+            //else NetzwerkClient.BeendeUebungsszenario();
         }
 
         /**

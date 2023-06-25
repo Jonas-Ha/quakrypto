@@ -49,6 +49,8 @@ namespace quaKrypto.Models.Classes
 
         private static UebungsszenarioNetzwerkBeitrittInfo? uebungsszenarioNetzwerkBeitrittInfo;
 
+        public static bool BeendenErlaubt { get; set; }
+
         public static void ResetNetzwerkHost()
         {
             udpClient?.Close();
@@ -120,7 +122,7 @@ namespace quaKrypto.Models.Classes
             }
             try
             {
-                if (empfänger == null)
+                if (empfänger == null || commandIdentifier.Equals(KONTROLLE_UEBERGEBEN))
                 {
                     foreach (NetworkStream networkStream in networkStreams)
                     {
@@ -211,6 +213,7 @@ namespace quaKrypto.Models.Classes
         //Schnittstelle fürs Übungsszenario
         public static void BeendeUebungsszenario()
         {
+            if (!BeendenErlaubt) return;
             SendeNachrichtTCP(UEBUNGSSZENARIO_ENDE, "");
             BeendeTCPLobby();
         }
