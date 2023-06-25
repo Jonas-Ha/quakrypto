@@ -30,9 +30,6 @@ namespace quaKrypto.Models.Classes
         private const int UDP_LISTEN_PORT = 18523;
         private const int UDP_SEND_PORT = 18524;
 
-        private const int TCP_HOST_PORT = 32581;
-        private const int TCP_CLIENT_PORT = 32582;
-
         private static UdpClient? udpClient = null;
         private static TcpClient? tcpClient = null;
 
@@ -48,6 +45,25 @@ namespace quaKrypto.Models.Classes
         private static UebungsszenarioNetzwerk? uebungsszenario;
 
         public static UebungsszenarioNetzwerk Ubungsszenario { set { uebungsszenario = value; } }
+
+        public static ObservableCollection<int> ErrorCollection { get; } = new();
+
+        public static void ResetNetzwerkClient()
+        {
+            udpClient?.Close();
+            udpClient?.Dispose();
+            udpClient = null;
+            tcpClient?.Close();
+            tcpClient?.Dispose();
+            tcpClient = null;
+            networkStream?.Close();
+            networkStream?.Dispose();
+            networkStream = null;
+            verfügbareLobbys.Clear();
+            Application.Current.Dispatcher.Invoke(new Action(() => { if (VerfuegbareLobbys.Count > 0) VerfuegbareLobbys.Clear(); }));
+            uebungsszenario = null;
+            ErrorCollection.Clear();
+        }
 
         #region UDP
         //Schnittstelle LobyyBeitrittView
@@ -69,7 +85,7 @@ namespace quaKrypto.Models.Classes
                         if (commandIdentifier == LOBBYINFORMATION)
                         {
                             string[] empfangeneNachrichtTeile = Encoding.UTF8.GetString(kompletteNachrichtAlsBytes[1..]).Split('\t');
-                            UebungsszenarioNetzwerkBeitrittInfo netzwerkBeitrittInfo = new(senderAdresse.Address, empfangeneNachrichtTeile[0], empfangeneNachrichtTeile[1], empfangeneNachrichtTeile[2], Enum.TryParse(empfangeneNachrichtTeile[3], out SchwierigkeitsgradEnum schwierigkeit) ? schwierigkeit : SchwierigkeitsgradEnum.Leicht, bool.TryParse(empfangeneNachrichtTeile[4], out bool aliceBesetzt) && aliceBesetzt, bool.TryParse(empfangeneNachrichtTeile[5], out bool bobBesetzt) && bobBesetzt, bool.TryParse(empfangeneNachrichtTeile[6], out bool eveBesetzt) && eveBesetzt) { StartPhase = uint.TryParse(empfangeneNachrichtTeile[7], out uint startPhase) ? startPhase : 0, EndPhase = uint.TryParse(empfangeneNachrichtTeile[8], out uint endPhase) ? endPhase : 5 };
+                            UebungsszenarioNetzwerkBeitrittInfo netzwerkBeitrittInfo = new(senderAdresse.Address, empfangeneNachrichtTeile[0], empfangeneNachrichtTeile[1], empfangeneNachrichtTeile[2], Enum.TryParse(empfangeneNachrichtTeile[3], out SchwierigkeitsgradEnum schwierigkeit) ? schwierigkeit : SchwierigkeitsgradEnum.Leicht, bool.TryParse(empfangeneNachrichtTeile[4], out bool aliceBesetzt) && aliceBesetzt, bool.TryParse(empfangeneNachrichtTeile[5], out bool bobBesetzt) && bobBesetzt, bool.TryParse(empfangeneNachrichtTeile[6], out bool eveBesetzt) && eveBesetzt) { StartPhase = uint.TryParse(empfangeneNachrichtTeile[7], out uint startPhase) ? startPhase : 0, EndPhase = uint.TryParse(empfangeneNachrichtTeile[8], out uint endPhase) ? endPhase : 5, HostPort = int.TryParse(empfangeneNachrichtTeile[9], out int hostPort) ? hostPort : 0 };
                             if (!verfügbareLobbys.ContainsKey(senderAdresse.Address))
                             {
                                 verfügbareLobbys.Add(senderAdresse.Address, netzwerkBeitrittInfo);
@@ -80,10 +96,12 @@ namespace quaKrypto.Models.Classes
                                 verfügbareLobbys[senderAdresse.Address] = netzwerkBeitrittInfo;
                                 Application.Current.Dispatcher.Invoke(new Action(() =>
                                 {
+                                    if (VerfuegbareLobbys.Count == 0) return;
                                     int index = VerfuegbareLobbys.IndexOf(VerfuegbareLobbys.Where(lobby => lobby.IPAddress.Equals(senderAdresse.Address)).First());
                                     VerfuegbareLobbys[index].AliceState = netzwerkBeitrittInfo.AliceState;
                                     VerfuegbareLobbys[index].BobState = netzwerkBeitrittInfo.BobState;
                                     VerfuegbareLobbys[index].EveState = netzwerkBeitrittInfo.EveState;
+                                    VerfuegbareLobbys[index].HostPort = netzwerkBeitrittInfo.HostPort;
                                 }
                                 ));
                             }
@@ -131,19 +149,21 @@ namespace quaKrypto.Models.Classes
         public static bool VerbindeMitUebungsszenario(UebungsszenarioNetzwerkBeitrittInfo netzwerkBeitrittInfo)
         {
             if (tcpClient != null) return false;
-            tcpClient = new TcpClient(new IPEndPoint(Dns.GetHostEntry(Dns.GetHostName()).AddressList.First(a => a.AddressFamily == AddressFamily.InterNetwork), TCP_CLIENT_PORT));
-            tcpClient.Connect(netzwerkBeitrittInfo.IPAddress, TCP_HOST_PORT);
+            tcpClient = new TcpClient(AddressFamily.InterNetwork);
+            tcpClient.Connect(netzwerkBeitrittInfo.IPAddress, netzwerkBeitrittInfo.HostPort);
             networkStream = tcpClient.GetStream();
-            StarteTCPListeningThread(networkStream);
             BeendeSucheNachLobbys();
+            StarteTCPListeningThread(networkStream);
             return true;
         }
 
         public static void TrenneVerbindungMitUebungsszenario()
         {
             networkStream?.Close();
-            tcpClient?.Close();
+            networkStream?.Dispose();
             networkStream = null;
+            tcpClient?.Close();
+            tcpClient?.Dispose();
             tcpClient = null;
         }
 
@@ -225,11 +245,35 @@ namespace quaKrypto.Models.Classes
                                     TrenneVerbindungMitUebungsszenario();
                                     uebungsszenario?.Beenden();
                                     break;
+                                case LOBBY_NICHT_MEHR_VERFUEGBAR:
+                                    TrenneVerbindungMitUebungsszenario();
+                                    ErrorCollection.Add(1);
+                                    //TODO: Messagebox zeigen und zurück zum Hauptmenü
+                                    break;
                             }
                         }
                         kompletteNachrichtAlsBytes = new byte[TCP_RECEIVE_BUFFER_SIZE];
                     }
-                    catch (IOException) { Trace.WriteLine("Eine Socket-Exception wurde beim TCP-Empfangen im Client mit dem Host geworfen"); break; }
+                    catch (Exception e)
+                    {
+                        Trace.WriteLine(e.ToString());
+                        networkStream.Close();
+                        break;
+                    }
+                    /*
+                    catch (Exception) {
+                        if (uebungsszenario?.HostHatGestartet ?? false)
+                        {
+                            uebungsszenario?.Beenden();
+                        }
+                        else if(!uebungsszenario?.HostHatGestartet ?? false)
+                        {
+                            ErrorCollection.Add(1);
+                            TrenneVerbindungMitUebungsszenario();
+                        }
+                        Trace.WriteLine("Eine Socket-Exception wurde beim TCP-Empfangen im Client mit dem Host geworfen"); uebungsszenario?.Beenden();
+                        break;
+                    }*/
                 }
             }).Start();
         }

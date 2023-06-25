@@ -45,7 +45,6 @@ namespace quaKrypto.Models.Classes
             istAktiv = aktiv;
             if (editierModus == false && istAktiv)
             {
-                Trace.WriteLine("SetzeAktivStatus");
                 inlineList.Clear();
                 string[] inhaltZeilen = Inhalt.Split('\n');
                 foreach (string zeile in inhaltZeilen)
@@ -53,7 +52,6 @@ namespace quaKrypto.Models.Classes
                     Match match = Regex.Match(zeile, @"[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?");
                     if (match.Success)
                     {
-                        Trace.WriteLine("Match success");
                         string[] parts = zeile.Split(match.Value);
                         inlineList.Add(new Run { Text = parts[0] });
                         Hyperlink hyperlink = new(new Run(match.Value)) { NavigateUri = new Uri(match.Value.StartsWith("https://") || match.Value.StartsWith("http://") ? match.Value : "https://" + match.Value) };
@@ -83,7 +81,6 @@ namespace quaKrypto.Models.Classes
             PropertyHasChanged(nameof(Durchschein));
             if (istAktiv == true && neuerEditierModus == false)
             {
-                Trace.WriteLine("EditierModus");
                 inlineList.Clear();
                 inlineList.Add(new Run { Text = Inhalt });
             }

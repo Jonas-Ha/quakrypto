@@ -25,7 +25,6 @@ namespace quaKrypto.Services
         {
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
             {
-                Trace.WriteLine("InlineCollectionChanged");
                 if (e.NewItems != null)
                 {
                     int indexOfNewItem = e.NewItems.Count - 1;
@@ -37,14 +36,12 @@ namespace quaKrypto.Services
             }
             else if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
             {
-                Trace.WriteLine("InlineCollectionResetz");
                 Inlines.Clear();
             }
         }
 
         private static void OnPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            Trace.WriteLine("OnPropertyChanged");
             if (sender is not EigenerTextBlock textBlock) return;
             if (e.NewValue is ObservableCollection<Inline> list)
             {

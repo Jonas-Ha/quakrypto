@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -29,9 +30,6 @@ namespace quaKrypto.Models.Classes
         private const int UDP_LISTEN_PORT = 18523;
         private const int UDP_SEND_PORT = 18524;
 
-        private const int TCP_HOST_PORT = 32581;
-        private const int TCP_CLIENT_PORT = 32582;
-
         private static UdpClient? udpClient = null;
         private static TcpListener? tcpListener = null;
 
@@ -51,6 +49,22 @@ namespace quaKrypto.Models.Classes
 
         private static UebungsszenarioNetzwerkBeitrittInfo? uebungsszenarioNetzwerkBeitrittInfo;
 
+        public static void ResetNetzwerkHost()
+        {
+            udpClient?.Close();
+            udpClient?.Dispose();
+            udpClient = null;
+            tcpListener?.Stop();
+            tcpListener = null;
+            rolleNetworkStreams.Clear();
+            networkStreams.Clear();
+            aliceRolle = null;
+            bobRolle = null;
+            eveRolle = null;
+            uebungsszenario = null;
+            uebungsszenarioNetzwerkBeitrittInfo = null;
+        }
+
 
         #region UDP
 
@@ -59,13 +73,13 @@ namespace quaKrypto.Models.Classes
         {
             if (udpClient != null) return;
             uebungsszenarioNetzwerkBeitrittInfo = netzwerkBeitrittInfo;
+            ErstelleTCPLobby();
             udpClient = new UdpClient(UDP_SEND_PORT);
             using PeriodicTimer periodicTimer = new(TimeSpan.FromMilliseconds(ZEIT_ZWISCHEN_LOBBYINFORMATION_SENDEN_IN_MS));
-            ErstelleTCPLobby();
             while (await periodicTimer.WaitForNextTickAsync())
             {
                 if (udpClient == null) break;
-                string netzwerkBeitrittInfoAsString = $"{uebungsszenarioNetzwerkBeitrittInfo.Lobbyname.Replace("\t", "")}\t{uebungsszenarioNetzwerkBeitrittInfo.Protokoll}\t{uebungsszenarioNetzwerkBeitrittInfo.Variante}\t{uebungsszenarioNetzwerkBeitrittInfo.Schwierigkeitsgrad}\t{uebungsszenarioNetzwerkBeitrittInfo.AliceState}\t{uebungsszenarioNetzwerkBeitrittInfo.BobState}\t{uebungsszenarioNetzwerkBeitrittInfo.EveState}\t{uebungsszenarioNetzwerkBeitrittInfo.StartPhase}\t{uebungsszenarioNetzwerkBeitrittInfo.EndPhase}";
+                string netzwerkBeitrittInfoAsString = $"{uebungsszenarioNetzwerkBeitrittInfo.Lobbyname.Replace("\t", "")}\t{uebungsszenarioNetzwerkBeitrittInfo.Protokoll}\t{uebungsszenarioNetzwerkBeitrittInfo.Variante}\t{uebungsszenarioNetzwerkBeitrittInfo.Schwierigkeitsgrad}\t{uebungsszenarioNetzwerkBeitrittInfo.AliceState}\t{uebungsszenarioNetzwerkBeitrittInfo.BobState}\t{uebungsszenarioNetzwerkBeitrittInfo.EveState}\t{uebungsszenarioNetzwerkBeitrittInfo.StartPhase}\t{uebungsszenarioNetzwerkBeitrittInfo.EndPhase}\t{uebungsszenarioNetzwerkBeitrittInfo.HostPort}";
                 byte[] nachrichtAlsByteArray = Encoding.UTF8.GetBytes(netzwerkBeitrittInfoAsString);
                 byte[] nachrichtZumSenden = new byte[nachrichtAlsByteArray.Length + 1];
                 nachrichtZumSenden[0] = LOBBYINFORMATION;
@@ -133,17 +147,16 @@ namespace quaKrypto.Models.Classes
             {
                 try
                 {
-                    tcpListener = new(IPAddress.Any, TCP_HOST_PORT);
+                    tcpListener = new(IPAddress.Any, 0);
                     tcpListener.Start();
+                    if (uebungsszenarioNetzwerkBeitrittInfo != null && tcpListener.Server.LocalEndPoint != null)
+                        uebungsszenarioNetzwerkBeitrittInfo.HostPort = ((IPEndPoint)tcpListener.Server.LocalEndPoint).Port;
                     while (true)
                     {
-                        Trace.WriteLine("Starting To Accept");
                         TcpClient tcpClient = tcpListener.AcceptTcpClient();
-                        Trace.WriteLine("Accepted Client");
 
                         NetworkStream networkStream = tcpClient.GetStream();
                         networkStreams.Add(networkStream);
-                        //TODO: Client schicken 
                         StarteTCPListeningThread(networkStream);
                         Thread.Sleep(100); //Zum Teil wird sonst nicht richtig die RollenInformation gesendet
                         SendeRollenInformation();
@@ -156,6 +169,7 @@ namespace quaKrypto.Models.Classes
         //Schnittstelle für LobbyScreenView
         public static void BeendeTCPLobby()
         {
+            SendeNachrichtTCP(LOBBY_NICHT_MEHR_VERFUEGBAR, "");
             tcpListener?.Stop();
             tcpListener = null;
             foreach (NetworkStream networkStream in networkStreams)
@@ -183,10 +197,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Schnittstelle fürs Übungsszenario
-        public static void UebergebeKontrolle(RolleEnum nächsteRolle)
-        {
-            SendeNachrichtTCP(KONTROLLE_UEBERGEBEN, nächsteRolle.ToString(), nächsteRolle);
-        }
+        public static void UebergebeKontrolle(RolleEnum nächsteRolle) => SendeNachrichtTCP(KONTROLLE_UEBERGEBEN, nächsteRolle.ToString(), nächsteRolle);
 
         //Schnittstelle fürs Übungsszenario
         public static void SendeAufzeichnungsUpdate(List<Handlungsschritt> neueHandlungsschritte, RolleEnum? empfänger = null)
@@ -287,7 +298,34 @@ namespace quaKrypto.Models.Classes
                         }
                         kompletteNachrichtAlsBytes = new byte[TCP_RECEIVE_BUFFER_SIZE];
                     }
-                    catch (IOException) { networkStream.Close(); Trace.WriteLine("Eine Socket-Exception wurde beim TCP-Empfangen mit folgender Adresse geworfen: "); break; }
+                    catch (Exception)
+                    {
+                        networkStream.Close();
+                        if (rolleNetworkStreams.ContainsValue(networkStream))
+                        {
+                            RolleEnum rolle = rolleNetworkStreams.Where(n => n.Value == networkStream).First().Key;
+                            switch (rolle)
+                            {
+                                case RolleEnum.Alice:
+                                    aliceRolle = null;
+                                    uebungsszenario?.GebeRolleFrei(RolleEnum.Alice);
+                                    break;
+                                case RolleEnum.Bob:
+                                    bobRolle = null;
+                                    uebungsszenario?.GebeRolleFrei(RolleEnum.Bob);
+                                    break;
+                                case RolleEnum.Eve:
+                                    eveRolle = null;
+                                    uebungsszenario?.GebeRolleFrei(RolleEnum.Eve);
+                                    break;
+                            }
+                            rolleNetworkStreams.Remove(rolle);
+                        }
+                        networkStreams.Remove(networkStream);
+
+                        Trace.WriteLine("Eine Socket-Exception wurde beim TCP-Empfangen mit folgender Adresse geworfen: ");
+                        break;
+                    }
                 }
             }).Start();
         }

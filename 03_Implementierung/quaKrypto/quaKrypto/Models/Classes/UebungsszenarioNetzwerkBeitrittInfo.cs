@@ -46,6 +46,8 @@ namespace quaKrypto.Models.Classes
         public bool BobState { get => bobState; set { bobState = value; Changed(nameof(BobIcon)); } }
         public bool EveState { get => eveState; set { eveState = value; Changed(nameof(EveIcon)); } }
 
+        public int HostPort { get; set; }
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public void Changed(string a) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(a));
