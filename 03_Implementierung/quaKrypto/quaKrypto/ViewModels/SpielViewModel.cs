@@ -56,7 +56,7 @@ namespace quaKrypto.ViewModels
             BituebertragungAusgang.CollectionChanged += new NotifyCollectionChangedEventHandler(CollectionChangedMethod);
             PhotonenuebertragungAusgang.CollectionChanged += new NotifyCollectionChangedEventHandler(CollectionChangedMethod);
 
-            uebungsszenario.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(RolleChanged);
+            uebungsszenario.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(UebungsszenarioChanged);
             //Informationsablage = new ObservableCollection<Information>();
             this.navigator = navigator;
 
@@ -84,8 +84,9 @@ namespace quaKrypto.ViewModels
         }
 
 
-        private void RolleChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void UebungsszenarioChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
+            if (uebungsszenario.Beendet) HauptMenu.Execute(null);//navigator.aktuellesViewModel = ;
             if (eigeneRollen.Contains(uebungsszenario.AktuelleRolle))
             {
                 //Prüfen ob Eve dran ist

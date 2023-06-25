@@ -95,7 +95,7 @@ namespace quaKrypto.Models.Classes
                 {
                     Handlungsschritt neusterHandlungsschritt = (Handlungsschritt)e.NewItems[0]!;
                     if (aktuellePhase is 0 or 1 && neusterHandlungsschritt.OperationsTyp is OperationsEnum.zugBeenden &&
-                        aktuelleRolle == RolleEnum.Eve) aktuellePhase += 1;
+                        aktuelleRolle == RolleEnum.Bob) aktuellePhase += 1;
                     if (aktuellePhase == 2 && neusterHandlungsschritt.OperationsTyp == OperationsEnum.bitsStreichen &&
                         aktuelleRolle == RolleEnum.Alice) aktuellePhase += 1;
                     if (aktuellePhase == 3 && neusterHandlungsschritt.OperationsTyp == OperationsEnum.bitfolgenVergleichen && aktuelleRolle == RolleEnum.Alice) aktuellePhase += 1;

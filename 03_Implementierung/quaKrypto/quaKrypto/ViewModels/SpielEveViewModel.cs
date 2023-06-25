@@ -59,7 +59,7 @@ namespace quaKrypto.ViewModels
             BituebertragungAusgangBob.CollectionChanged += new NotifyCollectionChangedEventHandler(CollectionChangedMethod);
             PhotonenuebertragungAusgangBob.CollectionChanged += new NotifyCollectionChangedEventHandler(CollectionChangedMethod);
 
-            uebungsszenario.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(RolleChanged);
+            uebungsszenario.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(UebungsszenarioChanged);
             //Informationsablage = new ObservableCollection<Information>();
             this.navigator = navigator;
 
@@ -85,28 +85,38 @@ namespace quaKrypto.ViewModels
 
             }, (o) => passwortFeld != "");
         }
-        private void RolleChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void UebungsszenarioChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (eigeneRollen.Contains(uebungsszenario.AktuelleRolle))
+
+            if(e != null)
             {
-                //Prüfen ob Eve dran ist
-                if (uebungsszenario.AktuelleRolle.RolleTyp != RolleEnum.Eve)
+                if(e.PropertyName is "Rolle")
                 {
-                    //ViewModelWechseln
-                    navigator.aktuellesViewModel = spielViewModel;
+                    if (eigeneRollen.Contains(uebungsszenario.AktuelleRolle))
+                    {
+                        //Prüfen ob Eve dran ist
+                        if (uebungsszenario.AktuelleRolle.RolleTyp != RolleEnum.Eve)
+                        {
+                            //ViewModelWechseln
+                            navigator.aktuellesViewModel = spielViewModel;
+                        }
+                        else
+                        {
+                            //Visibility ändern
+                            AenderZustand(Enums.SpielEnum.passwortEingabe);
+                        }
+                    }
+                    else
+                    {
+                        //Wartescreen
+                        AenderZustand(Enums.SpielEnum.warten);
+                    }
+                    setzeAktRolleView();
                 }
-                else
-                {
-                    //Visibility ändern
-                    AenderZustand(Enums.SpielEnum.passwortEingabe);
-                }
+                else if(e.PropertyName is "Beendet") if (uebungsszenario.Beendet) HauptMenu.Execute(null);
             }
-            else
-            {
-                //Wartescreen
-                AenderZustand(Enums.SpielEnum.warten);
-            }
-            setzeAktRolleView();
+            
+            
         }
 
         private void CollectionChangedMethod(object sender, NotifyCollectionChangedEventArgs e)
