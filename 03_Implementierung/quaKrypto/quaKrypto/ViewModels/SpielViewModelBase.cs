@@ -23,7 +23,7 @@ namespace quaKrypto.ViewModels
     public class SpielViewModelBase : BaseViewModel
     {
         protected IUebungsszenario uebungsszenario;
-
+        private Operationen hilfsoperationen = new Operationen();
         public Information CraftingFeldPhotonen { get; set; }
         public Information CraftingFeldPolarisation { get; set; }
         public Information CraftingFeldErgebnis { get; set; }
@@ -347,6 +347,13 @@ namespace quaKrypto.ViewModels
             OperandBitsFrei.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(CollectionChangedMethodBitsFrei);
 
             Informationsablage = new ObservableCollection<Information>();
+
+            uebungsszenario.Variante.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(VarianteChanged);
+        }
+
+        private void VarianteChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            setzeAktPhaseView();
         }
 
         private void CollectionChangedMethod(object sender, NotifyCollectionChangedEventArgs e)
@@ -489,6 +496,8 @@ namespace quaKrypto.ViewModels
                     (Operand1[0].InformationsTyp != InformationsEnum.asciiText && Operand1[0].InformationsTyp != InformationsEnum.verschluesselterText) ||
                     Operand2.Count != 1 ||
                     Operand2[0].InformationsTyp != InformationsEnum.bitfolge) return false;
+            Information laenge = hilfsoperationen.TextLaengeBestimmen(-1, Operand1[0], null, "", null);
+            if((int)laenge.InformationsInhalt > ((bool[])Operand2[0].InformationsInhalt).Length) return false;
             return true;
         }
 
@@ -510,6 +519,9 @@ namespace quaKrypto.ViewModels
                     (Operand1[0].InformationsTyp != InformationsEnum.polarisationsschemata) ||
                     Operand2.Count != 1 ||
                     Operand2[0].InformationsTyp != InformationsEnum.bitfolge) return false;
+            bool[] op1Inhalt = (bool[])Operand1[0].InformationsInhalt;
+            bool[] op2Inhalt = (bool[])Operand2[0].InformationsInhalt;
+            if(op1Inhalt.Length != op2Inhalt.Length)return false;
             return true;
         }
         private Information polschaErzeugen()
@@ -576,6 +588,9 @@ namespace quaKrypto.ViewModels
                     (Operand1[0].InformationsTyp != InformationsEnum.bitfolge) ||
                     Operand2.Count != 1 ||
                     Operand2[0].InformationsTyp != InformationsEnum.bitfolge) return false;
+            bool[] op1Inhalt = (bool[])Operand1[0].InformationsInhalt;
+            bool[] op2Inhalt = (bool[])Operand2[0].InformationsInhalt;
+            if (op1Inhalt.Length != op2Inhalt.Length) return false;
             return true;
         }
         private Information vergleichen()
@@ -607,6 +622,9 @@ namespace quaKrypto.ViewModels
                 (Operand1[0].InformationsTyp != InformationsEnum.polarisationsschemata && Operand1[0].InformationsTyp != InformationsEnum.bitfolge) ||
                 Operand2.Count != 1 ||
                 Operand1[0].InformationsTyp != Operand2[0].InformationsTyp) return false;
+            bool[] op1Inhalt = (bool[])Operand1[0].InformationsInhalt;
+            bool[] op2Inhalt = (bool[])Operand2[0].InformationsInhalt;
+            if (op1Inhalt.Length != op2Inhalt.Length) return false;
             return true;
         }
         private Information zahlErzeugen()
@@ -687,6 +705,9 @@ namespace quaKrypto.ViewModels
                 (Operand1[0].InformationsTyp != InformationsEnum.unscharfePhotonen) ||
                 Operand2.Count != 1 ||
                 Operand2[0].InformationsTyp != InformationsEnum.polarisationsschemata) return false;
+            byte[] op1Inhalt = (byte[])Operand1[0].InformationsInhalt;
+            bool[] op2Inhalt = (bool[])Operand2[0].InformationsInhalt;
+            if (op1Inhalt.Length != op2Inhalt.Length) return false;
             return true;
         }
 
