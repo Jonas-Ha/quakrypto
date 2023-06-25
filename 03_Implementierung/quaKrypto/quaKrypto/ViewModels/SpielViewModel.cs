@@ -89,7 +89,7 @@ namespace quaKrypto.ViewModels
         {
             if (e != null)
             {
-                if (e.PropertyName is "Rolle")
+                if (e.PropertyName is "aktuelleRolle")
                 {
                     if (eigeneRollen.Contains(uebungsszenario.AktuelleRolle))
                     {

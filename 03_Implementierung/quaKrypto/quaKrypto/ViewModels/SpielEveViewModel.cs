@@ -90,7 +90,7 @@ namespace quaKrypto.ViewModels
 
             if(e != null)
             {
-                if(e.PropertyName is "Rolle")
+                if (e.PropertyName is "aktuelleRolle")
                 {
                     if (eigeneRollen.Contains(uebungsszenario.AktuelleRolle))
                     {
@@ -113,7 +113,10 @@ namespace quaKrypto.ViewModels
                     }
                     setzeAktRolleView();
                 }
-                else if(e.PropertyName is "Beendet") if (uebungsszenario.Beendet) HauptMenu.Execute(null);
+                else if (e.PropertyName is "Beendet") 
+                { 
+                    if (uebungsszenario.Beendet) HauptMenu.Execute(null); 
+                }
             }
             
             
