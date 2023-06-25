@@ -244,6 +244,7 @@ namespace quaKrypto.Models.Classes
         public Information HandlungsschrittAusführenLassen(OperationsEnum operationsTyp, Information operand1, object operand2, string ergebnisInformationsName, RolleEnum ausFührer)
         {
             Handlungsschritt handlungsschritt = aktuelleRolle.ErzeugeHandlungsschritt(operationsTyp, operand1, operand2, ergebnisInformationsName, ausFührer);
+            handlungsschritt.AktuellePhase = Variante.AktuellePhase;
             Aufzeichnung.HaengeHandlungsschrittAn(handlungsschritt);
             return handlungsschritt.Ergebnis;
         }
