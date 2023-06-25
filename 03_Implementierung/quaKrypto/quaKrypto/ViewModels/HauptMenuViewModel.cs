@@ -17,8 +17,16 @@ namespace quaKrypto.ViewModels
         public DelegateCommand LobbyBeitritt { get; set; }
         public DelegateCommand LobbyErstellen { get; set; }
 
-        public HauptMenuViewModel(Navigator navigator)
+        public HauptMenuViewModel(Navigator navigator, string? errorMessage = null)
         {
+
+            NetzwerkClient.ResetNetzwerkClient();
+            NetzwerkHost.ResetNetzwerkHost();
+
+            if (!string.IsNullOrEmpty(errorMessage))
+            {
+                MessageBox.Show(errorMessage, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
             
         LobbyBeitritt = new((o) =>
             {

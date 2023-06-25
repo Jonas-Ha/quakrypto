@@ -62,7 +62,7 @@ namespace quaKrypto.ViewModels
         private string rolleIcon;
         public string RolleIcon
         {
-            set 
+            set
             {
                 rolleIcon = value;
                 this.EigenschaftWurdeGeändert();
@@ -92,7 +92,7 @@ namespace quaKrypto.ViewModels
         {
             set
             {
-                if(aktuellePhaseAnzeige != value)
+                if (aktuellePhaseAnzeige != value)
                 {
                     aktuellePhaseAnzeige = value;
                     this.EigenschaftWurdeGeändert();
@@ -192,7 +192,7 @@ namespace quaKrypto.ViewModels
         public DelegateCommand TextLaengeBestimmen { get; set; }
         public DelegateCommand BitsFreiBearbeiten { get; set; }
         public DelegateCommand InformationUmbenennen { get; set; }
-        
+
 
         #endregion
         public SpielViewModelBase(Navigator navigator, IUebungsszenario uebungsszenario, List<Rolle> eigeneRollen)
@@ -238,7 +238,11 @@ namespace quaKrypto.ViewModels
 
             HauptMenu = new((o) =>
             {
-                //navigator.aktuellesViewModel = new HauptMenuViewModel(navigator);
+                if (uebungsszenario.GetType() == typeof(UebungsszenarioNetzwerk))
+                {
+                    if (((UebungsszenarioNetzwerk)uebungsszenario).Host) NetzwerkHost.BeendeUebungsszenario();
+                    else NetzwerkClient.BeendeUebungsszenario();
+                }
                 navigator.aktuellesViewModel = new AufzeichnungViewModel(navigator, uebungsszenario);
 
             }, null);
@@ -335,7 +339,7 @@ namespace quaKrypto.ViewModels
             Operand2 = new ObservableCollection<Information>();
             OperandBitsFrei = new ObservableCollection<Information>();
             Ergebnis = new ObservableCollection<Information>();
-            
+
             Muelleimer = new ObservableCollection<Information>();
 
             Operand1.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(CollectionChangedMethod);
@@ -387,7 +391,7 @@ namespace quaKrypto.ViewModels
         {
             uint aktphase = uebungsszenario.Variante.AktuellePhase;
 
-            AktuellePhaseAnzeige = "Phase: " + aktphase.ToString();    
+            AktuellePhaseAnzeige = "Phase: " + aktphase.ToString();
         }
         protected void ClearViewTextBox()
         {
@@ -637,7 +641,7 @@ namespace quaKrypto.ViewModels
         private bool zahlErzeugenStartBedingung()
         {
             if (Informationsname == null ||
-                Informationsname == "" || 
+                Informationsname == "" ||
                 Eingabe == null ||
                 Eingabe == "" ||
                 !StringToZahl(Eingabe)) return false;
@@ -721,7 +725,7 @@ namespace quaKrypto.ViewModels
         private bool textGenerierenStartBedingung()
         {
             if (Informationsname == null ||
-                Informationsname == "" || 
+                Informationsname == "" ||
                 Eingabe == null ||
                 Eingabe == "") return false;
             return true;
