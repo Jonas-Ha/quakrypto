@@ -45,6 +45,7 @@ namespace quaKrypto.Models.Classes
             this.uebertragungskanal = new Uebertragungskanal();
             this.aufzeichnung = new Aufzeichnung();
             this.aufzeichnung.Handlungsschritte.CollectionChanged += this.variante.BerechneAktuellePhase;
+            this.Variante.PropertyChanged += new PropertyChangedEventHandler(VarianteChanged);
             this.name = name;
             this.beendet = false;
             
@@ -129,11 +130,7 @@ namespace quaKrypto.Models.Classes
             //Aufzeichnung.HaengeListeHandlungsschritteAn(handlungsschritte.ToList());
             //Die Handlungsschritte müssen hier noch überprüft werden um die Informationsablage auf den richtigen Stand zu bekommen
             aktuelleRolle.handlungsschritte.Clear();
-            if(variante.AktuellePhase >= endPhase) 
-            { 
-                Beenden();
-                return; 
-            }
+
             RolleEnum aktRolle = Variante.NaechsteRolle();
             for (int i = 0; i < Rollen.Count; i++)
             {
@@ -182,6 +179,15 @@ namespace quaKrypto.Models.Classes
         {
             beendet = true;
             PropertyHasChanged(nameof(Beendet));
+        }
+
+        private void VarianteChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (variante.AktuellePhase >= endPhase)
+            {
+                Beenden();
+                return;
+            }
         }
 
         private void PropertyHasChanged(string nameOfProperty)

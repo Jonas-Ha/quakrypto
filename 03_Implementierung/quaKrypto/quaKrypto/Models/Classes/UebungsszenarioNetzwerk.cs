@@ -47,6 +47,7 @@ namespace quaKrypto.Models.Classes
             this.uebertragungskanal = new Uebertragungskanal();
             this.aufzeichnung = new Aufzeichnung();
             this.aufzeichnung.Handlungsschritte.CollectionChanged += this.variante.BerechneAktuellePhase;
+            this.Variante.PropertyChanged += new PropertyChangedEventHandler(VarianteChanged);
             this.name = name;
             this.host = host;
             if (host)
@@ -207,12 +208,8 @@ namespace quaKrypto.Models.Classes
                         }
                     }
                 }
-                if (variante.AktuellePhase >= endPhase)
-                {
-                    Beenden();
-                    return;
-                }
-                else if (!eigeneRollen.Contains(aktRolle))
+
+                if (!eigeneRollen.Contains(aktRolle))
                     NetzwerkHost.UebergebeKontrolle(aktRolle);
                 else
                 {
@@ -375,6 +372,18 @@ namespace quaKrypto.Models.Classes
             rolle = rollen.Where(r => r.RolleTyp == RolleEnum.Eve).FirstOrDefault();
             if (rolleEve != null && (rolle == null || rolle == default(Rolle))) { rollen.Add(rolleEve); this.PropertyHasChanged(nameof(Rollen)); }
             else if (rolleEve == null && (rolle != null && rolle != default(Rolle))) rollen.Remove(rolle);
+        }
+
+        private void VarianteChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (host)
+            {
+                if (variante.AktuellePhase >= endPhase)
+                {
+                    Beenden();
+                    return;
+                }
+            }
         }
 
         private void PropertyHasChanged(string nameOfProperty)

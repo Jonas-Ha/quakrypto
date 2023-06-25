@@ -350,6 +350,7 @@ namespace quaKrypto.ViewModels
         private void VarianteChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             setzeAktPhaseView();
+            if(uebungsszenario.Beendet)
         }
 
         private void CollectionChangedMethod(object sender, NotifyCollectionChangedEventArgs e)
