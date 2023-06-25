@@ -15,9 +15,9 @@ namespace quaKrypto.Services
         private static Dictionary<RolleEnum, Color> RolleZuFarbe =
             new Dictionary<RolleEnum, Color>()
             {
-                {RolleEnum.Alice, Colors.AliceBlue},
-                {RolleEnum.Eve, Colors.LightYellow},
-                {RolleEnum.Bob, Colors.LightGreen},
+                {RolleEnum.Alice, Colors.LightGreen},
+                {RolleEnum.Eve, Colors.Orange},
+                {RolleEnum.Bob, Colors.LightPink},
             };
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

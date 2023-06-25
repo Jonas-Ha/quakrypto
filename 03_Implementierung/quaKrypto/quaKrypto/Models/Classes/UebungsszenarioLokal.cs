@@ -156,6 +156,7 @@ namespace quaKrypto.Models.Classes
         public Information HandlungsschrittAusführenLassen(Enums.OperationsEnum operationsTyp, Information operand1, object operand2, String ergebnisInformationsName, Enums.RolleEnum rolle)
         {
             Handlungsschritt handlungsschritt = aktuelleRolle.ErzeugeHandlungsschritt(operationsTyp, operand1, operand2, ergebnisInformationsName, rolle);
+            handlungsschritt.AktuellePhase = Variante.AktuellePhase;
             if (operationsTyp == OperationsEnum.nachrichtSenden) Uebertragungskanal.SpeicherNachrichtAb(handlungsschritt.Ergebnis);
             Aufzeichnung.HaengeHandlungsschrittAn(handlungsschritt);
             return handlungsschritt.Ergebnis;
@@ -180,7 +181,7 @@ namespace quaKrypto.Models.Classes
         public void Beenden()
         {
             beendet = true;
-            PropertyHasChanged(nameof(beendet));
+            PropertyHasChanged(nameof(Beendet));
         }
 
         private void PropertyHasChanged(string nameOfProperty)

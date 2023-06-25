@@ -13,6 +13,7 @@
         <services:HandlungsschrittRolleZuFarbe x:Key="RolleFarbenWaehler" />
     </UserControl.Resources>
     <Grid>
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="6*"></ColumnDefinition>
@@ -28,7 +29,7 @@
         <Label Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="SemiBold" FontSize="40" >Aufzeichnung</Label>
 
         <!-- DataGrid -->
-        <DataGrid x:Name="dg" Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding Handlungsschritte}" AutoGenerateColumns="False" Margin="10" SelectionChanged="DataGrid_SelectionChanged" IsReadOnly="True" CanUserSortColumns="False">
+        <DataGrid x:Name="dg" Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding Handlungsschritte}" AutoGenerateColumns="False" Margin="10,10,10,0" SelectionChanged="DataGrid_SelectionChanged" IsReadOnly="True" CanUserSortColumns="False">
             <DataGrid.Resources>
                 <Style TargetType="{x:Type DataGridCell}">
                     <Style.Triggers>
@@ -109,6 +110,10 @@
         </DataGrid>
 
         <!-- Button -->
-        <Button Grid.ColumnSpan="3" Grid.Row="2" x:Name="HauptmenueButton" MaxHeight="45" MinHeight="35" MaxWidth="450" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" MinWidth="80" Command="{Binding HauptMenu}">Zurück zum Hauptmenü</Button>
+        <Button Grid.ColumnSpan="3" Grid.Row="2" x:Name="HauptmenueButton" MaxHeight="45" MinHeight="35" MaxWidth="450" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20,18,20,17" MinWidth="80" Command="{Binding HauptMenu}">Zurück zum Hauptmenü</Button>
+        
+    </Grid>
+ 
+        <local:WikiButton/>
     </Grid>
 </UserControl>
