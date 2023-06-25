@@ -17,7 +17,7 @@ using quaKrypto.Models.Enums;
 
 namespace quaKrypto.Models.Interfaces
 {
-    public interface IVariante
+    public interface IVariante : INotifyPropertyChanged
     {
         public uint AktuellePhase
         { get; }

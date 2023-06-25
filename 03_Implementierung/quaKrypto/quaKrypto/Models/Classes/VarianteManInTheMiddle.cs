@@ -18,7 +18,7 @@ using System.ComponentModel;
 
 namespace quaKrypto.Models.Classes
 {
-    public class VarianteManInTheMiddle : IVariante
+    public class VarianteManInTheMiddle : IVariante, INotifyPropertyChanged
     {
         private uint aktuellePhase;
         public readonly IList<RolleEnum> moeglicheRollen = new ReadOnlyCollection<RolleEnum>
@@ -26,6 +26,8 @@ namespace quaKrypto.Models.Classes
 
         private RolleEnum vorherigeRolle;
         private RolleEnum aktuelleRolle;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public uint AktuellePhase
         {
@@ -93,13 +95,14 @@ namespace quaKrypto.Models.Classes
                 {
                     Handlungsschritt neusterHandlungsschritt = (Handlungsschritt)e.NewItems[0]!;
                     if (aktuellePhase is 0 or 1 && neusterHandlungsschritt.OperationsTyp is OperationsEnum.zugBeenden &&
-                        aktuelleRolle == RolleEnum.Bob) aktuellePhase += 1;
+                        aktuelleRolle == RolleEnum.Bob) { aktuellePhase += 1; PropertyHasChanged(nameof(aktuellePhase)); }
                     if (aktuellePhase == 2 && neusterHandlungsschritt.OperationsTyp == OperationsEnum.bitsStreichen &&
-                        aktuelleRolle == RolleEnum.Alice) aktuellePhase += 1;
-                    if (aktuellePhase == 3 && neusterHandlungsschritt.OperationsTyp == OperationsEnum.bitfolgenVergleichen && aktuelleRolle == RolleEnum.Alice) aktuellePhase += 1;
+                        aktuelleRolle == RolleEnum.Alice) { aktuellePhase += 1; PropertyHasChanged(nameof(aktuellePhase)); }
+                    if (aktuellePhase == 3 && neusterHandlungsschritt.OperationsTyp == OperationsEnum.bitfolgenVergleichen && 
+                        aktuelleRolle == RolleEnum.Alice) { aktuellePhase += 1; PropertyHasChanged(nameof(aktuellePhase)); }
                     if (aktuellePhase == 4 &&
                         neusterHandlungsschritt.OperationsTyp == OperationsEnum.textEntschluesseln &&
-                        aktuelleRolle == RolleEnum.Bob) aktuellePhase += 1;
+                        aktuelleRolle == RolleEnum.Bob) { aktuellePhase += 1; PropertyHasChanged(nameof(aktuellePhase)); }
                 }
             }
         }
@@ -253,6 +256,11 @@ namespace quaKrypto.Models.Classes
             }
 
             return op;
+        }
+
+        private void PropertyHasChanged(string nameOfProperty)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameOfProperty));
         }
     }
 }

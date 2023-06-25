@@ -344,7 +344,12 @@ namespace quaKrypto.ViewModels
 
             Informationsablage = new ObservableCollection<Information>();
 
-            
+            uebungsszenario.Variante.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(VarianteChanged);
+        }
+
+        private void VarianteChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            setzeAktPhaseView();
         }
 
         private void CollectionChangedMethod(object sender, NotifyCollectionChangedEventArgs e)

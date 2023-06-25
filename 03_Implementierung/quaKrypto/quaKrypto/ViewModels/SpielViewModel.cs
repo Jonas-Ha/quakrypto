@@ -58,6 +58,7 @@ namespace quaKrypto.ViewModels
             PhotonenuebertragungAusgang.CollectionChanged += new NotifyCollectionChangedEventHandler(CollectionChangedMethod);
 
             uebungsszenario.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(UebungsszenarioChanged);
+            
             //Informationsablage = new ObservableCollection<Information>();
             this.navigator = navigator;
 
@@ -118,6 +119,7 @@ namespace quaKrypto.ViewModels
                 }
             }    
         }
+
 
         private void CollectionChangedMethod(object sender, NotifyCollectionChangedEventArgs e)
         {
