@@ -16,6 +16,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using Xceed.Wpf.Toolkit;
 
 namespace quaKrypto.ViewModels
@@ -176,6 +177,7 @@ namespace quaKrypto.ViewModels
         #region Commands
 
         public DelegateCommand HauptMenu { get; set; }
+        public DelegateCommand Beendet { get; set; }
         public DelegateCommand PasswortEingabe { get; set; }
 
         public DelegateCommand BitFolgeErzeugen { get; set; }
@@ -238,16 +240,21 @@ namespace quaKrypto.ViewModels
 
             HauptMenu = new((o) =>
             {
+                Application.Current.Dispatcher.Invoke(() => { navigator.aktuellesViewModel = new AufzeichnungViewModel(navigator, uebungsszenario); });
+                
                 if (uebungsszenario.GetType() == typeof(UebungsszenarioNetzwerk))
                 {
                     if (((UebungsszenarioNetzwerk)uebungsszenario).Host) NetzwerkHost.BeendeUebungsszenario();
                     else NetzwerkClient.BeendeUebungsszenario();
                 }
-                navigator.aktuellesViewModel = new AufzeichnungViewModel(navigator, uebungsszenario);
+                
 
-            }, null);
+            }, (o) => true);
 
-
+            Beendet = new((o) =>
+            {
+                Application.Current.Dispatcher.Invoke(() => { navigator.aktuellesViewModel = new AufzeichnungViewModel(navigator, uebungsszenario); });
+            }, (o) => true);
 
             BitFolgeErzeugen = new((o) =>
             {
@@ -354,6 +361,7 @@ namespace quaKrypto.ViewModels
         private void VarianteChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             setzeAktPhaseView();
+            //if(uebungsszenario.Beendet)
         }
 
         private void CollectionChangedMethod(object sender, NotifyCollectionChangedEventArgs e)

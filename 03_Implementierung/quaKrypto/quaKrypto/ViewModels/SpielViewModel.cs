@@ -115,7 +115,7 @@ namespace quaKrypto.ViewModels
                 }
                 else if (e.PropertyName is "Beendet")
                 {
-                    if (uebungsszenario.Beendet) HauptMenu.Execute(null);//navigator.aktuellesViewModel = ;
+                    if (uebungsszenario.Beendet) Beendet.Execute(null);//navigator.aktuellesViewModel = ;
                 }
             }    
         }

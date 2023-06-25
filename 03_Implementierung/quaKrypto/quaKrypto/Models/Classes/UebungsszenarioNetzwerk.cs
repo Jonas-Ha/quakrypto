@@ -202,12 +202,8 @@ namespace quaKrypto.Models.Classes
                         }
                     }
                 }
-                if (variante.AktuellePhase >= endPhase)
-                {
-                    Beenden();
-                    return;
-                }
-                else if (!eigeneRollen.Contains(aktRolle))
+
+                if (!eigeneRollen.Contains(aktRolle))
                     NetzwerkHost.UebergebeKontrolle(aktRolle);
                 else
                 {
@@ -229,6 +225,7 @@ namespace quaKrypto.Models.Classes
 
             //Wird das darunter noch gebraucht?
             aktuelleRolle.handlungsschritte.Clear();
+            PrüfenSpielBeendet();
         }
 
         public bool GebeBildschirmFrei(string Passwort)
@@ -266,7 +263,7 @@ namespace quaKrypto.Models.Classes
             PropertyHasChanged(nameof(Beendet));
             NetzwerkHost.BeendenErlaubt = true;
             if (host) NetzwerkHost.BeendeUebungsszenario();
-            //else NetzwerkClient.BeendeUebungsszenario();
+            else NetzwerkClient.BeendeUebungsszenario();
         }
 
         /**
@@ -287,7 +284,7 @@ namespace quaKrypto.Models.Classes
                     Uebertragungskanal.SpeicherNachrichtAb(handlungsschritt.Ergebnis);
                 }
             }
-
+            if (Beendet) return;
             RolleEnum naechsteRolle = variante.NaechsteRolle();
 
             if (!eigeneRollen.Contains(naechsteRolle))
@@ -302,6 +299,7 @@ namespace quaKrypto.Models.Classes
                 }
             }
             PropertyHasChanged(nameof(aktuelleRolle));
+            PrüfenSpielBeendet();
         }
 
         /**
@@ -365,6 +363,29 @@ namespace quaKrypto.Models.Classes
             rolle = rollen.Where(r => r.RolleTyp == RolleEnum.Eve).FirstOrDefault();
             if (rolleEve != null && (rolle == null || rolle == default(Rolle))) { rollen.Add(rolleEve); this.PropertyHasChanged(nameof(Rollen)); }
             else if (rolleEve == null && (rolle != null && rolle != default(Rolle))) rollen.Remove(rolle);
+        }
+
+        private void VarianteChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (host)
+            {
+                if (variante.AktuellePhase >= endPhase)
+                {
+                    Beenden();
+                    return;
+                }
+            }
+        }
+        private void PrüfenSpielBeendet()
+        {
+            if (host)
+            {
+                if (variante.AktuellePhase >= endPhase)
+                {
+                    Beenden();
+                    return;
+                }
+            }
         }
 
         private void PropertyHasChanged(string nameOfProperty)
