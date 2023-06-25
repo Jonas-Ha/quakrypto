@@ -97,14 +97,14 @@ namespace quaKrypto.Models.Classes
                 {
                     Handlungsschritt neusterHandlungsschritt = (Handlungsschritt)e.NewItems[0]!;
                     if (aktuellePhase is 0 or 1 && neusterHandlungsschritt.OperationsTyp is OperationsEnum.zugBeenden &&
-                        aktuelleRolle == RolleEnum.Bob) { aktuellePhase += 1; PropertyHasChanged(nameof(aktuellePhase)); }
+                        neusterHandlungsschritt.Rolle == RolleEnum.Bob) { aktuellePhase += 1; PropertyHasChanged(nameof(aktuellePhase)); }
                     if (aktuellePhase == 2 && neusterHandlungsschritt.OperationsTyp == OperationsEnum.bitsStreichen &&
-                        aktuelleRolle == RolleEnum.Alice) { aktuellePhase += 1; PropertyHasChanged(nameof(aktuellePhase)); }
-                    if (aktuellePhase == 3 && neusterHandlungsschritt.OperationsTyp == OperationsEnum.bitfolgenVergleichen && 
-                        aktuelleRolle == RolleEnum.Alice) { aktuellePhase += 1; PropertyHasChanged(nameof(aktuellePhase)); }
+                        neusterHandlungsschritt.Rolle == RolleEnum.Alice) { aktuellePhase += 1; PropertyHasChanged(nameof(aktuellePhase)); }
+                    if (aktuellePhase == 3 && neusterHandlungsschritt.OperationsTyp == OperationsEnum.bitfolgenVergleichen &&
+                        neusterHandlungsschritt.Rolle == RolleEnum.Alice) { aktuellePhase += 1; PropertyHasChanged(nameof(aktuellePhase)); }
                     if (aktuellePhase == 4 &&
                         neusterHandlungsschritt.OperationsTyp == OperationsEnum.textEntschluesseln &&
-                        aktuelleRolle == RolleEnum.Bob) { aktuellePhase += 1; PropertyHasChanged(nameof(aktuellePhase)); }
+                        neusterHandlungsschritt.Rolle == RolleEnum.Bob) { aktuellePhase += 1; PropertyHasChanged(nameof(aktuellePhase)); }
                 }
             }
         }
