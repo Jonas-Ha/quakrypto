@@ -25,7 +25,7 @@ namespace quaKrypto.ViewModels
 
             if (!string.IsNullOrEmpty(errorMessage))
             {
-                MessageBox.Show(errorMessage, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(Application.Current.MainWindow, errorMessage, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             
         LobbyBeitritt = new((o) =>

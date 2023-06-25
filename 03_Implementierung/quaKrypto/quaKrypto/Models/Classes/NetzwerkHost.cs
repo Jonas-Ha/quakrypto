@@ -139,7 +139,7 @@ namespace quaKrypto.Models.Classes
                     networkStream.Write(nachrichtZumSenden, 0, nachrichtZumSenden.Length);
                 }
             }
-            catch (ObjectDisposedException) { }
+            catch (Exception) { }
         }
 
         private static void ErstelleTCPLobby()
