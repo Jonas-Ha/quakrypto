@@ -274,7 +274,7 @@ namespace quaKrypto.Models.Classes
                 NetzwerkClient.BeendeUebungsszenario();
             }
             beendet = true;
-            PropertyHasChanged(nameof(beendet));
+            PropertyHasChanged(nameof(Beendet));
         }
 
         /**

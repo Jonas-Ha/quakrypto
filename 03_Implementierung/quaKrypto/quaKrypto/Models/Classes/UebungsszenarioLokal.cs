@@ -180,7 +180,7 @@ namespace quaKrypto.Models.Classes
         public void Beenden()
         {
             beendet = true;
-            PropertyHasChanged(nameof(beendet));
+            PropertyHasChanged(nameof(Beendet));
         }
 
         private void PropertyHasChanged(string nameOfProperty)
