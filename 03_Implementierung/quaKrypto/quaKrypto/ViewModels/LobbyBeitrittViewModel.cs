@@ -1,22 +1,8 @@
 ﻿using quaKrypto.Commands;
 using quaKrypto.Models.Classes;
-using quaKrypto.Models.Enums;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.DirectoryServices.ActiveDirectory;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Windows.Threading;
 using quaKrypto.Models.Interfaces;
-using System.ComponentModel;
-using System.Diagnostics;
+using System.Linq;
 
 namespace quaKrypto.ViewModels
 {
@@ -41,7 +27,6 @@ namespace quaKrypto.ViewModels
             */
             //Hier wird der Anstoß gegeben nach verfübaren Lobbys zu suchen
             NetzwerkClient.BeginneSucheNachLobbys();
-            NetzwerkClient.VerfuegbareLobbys.CollectionChanged += (a, b) => { Trace.WriteLine("IchwarHier"); EigenschaftWurdeGeändert(nameof(VerfuegbarLobbys)); };
             HauptMenu = new((o) =>
             {
                 //Hier wird die suche beendet und dann zum Hauptmenü zurück navigiert
@@ -55,7 +40,7 @@ namespace quaKrypto.ViewModels
                 //Hier wird sich mit dem ausgwählten Übungsszeanrio verbunden, die Suche beendet und dann weiter zum Lobbyscreen gegangen
                 //UebungsszenarioNetzwerkBeitrittInfo uebungsszenarioInfo = NetzwerkClient.VerfuegbareLobbys[AusgewaehlteLobby];
                 if (SelectedLobby == null) return;
-                UebungsszenarioNetzwerkBeitrittInfo uebungsszenarioInfo = SelectedLobby;
+                UebungsszenarioNetzwerkBeitrittInfo uebungsszenarioInfo = NetzwerkClient.VerfuegbareLobbys.Where(v => v.IPAddress.Equals(SelectedLobby.IPAddress)).First();
                 IVariante variante = uebungsszenarioInfo.Variante switch
                 {
                     "Normaler Ablauf" => new VarianteNormalerAblauf(uebungsszenarioInfo.StartPhase),
@@ -66,7 +51,7 @@ namespace quaKrypto.ViewModels
                 IUebungsszenario uebungsszenario = new UebungsszenarioNetzwerk(uebungsszenarioInfo.Schwierigkeitsgrad, variante, uebungsszenarioInfo.StartPhase, uebungsszenarioInfo.EndPhase, uebungsszenarioInfo.Lobbyname, false);
 
                 NetzwerkClient.Ubungsszenario = (UebungsszenarioNetzwerk)uebungsszenario;
-
+                NetzwerkClient.BeendeSucheNachLobbys();
                 NetzwerkClient.VerbindeMitUebungsszenario(uebungsszenarioInfo);
 
 

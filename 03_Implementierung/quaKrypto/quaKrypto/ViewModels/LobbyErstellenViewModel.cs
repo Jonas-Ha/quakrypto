@@ -23,8 +23,8 @@ namespace quaKrypto.ViewModels
             
             HauptMenu = new((o) =>
             {
+                NetzwerkHost.BeendeZyklischesSendenVonLobbyinformation();
                 navigator.aktuellesViewModel = new HauptMenuViewModel(navigator);
-
             }, null);
             LobbyErstellen = new((o) =>
             {

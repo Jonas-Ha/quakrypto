@@ -184,6 +184,7 @@ namespace quaKrypto.Models.Classes
                 {
                     erg = (string)InformationsInhalt;
                 }
+                if (InformationsInhalt == null) return "";
                 return $"{InformationsInhalt.GetType()}{(char)243}{erg}";
             }
             set

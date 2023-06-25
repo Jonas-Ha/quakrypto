@@ -1,17 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using quaKrypto.Models.Classes;
 using System.Windows;
 
 namespace quaKrypto.Views
 {
     public partial class MainView : Window
     {
-        public MainView()
+        public MainView() => InitializeComponent();
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            InitializeComponent();
+            NetzwerkClient.BeendeSucheNachLobbys();
+            NetzwerkClient.TrenneVerbindungMitUebungsszenario();
+            NetzwerkHost.BeendeZyklischesSendenVonLobbyinformation();
+            NetzwerkHost.BeendeTCPLobby();
         }
     }
 }
