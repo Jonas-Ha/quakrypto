@@ -1,22 +1,10 @@
-﻿using Microsoft.VisualBasic;
-using quaKrypto.Commands;
+﻿using quaKrypto.Commands;
 using quaKrypto.Models.Classes;
 using quaKrypto.Models.Enums;
 using quaKrypto.Models.Interfaces;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
 using Information = quaKrypto.Models.Classes.Information;
 
 namespace quaKrypto.ViewModels

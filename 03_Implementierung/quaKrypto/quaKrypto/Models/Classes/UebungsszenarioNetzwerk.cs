@@ -13,8 +13,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Markup.Localizer;
 using quaKrypto.Models.Enums;
 using quaKrypto.Models.Interfaces;
+using quaKrypto.Services;
 
 namespace quaKrypto.Models.Classes
 {
@@ -144,6 +146,8 @@ namespace quaKrypto.Models.Classes
             //Geht nur wenn Host -> Host flag hinzufügen
             if (host && eigeneRollen.Count != 0)
             {
+                GeneriereInformationenFürRollen();
+
                 var benoetigteRollen = Variante.MoeglicheRollen;
                 if (Rollen.Count != benoetigteRollen.Count) return false;
                 for (int i = 0; i < benoetigteRollen.Count; i++)
@@ -391,6 +395,83 @@ namespace quaKrypto.Models.Classes
         private void PropertyHasChanged(string nameOfProperty)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameOfProperty));
+        }
+
+        private void GeneriereInformationenFürRollen()
+        {
+            if (startPhase > 4 || startPhase < 1) return;
+
+            Rolle rolleAlice = rollen.First(r => r.RolleTyp == RolleEnum.Alice), rolleBob = rollen.First(r => r.RolleTyp == RolleEnum.Bob), rolleEve = rollen.FirstOrDefault(r => r.RolleTyp == RolleEnum.Eve) ?? new Rolle(RolleEnum.Eve, "");
+
+            Operationen operationen = new();
+
+            int zähler = -1;
+
+            Information ausgangsText = new(zähler--, "Geheimtext", InformationsEnum.asciiText, StandardTexte.BekommeZufälligenText());
+            Information mindestSchlüssellänge = operationen.TextLaengeBestimmen(zähler--, ausgangsText, null, "Mindestschlüssellänge");
+            Information schlüssellänge = new(zähler--, "Schlüssellänge", InformationsEnum.zahl, (int)mindestSchlüssellänge.InformationsInhalt * 3);
+
+            switch (Variante)
+            {
+                case VarianteNormalerAblauf:
+
+                    Information schlüsselbits1Alice = operationen.BitfolgeGenerierenZahl(zähler--, schlüssellänge, null, "Schlüsselbits - Anfang");
+                    Information polschataAlice = operationen.PolarisationsschemataGenerierenZahl(zähler--, schlüssellänge, null, "Polarisationsschemata");
+                    Information photonenAlice = operationen.PhotonenGenerieren(zähler--, polschataAlice, schlüsselbits1Alice, "Photonen");
+
+                    Information polschataBob = operationen.PolarisationsschemataGenerierenZahl(zähler--, schlüssellänge, null, "Polarisationsschemata");
+                    Information unscharfePhotonenBob = operationen.NachrichtSenden(zähler--, photonenAlice, new Information(zähler--,"" ,InformationsEnum.keinInhalt, RolleEnum.Bob, RolleEnum.Bob, RolleEnum.Alice), "Unscharfe Photonen von Alice", RolleEnum.Alice);
+                    Information schlüsselbits1Bob = operationen.PhotonenZuBitfolge(zähler--, polschataBob, unscharfePhotonenBob, "Ausgelesene Photonen");
+
+                    if (startPhase <= 1)
+                    {
+                        rolleAlice.SpeicherInformationAb(ausgangsText);
+                        rolleAlice.SpeicherInformationAb(mindestSchlüssellänge);
+                        rolleAlice.SpeicherInformationAb(schlüssellänge);
+                        rolleBob.SpeicherInformationAb(schlüssellänge);
+                    }
+                    if (startPhase <= 2)
+                    {
+                        rolleAlice.SpeicherInformationAb(schlüsselbits1Alice);
+                        rolleAlice.SpeicherInformationAb(polschataAlice);
+                        rolleAlice.SpeicherInformationAb(photonenAlice);
+                    }
+                    if (startPhase <= 3)
+                    {
+
+                    }
+                    if (startPhase <= 4)
+                    {
+
+                    }
+                    break;
+                case VarianteAbhoeren:
+                    switch (startPhase)
+                    {
+                        case 1:
+                            break;
+                        case 2:
+                            break;
+                        case 3:
+                            break;
+                        case 4:
+                            break;
+                    }
+                    break;
+                case VarianteManInTheMiddle:
+                    switch (startPhase)
+                    {
+                        case 1:
+                            break;
+                        case 2:
+                            break;
+                        case 3:
+                            break;
+                        case 4:
+                            break;
+                    }
+                    break;
+            }
         }
 
     }

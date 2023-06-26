@@ -25,7 +25,7 @@ namespace quaKrypto.Models.Interfaces
         public Rolle AktuelleRolle
         { get; }
 
-        public Enums.SchwierigkeitsgradEnum Schwierigkeitsgrad
+        public SchwierigkeitsgradEnum Schwierigkeitsgrad
         { get; }
 
         public IVariante Variante 

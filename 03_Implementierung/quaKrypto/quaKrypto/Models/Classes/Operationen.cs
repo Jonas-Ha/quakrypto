@@ -64,7 +64,7 @@ namespace quaKrypto.Models.Classes
 
         // Rückgabe einer zufälligen Bitfolge aus einer Zufallszahl generiert
         // Operand1 Länge der zu generierenden Bitfolge, operand2 null
-        public Information BitfolgeGenerierenZahl(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
+        public Information BitfolgeGenerierenZahl(int informationsID, Information operand1, Information? operand2, String ergebnisName, RolleEnum? sender = null)
         {
             if (informationsID == null || operand1 == null || ergebnisName == null)
             {
@@ -131,7 +131,7 @@ namespace quaKrypto.Models.Classes
         }
 
         // Operand1 Länge der zu generierenden Polschata, operand2 null
-        public Information PolarisationsschemataGenerierenZahl(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
+        public Information PolarisationsschemataGenerierenZahl(int informationsID, Information operand1, Information? operand2, string ergebnisName, RolleEnum? sender = null)
         {
             if (informationsID == null || operand1 == null || ergebnisName == null)
             {
@@ -198,7 +198,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand 1 = polarisationsschemata, Operand2 = Schlüssel
-        public Information PhotonenGenerieren(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
+        public Information PhotonenGenerieren(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender = null)
         {
             if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {
@@ -371,7 +371,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 = Polarisationsschemata, Operand2 = unscharfePhotonen
-        public Information PhotonenZuBitfolge(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
+        public Information PhotonenZuBitfolge(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender = null)
         {
             if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {
@@ -436,7 +436,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 = Text Information, Operand2 = null
-        public Information TextLaengeBestimmen(int informationsID, Information operand1, Information? operand2, String ergebnisName, RolleEnum? sender)
+        public Information TextLaengeBestimmen(int informationsID, Information operand1, Information? operand2, String ergebnisName, RolleEnum? sender = null)
         {
             if (informationsID == null || operand1 == null || ergebnisName == null)
             {

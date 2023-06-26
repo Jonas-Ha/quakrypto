@@ -57,7 +57,6 @@ namespace quaKrypto.ViewModels
         {
             this.uebungsszenario = uebungsszenario;
 
-
             uebungsszenario.PropertyChanged += new((o, a) =>
             {
                 if (uebungsszenario.HostHatGestartet)
@@ -135,12 +134,12 @@ namespace quaKrypto.ViewModels
             Alicebestaetigen = new((o) =>
             {
 
-                bool success = uebungsszenario.RolleHinzufuegen(new Rolle(Models.Enums.RolleEnum.Alice, _aliasalice, _passwortalice), true);
+                bool success = uebungsszenario.RolleHinzufuegen(new Rolle(RolleEnum.Alice, _aliasalice, _passwortalice), true);
                 if (success)
                 {
                     for (int i = 0; i < uebungsszenario.Rollen.Count; i++)
                     {
-                        if (uebungsszenario.Rollen[i].RolleTyp == Models.Enums.RolleEnum.Alice)
+                        if (uebungsszenario.Rollen[i].RolleTyp == RolleEnum.Alice)
                         {
                             EigeneRollen.Add(uebungsszenario.Rollen[i]);
                         }
@@ -157,12 +156,12 @@ namespace quaKrypto.ViewModels
             Bobbestaetigen = new((o) =>
             {
 
-                bool success = uebungsszenario.RolleHinzufuegen(new Rolle(Models.Enums.RolleEnum.Bob, _aliasbob, _passwortbob), true);
+                bool success = uebungsszenario.RolleHinzufuegen(new Rolle(RolleEnum.Bob, _aliasbob, _passwortbob), true);
                 if (success)
                 {
                     for (int i = 0; i < uebungsszenario.Rollen.Count; i++)
                     {
-                        if (uebungsszenario.Rollen[i].RolleTyp == Models.Enums.RolleEnum.Bob)
+                        if (uebungsszenario.Rollen[i].RolleTyp == RolleEnum.Bob)
                         {
                             EigeneRollen.Add(uebungsszenario.Rollen[i]);
                         }
@@ -179,12 +178,12 @@ namespace quaKrypto.ViewModels
             Evebestaetigen = new((o) =>
             {
 
-                bool success = uebungsszenario.RolleHinzufuegen(new Rolle(Models.Enums.RolleEnum.Eve, _aliaseve, _passworteve), true);
+                bool success = uebungsszenario.RolleHinzufuegen(new Rolle(RolleEnum.Eve, _aliaseve, _passworteve), true);
                 if (success)
                 {
                     for (int i = 0; i < uebungsszenario.Rollen.Count; i++)
                     {
-                        if (uebungsszenario.Rollen[i].RolleTyp == Models.Enums.RolleEnum.Eve)
+                        if (uebungsszenario.Rollen[i].RolleTyp == RolleEnum.Eve)
                         {
                             EigeneRollen.Add(uebungsszenario.Rollen[i]);
                         }
