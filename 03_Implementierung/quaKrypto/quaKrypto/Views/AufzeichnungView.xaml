@@ -54,6 +54,7 @@
                         <Label Content="Phase" FontSize="15"/>
                     </DataGridTextColumn.Header>
                 </DataGridTextColumn>
+
                 <DataGridTextColumn Binding="{Binding Rolle}">
                     <DataGridTextColumn.Header>
                         <Label Content="Rolle" FontSize="15"/>
@@ -64,7 +65,21 @@
                         <Label Content="Operations Typ" FontSize="15"/>
                     </DataGridTextColumn.Header>
                 </DataGridTextColumn>
-                <DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width="135">
+                    <DataGridTemplateColumn.Header>
+                        <Label Content="Operand 1 Name" FontSize="15"/>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding DataContext.Operand1.InformationsNameToString, RelativeSource={RelativeSource AncestorType=DataGridRow}}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width="90">
                     <DataGridTemplateColumn.Header>
                         <Label Content="Operand 1" FontSize="15"/>
                     </DataGridTemplateColumn.Header>
@@ -76,7 +91,21 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width="135">
+                    <DataGridTemplateColumn.Header>
+                        <Label Content="Operand 2 Name" FontSize="15"/>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding DataContext.Operand2.InformationsNameToString, RelativeSource={RelativeSource AncestorType=DataGridRow}}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width="90">
                     <DataGridTemplateColumn.Header>
                         <Label Content="Operand 2" FontSize="15"/>
                     </DataGridTemplateColumn.Header>
@@ -88,9 +117,10 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+
                 <DataGridTextColumn Binding="{Binding ErgebnisName}">
                     <DataGridTextColumn.Header>
-                        <Label Content="Name Ergebnis" FontSize="15"/>
+                            <Label Content="Ergebnis Name" FontSize="15"/>
                     </DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTemplateColumn>
