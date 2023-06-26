@@ -224,6 +224,7 @@ namespace quaKrypto.Models.Classes
                                     uebungsszenario?.NeueRollenInformation(rolleAlice, rolleBob, rolleEve);
                                     break;
                                 case UEBUNGSSZENARIO_STARTEN:
+                                    uebungsszenario?.GeneriereInformationenFürRollen(int.TryParse(empfangeneNachrichtTeile[1], out int hostSeed) ? hostSeed : -1);
                                     uebungsszenario?.UebungsszenarioWurdeGestartet(Enum.TryParse(empfangeneNachrichtTeile[0], out RolleEnum startRolle) ? startRolle : RolleEnum.Alice);
                                     break;
                                 case KONTROLLE_UEBERGEBEN:

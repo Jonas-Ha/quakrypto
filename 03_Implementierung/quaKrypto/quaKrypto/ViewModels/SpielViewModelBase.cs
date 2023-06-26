@@ -755,7 +755,8 @@ namespace quaKrypto.ViewModels
                 Informationsname == "" ||
                 Operand1.Count != 1 ||
                 (Operand1[0].InformationsTyp != InformationsEnum.asciiText &&
-                 Operand1[0].InformationsTyp != InformationsEnum.bitfolge)) return false;
+                 Operand1[0].InformationsTyp != InformationsEnum.bitfolge &&
+                 Operand1[0].InformationsTyp != InformationsEnum.verschluesselterText)) return false;
             return true;
         }
 

@@ -136,7 +136,7 @@ namespace TestLibrary
         {
             //Arrange
             IVariante varianteAb = new VarianteAbhoeren(1);
-            UebungsszenarioLokal Ueb = new UebungsszenarioLokal(SchwierigkeitsgradEnum.Leicht, varianteAb, 1, 4, nameueb);
+            UebungsszenarioLokal Ueb = new UebungsszenarioLokal(SchwierigkeitsgradEnum.Leicht, varianteAb, 0, 4, nameueb);
             Rolle rolle = new Rolle(rolleEnum, alias, passwort);
             Rolle rolle2 = new Rolle(rolleEnumEve, aliasEve, passwortEve);
             Rolle rolle3 = new Rolle(rolleEnumBob, aliasBob, passwortBob);
@@ -212,7 +212,7 @@ namespace TestLibrary
         {
             //Arrange
             IVariante varianteAb = new VarianteAbhoeren(1);
-            UebungsszenarioLokal Ueb2 = new UebungsszenarioLokal(SchwierigkeitsgradEnum.Leicht, varianteAb, 1, 4, nameueb);
+            UebungsszenarioLokal Ueb2 = new UebungsszenarioLokal(SchwierigkeitsgradEnum.Leicht, varianteAb, 0, 4, nameueb);
             Rolle rolle = new Rolle(rolleEnum, alias, passwort);
             Rolle rolle2 = new Rolle(rolleEnumEve, aliasEve, passwortEve);
             Rolle rolle3 = new Rolle(rolleEnumBob, aliasBob, passwortBob);
@@ -230,7 +230,7 @@ namespace TestLibrary
         {
             //Arrange
             IVariante varianteNorm = new VarianteNormalerAblauf(1);
-            UebungsszenarioLokal Ueb = new UebungsszenarioLokal(SchwierigkeitsgradEnum.Leicht, varianteNorm, 1, 4, nameueb);
+            UebungsszenarioLokal Ueb = new UebungsszenarioLokal(SchwierigkeitsgradEnum.Leicht, varianteNorm, 0, 4, nameueb);
             Rolle rolle = new Rolle(rolleEnum, alias, passwort);
             Rolle rolle3 = new Rolle(rolleEnumBob, aliasBob, passwortBob);
 
@@ -260,7 +260,7 @@ namespace TestLibrary
         {
             //Arrange
             IVariante varianteNorm = new VarianteNormalerAblauf(1);
-            UebungsszenarioLokal Ueb = new UebungsszenarioLokal(SchwierigkeitsgradEnum.Leicht, varianteNorm, 1, 4, nameueb);
+            UebungsszenarioLokal Ueb = new UebungsszenarioLokal(SchwierigkeitsgradEnum.Leicht, varianteNorm, 0, 4, nameueb);
             Rolle rolle = new Rolle(rolleEnum, alias, passwort);
             Rolle rolle3 = new Rolle(rolleEnumBob, aliasBob, passwortBob);
 
