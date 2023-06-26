@@ -204,6 +204,7 @@ namespace quaKrypto.Models.Classes
         //Schnittstelle fürs Übungsszenario
         public static void SendeAufzeichnungsUpdate(List<Handlungsschritt> neueHandlungsschritte, RolleEnum? empfänger = null)
         {
+            //Eventuell Encoding vom Serializer benutzen oder anderweitig lösen
             XmlSerializer xmlSerializer = new(typeof(List<Handlungsschritt>));
             using StringWriter stringWriter = new();
             xmlSerializer.Serialize(stringWriter, neueHandlungsschritte);
