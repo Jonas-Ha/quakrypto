@@ -532,10 +532,10 @@ namespace quaKrypto.Models.Classes
                         rolleAlice.SpeicherInformationAb(VAschlüsselbits1Alice, true);
                         rolleAlice.SpeicherInformationAb(VApolschataAlice, true);
                         rolleAlice.SpeicherInformationAb(VAphotonenAlice, true);
-                        rolleEve.SpeicherInformationAb(VApolschataEve);
-                        rolleEve.SpeicherInformationAb(VAunscharfePhotonenEve);
-                        rolleEve.SpeicherInformationAb(VAschlüsselbits1Eve);
-                        rolleEve.SpeicherInformationAb(VAphotonenEve);
+                        rolleEve.SpeicherInformationAb(VApolschataEve, true);
+                        rolleEve.SpeicherInformationAb(VAunscharfePhotonenEve, true);
+                        rolleEve.SpeicherInformationAb(VAschlüsselbits1Eve, true);
+                        rolleEve.SpeicherInformationAb(VAphotonenEve, true);
                         rolleBob.SpeicherInformationAb(VApolschataBob, true);
                         rolleBob.SpeicherInformationAb(VAunscharfePhotonenBob, true);
                         rolleBob.SpeicherInformationAb(VAschlüsselbits1Bob, true);
@@ -620,7 +620,7 @@ namespace quaKrypto.Models.Classes
                     Information MITMprüfbitsBob = operationen.BitsStreichen(zähler--, MITMschlüsselbits2Bob, operationen.BitfolgeNegieren(zähler--, MITMprüfmaskeEveBob, null, ""), "Prüfbits");
                     Information MITMschlüsselbits3Bob = operationen.BitsStreichen(zähler--, MITMschlüsselbits2Bob, MITMprüfmaskeEveBob, "Schlüsselbits - Final");
 
-                    Information MITMprüfbitsDifferenzEve = operationen.BitfolgenVergleichen(zähler--, MITMprüfbitsAliceEve, MITMprüfbitsBob, "Unterschied eigener Prüfbits zu denen von Bob");
+                    Information MITMprüfbitsDifferenzEve = operationen.BitfolgenVergleichen(zähler--, MITMprüfbitsEveBob, MITMprüfbitsBob, "Unterschied eigener Prüfbits zu denen von Bob");
 
                     Information MITMprüfbitsDifferenzAlice = operationen.BitfolgenVergleichen(zähler--, MITMprüfbitsAlice, MITMprüfbitsAliceEve, "Unterschied Prüfbits");
                     //PHASE 4 Beginn
@@ -641,12 +641,12 @@ namespace quaKrypto.Models.Classes
                         rolleAlice.SpeicherInformationAb(MITMschlüsselbits1Alice, true);
                         rolleAlice.SpeicherInformationAb(MITMpolschataAlice, true);
                         rolleAlice.SpeicherInformationAb(MITMphotonenAlice, true);
-                        rolleEve.SpeicherInformationAb(MITMpolschataAliceEve);
-                        rolleEve.SpeicherInformationAb(MITMunscharfePhotonenEve);
-                        rolleEve.SpeicherInformationAb(MITMschlüsselbits1AliceEve);
-                        rolleEve.SpeicherInformationAb(MITMschlüsselbits1EveBob);
-                        rolleEve.SpeicherInformationAb(MITMpolschataEveBob);
-                        rolleEve.SpeicherInformationAb(MITMphotonenEveBob);
+                        rolleEve.SpeicherInformationAb(MITMpolschataAliceEve, true);
+                        rolleEve.SpeicherInformationAb(MITMunscharfePhotonenEve, true);
+                        rolleEve.SpeicherInformationAb(MITMschlüsselbits1AliceEve, true);
+                        rolleEve.SpeicherInformationAb(MITMschlüsselbits1EveBob, true);
+                        rolleEve.SpeicherInformationAb(MITMpolschataEveBob, true);
+                        rolleEve.SpeicherInformationAb(MITMphotonenEveBob, true);
                         rolleBob.SpeicherInformationAb(MITMpolschataBob, true);
                         rolleBob.SpeicherInformationAb(MITMunscharfePhotonenBob, true);
                         rolleBob.SpeicherInformationAb(MITMschlüsselbits1Bob, true);
