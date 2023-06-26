@@ -146,7 +146,7 @@ namespace quaKrypto.Models.Classes
             //Geht nur wenn Host -> Host flag hinzufügen
             if (host && eigeneRollen.Count != 0)
             {
-                GeneriereInformationenFürRollen();
+                int seed = GeneriereInformationenFürRollen();
 
                 var benoetigteRollen = Variante.MoeglicheRollen;
                 if (Rollen.Count != benoetigteRollen.Count) return false;
@@ -176,7 +176,7 @@ namespace quaKrypto.Models.Classes
                     }
                 }
 
-                NetzwerkHost.StarteUebungsszenario(aktRolle);
+                NetzwerkHost.StarteUebungsszenario(aktRolle, seed);
 
                 if (!eigeneRollen.Contains(aktRolle))
                 {
@@ -397,17 +397,19 @@ namespace quaKrypto.Models.Classes
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameOfProperty));
         }
 
-        private void GeneriereInformationenFürRollen()
+        public int GeneriereInformationenFürRollen(int hostSeed = -1)
         {
-            if (startPhase > 4 || startPhase < 1) return;
+            if (startPhase > 4 || startPhase < 1) return -1;
 
             Rolle rolleAlice = rollen.First(r => r.RolleTyp == RolleEnum.Alice), rolleBob = rollen.First(r => r.RolleTyp == RolleEnum.Bob), rolleEve = rollen.FirstOrDefault(r => r.RolleTyp == RolleEnum.Eve) ?? new Rolle(RolleEnum.Eve, "");
+            int seed = hostSeed == -1 ? (int)DateTime.Now.Ticks : hostSeed;
+            string ausgangsTextString = StandardTexte.BekommeZufälligenText(seed);
 
-            Operationen operationen = new();
+            Operationen operationen = new(seed);
 
             int zähler = -1;
 
-            Information ausgangsText = new(zähler--, "Geheimtext", InformationsEnum.asciiText, StandardTexte.BekommeZufälligenText());
+            Information ausgangsText = new(zähler--, "Geheimtext", InformationsEnum.asciiText, ausgangsTextString);
             Information mindestSchlüssellänge = operationen.TextLaengeBestimmen(zähler--, ausgangsText, null, "Mindestschlüssellänge");
             Information schlüssellänge = new(zähler--, "Schlüssellänge", InformationsEnum.zahl, (int)mindestSchlüssellänge.InformationsInhalt * 3);
 
@@ -420,14 +422,14 @@ namespace quaKrypto.Models.Classes
                     Information photonenAlice = operationen.PhotonenGenerieren(zähler--, polschataAlice, schlüsselbits1Alice, "Photonen");
 
                     Information polschataBob = operationen.PolarisationsschemataGenerierenZahl(zähler--, schlüssellänge, null, "Polarisationsschemata");
-                    Information unscharfePhotonenBob = operationen.NachrichtSenden(zähler--, photonenAlice, new Information(zähler--,"" ,InformationsEnum.keinInhalt, RolleEnum.Bob, RolleEnum.Bob, RolleEnum.Alice), "Unscharfe Photonen von Alice", RolleEnum.Alice);
+                    Information unscharfePhotonenBob = operationen.NachrichtSenden(zähler--, photonenAlice, new Information(zähler--, "", InformationsEnum.keinInhalt, RolleEnum.Bob, RolleEnum.Bob, RolleEnum.Alice), "Unscharfe Photonen von Alice", RolleEnum.Alice);
                     Information schlüsselbits1Bob = operationen.PhotonenZuBitfolge(zähler--, polschataBob, unscharfePhotonenBob, "Schlüsselbits - Anfang");
                     //PHASE 1 ENDE
                     Information polschataDifferenzBob = operationen.PolschataVergleichen(zähler--, polschataAlice, polschataBob, "Unterschied Polarisationsschemata");
                     Information schlüsselbits2Bob = operationen.BitsStreichen(zähler--, schlüsselbits1Bob, polschataDifferenzBob, "Schlüsselbits - Gestrichen");
 
                     Information schlüsselbits2Alice = operationen.BitsStreichen(zähler--, schlüsselbits1Alice, polschataDifferenzBob, "Schlüsselbits - Gestrichen");
-                    //PHASE 2 MENDE
+                    //PHASE 2 ENDE
                     Information prüfbitAnzahl = new(zähler--, "Anzahl der Prüfbits", InformationsEnum.zahl, ((bool[])schlüsselbits2Alice.InformationsInhalt).Length / 10);
                     Information längePrüfmaske = new(zähler--, "Länge Prüfmaske", InformationsEnum.zahl, ((bool[])schlüsselbits2Alice.InformationsInhalt).Length);
                     Information prüfmaske = operationen.BitmaskeGenerieren(zähler--, längePrüfmaske, prüfbitAnzahl, "Prüfmaske");
@@ -438,43 +440,43 @@ namespace quaKrypto.Models.Classes
                     Information schlüsselbits3Bob = operationen.BitsStreichen(zähler--, schlüsselbits2Bob, prüfmaske, "Schlüsselbits - Final");
 
                     Information prüfbitsDifferenzAlice = operationen.BitfolgenVergleichen(zähler--, prüfbitsAlice, prüfbitsBob, "Unterschied Prüfbits");
-                    //PHASE 3 MENDE
-                    if (startPhase <= 1)
+                    //PHASE 3 ENDE
+                    if (startPhase >= 1)
                     {
-                        rolleAlice.SpeicherInformationAb(ausgangsText);
-                        rolleAlice.SpeicherInformationAb(mindestSchlüssellänge);
-                        rolleAlice.SpeicherInformationAb(schlüssellänge);
-                        rolleBob.SpeicherInformationAb(schlüssellänge);
+                        rolleAlice.SpeicherInformationAb(ausgangsText, true);
+                        rolleAlice.SpeicherInformationAb(mindestSchlüssellänge, true);
+                        rolleAlice.SpeicherInformationAb(schlüssellänge, true);
+                        rolleBob.SpeicherInformationAb(schlüssellänge, true);
                     }
-                    if (startPhase <= 2)
+                    if (startPhase >= 2)
                     {
-                        rolleAlice.SpeicherInformationAb(schlüsselbits1Alice);
-                        rolleAlice.SpeicherInformationAb(polschataAlice);
-                        rolleAlice.SpeicherInformationAb(photonenAlice);
-                        rolleBob.SpeicherInformationAb(polschataBob);
-                        rolleBob.SpeicherInformationAb(unscharfePhotonenBob);
-                        rolleBob.SpeicherInformationAb(schlüsselbits1Bob);
+                        rolleAlice.SpeicherInformationAb(schlüsselbits1Alice, true);
+                        rolleAlice.SpeicherInformationAb(polschataAlice, true);
+                        rolleAlice.SpeicherInformationAb(photonenAlice, true);
+                        rolleBob.SpeicherInformationAb(polschataBob, true);
+                        rolleBob.SpeicherInformationAb(unscharfePhotonenBob, true);
+                        rolleBob.SpeicherInformationAb(schlüsselbits1Bob, true);
                     }
-                    if (startPhase <= 3)
+                    if (startPhase >= 3)
                     {
-                        rolleBob.SpeicherInformationAb(polschataAlice);
-                        rolleBob.SpeicherInformationAb(polschataDifferenzBob);
-                        rolleBob.SpeicherInformationAb(schlüsselbits2Bob);
-                        rolleAlice.SpeicherInformationAb(polschataDifferenzBob);
-                        rolleAlice.SpeicherInformationAb(schlüsselbits2Alice);
+                        rolleBob.SpeicherInformationAb(polschataAlice, true);
+                        rolleBob.SpeicherInformationAb(polschataDifferenzBob, true);
+                        rolleBob.SpeicherInformationAb(schlüsselbits2Bob, true);
+                        rolleAlice.SpeicherInformationAb(polschataDifferenzBob, true);
+                        rolleAlice.SpeicherInformationAb(schlüsselbits2Alice, true);
                     }
-                    if (startPhase <= 4)
+                    if (startPhase >= 4)
                     {
-                        rolleAlice.SpeicherInformationAb(prüfbitAnzahl);
-                        rolleAlice.SpeicherInformationAb(längePrüfmaske);
-                        rolleAlice.SpeicherInformationAb(prüfmaske);
-                        rolleAlice.SpeicherInformationAb(prüfbitsAlice);
-                        rolleAlice.SpeicherInformationAb(schlüsselbits3Alice);
-                        rolleBob.SpeicherInformationAb(prüfmaske);
-                        rolleBob.SpeicherInformationAb(prüfbitsBob);
-                        rolleBob.SpeicherInformationAb(schlüsselbits3Bob);
-                        rolleAlice.SpeicherInformationAb(prüfbitsBob);
-                        rolleAlice.SpeicherInformationAb(prüfbitsDifferenzAlice);
+                        rolleAlice.SpeicherInformationAb(prüfbitAnzahl, true);
+                        rolleAlice.SpeicherInformationAb(längePrüfmaske, true);
+                        rolleAlice.SpeicherInformationAb(prüfmaske, true);
+                        rolleAlice.SpeicherInformationAb(prüfbitsAlice, true);
+                        rolleAlice.SpeicherInformationAb(schlüsselbits3Alice, true);
+                        rolleBob.SpeicherInformationAb(prüfmaske, true);
+                        rolleBob.SpeicherInformationAb(prüfbitsBob, true);
+                        rolleBob.SpeicherInformationAb(schlüsselbits3Bob, true);
+                        rolleAlice.SpeicherInformationAb(prüfbitsBob, true);
+                        rolleAlice.SpeicherInformationAb(prüfbitsDifferenzAlice, true);
                     }
                     break;
                 case VarianteAbhoeren:
@@ -504,6 +506,7 @@ namespace quaKrypto.Models.Classes
                     }
                     break;
             }
+            return seed;
         }
 
     }

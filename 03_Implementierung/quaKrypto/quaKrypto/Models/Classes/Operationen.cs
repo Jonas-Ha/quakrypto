@@ -18,6 +18,13 @@ namespace quaKrypto.Models.Classes
 {
     public class Operationen
     {
+
+        private Random random;
+        public Operationen(int seed = -1)
+        {
+            random = new Random(seed == -1 ? (int)DateTime.Now.Ticks : seed);
+        }
+
         //Operand1 enthält zu sendende Information, operand2 enthält den Empfänger der Information
         public Information NachrichtSenden(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum sender)
         {
@@ -77,7 +84,6 @@ namespace quaKrypto.Models.Classes
                 throw new Exception("operand1 nicht vom Typ Zahl oder ist kein int");
             }
 
-            var rand = new Random();
             int zufallszahl = (int)operand1.InformationsInhalt;
 
             if(zufallszahl<=0)
@@ -91,7 +97,7 @@ namespace quaKrypto.Models.Classes
             for (int i = 0; i < zufallszahl; i++)
             {
                 // NextDouble gibt einen double s
-                if (rand.NextDouble() < 0.5) bitArray[i] = false;
+                if (random.NextDouble() < 0.5) bitArray[i] = false;
                 else bitArray[i] = true;
             }
 
@@ -144,7 +150,6 @@ namespace quaKrypto.Models.Classes
                 throw new Exception("operand1 nicht vom Typ Zahl oder ist kein int");
             }
 
-            var rand = new Random();
             int zufallszahl = (int)operand1.InformationsInhalt;
 
             if (zufallszahl <= 0)
@@ -158,7 +163,7 @@ namespace quaKrypto.Models.Classes
             for (int i = 0; i < zufallszahl; i++)
             {
                 // NextDouble gibt einen double s
-                if (rand.NextDouble() < 0.5) bitArray[i] = false;
+                if (random.NextDouble() < 0.5) bitArray[i] = false;
                 else bitArray[i] = true;
             }
 
@@ -255,7 +260,6 @@ namespace quaKrypto.Models.Classes
                 throw new Exception("operand2 nicht vom Typ Zahl oder ist kein int oder anzahlEinser > LängeBitmaske");
             }
 
-            var rand = new Random();
             int maskenLaenge = (int)operand1.InformationsInhalt;
             int anzahlEinser = (int)operand2.InformationsInhalt;
 
@@ -265,7 +269,7 @@ namespace quaKrypto.Models.Classes
             {
                 while (true)
                 {
-                    int counter = rand.Next(0, maskenLaenge);
+                    int counter = random.Next(0, maskenLaenge);
                     if (!bitArray[counter])
                     {
                         bitArray[counter] = true; 
@@ -397,8 +401,6 @@ namespace quaKrypto.Models.Classes
                 throw new Exception("operand1 und operand2 sind nicht gleich lang");
             }
 
-            var rand = new Random();
-
             bool[] erg = new bool[op1.Length];
 
             //21 (Photonen)
@@ -413,7 +415,7 @@ namespace quaKrypto.Models.Classes
                 else
                 {
                     //Polarisationsschemata waren ungleich => zufälliges Bit
-                    erg[i] = rand.NextDouble() > 0.5;
+                    erg[i] = random.NextDouble() > 0.5;
                 }
             }
             return new Information(informationsID, ergebnisName, InformationsEnum.bitfolge, erg, null);

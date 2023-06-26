@@ -198,17 +198,19 @@ namespace quaKrypto.Models.Classes
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameOfProperty));
         }
 
-        private void GeneriereInformationenFürRollen()
+        public int GeneriereInformationenFürRollen(int hostSeed = -1)
         {
-            if (startPhase > 4 || startPhase < 1) return;
+            if (startPhase > 4 || startPhase < 1) return -1;
 
             Rolle rolleAlice = rollen.First(r => r.RolleTyp == RolleEnum.Alice), rolleBob = rollen.First(r => r.RolleTyp == RolleEnum.Bob), rolleEve = rollen.FirstOrDefault(r => r.RolleTyp == RolleEnum.Eve) ?? new Rolle(RolleEnum.Eve, "");
+            int seed = hostSeed == -1 ? (int)DateTime.Now.Ticks : hostSeed;
+            string ausgangsTextString = StandardTexte.BekommeZufälligenText(seed);
 
-            Operationen operationen = new();
+            Operationen operationen = new(seed);
 
             int zähler = -1;
 
-            Information ausgangsText = new(zähler--, "Geheimtext", InformationsEnum.asciiText, StandardTexte.BekommeZufälligenText());
+            Information ausgangsText = new(zähler--, "Geheimtext", InformationsEnum.asciiText, ausgangsTextString);
             Information mindestSchlüssellänge = operationen.TextLaengeBestimmen(zähler--, ausgangsText, null, "Mindestschlüssellänge");
             Information schlüssellänge = new(zähler--, "Schlüssellänge", InformationsEnum.zahl, (int)mindestSchlüssellänge.InformationsInhalt * 3);
 
@@ -228,7 +230,7 @@ namespace quaKrypto.Models.Classes
                     Information schlüsselbits2Bob = operationen.BitsStreichen(zähler--, schlüsselbits1Bob, polschataDifferenzBob, "Schlüsselbits - Gestrichen");
 
                     Information schlüsselbits2Alice = operationen.BitsStreichen(zähler--, schlüsselbits1Alice, polschataDifferenzBob, "Schlüsselbits - Gestrichen");
-                    //PHASE 2 MENDE
+                    //PHASE 2 ENDE
                     Information prüfbitAnzahl = new(zähler--, "Anzahl der Prüfbits", InformationsEnum.zahl, ((bool[])schlüsselbits2Alice.InformationsInhalt).Length / 10);
                     Information längePrüfmaske = new(zähler--, "Länge Prüfmaske", InformationsEnum.zahl, ((bool[])schlüsselbits2Alice.InformationsInhalt).Length);
                     Information prüfmaske = operationen.BitmaskeGenerieren(zähler--, längePrüfmaske, prüfbitAnzahl, "Prüfmaske");
@@ -239,7 +241,7 @@ namespace quaKrypto.Models.Classes
                     Information schlüsselbits3Bob = operationen.BitsStreichen(zähler--, schlüsselbits2Bob, prüfmaske, "Schlüsselbits - Final");
 
                     Information prüfbitsDifferenzAlice = operationen.BitfolgenVergleichen(zähler--, prüfbitsAlice, prüfbitsBob, "Unterschied Prüfbits");
-                    //PHASE 3 MENDE
+                    //PHASE 3 ENDE
                     if (startPhase >= 1)
                     {
                         rolleAlice.SpeicherInformationAb(ausgangsText, true);
@@ -305,6 +307,7 @@ namespace quaKrypto.Models.Classes
                     }
                     break;
             }
+            return seed;
         }
     }
 }

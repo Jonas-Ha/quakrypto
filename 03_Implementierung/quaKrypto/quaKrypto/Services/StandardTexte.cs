@@ -60,9 +60,9 @@ namespace quaKrypto.Services
             "Summm"
         };
 
-        public static string BekommeZufälligenText()
+        public static string BekommeZufälligenText(int seed)
         {
-            Random random = new(DateTime.Now.Millisecond);
+            Random random = new(seed);
             return texte[random.Next(texte.Count)];
         }
 
