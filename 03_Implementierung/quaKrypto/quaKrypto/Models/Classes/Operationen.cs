@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using quaKrypto.Models.Enums;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace quaKrypto.Models.Classes
 {
@@ -443,7 +444,7 @@ namespace quaKrypto.Models.Classes
                 throw new ArgumentNullException("Object reference not set to an instance of an object");
             }
 
-            if ((!operand1.InformationsTyp.Equals(InformationsEnum.asciiText) && !operand1.InformationsTyp.Equals(InformationsEnum.bitfolge)) ||
+            if ((!operand1.InformationsTyp.Equals(InformationsEnum.asciiText) && !operand1.InformationsTyp.Equals(InformationsEnum.bitfolge)) && !operand1.InformationsTyp.Equals(InformationsEnum.verschluesselterText) ||
                 (operand1.InformationsInhalt is not (string or bool[])))
             {
                 throw new Exception("operand1 nicht vom Typ asciiText oder ist kein string");
@@ -458,6 +459,11 @@ namespace quaKrypto.Models.Classes
             } else if (operand1.InformationsTyp.Equals(InformationsEnum.bitfolge))
             { 
                 length = (operand1.InformationsInhalt as bool[]).Length;
+            }else if (operand1.InformationsTyp.Equals(InformationsEnum.verschluesselterText))
+            {
+                string text = (string)operand1.InformationsInhalt;
+                var bytes = Convert.FromBase64String(text);
+                length = bytes.Length * 8;
             }
 
             if (length == -1)

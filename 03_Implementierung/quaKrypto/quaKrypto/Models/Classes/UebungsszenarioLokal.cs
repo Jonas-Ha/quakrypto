@@ -145,7 +145,7 @@ namespace quaKrypto.Models.Classes
                     break;
                 }
             }
-            PropertyHasChanged(nameof(Rolle));
+            PropertyHasChanged(nameof(aktuelleRolle));
         }
 
         public bool GebeBildschirmFrei(string Passwort)
