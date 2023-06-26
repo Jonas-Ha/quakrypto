@@ -57,12 +57,16 @@ namespace quaKrypto.Services
             "Fensterbrett",
             "Doppelgänger",
             "Betriebswirtschaftslehre",
-            "Summm"
+            "Summm",
+            "WochenMende"
         };
 
-        public static string BekommeZufälligenText(int seed)
+        private static int seed;
+        public static int Seed { get => seed; set { seed = value; random = new Random(seed); } }
+        private static Random random = new(Seed);
+
+        public static string BekommeZufälligenText()
         {
-            Random random = new(seed);
             return texte[random.Next(texte.Count)];
         }
 
