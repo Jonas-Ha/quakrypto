@@ -146,8 +146,6 @@ namespace quaKrypto.Models.Classes
             //Geht nur wenn Host -> Host flag hinzufügen
             if (host && eigeneRollen.Count != 0)
             {
-                int seed = GeneriereInformationenFürRollen();
-
                 var benoetigteRollen = Variante.MoeglicheRollen;
                 if (Rollen.Count != benoetigteRollen.Count) return false;
                 for (int i = 0; i < benoetigteRollen.Count; i++)
@@ -164,7 +162,7 @@ namespace quaKrypto.Models.Classes
 
                     if (!istvorhanden) return false;
                 }
-
+                int seed = GeneriereInformationenFürRollen();
                 RolleEnum aktRolle = Variante.NaechsteRolle();
                 for (int i = 0; i < Rollen.Count; i++)
                 {
