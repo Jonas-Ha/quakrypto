@@ -421,8 +421,24 @@ namespace quaKrypto.Models.Classes
 
                     Information polschataBob = operationen.PolarisationsschemataGenerierenZahl(zähler--, schlüssellänge, null, "Polarisationsschemata");
                     Information unscharfePhotonenBob = operationen.NachrichtSenden(zähler--, photonenAlice, new Information(zähler--,"" ,InformationsEnum.keinInhalt, RolleEnum.Bob, RolleEnum.Bob, RolleEnum.Alice), "Unscharfe Photonen von Alice", RolleEnum.Alice);
-                    Information schlüsselbits1Bob = operationen.PhotonenZuBitfolge(zähler--, polschataBob, unscharfePhotonenBob, "Ausgelesene Photonen");
+                    Information schlüsselbits1Bob = operationen.PhotonenZuBitfolge(zähler--, polschataBob, unscharfePhotonenBob, "Schlüsselbits - Anfang");
+                    //PHASE 1 ENDE
+                    Information polschataDifferenzBob = operationen.PolschataVergleichen(zähler--, polschataAlice, polschataBob, "Unterschied Polarisationsschemata");
+                    Information schlüsselbits2Bob = operationen.BitsStreichen(zähler--, schlüsselbits1Bob, polschataDifferenzBob, "Schlüsselbits - Gestrichen");
 
+                    Information schlüsselbits2Alice = operationen.BitsStreichen(zähler--, schlüsselbits1Alice, polschataDifferenzBob, "Schlüsselbits - Gestrichen");
+                    //PHASE 2 MENDE
+                    Information prüfbitAnzahl = new(zähler--, "Anzahl der Prüfbits", InformationsEnum.zahl, ((bool[])schlüsselbits2Alice.InformationsInhalt).Length / 10);
+                    Information längePrüfmaske = new(zähler--, "Länge Prüfmaske", InformationsEnum.zahl, ((bool[])schlüsselbits2Alice.InformationsInhalt).Length);
+                    Information prüfmaske = operationen.BitmaskeGenerieren(zähler--, längePrüfmaske, prüfbitAnzahl, "Prüfmaske");
+                    Information prüfbitsAlice = operationen.BitsStreichen(zähler--, schlüsselbits2Alice, operationen.BitfolgeNegieren(zähler--, prüfmaske, null, ""), "Prüfbits");
+                    Information schlüsselbits3Alice = operationen.BitsStreichen(zähler--, schlüsselbits2Alice, prüfmaske, "Schlüsselbits - Final");
+
+                    Information prüfbitsBob = operationen.BitsStreichen(zähler--, schlüsselbits2Bob, operationen.BitfolgeNegieren(zähler--, prüfmaske, null, ""), "Prüfbits");
+                    Information schlüsselbits3Bob = operationen.BitsStreichen(zähler--, schlüsselbits2Bob, prüfmaske, "Schlüsselbits - Final");
+
+                    Information prüfbitsDifferenzAlice = operationen.BitfolgenVergleichen(zähler--, prüfbitsAlice, prüfbitsBob, "Unterschied Prüfbits");
+                    //PHASE 3 MENDE
                     if (startPhase <= 1)
                     {
                         rolleAlice.SpeicherInformationAb(ausgangsText);
@@ -435,14 +451,30 @@ namespace quaKrypto.Models.Classes
                         rolleAlice.SpeicherInformationAb(schlüsselbits1Alice);
                         rolleAlice.SpeicherInformationAb(polschataAlice);
                         rolleAlice.SpeicherInformationAb(photonenAlice);
+                        rolleBob.SpeicherInformationAb(polschataBob);
+                        rolleBob.SpeicherInformationAb(unscharfePhotonenBob);
+                        rolleBob.SpeicherInformationAb(schlüsselbits1Bob);
                     }
                     if (startPhase <= 3)
                     {
-
+                        rolleBob.SpeicherInformationAb(polschataAlice);
+                        rolleBob.SpeicherInformationAb(polschataDifferenzBob);
+                        rolleBob.SpeicherInformationAb(schlüsselbits2Bob);
+                        rolleAlice.SpeicherInformationAb(polschataDifferenzBob);
+                        rolleAlice.SpeicherInformationAb(schlüsselbits2Alice);
                     }
                     if (startPhase <= 4)
                     {
-
+                        rolleAlice.SpeicherInformationAb(prüfbitAnzahl);
+                        rolleAlice.SpeicherInformationAb(längePrüfmaske);
+                        rolleAlice.SpeicherInformationAb(prüfmaske);
+                        rolleAlice.SpeicherInformationAb(prüfbitsAlice);
+                        rolleAlice.SpeicherInformationAb(schlüsselbits3Alice);
+                        rolleBob.SpeicherInformationAb(prüfmaske);
+                        rolleBob.SpeicherInformationAb(prüfbitsBob);
+                        rolleBob.SpeicherInformationAb(schlüsselbits3Bob);
+                        rolleAlice.SpeicherInformationAb(prüfbitsBob);
+                        rolleAlice.SpeicherInformationAb(prüfbitsDifferenzAlice);
                     }
                     break;
                 case VarianteAbhoeren:

@@ -236,7 +236,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 = länge der Bitmaske, Operand2 = Anzahl der 1er in der Bitmaske
-        public Information BitmaskeGenerieren(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
+        public Information BitmaskeGenerieren(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender = null)
         {
 
             if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
@@ -277,7 +277,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 = Polschata, Operand2 = Polschata
-        public Information PolschataVergleichen(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
+        public Information PolschataVergleichen(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender = null)
         {
             if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {
@@ -312,7 +312,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 = Bitfolge, Operand2 = Bitfolge
-        public Information BitfolgenVergleichen(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
+        public Information BitfolgenVergleichen(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender = null)
         {
             if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {
@@ -347,7 +347,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 = Bitfolge, Operand2 = null
-        public Information BitfolgeNegieren(int informationsID, Information operand1, Information? operand2, String ergebnisName, RolleEnum? sender)
+        public Information BitfolgeNegieren(int informationsID, Information operand1, Information? operand2, String ergebnisName, RolleEnum? sender = null)
         {
             if (informationsID == null || operand1 == null || ergebnisName == null)
             {
@@ -551,7 +551,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 = Bitfolge die die Bits gestrichen bekommt, Operand2 = Bitfolge die angibt welche Bits gestrichen werden
-        public Information BitsStreichen(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
+        public Information BitsStreichen(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender = null)
         {
             if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {
