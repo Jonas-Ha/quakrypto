@@ -135,6 +135,18 @@ namespace quaKrypto.Models.Classes
             }
         }
 
+        [XmlIgnore]
+        public string InformationsNameToString
+        {
+            get
+            {
+                string erg = string.Empty;
+                if ((InformationsName == "ManuelleEingabeZahl") || (InformationsName == "ManuelleEingabeBitfolge")) return erg;
+                else erg = informationsName;
+                return erg;
+            }
+        }
+
         public string InformationsinhaltSerialized
         {
             get
