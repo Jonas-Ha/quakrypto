@@ -1,12 +1,11 @@
 ﻿using quaKrypto.Models.Enums;
-using quaKrypto.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Security;
 using System.Text;
 using System.Threading;
 using System.Xml.Serialization;
@@ -28,15 +27,13 @@ namespace quaKrypto.Models.Classes
 
         private const int ZEIT_ZWISCHEN_LOBBYINFORMATION_SENDEN_IN_MS = 1000;
 
-        private static PeriodicTimer? periodicTimer;
-
-        private const int UDP_PORT = 18523;
-        private const int TCP_PORT = 32581;
+        private const int UDP_LISTEN_PORT = 18523;
+        private const int UDP_SEND_PORT = 18524;
 
         private static UdpClient? udpClient = null;
         private static TcpListener? tcpListener = null;
 
-        private const int TCP_RECEIVE_BUFFER_SIZE = 8192;
+        private const int TCP_RECEIVE_BUFFER_SIZE = 131072;
 
         private static readonly Dictionary<RolleEnum, NetworkStream> rolleNetworkStreams = new();
         private static readonly List<NetworkStream> networkStreams = new();
@@ -50,58 +47,64 @@ namespace quaKrypto.Models.Classes
         private static UebungsszenarioNetzwerk? uebungsszenario;
         public static UebungsszenarioNetzwerk Ubungsszenario { set { uebungsszenario = value; } }
 
-
         private static UebungsszenarioNetzwerkBeitrittInfo? uebungsszenarioNetzwerkBeitrittInfo;
+
+        public static bool BeendenErlaubt { get; set; }
+
+        public static void ResetNetzwerkHost()
+        {
+            udpClient?.Close();
+            udpClient?.Dispose();
+            udpClient = null;
+            tcpListener?.Stop();
+            tcpListener = null;
+            rolleNetworkStreams.Clear();
+            networkStreams.Clear();
+            aliceRolle = null;
+            bobRolle = null;
+            eveRolle = null;
+            uebungsszenario = null;
+            uebungsszenarioNetzwerkBeitrittInfo = null;
+        }
 
 
         #region UDP
 
         //Schnittstelle für LobbyScreenView im Konstruktor oder LobbyerstellenView am Ende
-        public static async void BeginneZyklischesSendenVonLobbyinformation(UebungsszenarioNetzwerkBeitrittInfo netzwerkBeitrittInfo, int portToSendTo = UDP_PORT)
+        public static async void BeginneZyklischesSendenVonLobbyinformation(UebungsszenarioNetzwerkBeitrittInfo netzwerkBeitrittInfo, int portToSendTo = UDP_LISTEN_PORT)
         {
             if (udpClient != null) return;
             uebungsszenarioNetzwerkBeitrittInfo = netzwerkBeitrittInfo;
-            udpClient = new UdpClient(UDP_PORT);
-            periodicTimer = new PeriodicTimer(TimeSpan.FromMilliseconds(ZEIT_ZWISCHEN_LOBBYINFORMATION_SENDEN_IN_MS));
             ErstelleTCPLobby();
+            udpClient = new UdpClient(UDP_SEND_PORT);
+            using PeriodicTimer periodicTimer = new(TimeSpan.FromMilliseconds(ZEIT_ZWISCHEN_LOBBYINFORMATION_SENDEN_IN_MS));
             while (await periodicTimer.WaitForNextTickAsync())
             {
-                string netzwerkBeitrittInfoAsString = uebungsszenarioNetzwerkBeitrittInfo.Lobbyname.Replace("\t", "") + '\t'
-                    + uebungsszenarioNetzwerkBeitrittInfo.Protokoll + '\t'
-                    + uebungsszenarioNetzwerkBeitrittInfo.Variante + '\t'
-                    + uebungsszenarioNetzwerkBeitrittInfo.Schwierigkeitsgrad.ToString() + '\t'
-                    + uebungsszenarioNetzwerkBeitrittInfo.AliceState.ToString() + '\t'
-                    + uebungsszenarioNetzwerkBeitrittInfo.BobState.ToString() + '\t'
-                    + uebungsszenarioNetzwerkBeitrittInfo.EveState.ToString() + '\t'
-                    + uebungsszenarioNetzwerkBeitrittInfo.StartPhase + '\t'
-                    + uebungsszenarioNetzwerkBeitrittInfo.EndPhase;
-
+                if (udpClient == null) break;
+                string netzwerkBeitrittInfoAsString = $"{uebungsszenarioNetzwerkBeitrittInfo.Lobbyname.Replace("\t", "")}\t{uebungsszenarioNetzwerkBeitrittInfo.Protokoll}\t{uebungsszenarioNetzwerkBeitrittInfo.Variante}\t{uebungsszenarioNetzwerkBeitrittInfo.Schwierigkeitsgrad}\t{uebungsszenarioNetzwerkBeitrittInfo.AliceState}\t{uebungsszenarioNetzwerkBeitrittInfo.BobState}\t{uebungsszenarioNetzwerkBeitrittInfo.EveState}\t{uebungsszenarioNetzwerkBeitrittInfo.StartPhase}\t{uebungsszenarioNetzwerkBeitrittInfo.EndPhase}\t{uebungsszenarioNetzwerkBeitrittInfo.HostPort}";
                 byte[] nachrichtAlsByteArray = Encoding.UTF8.GetBytes(netzwerkBeitrittInfoAsString);
                 byte[] nachrichtZumSenden = new byte[nachrichtAlsByteArray.Length + 1];
                 nachrichtZumSenden[0] = LOBBYINFORMATION;
                 Array.Copy(nachrichtAlsByteArray, 0, nachrichtZumSenden, 1, nachrichtAlsByteArray.Length);
                 try
                 {
-                    udpClient.Send(nachrichtZumSenden, nachrichtZumSenden.Length, "255.255.255.255", portToSendTo);
+                    udpClient?.Send(nachrichtZumSenden, nachrichtZumSenden.Length, "255.255.255.255", portToSendTo);
                 }
                 catch (SocketException) { Trace.WriteLine("Eine Socket-Exception wurde beim UDP-Senden vom Host geworfen"); break; }
-
             }
-
+            BeendeZyklischesSendenVonLobbyinformation();
         }
-        private static void BeendeZyklischesSendenVonLobbyinformation()
+        public static void BeendeZyklischesSendenVonLobbyinformation()
         {
             if (udpClient == null) return;
             try
             {
-                udpClient.Send(new byte[] { LOBBY_NICHT_MEHR_VERFUEGBAR }, 1, "255.255.255.255", UDP_PORT);
-                periodicTimer?.Dispose();
-                periodicTimer = null;
+                udpClient?.Send(new byte[] { LOBBY_NICHT_MEHR_VERFUEGBAR }, 1, "255.255.255.255", UDP_LISTEN_PORT);
                 udpClient?.Close();
+                udpClient?.Dispose();
                 udpClient = null;
             }
             catch (ObjectDisposedException) { }
-            
         }
 
         #endregion
@@ -110,12 +113,16 @@ namespace quaKrypto.Models.Classes
         private static void SendeNachrichtTCP(byte commandIdentifier, string nachricht, RolleEnum? empfänger = null)
         {
             byte[] nachrichtAlsByteArray = Encoding.UTF8.GetBytes(nachricht);
-            byte[] nachrichtZumSenden = new byte[nachrichtAlsByteArray.Length + 1];
+            byte[] nachrichtZumSenden = new byte[nachrichtAlsByteArray.Length + 4];
             nachrichtZumSenden[0] = commandIdentifier;
             Array.Copy(nachrichtAlsByteArray, 0, nachrichtZumSenden, 1, nachrichtAlsByteArray.Length);
+            for (int i = 0; i < 3; i++)
+            {
+                nachrichtZumSenden[^(1 + i)] = (byte)'\0';
+            }
             try
             {
-                if (empfänger == null)
+                if (empfänger == null || commandIdentifier.Equals(KONTROLLE_UEBERGEBEN))
                 {
                     foreach (NetworkStream networkStream in networkStreams)
                     {
@@ -132,7 +139,7 @@ namespace quaKrypto.Models.Classes
                     networkStream.Write(nachrichtZumSenden, 0, nachrichtZumSenden.Length);
                 }
             }
-            catch (ObjectDisposedException) { }
+            catch (Exception) { }
         }
 
         private static void ErstelleTCPLobby()
@@ -142,17 +149,16 @@ namespace quaKrypto.Models.Classes
             {
                 try
                 {
-                    tcpListener = new(IPAddress.Any, TCP_PORT);
+                    tcpListener = new(IPAddress.Any, 0);
                     tcpListener.Start();
+                    if (uebungsszenarioNetzwerkBeitrittInfo != null && tcpListener.Server.LocalEndPoint != null)
+                        uebungsszenarioNetzwerkBeitrittInfo.HostPort = ((IPEndPoint)tcpListener.Server.LocalEndPoint).Port;
                     while (true)
                     {
-                        Trace.WriteLine("Starting To Accept");
                         TcpClient tcpClient = tcpListener.AcceptTcpClient();
-                        Trace.WriteLine("Accepted Client");
 
                         NetworkStream networkStream = tcpClient.GetStream();
                         networkStreams.Add(networkStream);
-                        //TODO: Client schicken 
                         StarteTCPListeningThread(networkStream);
                         Thread.Sleep(100); //Zum Teil wird sonst nicht richtig die RollenInformation gesendet
                         SendeRollenInformation();
@@ -165,6 +171,7 @@ namespace quaKrypto.Models.Classes
         //Schnittstelle für LobbyScreenView
         public static void BeendeTCPLobby()
         {
+            SendeNachrichtTCP(LOBBY_NICHT_MEHR_VERFUEGBAR, "");
             tcpListener?.Stop();
             tcpListener = null;
             foreach (NetworkStream networkStream in networkStreams)
@@ -185,52 +192,29 @@ namespace quaKrypto.Models.Classes
         }
 
         //Schnittstelle für LobbyScreenView
-        public static void StarteUebungsszenario(RolleEnum startRolle)
+        public static void StarteUebungsszenario(RolleEnum startRolle, int seed)
         {
-            SendeNachrichtTCP(UEBUNGSSZENARIO_STARTEN, startRolle.ToString());
+            SendeNachrichtTCP(UEBUNGSSZENARIO_STARTEN, $"{startRolle}\t{seed}");
             BeendeZyklischesSendenVonLobbyinformation();
         }
 
         //Schnittstelle fürs Übungsszenario
-        public static void UebergebeKontrolle(RolleEnum nächsteRolle)
-        {
-            SendeNachrichtTCP(KONTROLLE_UEBERGEBEN, nächsteRolle.ToString(), nächsteRolle);
-        }
+        public static void UebergebeKontrolle(RolleEnum nächsteRolle) => SendeNachrichtTCP(KONTROLLE_UEBERGEBEN, nächsteRolle.ToString(), nächsteRolle);
 
         //Schnittstelle fürs Übungsszenario
         public static void SendeAufzeichnungsUpdate(List<Handlungsschritt> neueHandlungsschritte, RolleEnum? empfänger = null)
         {
+            //Eventuell Encoding vom Serializer benutzen oder anderweitig lösen
             XmlSerializer xmlSerializer = new(typeof(List<Handlungsschritt>));
             using StringWriter stringWriter = new();
             xmlSerializer.Serialize(stringWriter, neueHandlungsschritte);
-            //string serializedHandlungsschritte = new("");
-            /*
-            XmlSerializer xmlSerializer = new(typeof(Handlungsschritt));
-            for (int i = 0; i < handlungsschritte.Count; i++)
-            {
-                if (i != 0) serializedHandlungsschritte += '\t';
-                using StringWriter stringWriter = new();
-                xmlSerializer.Serialize(stringWriter, handlungsschritte[i]);
-                serializedHandlungsschritte += stringWriter.ToString();
-            }*/
-            //SendeNachrichtTCP(ZUG_BEENDEN, serializedHandlungsschritte);
             SendeNachrichtTCP(AUFZEICHNUNG_UPDATE, stringWriter.ToString(), empfänger);
-            /*
-            string serializedHandlungsschritte = new("");
-            XmlSerializer xmlSerializer = new(typeof(Handlungsschritt));
-            for (int i = 0; i < neueHandlungsschritte.Count; i++)
-            {
-                if (i != 0) serializedHandlungsschritte += '\t';
-                using StringWriter stringWriter = new();
-                xmlSerializer.Serialize(stringWriter, neueHandlungsschritte[i]);
-                serializedHandlungsschritte += stringWriter.ToString();
-            }
-            SendeNachrichtTCP(AUFZEICHNUNG_UPDATE, serializedHandlungsschritte, empfänger);*/
         }
 
         //Schnittstelle fürs Übungsszenario
         public static void BeendeUebungsszenario()
         {
+            if (!BeendenErlaubt) return;
             SendeNachrichtTCP(UEBUNGSSZENARIO_ENDE, "");
             BeendeTCPLobby();
         }
@@ -245,75 +229,107 @@ namespace quaKrypto.Models.Classes
                     try
                     {
                         networkStream.Read(kompletteNachrichtAlsBytes, 0, TCP_RECEIVE_BUFFER_SIZE);
-                        byte commandIdentifier = kompletteNachrichtAlsBytes[0];
-                        string[] empfangeneNachrichtTeile = Encoding.UTF8.GetString(kompletteNachrichtAlsBytes[1..]).Split('\t');
-                        for(int i = 0; i <empfangeneNachrichtTeile.Length; i++)empfangeneNachrichtTeile[i] = empfangeneNachrichtTeile[i].TrimEnd('\0');
-                        switch (commandIdentifier)
+                        string[] empfangeneGanzeNachrichten = Encoding.UTF8.GetString(kompletteNachrichtAlsBytes).Split("\0\0\0");
+                        foreach (string ganzeNachricht in empfangeneGanzeNachrichten)
                         {
-                            case ROLLE_WAEHLEN:
-                                if (Enum.TryParse(empfangeneNachrichtTeile[0], out RolleEnum neueRolle))
-                                {
-                                    switch (neueRolle)
+                            if (ganzeNachricht == "") break;
+                            byte commandIdentifier = (byte)ganzeNachricht[0];
+                            string[] empfangeneNachrichtTeile = ganzeNachricht[1..].Split('\t');
+                            for (int i = 0; i < empfangeneNachrichtTeile.Length; i++) empfangeneNachrichtTeile[i] = empfangeneNachrichtTeile[i].TrimEnd('\0');
+                            switch (commandIdentifier)
+                            {
+                                case ROLLE_WAEHLEN:
+                                    if (Enum.TryParse(empfangeneNachrichtTeile[0], out RolleEnum neueRolle))
                                     {
-                                        case RolleEnum.Alice:
-                                            aliceRolle = new Rolle(RolleEnum.Alice, empfangeneNachrichtTeile[1], "");
-                                            uebungsszenario?.RolleHinzufuegen(aliceRolle, false);
-                                            break;
-                                        case RolleEnum.Bob:
-                                            bobRolle = new Rolle(RolleEnum.Bob, empfangeneNachrichtTeile[1], "");
-                                            uebungsszenario?.RolleHinzufuegen(bobRolle, false);
-                                            break;
-                                        case RolleEnum.Eve:
-                                            eveRolle = new Rolle(RolleEnum.Eve, empfangeneNachrichtTeile[1], "");
-                                            uebungsszenario?.RolleHinzufuegen(eveRolle, false);
-                                            break;
+                                        switch (neueRolle)
+                                        {
+                                            case RolleEnum.Alice:
+                                                aliceRolle = new Rolle(RolleEnum.Alice, empfangeneNachrichtTeile[1], "");
+                                                uebungsszenario?.RolleHinzufuegen(aliceRolle, false);
+                                                break;
+                                            case RolleEnum.Bob:
+                                                bobRolle = new Rolle(RolleEnum.Bob, empfangeneNachrichtTeile[1], "");
+                                                uebungsszenario?.RolleHinzufuegen(bobRolle, false);
+                                                break;
+                                            case RolleEnum.Eve:
+                                                eveRolle = new Rolle(RolleEnum.Eve, empfangeneNachrichtTeile[1], "");
+                                                uebungsszenario?.RolleHinzufuegen(eveRolle, false);
+                                                break;
+                                        }
+                                        networkStreams.Remove(networkStream);
+                                        rolleNetworkStreams[neueRolle] = networkStream;
                                     }
-                                    networkStreams.Remove(networkStream);
-                                    rolleNetworkStreams[neueRolle] = networkStream;
-                                }
-                                break;
-                            case ROLLE_FREIGEBEN:
-                                if (Enum.TryParse(empfangeneNachrichtTeile[0], out RolleEnum alteRolle))
-                                {
-                                    switch (alteRolle)
+                                    break;
+                                case ROLLE_FREIGEBEN:
+                                    if (Enum.TryParse(empfangeneNachrichtTeile[0], out RolleEnum alteRolle))
                                     {
-                                        case RolleEnum.Alice:
-                                            aliceRolle = null;
-                                            uebungsszenario?.GebeRolleFrei(RolleEnum.Alice);
-                                            break;
-                                        case RolleEnum.Bob:
-                                            bobRolle = null;
-                                            uebungsszenario?.GebeRolleFrei(RolleEnum.Bob);
-                                            break;
-                                        case RolleEnum.Eve:
-                                            eveRolle = null;
-                                            uebungsszenario?.GebeRolleFrei(RolleEnum.Eve);
-                                            break;
+                                        switch (alteRolle)
+                                        {
+                                            case RolleEnum.Alice:
+                                                aliceRolle = null;
+                                                uebungsszenario?.GebeRolleFrei(RolleEnum.Alice);
+                                                break;
+                                            case RolleEnum.Bob:
+                                                bobRolle = null;
+                                                uebungsszenario?.GebeRolleFrei(RolleEnum.Bob);
+                                                break;
+                                            case RolleEnum.Eve:
+                                                eveRolle = null;
+                                                uebungsszenario?.GebeRolleFrei(RolleEnum.Eve);
+                                                break;
+                                        }
+                                        networkStreams.Add(networkStream);
+                                        rolleNetworkStreams.Remove(alteRolle);
+                                        uebungsszenario?.GebeRolleFrei(alteRolle);
                                     }
-                                    networkStreams.Add(networkStream);
-                                    rolleNetworkStreams.Remove(alteRolle);
-                                    uebungsszenario?.GebeRolleFrei(alteRolle);
-                                }
-                                break;
-                            case ZUG_BEENDEN:
-                                List<Handlungsschritt> listeEmpfangenerHandlungsschritte = new();
-                                XmlSerializer xmlHandlungsschrittSerializer = new(typeof(List<Handlungsschritt>));
-                                using (StringReader stringReader = new StringReader(empfangeneNachrichtTeile[0]))
-                                {
-                                    object? deserialisiertesObjekt = xmlHandlungsschrittSerializer.Deserialize(stringReader);
-                                    if (deserialisiertesObjekt != null)
+                                    break;
+                                case ZUG_BEENDEN:
+                                    List<Handlungsschritt> listeEmpfangenerHandlungsschritte = new();
+                                    XmlSerializer xmlHandlungsschrittSerializer = new(typeof(List<Handlungsschritt>));
+                                    using (StringReader stringReader = new StringReader(empfangeneNachrichtTeile[0]))
                                     {
-                                        uebungsszenario?.ZugWurdeBeendet((List<Handlungsschritt>)deserialisiertesObjekt);
+                                        object? deserialisiertesObjekt = xmlHandlungsschrittSerializer.Deserialize(stringReader);
+                                        if (deserialisiertesObjekt != null)
+                                        {
+                                            uebungsszenario?.ZugWurdeBeendet((List<Handlungsschritt>)deserialisiertesObjekt);
+                                        }
                                     }
-                                }
-                                break;
-                            case UEBUNGSSZENARIO_ENDE:
-                                uebungsszenario?.Beenden();
-                                break;
+                                    break;
+                                case UEBUNGSSZENARIO_ENDE:
+                                    uebungsszenario?.Beenden();
+                                    break;
+                            }
                         }
                         kompletteNachrichtAlsBytes = new byte[TCP_RECEIVE_BUFFER_SIZE];
                     }
-                    catch (IOException) { networkStream.Close(); Trace.WriteLine("Eine Socket-Exception wurde beim TCP-Empfangen mit folgender Adresse geworfen: "); break; }
+                    catch (Exception)
+                    {
+                        networkStream.Close();
+                        if (rolleNetworkStreams.ContainsValue(networkStream))
+                        {
+                            RolleEnum rolle = rolleNetworkStreams.Where(n => n.Value == networkStream).First().Key;
+                            switch (rolle)
+                            {
+                                case RolleEnum.Alice:
+                                    aliceRolle = null;
+                                    uebungsszenario?.GebeRolleFrei(RolleEnum.Alice);
+                                    break;
+                                case RolleEnum.Bob:
+                                    bobRolle = null;
+                                    uebungsszenario?.GebeRolleFrei(RolleEnum.Bob);
+                                    break;
+                                case RolleEnum.Eve:
+                                    eveRolle = null;
+                                    uebungsszenario?.GebeRolleFrei(RolleEnum.Eve);
+                                    break;
+                            }
+                            rolleNetworkStreams.Remove(rolle);
+                        }
+                        networkStreams.Remove(networkStream);
+
+                        Trace.WriteLine("Eine Socket-Exception wurde beim TCP-Empfangen mit folgender Adresse geworfen: ");
+                        break;
+                    }
                 }
             }).Start();
         }

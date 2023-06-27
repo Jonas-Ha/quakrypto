@@ -23,8 +23,8 @@ namespace quaKrypto.ViewModels
             
             HauptMenu = new((o) =>
             {
+                NetzwerkHost.BeendeZyklischesSendenVonLobbyinformation();
                 navigator.aktuellesViewModel = new HauptMenuViewModel(navigator);
-
             }, null);
             LobbyErstellen = new((o) =>
             {
@@ -45,6 +45,8 @@ namespace quaKrypto.ViewModels
                 if (NetzwerkBasiert)
                 {
                     UebungsszenarioNetzwerkBeitrittInfo ErstelltesSzenarioInfo = new UebungsszenarioNetzwerkBeitrittInfo(IPAddress.Any, LobbyName, Protokoll[AusgProtokoll], VarianteAuswahl[AusgVariante], AusgSchwierigkeit == 0 ? SchwierigkeitsgradEnum.Leicht : AusgSchwierigkeit == 1 ? SchwierigkeitsgradEnum.Mittel : SchwierigkeitsgradEnum.Schwer, false, false, false);
+                    ErstelltesSzenarioInfo.StartPhase = (uint)AusgPhaseStart;
+                    ErstelltesSzenarioInfo.EndPhase = (uint)AusgPhaseEnd;
                     NetzwerkHost.BeginneZyklischesSendenVonLobbyinformation(ErstelltesSzenarioInfo);
                     UebungsszenarioNetzwerk uebungsszenarioNetzwerk = new UebungsszenarioNetzwerk(AusgSchwierigkeit == 0 ? SchwierigkeitsgradEnum.Leicht : AusgSchwierigkeit == 1 ? SchwierigkeitsgradEnum.Mittel : SchwierigkeitsgradEnum.Schwer, ausgewaehlteVariante, (uint)AusgPhaseStart, (uint)AusgPhaseEnd, LobbyName, true);
                     navigator.aktuellesViewModel = new LobbyScreenViewModel(navigator, uebungsszenarioNetzwerk, true);
@@ -85,13 +87,30 @@ namespace quaKrypto.ViewModels
         public int AusgProtokoll { get {  return _ausgProtokoll; } set { _ausgProtokoll = value; this.EigenschaftWurdeGeändert(); this.LobbyErstellen.RaiseCanExecuteChanged(); } }
         public int AusgSchwierigkeit { get { return _ausgSchwierigkeit; } set { _ausgSchwierigkeit = value; this.EigenschaftWurdeGeändert(); this.LobbyErstellen.RaiseCanExecuteChanged(); } }
         public int AusgVariante { get { return _ausgVariante; } set { _ausgVariante = value; this.EigenschaftWurdeGeändert(); this.LobbyErstellen.RaiseCanExecuteChanged(); } }
-        public int AusgPhaseStart { get { return _ausgPhaseStart; } set { _ausgPhaseStart = value; this.EigenschaftWurdeGeändert(); } }
+        public int AusgPhaseStart 
+        { 
+            get { return _ausgPhaseStart; } 
+            set {
+                if (AusgPhaseEnd == value) 
+                {
+                    if (AusgPhaseEnd == 0) AusgPhaseEnd += 1;
+                    else AusgPhaseStart = value - 1;
+                }
+                else _ausgPhaseStart = value; 
+                EigenschaftWurdeGeändert(nameof(AusgPhaseStart));
+            } 
+        }
         public int AusgPhaseEnd { 
             get { return _ausgPhaseEnde; }
             set 
-            { 
-                _ausgPhaseEnde = value;
-                this.EigenschaftWurdeGeändert(); 
+            {
+                if (AusgPhaseStart == value)
+                {
+                    if (AusgPhaseStart == 5)AusgPhaseStart -= 1;
+                    else AusgPhaseEnd = value + 1;
+                }
+                else _ausgPhaseEnde = value;
+                EigenschaftWurdeGeändert(nameof(AusgPhaseEnd));
             } 
         }
         public ObservableCollection<string> Protokoll { get; set; }

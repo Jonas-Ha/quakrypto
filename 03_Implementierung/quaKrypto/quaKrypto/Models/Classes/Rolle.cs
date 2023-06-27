@@ -28,7 +28,7 @@ namespace quaKrypto.Models.Classes
         private String passwort;
         private bool freigeschaltet;
         private ObservableCollection<Information> informationsablage;
-        public  ReadOnlyObservableCollection<Information> Informationsablage;
+        public ReadOnlyObservableCollection<Information> Informationsablage;
         private int informationszaehler;
         public List<Handlungsschritt> handlungsschritte; //Eigentlich nur für das Netzwerk benötigt
 
@@ -51,13 +51,13 @@ namespace quaKrypto.Models.Classes
             handlungsschritte = new List<Handlungsschritt>();
         }
 
-        public String Alias 
-        { 
+        public string Alias
+        {
             get { return alias; }
             init { alias = value; }
         }
 
-        public Enums.RolleEnum RolleTyp
+        public RolleEnum RolleTyp
         {
             get { return rolle; }
         }
@@ -66,14 +66,18 @@ namespace quaKrypto.Models.Classes
         {
             get { return informationszaehler; }
         }
-        
+        public bool Freigeschaltet
+        {
+            get { return freigeschaltet; }
+        }
+
         public bool BeginneZug(string passwort)
         {
-            if (this.passwort == passwort) 
+            if (this.passwort == passwort)
             {
                 freigeschaltet = true;
                 return true;
-            } 
+            }
             else return false;
         }
         public void Add(Handlungsschritt handlungsschritt)
@@ -83,7 +87,7 @@ namespace quaKrypto.Models.Classes
 
         public Handlungsschritt ErzeugeHandlungsschritt(Enums.OperationsEnum operationsTyp, Information operand1, object operand2, String ergebnisInformationsName, Enums.RolleEnum rolle)
         {
-            if(freigeschaltet)
+            if (freigeschaltet)
             {
                 var handlungsschritt = new Handlungsschritt(informationszaehler++, operationsTyp, operand1, operand2, ergebnisInformationsName, rolle);
                 if (operationsTyp == OperationsEnum.zugBeenden) freigeschaltet = false;
@@ -93,12 +97,12 @@ namespace quaKrypto.Models.Classes
 
             }
             throw new Exception("Rolle war nicht freigeschaltet");
-           
+
         }
 
-        public void SpeicherInformationAb(Information information)
+        public void SpeicherInformationAb(Information information, bool KI = false)
         {
-            if (freigeschaltet)
+            if (freigeschaltet || KI)
             {
                 if (information == null) throw new NoNullAllowedException("Abzuspeichernde Information darf nicht null sein");
                 for (int i = 0; i < informationsablage.Count; i++)
@@ -113,7 +117,7 @@ namespace quaKrypto.Models.Classes
 
         public bool LoescheInformation(int informationsID)
         {
-            if (freigeschaltet) 
+            if (freigeschaltet)
             {
                 for (int i = 0; i < informationsablage.Count; i++)
                 {
@@ -124,7 +128,7 @@ namespace quaKrypto.Models.Classes
                     }
                 }
                 return false;
-            } 
+            }
             throw new Exception("Rolle war nicht freigeschaltet");
         }
 

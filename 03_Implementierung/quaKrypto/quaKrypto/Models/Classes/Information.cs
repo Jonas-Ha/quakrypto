@@ -135,6 +135,18 @@ namespace quaKrypto.Models.Classes
             }
         }
 
+        [XmlIgnore]
+        public string InformationsNameToString
+        {
+            get
+            {
+                string erg = string.Empty;
+                if ((InformationsName == "ManuelleEingabeZahl") || (InformationsName == "ManuelleEingabeBitfolge")) return erg;
+                else erg = informationsName;
+                return erg;
+            }
+        }
+
         public string InformationsinhaltSerialized
         {
             get
@@ -178,17 +190,18 @@ namespace quaKrypto.Models.Classes
                 }
                 else if (InformationsTyp == InformationsEnum.asciiText && InformationsInhalt.GetType() == typeof(string))
                 {
-                    erg = (string)InformationsInhalt;
+                    erg = Convert.ToBase64String(Encoding.UTF8.GetBytes((string)InformationsInhalt));
                 }
                 else if (InformationsTyp == InformationsEnum.verschluesselterText && InformationsInhalt.GetType() == typeof(string))
                 {
-                    erg = (string)InformationsInhalt;
+                    erg = Convert.ToBase64String(Encoding.UTF8.GetBytes((string)InformationsInhalt));
                 }
-                return erg;
+                if (InformationsInhalt == null) return "";
+                return $"{InformationsInhalt.GetType()}{(char)243}{erg}";
             }
             set
             {
-                string[] teile = value.Split('\t');
+                string[] teile = value.Split((char)243);
 
                 Type? type = Type.GetType(teile[0]);
                 if (type != null)
@@ -213,7 +226,7 @@ namespace quaKrypto.Models.Classes
                     }
                     else if (type.Equals(new string("").GetType()))
                     {
-                        informationsInhalt = teile[1];
+                        informationsInhalt = Encoding.UTF8.GetString(Convert.FromBase64String(teile[1]));
                     }
                     else if (type.Equals(new int().GetType()))
                     {

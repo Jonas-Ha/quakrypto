@@ -17,7 +17,7 @@ using quaKrypto.Models.Enums;
 
 namespace quaKrypto.Models.Interfaces
 {
-    public interface IVariante
+    public interface IVariante : INotifyPropertyChanged
     {
         public uint AktuellePhase
         { get; }
@@ -34,6 +34,8 @@ namespace quaKrypto.Models.Interfaces
 
         public IList<RolleEnum> MoeglicheRollen
         { get; }
+
+        public void AktuelleRolleSetzen(RolleEnum rolle);
 
         public RolleEnum NaechsteRolle();
         public List<OperationsEnum> GebeHilfestellung(SchwierigkeitsgradEnum schwierigkeitsgrad);

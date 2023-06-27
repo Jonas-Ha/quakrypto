@@ -25,7 +25,7 @@ namespace quaKrypto.Models.Interfaces
         public Rolle AktuelleRolle
         { get; }
 
-        public Enums.SchwierigkeitsgradEnum Schwierigkeitsgrad
+        public SchwierigkeitsgradEnum Schwierigkeitsgrad
         { get; }
 
         public IVariante Variante 
@@ -47,6 +47,9 @@ namespace quaKrypto.Models.Interfaces
         { get; }
 
         public bool HostHatGestartet 
+        { get; }
+
+        public bool Beendet
         { get; }
 
         //Diese Funktionen werden dem View Model als Interface angeboten
@@ -71,12 +74,14 @@ namespace quaKrypto.Models.Interfaces
 
         //Gibt ein Handlungsschritt objekt and die aktuelle rolle weiter, die ihn dann ausführt
         //Gibt das dadurch erstellte Informationsobjekt zurück
-        public Information HandlungsschrittAusführenLassen(Enums.OperationsEnum operationsTyp, Information operand1, object operand2, String ergebnisInformationsName, Enums.RolleEnum rolle);
+        public Information HandlungsschrittAusführenLassen(Enums.OperationsEnum operationsTyp, Information operand1, object? operand2, String ergebnisInformationsName, Enums.RolleEnum ausfuerendeRolle);
 
         //Speichert die Information mit der übergebenen ID im Speicher der aktuellen Rolle ab
         public void SpeichereInformationenAb(Information information);
         //Löscht die Information mit der übergebenen ID aus dem Speicher der aktuellen Rolle
         public void LoescheInformation(int informationID);
+        //Löscht eine Information aus dem Übertragungskanal
+        public void LoescheInformationAusUebertragungskanal(KanalEnum kanal, int informatonsID);
         //Soll aufgerufen werden wenn das Übungsszenario beendet werden soll
         public void Beenden();
 

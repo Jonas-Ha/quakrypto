@@ -15,7 +15,7 @@
 
     <DockPanel Margin="10">
 
-        <GroupBox DockPanel.Dock="Left" Margin="0,0,10,0" MaxWidth="202">
+        <GroupBox DockPanel.Dock="Left" Margin="0,0,10,0" Width="220">
             <GroupBox.Header>
                 <Label Content="Wiki Seiten" FontSize="20" FontWeight="SemiBold"/>
             </GroupBox.Header>
@@ -26,7 +26,7 @@
                 </Grid.RowDefinitions>
 
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" SnapsToDevicePixels="True">
-                    <ItemsControl ItemsSource="{Binding Source={x:Static viewmodel:WikiViewModel.WikiSeiten}}" Tag="{Binding .}">
+                    <ItemsControl ItemsSource="{Binding Source={x:Static viewmodel:WikiViewModel.WikiSeiten}}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border BorderThickness="2" BorderBrush="{Binding BorderBrush}" CornerRadius="4">
@@ -45,17 +45,17 @@
                 </ScrollViewer>
                 <GroupBox VerticalAlignment="Bottom" Grid.Row="1" Header="Optionen" FontWeight="SemiBold" FontSize="20">
                     <StackPanel Orientation="Horizontal" Margin="10">
-                        <Image Source="../Icons/Wiki/erweitern.png" ToolTip="Das Wiki durch eine neue Seite Erweitern" Focusable="True">
+                        <Image Source="../Icons/Wiki/erweitern.png" ToolTip="Das Wiki durch eine neue Seite Erweitern" Focusable="True" Cursor="{Binding Cursor}">
                             <Image.InputBindings>
                                 <MouseBinding Gesture="LeftClick" Command="{Binding SeitenErweitern}"/>
                             </Image.InputBindings>
                         </Image>
-                        <Image Source="../Icons/Wiki/bearbeiten.png" Margin="10,0" ToolTip="Die Aktive Seite des Wikis Bearbeiten" Focusable="True">
+                        <Image Source="../Icons/Wiki/bearbeiten.png" Margin="10,0" ToolTip="Die Aktive Seite des Wikis Bearbeiten" Focusable="True" Cursor="Hand">
                             <Image.InputBindings>
                                 <MouseBinding Gesture="LeftClick" Command="{Binding SeiteBearbeiten}"/>
                             </Image.InputBindings>
                         </Image>
-                        <Image Source="../Icons/Wiki/entfernen.png" ToolTip="Entfernen der Aktiven Seite des Wikis" Focusable="True">
+                        <Image Source="../Icons/Wiki/entfernen.png" ToolTip="Entfernen der Aktiven Seite des Wikis" Focusable="True" Cursor="{Binding Cursor}">
                             <Image.InputBindings>
                                 <MouseBinding Gesture="LeftClick" Command="{Binding SeiteEntfernen}"/>
                             </Image.InputBindings>
@@ -66,7 +66,7 @@
 
         </GroupBox>
 
-        <TextBox Margin="0,4,0,0"  DockPanel.Dock="Top" Text="{Binding SelektierteWikiSeite.WikiSeiteName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" FontWeight="SemiBold" Visibility="{Binding TextBoxSichtbar}">
+        <TextBox MaxLength="40" Margin="0,4,0,0"  DockPanel.Dock="Top" Text="{Binding SelektierteWikiSeite.WikiSeiteName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" FontWeight="SemiBold" Visibility="{Binding TextBoxSichtbar}">
             <TextBox.InputBindings>
                 <MouseBinding Gesture="LeftDoubleClick" Command="{Binding SeiteBearbeiten}"/>
             </TextBox.InputBindings>

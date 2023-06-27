@@ -25,26 +25,23 @@ namespace quaKrypto.Services
         {
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
             {
-                Trace.WriteLine("InlineCollectionChanged");
                 if (e.NewItems != null)
                 {
                     int indexOfNewItem = e.NewItems.Count - 1;
                     if (e.NewItems[indexOfNewItem] != null)
                     {
-                        Inlines.Add(e.NewItems[indexOfNewItem] as Inline);
+                        Application.Current.Dispatcher.Invoke(() => { Inlines.Add(e.NewItems[indexOfNewItem] as Inline); });
                     }
                 }
             }
             else if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
             {
-                Trace.WriteLine("InlineCollectionResetz");
                 Inlines.Clear();
             }
         }
 
         private static void OnPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            Trace.WriteLine("OnPropertyChanged");
             if (sender is not EigenerTextBlock textBlock) return;
             if (e.NewValue is ObservableCollection<Inline> list)
             {

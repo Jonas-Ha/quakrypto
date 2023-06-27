@@ -12,11 +12,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using quaKrypto.Models.Enums;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace quaKrypto.Models.Classes
 {
     public class Operationen
     {
+
+        private Random random;
+        public Operationen(int seed = -1)
+        {
+            random = new Random(seed == -1 ? (int)DateTime.Now.Ticks : seed);
+        }
+
         //Operand1 enthält zu sendende Information, operand2 enthält den Empfänger der Information
         public Information NachrichtSenden(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum sender)
         {
@@ -64,7 +72,7 @@ namespace quaKrypto.Models.Classes
 
         // Rückgabe einer zufälligen Bitfolge aus einer Zufallszahl generiert
         // Operand1 Länge der zu generierenden Bitfolge, operand2 null
-        public Information BitfolgeGenerierenZahl(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
+        public Information BitfolgeGenerierenZahl(int informationsID, Information operand1, Information? operand2, String ergebnisName, RolleEnum? sender = null)
         {
             if (informationsID == null || operand1 == null || ergebnisName == null)
             {
@@ -76,7 +84,6 @@ namespace quaKrypto.Models.Classes
                 throw new Exception("operand1 nicht vom Typ Zahl oder ist kein int");
             }
 
-            var rand = new Random();
             int zufallszahl = (int)operand1.InformationsInhalt;
 
             if(zufallszahl<=0)
@@ -90,7 +97,7 @@ namespace quaKrypto.Models.Classes
             for (int i = 0; i < zufallszahl; i++)
             {
                 // NextDouble gibt einen double s
-                if (rand.NextDouble() < 0.5) bitArray[i] = false;
+                if (random.NextDouble() < 0.5) bitArray[i] = false;
                 else bitArray[i] = true;
             }
 
@@ -131,7 +138,7 @@ namespace quaKrypto.Models.Classes
         }
 
         // Operand1 Länge der zu generierenden Polschata, operand2 null
-        public Information PolarisationsschemataGenerierenZahl(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
+        public Information PolarisationsschemataGenerierenZahl(int informationsID, Information operand1, Information? operand2, string ergebnisName, RolleEnum? sender = null)
         {
             if (informationsID == null || operand1 == null || ergebnisName == null)
             {
@@ -143,7 +150,6 @@ namespace quaKrypto.Models.Classes
                 throw new Exception("operand1 nicht vom Typ Zahl oder ist kein int");
             }
 
-            var rand = new Random();
             int zufallszahl = (int)operand1.InformationsInhalt;
 
             if (zufallszahl <= 0)
@@ -157,7 +163,7 @@ namespace quaKrypto.Models.Classes
             for (int i = 0; i < zufallszahl; i++)
             {
                 // NextDouble gibt einen double s
-                if (rand.NextDouble() < 0.5) bitArray[i] = false;
+                if (random.NextDouble() < 0.5) bitArray[i] = false;
                 else bitArray[i] = true;
             }
 
@@ -198,7 +204,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand 1 = polarisationsschemata, Operand2 = Schlüssel
-        public Information PhotonenGenerieren(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
+        public Information PhotonenGenerieren(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender = null)
         {
             if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {
@@ -236,7 +242,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 = länge der Bitmaske, Operand2 = Anzahl der 1er in der Bitmaske
-        public Information BitmaskeGenerieren(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
+        public Information BitmaskeGenerieren(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender = null)
         {
 
             if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
@@ -254,7 +260,6 @@ namespace quaKrypto.Models.Classes
                 throw new Exception("operand2 nicht vom Typ Zahl oder ist kein int oder anzahlEinser > LängeBitmaske");
             }
 
-            var rand = new Random();
             int maskenLaenge = (int)operand1.InformationsInhalt;
             int anzahlEinser = (int)operand2.InformationsInhalt;
 
@@ -264,7 +269,7 @@ namespace quaKrypto.Models.Classes
             {
                 while (true)
                 {
-                    int counter = rand.Next(0, maskenLaenge);
+                    int counter = random.Next(0, maskenLaenge);
                     if (!bitArray[counter])
                     {
                         bitArray[counter] = true; 
@@ -277,7 +282,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 = Polschata, Operand2 = Polschata
-        public Information PolschataVergleichen(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
+        public Information PolschataVergleichen(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender = null)
         {
             if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {
@@ -312,7 +317,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 = Bitfolge, Operand2 = Bitfolge
-        public Information BitfolgenVergleichen(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
+        public Information BitfolgenVergleichen(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender = null)
         {
             if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {
@@ -347,7 +352,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 = Bitfolge, Operand2 = null
-        public Information BitfolgeNegieren(int informationsID, Information operand1, Information? operand2, String ergebnisName, RolleEnum? sender)
+        public Information BitfolgeNegieren(int informationsID, Information operand1, Information? operand2, String ergebnisName, RolleEnum? sender = null)
         {
             if (informationsID == null || operand1 == null || ergebnisName == null)
             {
@@ -371,7 +376,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 = Polarisationsschemata, Operand2 = unscharfePhotonen
-        public Information PhotonenZuBitfolge(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
+        public Information PhotonenZuBitfolge(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender = null)
         {
             if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {
@@ -396,8 +401,6 @@ namespace quaKrypto.Models.Classes
                 throw new Exception("operand1 und operand2 sind nicht gleich lang");
             }
 
-            var rand = new Random();
-
             bool[] erg = new bool[op1.Length];
 
             //21 (Photonen)
@@ -412,7 +415,7 @@ namespace quaKrypto.Models.Classes
                 else
                 {
                     //Polarisationsschemata waren ungleich => zufälliges Bit
-                    erg[i] = rand.NextDouble() > 0.5;
+                    erg[i] = random.NextDouble() > 0.5;
                 }
             }
             return new Information(informationsID, ergebnisName, InformationsEnum.bitfolge, erg, null);
@@ -436,14 +439,14 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 = Text Information, Operand2 = null
-        public Information TextLaengeBestimmen(int informationsID, Information operand1, Information? operand2, String ergebnisName, RolleEnum? sender)
+        public Information TextLaengeBestimmen(int informationsID, Information operand1, Information? operand2, String ergebnisName, RolleEnum? sender = null)
         {
             if (informationsID == null || operand1 == null || ergebnisName == null)
             {
                 throw new ArgumentNullException("Object reference not set to an instance of an object");
             }
 
-            if ((!operand1.InformationsTyp.Equals(InformationsEnum.asciiText) && !operand1.InformationsTyp.Equals(InformationsEnum.bitfolge)) ||
+            if ((!operand1.InformationsTyp.Equals(InformationsEnum.asciiText) && !operand1.InformationsTyp.Equals(InformationsEnum.bitfolge)) && !operand1.InformationsTyp.Equals(InformationsEnum.verschluesselterText) ||
                 (operand1.InformationsInhalt is not (string or bool[])))
             {
                 throw new Exception("operand1 nicht vom Typ asciiText oder ist kein string");
@@ -458,6 +461,11 @@ namespace quaKrypto.Models.Classes
             } else if (operand1.InformationsTyp.Equals(InformationsEnum.bitfolge))
             { 
                 length = (operand1.InformationsInhalt as bool[]).Length;
+            }else if (operand1.InformationsTyp.Equals(InformationsEnum.verschluesselterText))
+            {
+                string text = (string)operand1.InformationsInhalt;
+                var bytes = Convert.FromBase64String(text);
+                length = bytes.Length * 8;
             }
 
             if (length == -1)
@@ -551,7 +559,7 @@ namespace quaKrypto.Models.Classes
         }
 
         //Operand1 = Bitfolge die die Bits gestrichen bekommt, Operand2 = Bitfolge die angibt welche Bits gestrichen werden
-        public Information BitsStreichen(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender)
+        public Information BitsStreichen(int informationsID, Information operand1, Information operand2, String ergebnisName, RolleEnum? sender = null)
         {
             if (informationsID == null || operand1 == null || operand2 == null || ergebnisName == null)
             {

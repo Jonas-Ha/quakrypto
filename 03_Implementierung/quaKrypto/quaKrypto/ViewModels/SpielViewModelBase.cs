@@ -16,6 +16,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using Xceed.Wpf.Toolkit;
 
 namespace quaKrypto.ViewModels
@@ -23,12 +24,14 @@ namespace quaKrypto.ViewModels
     public class SpielViewModelBase : BaseViewModel
     {
         protected IUebungsszenario uebungsszenario;
-
+        private Operationen hilfsoperationen = new Operationen();
         public Information CraftingFeldPhotonen { get; set; }
         public Information CraftingFeldPolarisation { get; set; }
         public Information CraftingFeldErgebnis { get; set; }
         public ObservableCollection<Information> Muelleimer { get; set; }
         public ObservableCollection<Information> Informationsablage { get; set; }
+
+        public int CraftingFeldSelectedOperation { get; set; }
 
         protected List<Rolle> eigeneRollen;
         private Visibility warteVisibility;
@@ -62,7 +65,7 @@ namespace quaKrypto.ViewModels
         private string rolleIcon;
         public string RolleIcon
         {
-            set 
+            set
             {
                 rolleIcon = value;
                 this.EigenschaftWurdeGeändert();
@@ -92,7 +95,7 @@ namespace quaKrypto.ViewModels
         {
             set
             {
-                if(aktuellePhaseAnzeige != value)
+                if (aktuellePhaseAnzeige != value)
                 {
                     aktuellePhaseAnzeige = value;
                     this.EigenschaftWurdeGeändert();
@@ -172,12 +175,133 @@ namespace quaKrypto.ViewModels
             }
         }
         #endregion
+        #region VisibilityOperationen
+        protected List<OperationsEnum> verfügbareOperationen = Enum.GetValues(typeof(OperationsEnum)).Cast<OperationsEnum>().ToList();
+        public Visibility BitfolgeGenerierenVisibility
+        {
+            get
+            {
+                if (uebungsszenario.Schwierigkeitsgrad == SchwierigkeitsgradEnum.Schwer) return Visibility.Visible;
+                return !(verfügbareOperationen.Contains(OperationsEnum.bitfolgeGenerierenZahl) || verfügbareOperationen.Contains(OperationsEnum.bitfolgeGenerierenAngabe)) ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
+        public Visibility PolarisationsschemataGenerierenVisibility
+        {
+            get
+            {
+                if (uebungsszenario.Schwierigkeitsgrad == SchwierigkeitsgradEnum.Schwer) return Visibility.Visible;
+                return !(verfügbareOperationen.Contains(OperationsEnum.polarisationsschemataGenerierenAngabe) || verfügbareOperationen.Contains(OperationsEnum.polarisationsschemataGenerierenZahl)) ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
+        public Visibility PhotonenGenerierenVisibility
+        {
+            get
+            {
+                if (uebungsszenario.Schwierigkeitsgrad == SchwierigkeitsgradEnum.Schwer) return Visibility.Visible;
+                return !(verfügbareOperationen.Contains(OperationsEnum.photonenGenerieren)) ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
+        public Visibility BitMaskeGenerierenVisibility
+        {
+            get
+            {
+                if (uebungsszenario.Schwierigkeitsgrad == SchwierigkeitsgradEnum.Schwer) return Visibility.Visible;
+                return !(verfügbareOperationen.Contains(OperationsEnum.bitmaskeGenerieren)) ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
+
+        public Visibility VergleichenVisibility
+        {
+            get
+            {
+                if (uebungsszenario.Schwierigkeitsgrad == SchwierigkeitsgradEnum.Schwer) return Visibility.Visible;
+                return !(verfügbareOperationen.Contains(OperationsEnum.polschataVergleichen)||verfügbareOperationen.Contains(OperationsEnum.bitfolgenVergleichen)) ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
+
+        public Visibility BitfolgeNegierenVisibility
+        {
+            get
+            {
+                if (uebungsszenario.Schwierigkeitsgrad == SchwierigkeitsgradEnum.Schwer) return Visibility.Visible;
+                return !(verfügbareOperationen.Contains(OperationsEnum.bitfolgeNegieren)) ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
+
+        public Visibility PhotonenZuBitfolgeVisibility
+        {
+            get
+            {
+                if (uebungsszenario.Schwierigkeitsgrad == SchwierigkeitsgradEnum.Schwer) return Visibility.Visible;
+                return !(verfügbareOperationen.Contains(OperationsEnum.bitfolgeNegieren)) ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
+
+        public Visibility TextGenerierenVisibility
+        {
+            get
+            {
+                if (uebungsszenario.Schwierigkeitsgrad == SchwierigkeitsgradEnum.Schwer) return Visibility.Visible;
+                return !(verfügbareOperationen.Contains(OperationsEnum.textGenerieren)) ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
+        public Visibility TextLaengeBestimmenVisibility
+        {
+            get
+            {
+                if (uebungsszenario.Schwierigkeitsgrad == SchwierigkeitsgradEnum.Schwer) return Visibility.Visible;
+                return !(verfügbareOperationen.Contains(OperationsEnum.textLaengeBestimmen)) ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
+        public Visibility TextVerEntschlüsselnVisibility
+        {
+            get
+            {
+                if (uebungsszenario.Schwierigkeitsgrad == SchwierigkeitsgradEnum.Schwer) return Visibility.Visible;
+                return !(verfügbareOperationen.Contains(OperationsEnum.textEntschluesseln)|| verfügbareOperationen.Contains(OperationsEnum.textVerschluesseln)) ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
+        public Visibility BitsStreichenVisibility
+        {
+            get
+            {
+                if (uebungsszenario.Schwierigkeitsgrad == SchwierigkeitsgradEnum.Schwer) return Visibility.Visible;
+                return !(verfügbareOperationen.Contains(OperationsEnum.bitsStreichen)) ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
+        public Visibility BitsFreiBearbeitenVisibility
+        {
+            get
+            {
+                if (uebungsszenario.Schwierigkeitsgrad == SchwierigkeitsgradEnum.Schwer) return Visibility.Visible;
+                return !(verfügbareOperationen.Contains(OperationsEnum.bitsFreiBearbeiten)) ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
+        public Visibility ZahlGenerierenVisibility
+        {
+            get
+            {
+                if (uebungsszenario.Schwierigkeitsgrad == SchwierigkeitsgradEnum.Schwer) return Visibility.Visible;
+                return !(verfügbareOperationen.Contains(OperationsEnum.zahlGenerieren)) ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
+        public Visibility InformationUmbenennenVisibility
+        {
+            get
+            {
+                if (uebungsszenario.Schwierigkeitsgrad == SchwierigkeitsgradEnum.Schwer) return Visibility.Visible;
+                return !(verfügbareOperationen.Contains(OperationsEnum.informationUmbenennen)) ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
+        #endregion
 
         #region Commands
 
         public DelegateCommand HauptMenu { get; set; }
+        public DelegateCommand Beendet { get; set; }
         public DelegateCommand PasswortEingabe { get; set; }
 
+        public DelegateCommand OperationenAnzeigen { get; set; }
         public DelegateCommand BitFolgeErzeugen { get; set; }
         public DelegateCommand EntVerschlüsseln { get; set; }
         public DelegateCommand PhotonenErzeugen { get; set; }
@@ -192,161 +316,122 @@ namespace quaKrypto.ViewModels
         public DelegateCommand TextLaengeBestimmen { get; set; }
         public DelegateCommand BitsFreiBearbeiten { get; set; }
         public DelegateCommand InformationUmbenennen { get; set; }
-        
+
 
         #endregion
         public SpielViewModelBase(Navigator navigator, IUebungsszenario uebungsszenario, List<Rolle> eigeneRollen)
         {
-            /**
-             * 
-             * 
-             * Zu Test Zwecken
-             
-             */
-            /*
-            Informationsablage = new ObservableCollection<Information>();
-            BitArray arr = new BitArray(160, false);
-            arr[1] = true;
-            arr[2] = true;
-            arr[2] = true;
-            arr[20] = true;
-            arr[30] = true;
-            arr[31] = true;
-            arr[32] = true;
-            arr[20] = true;
-            arr[50] = true;
-            arr[51] = true;
-            arr[62] = true;
-            int length = 0;
-            Information information = new Information(1, "Angabe", InformationsEnum.bitfolge, arr, null);
-            Informationsablage.Add(information);
-            //Arrange
-            string text = "Hello";
-
-            Information ergInformation = new Information(2, "Bitfolge", InformationsEnum.asciiText, text, null);
-            Informationsablage.Add(ergInformation);
-            /**
-             * 
-             * 
-             * Zu Test Zwecken
-             */
-
             this.uebungsszenario = uebungsszenario;
             this.eigeneRollen = eigeneRollen;
+            verfügbareOperationen = this.uebungsszenario.Variante.GebeHilfestellung(this.uebungsszenario.Schwierigkeitsgrad);
+            AktualisiereOperationenVisibility();
             if (this.eigeneRollen.Contains(this.uebungsszenario.AktuelleRolle)) AenderZustand(Enums.SpielEnum.passwortEingabe);
             else AenderZustand(Enums.SpielEnum.warten);
 
-            HauptMenu = new((o) =>
+
+
+            Beendet = new((o) =>
             {
-                navigator.aktuellesViewModel = new HauptMenuViewModel(navigator);
+                Application.Current.Dispatcher.Invoke(() => { navigator.aktuellesViewModel = new AufzeichnungViewModel(navigator, uebungsszenario); });
+            }, (o) => true);
 
-            }, null);
-
-
+            OperationenAnzeigen = new((o) =>
+            {
+                verfügbareOperationen = Enum.GetValues(typeof(OperationsEnum)).Cast<OperationsEnum>().ToList();
+                AktualisiereOperationenVisibility();
+            }, (o) => true);
 
             BitFolgeErzeugen = new((o) =>
             {
-                Ergebnis.Clear();
                 Ergebnis.Add(bitfolgeErzeugen());
                 setzeAktPhaseView();
             }, (o) => bitfolgeErzeugenStartBedingung());
 
             EntVerschlüsseln = new((o) =>
             {
-                Ergebnis.Clear();
                 Ergebnis.Add(entVerschlüsseln());
                 setzeAktPhaseView();
             }, (o) => entVerschlüsselnStartBedingung());
 
             PhotonenErzeugen = new((o) =>
             {
-                Ergebnis.Clear();
                 Ergebnis.Add(photonenErzeugen());
                 setzeAktPhaseView();
             }, (o) => photonenErzeugenStartBedingung());
 
             PolschaErzeugen = new((o) =>
             {
-                Ergebnis.Clear();
                 Ergebnis.Add(polschaErzeugen());
                 setzeAktPhaseView();
             }, (o) => polschaErzeugenStartBedingung());
 
             Streichen = new((o) =>
             {
-                Ergebnis.Clear();
                 Ergebnis.Add(streichen());
                 setzeAktPhaseView();
             }, (o) => streichenStartBedingung());
 
             Vergleichen = new((o) =>
             {
-                Ergebnis.Clear();
                 Ergebnis.Add(vergleichen());
                 setzeAktPhaseView();
             }, (o) => vergleichenStartBedingung());
 
             ZahlErzeugen = new((o) =>
             {
-                Ergebnis.Clear();
                 Ergebnis.Add(zahlErzeugen());
                 setzeAktPhaseView();
             }, (o) => zahlErzeugenStartBedingung());
 
             BitMaskeGenerieren = new((o) =>
             {
-                Ergebnis.Clear();
                 Ergebnis.Add(bitMaskeGenerieren());
                 setzeAktPhaseView();
             }, (o) => bitMaskeGenerierenStartBedingung());
 
             BitfolgeNegieren = new((o) =>
             {
-                Ergebnis.Clear();
                 Ergebnis.Add(bitfolgeNegieren());
                 setzeAktPhaseView();
             }, (o) => bitfolgeNegierenStartBedingung());
 
             PhotonenZuBitfolge = new((o) =>
             {
-                Ergebnis.Clear();
                 Ergebnis.Add(photonenZuBitfolge());
                 setzeAktPhaseView();
+                Operand1.Clear();
             }, (o) => photonenZuBitfolgeStartBedingung());
 
             TextGenerieren = new((o) =>
             {
-                Ergebnis.Clear();
                 Ergebnis.Add(textGenerieren());
                 setzeAktPhaseView();
             }, (o) => textGenerierenStartBedingung());
 
             TextLaengeBestimmen = new((o) =>
             {
-                Ergebnis.Clear();
                 Ergebnis.Add(textLaengeBestimmen());
                 setzeAktPhaseView();
             }, (o) => textLaengeBestimmenStartBedingung());
 
             BitsFreiBearbeiten = new((o) =>
             {
-                Ergebnis.Clear();
                 Ergebnis.Add(bitsFreiBearbeiten());
                 setzeAktPhaseView();
             }, (o) => bitsFreiBearbeitenStartBedingung());
 
             InformationUmbenennen = new((o) =>
             {
-                Ergebnis.Clear();
                 Ergebnis.Add(informationUmbenennen());
                 setzeAktPhaseView();
+                Operand1.Clear();
             }, (o) => informationUmbenennenStartBedingung());
 
             Operand1 = new ObservableCollection<Information>();
             Operand2 = new ObservableCollection<Information>();
             OperandBitsFrei = new ObservableCollection<Information>();
             Ergebnis = new ObservableCollection<Information>();
-            
+
             Muelleimer = new ObservableCollection<Information>();
 
             Operand1.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(CollectionChangedMethod);
@@ -354,6 +439,16 @@ namespace quaKrypto.ViewModels
             OperandBitsFrei.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(CollectionChangedMethodBitsFrei);
 
             Informationsablage = new ObservableCollection<Information>();
+
+            uebungsszenario.Variante.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(VarianteChanged);
+        }
+
+        private void VarianteChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            setzeAktPhaseView();
+            verfügbareOperationen = uebungsszenario.Variante.GebeHilfestellung(uebungsszenario.Schwierigkeitsgrad);
+            AktualisiereOperationenVisibility();
+            //if(uebungsszenario.Beendet)
         }
 
         private void CollectionChangedMethod(object sender, NotifyCollectionChangedEventArgs e)
@@ -385,13 +480,21 @@ namespace quaKrypto.ViewModels
                 AktuelleRolleAnzeige = "Eve";
                 RolleIcon = "/quaKrypto;component/Icons/Spiel/Eve/Eve_128px.png";
             }
+            
         }
 
         protected void setzeAktPhaseView()
         {
             uint aktphase = uebungsszenario.Variante.AktuellePhase;
 
-            AktuellePhaseAnzeige = "Phase: " + aktphase.ToString();    
+            AktuellePhaseAnzeige = "Phase: " + aktphase.ToString();
+            
+        }
+        protected void ClearViewTextBox()
+        {
+            passwortFeld = "";
+            Informationsname = "";
+            Eingabe = "";
         }
 
         #region OperationenAusführen
@@ -490,6 +593,8 @@ namespace quaKrypto.ViewModels
                     (Operand1[0].InformationsTyp != InformationsEnum.asciiText && Operand1[0].InformationsTyp != InformationsEnum.verschluesselterText) ||
                     Operand2.Count != 1 ||
                     Operand2[0].InformationsTyp != InformationsEnum.bitfolge) return false;
+            Information laenge = hilfsoperationen.TextLaengeBestimmen(-1, Operand1[0], null, "", null);
+            if((int)laenge.InformationsInhalt > ((bool[])Operand2[0].InformationsInhalt).Length) return false;
             return true;
         }
 
@@ -511,6 +616,9 @@ namespace quaKrypto.ViewModels
                     (Operand1[0].InformationsTyp != InformationsEnum.polarisationsschemata) ||
                     Operand2.Count != 1 ||
                     Operand2[0].InformationsTyp != InformationsEnum.bitfolge) return false;
+            bool[] op1Inhalt = (bool[])Operand1[0].InformationsInhalt;
+            bool[] op2Inhalt = (bool[])Operand2[0].InformationsInhalt;
+            if(op1Inhalt.Length != op2Inhalt.Length)return false;
             return true;
         }
         private Information polschaErzeugen()
@@ -546,7 +654,7 @@ namespace quaKrypto.ViewModels
                     Operand1.Count != 1 ||
                     Operand1[0].InformationsTyp != InformationsEnum.zahl ||
                     Eingabe == "" ||
-                    !StringToBitArray(Eingabe)) return false;
+                    !StringToBitArrayPolscha(Eingabe)) return false;
                 return true;
             }
             else
@@ -577,6 +685,9 @@ namespace quaKrypto.ViewModels
                     (Operand1[0].InformationsTyp != InformationsEnum.bitfolge) ||
                     Operand2.Count != 1 ||
                     Operand2[0].InformationsTyp != InformationsEnum.bitfolge) return false;
+            bool[] op1Inhalt = (bool[])Operand1[0].InformationsInhalt;
+            bool[] op2Inhalt = (bool[])Operand2[0].InformationsInhalt;
+            if (op1Inhalt.Length != op2Inhalt.Length) return false;
             return true;
         }
         private Information vergleichen()
@@ -608,6 +719,9 @@ namespace quaKrypto.ViewModels
                 (Operand1[0].InformationsTyp != InformationsEnum.polarisationsschemata && Operand1[0].InformationsTyp != InformationsEnum.bitfolge) ||
                 Operand2.Count != 1 ||
                 Operand1[0].InformationsTyp != Operand2[0].InformationsTyp) return false;
+            bool[] op1Inhalt = (bool[])Operand1[0].InformationsInhalt;
+            bool[] op2Inhalt = (bool[])Operand2[0].InformationsInhalt;
+            if (op1Inhalt.Length != op2Inhalt.Length) return false;
             return true;
         }
         private Information zahlErzeugen()
@@ -624,7 +738,7 @@ namespace quaKrypto.ViewModels
         private bool zahlErzeugenStartBedingung()
         {
             if (Informationsname == null ||
-                Informationsname == "" || 
+                Informationsname == "" ||
                 Eingabe == null ||
                 Eingabe == "" ||
                 !StringToZahl(Eingabe)) return false;
@@ -688,6 +802,9 @@ namespace quaKrypto.ViewModels
                 (Operand1[0].InformationsTyp != InformationsEnum.unscharfePhotonen) ||
                 Operand2.Count != 1 ||
                 Operand2[0].InformationsTyp != InformationsEnum.polarisationsschemata) return false;
+            byte[] op1Inhalt = (byte[])Operand1[0].InformationsInhalt;
+            bool[] op2Inhalt = (bool[])Operand2[0].InformationsInhalt;
+            if (op1Inhalt.Length != op2Inhalt.Length) return false;
             return true;
         }
 
@@ -704,8 +821,11 @@ namespace quaKrypto.ViewModels
         }
         private bool textGenerierenStartBedingung()
         {
-            if (Eingabe == null ||
-                Eingabe == "") return false;
+            if (Informationsname == null ||
+                Informationsname == "" ||
+                Eingabe == null ||
+                Eingabe == "" ||
+                Eingabe.Length > 256) return false;
             return true;
         }
 
@@ -725,7 +845,8 @@ namespace quaKrypto.ViewModels
                 Informationsname == "" ||
                 Operand1.Count != 1 ||
                 (Operand1[0].InformationsTyp != InformationsEnum.asciiText &&
-                 Operand1[0].InformationsTyp != InformationsEnum.bitfolge)) return false;
+                 Operand1[0].InformationsTyp != InformationsEnum.bitfolge &&
+                 Operand1[0].InformationsTyp != InformationsEnum.verschluesselterText)) return false;
             return true;
         }
 
@@ -766,7 +887,8 @@ namespace quaKrypto.ViewModels
         private bool informationUmbenennenStartBedingung()
         {
             if (Informationsname == null ||
-                Informationsname == "") return false;
+                Informationsname == "" ||
+                Operand1.Count != 1) return false;
             return true;
         }
         #endregion
@@ -785,6 +907,18 @@ namespace quaKrypto.ViewModels
             }
             return true;
         }
+        private bool StringToBitArrayPolscha(string eingabe)
+        {
+            if (eingabe == null) return false;
+            convertedBitArray = new bool[(eingabe.Length)];
+            for (int i = 0; i < eingabe.Length; i++)
+            {
+                if (eingabe[i] == 'x' || eingabe[i] == 'X') convertedBitArray[i] = false;
+                else if (eingabe[i] == '+') convertedBitArray[i] = true;
+                else return false;
+            }
+            return true;
+        }
 
         private int convertedZahl;
         private bool StringToZahl(string eingabe)
@@ -793,8 +927,11 @@ namespace quaKrypto.ViewModels
 
             if (Int32.TryParse(eingabe, out int j))
             {
-                convertedZahl = j;
-                return true;
+                if ((j > 0) && (j <= 8191))
+                {
+                    convertedZahl = j;
+                    return true;
+                }
             }
             return false;
         }
@@ -821,6 +958,26 @@ namespace quaKrypto.ViewModels
                 PasswortEingabeVisibility = Visibility.Hidden;
                 SpielVisibility = Visibility.Visible;
             }
+        }
+
+        protected void AktualisiereOperationenVisibility()
+        {
+            CraftingFeldSelectedOperation = 0;
+            EigenschaftWurdeGeändert(nameof(CraftingFeldSelectedOperation));
+            EigenschaftWurdeGeändert(nameof(BitfolgeGenerierenVisibility));
+            EigenschaftWurdeGeändert(nameof(PolarisationsschemataGenerierenVisibility));
+            EigenschaftWurdeGeändert(nameof(PhotonenGenerierenVisibility));
+            EigenschaftWurdeGeändert(nameof(BitMaskeGenerierenVisibility));
+            EigenschaftWurdeGeändert(nameof(VergleichenVisibility));
+            EigenschaftWurdeGeändert(nameof(BitfolgeNegierenVisibility));
+            EigenschaftWurdeGeändert(nameof(PhotonenZuBitfolgeVisibility));
+            EigenschaftWurdeGeändert(nameof(TextGenerierenVisibility));
+            EigenschaftWurdeGeändert(nameof(TextLaengeBestimmenVisibility));
+            EigenschaftWurdeGeändert(nameof(TextVerEntschlüsselnVisibility));
+            EigenschaftWurdeGeändert(nameof(BitsStreichenVisibility));
+            EigenschaftWurdeGeändert(nameof(BitsFreiBearbeitenVisibility));
+            EigenschaftWurdeGeändert(nameof(ZahlGenerierenVisibility));
+            EigenschaftWurdeGeändert(nameof(InformationUmbenennenVisibility));
         }
     }
 }

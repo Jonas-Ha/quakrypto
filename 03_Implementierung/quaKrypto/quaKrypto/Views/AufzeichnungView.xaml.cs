@@ -27,6 +27,7 @@ namespace quaKrypto.Views
 
         private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            dg.SelectedIndex = -1;
 
         }
     }

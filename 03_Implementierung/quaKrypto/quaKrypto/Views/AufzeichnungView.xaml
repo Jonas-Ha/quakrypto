@@ -4,8 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:quaKrypto.Views"
+             xmlns:services="clr-namespace:quaKrypto.Services"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="b2v"/>
+        <BooleanToVisibilityConverter x:Key="b2v2"/>
+        <services:HandlungsschrittRolleZuFarbe x:Key="RolleFarbenWaehler" />
+    </UserControl.Resources>
+    <Grid>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -22,40 +29,98 @@
         <Label Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="SemiBold" FontSize="40" >Aufzeichnung</Label>
 
         <!-- DataGrid -->
-        <DataGrid Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding Handlungsschritte}" AutoGenerateColumns="False" Margin="10" SelectionChanged="DataGrid_SelectionChanged" >
+        <DataGrid x:Name="dg" Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding Handlungsschritte}" AutoGenerateColumns="False" Margin="10,10,10,0" SelectionChanged="DataGrid_SelectionChanged" IsReadOnly="True" CanUserSortColumns="False">
+            <DataGrid.Resources>
+                <Style TargetType="{x:Type DataGridCell}">
+                    <Style.Triggers>
+                        <Trigger Property="DataGridCell.IsSelected" Value="True">
+                            <Setter Property="Background" Value="{Binding Rolle, Converter={StaticResource RolleFarbenWaehler}}" />
+                            <Setter Property="Foreground" Value="#000000" />
+                            <Setter Property="BorderBrush" Value="{x:Null}" />
+                            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+
+            </DataGrid.Resources>
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Background" Value="{Binding Rolle, Converter={StaticResource RolleFarbenWaehler}}"></Setter>
+                </Style>
+            </DataGrid.RowStyle>
             <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding AktuellePhase}">
+                    <DataGridTextColumn.Header>
+                        <Label Content="Phase" FontSize="15"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Binding="{Binding Rolle}">
+                    <DataGridTextColumn.Header>
+                        <Label Content="Rolle" FontSize="15"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding OperationsTyp}">
                     <DataGridTextColumn.Header>
                         <Label Content="Operations Typ" FontSize="15"/>
                     </DataGridTextColumn.Header>
                 </DataGridTextColumn>
-                <DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width="135">
+                    <DataGridTemplateColumn.Header>
+                        <Label Content="Operand 1 Name" FontSize="15"/>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding DataContext.Operand1.InformationsNameToString, RelativeSource={RelativeSource AncestorType=DataGridRow}}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width="90">
                     <DataGridTemplateColumn.Header>
                         <Label Content="Operand 1" FontSize="15"/>
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding DataContext.Operand1.InformationsInhalt, RelativeSource={RelativeSource AncestorType=DataGridRow}}"/>
+                                <TextBlock Text="{Binding DataContext.Operand1.InformationsInhaltToString, RelativeSource={RelativeSource AncestorType=DataGridRow}}"/>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width="135">
+                    <DataGridTemplateColumn.Header>
+                        <Label Content="Operand 2 Name" FontSize="15"/>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding DataContext.Operand2.InformationsNameToString, RelativeSource={RelativeSource AncestorType=DataGridRow}}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width="90">
                     <DataGridTemplateColumn.Header>
                         <Label Content="Operand 2" FontSize="15"/>
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding DataContext.Operand2.InformationsInhalt, RelativeSource={RelativeSource AncestorType=DataGridRow}}"/>
+                                <TextBlock Text="{Binding DataContext.Operand2.InformationsInhaltToString, RelativeSource={RelativeSource AncestorType=DataGridRow}}"/>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+
                 <DataGridTextColumn Binding="{Binding ErgebnisName}">
                     <DataGridTextColumn.Header>
-                        <Label Content="Name Ergebnis" FontSize="15"/>
+                            <Label Content="Ergebnis Name" FontSize="15"/>
                     </DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTemplateColumn>
@@ -65,25 +130,20 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding DataContext.Ergebnis.InformationsInhalt, RelativeSource={RelativeSource AncestorType=DataGridRow}}"/>
+                                <TextBlock Text="{Binding DataContext.Ergebnis.InformationsInhaltToString, RelativeSource={RelativeSource AncestorType=DataGridRow}}"/>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Binding="{Binding Rolle}">
-                    <DataGridTextColumn.Header>
-                        <Label Content="Rolle" FontSize="15"/>
-                    </DataGridTextColumn.Header>
-                </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding AktuellePhase}">
-                    <DataGridTextColumn.Header>
-                        <Label Content="Phase" FontSize="15"/>
-                    </DataGridTextColumn.Header>
-                </DataGridTextColumn>
+
             </DataGrid.Columns>
         </DataGrid>
 
         <!-- Button -->
-        <Button Grid.ColumnSpan="3" Grid.Row="2" x:Name="HauptmenueButton" MaxHeight="45" MinHeight="35" MaxWidth="450" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" MinWidth="80" Command="{Binding HauptMenu}">Zurück zum Hauptmenü</Button>
+        <Button Grid.ColumnSpan="3" Grid.Row="2" x:Name="HauptmenueButton" MaxHeight="45" MinHeight="35" MaxWidth="450" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20,18,20,17" MinWidth="80" Command="{Binding HauptMenu}">Zurück zum Hauptmenü</Button>
+        
+    </Grid>
+ 
+        <local:WikiButton/>
     </Grid>
 </UserControl>

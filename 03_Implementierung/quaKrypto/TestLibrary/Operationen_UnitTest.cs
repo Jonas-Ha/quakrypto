@@ -729,7 +729,7 @@ namespace TestLibrary
             //Assert
             bool[] erwarteteBitfolge = new bool[10];
             erwarteteBitfolge[1] = true;
-            erwarteteBitfolge[2] = true;
+            erwarteteBitfolge[2] = false;
             Information erwarteteInformation = new Information(2, "Bitfolge", InformationsEnum.bitfolge, erwarteteBitfolge, null);
             Assert.AreEqual(erwarteteInformation.InformationsID, empfangeneInformation.InformationsID);
             Assert.AreEqual(erwarteteInformation.InformationsName, empfangeneInformation.InformationsName);

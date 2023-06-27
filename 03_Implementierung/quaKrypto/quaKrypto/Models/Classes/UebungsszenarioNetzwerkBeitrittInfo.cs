@@ -1,6 +1,7 @@
 ﻿using quaKrypto.Models.Enums;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
 using System.Net;
@@ -13,7 +14,7 @@ using Xceed.Wpf.Toolkit;
 
 namespace quaKrypto.Models.Classes
 {
-    public class UebungsszenarioNetzwerkBeitrittInfo
+    public class UebungsszenarioNetzwerkBeitrittInfo : INotifyPropertyChanged
     {
         public UebungsszenarioNetzwerkBeitrittInfo(IPAddress address, string lobbyname, string protokoll, string variante, SchwierigkeitsgradEnum schwierigkeitsgrad, bool aliceState, bool bobState, bool eveState)
         {
@@ -26,6 +27,7 @@ namespace quaKrypto.Models.Classes
             BobState = bobState;
             EveState = eveState;
         }
+
         public IPAddress IPAddress { get; set; }
         public string Lobbyname { get; set; }
         public string Protokoll { get; set; }
@@ -34,11 +36,20 @@ namespace quaKrypto.Models.Classes
         public uint StartPhase { get; set; }
         public uint EndPhase { get; set; }
         public SchwierigkeitsgradEnum Schwierigkeitsgrad { get; set; }
-        public BitmapImage AliceIcon { get { return new BitmapImage(new Uri(AliceState?"pack://application:,,,/Icons/Spiel/Alice/Alice_128px.png": "pack://application:,,,/Icons/Spiel/Alice/Alice_128px_grey.png")); }}
-        public BitmapImage BobIcon { get { return new BitmapImage(new Uri(BobState? "pack://application:,,,/Icons/Spiel/Bob/Bob_128px.png" : "pack://application:,,,/Icons/Spiel/Bob/Bob_128px_grey.png")); } }
-        public BitmapImage EveIcon { get { return new BitmapImage(new Uri(Variante == VarianteNormalerAblauf.VariantenName? "pack://application:,,,/Icons/Spiel/Eve/Eve_dg_128px.png" : EveState? "pack://application:,,,/Icons/Spiel/Eve/Eve_128px.png" : "pack://application:,,,/Icons/Spiel/Eve/Eve_128px_grey.png")); } }
-        public bool AliceState { get; set; }
-        public bool BobState { get; set; }
-        public bool EveState { get; set; }
+        public BitmapImage AliceIcon { get { return new BitmapImage(new Uri(AliceState ? "pack://application:,,,/Icons/Spiel/Alice/Alice_128px.png" : "pack://application:,,,/Icons/Spiel/Alice/Alice_128px_grey.png")); } }
+        public BitmapImage BobIcon { get { return new BitmapImage(new Uri(BobState ? "pack://application:,,,/Icons/Spiel/Bob/Bob_128px.png" : "pack://application:,,,/Icons/Spiel/Bob/Bob_128px_grey.png")); } }
+        public BitmapImage EveIcon { get { return new BitmapImage(new Uri(Variante == VarianteNormalerAblauf.VariantenName ? "pack://application:,,,/Icons/Spiel/Eve/Eve_dg_128px.png" : EveState ? "pack://application:,,,/Icons/Spiel/Eve/Eve_128px.png" : "pack://application:,,,/Icons/Spiel/Eve/Eve_128px_grey.png")); } }
+
+        private bool aliceState, bobState, eveState;
+
+        public bool AliceState { get => aliceState; set { aliceState = value; Changed(nameof(AliceIcon)); } }
+        public bool BobState { get => bobState; set { bobState = value; Changed(nameof(BobIcon)); } }
+        public bool EveState { get => eveState; set { eveState = value; Changed(nameof(EveIcon)); } }
+
+        public int HostPort { get; set; }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public void Changed(string a) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(a));
     }
 }
