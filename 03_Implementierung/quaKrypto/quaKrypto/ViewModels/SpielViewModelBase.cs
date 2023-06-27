@@ -654,7 +654,7 @@ namespace quaKrypto.ViewModels
                     Operand1.Count != 1 ||
                     Operand1[0].InformationsTyp != InformationsEnum.zahl ||
                     Eingabe == "" ||
-                    !StringToBitArray(Eingabe)) return false;
+                    !StringToBitArrayPolscha(Eingabe)) return false;
                 return true;
             }
             else
@@ -903,6 +903,18 @@ namespace quaKrypto.ViewModels
             {
                 if (eingabe[i] == '0') convertedBitArray[i] = false;
                 else if (eingabe[i] == '1') convertedBitArray[i] = true;
+                else return false;
+            }
+            return true;
+        }
+        private bool StringToBitArrayPolscha(string eingabe)
+        {
+            if (eingabe == null) return false;
+            convertedBitArray = new bool[(eingabe.Length)];
+            for (int i = 0; i < eingabe.Length; i++)
+            {
+                if (eingabe[i] == 'x' || eingabe[i] == 'X') convertedBitArray[i] = false;
+                else if (eingabe[i] == '+') convertedBitArray[i] = true;
                 else return false;
             }
             return true;
