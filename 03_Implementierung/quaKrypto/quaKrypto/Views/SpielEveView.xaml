@@ -166,7 +166,7 @@
                     <StackPanel Orientation="Vertical" DockPanel.Dock="Top">
                         <Label Content="Passwort eingeben:" FontSize="40" HorizontalContentAlignment="Center"/>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="20,20,20,20">
-                            <TextBox x:Name="PasswortBox" Text="{Binding passwortFeld, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center"/>
+                            <TextBox x:Name="PasswortBox" Text="{Binding passwortFeld, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                         </Border>
                         <Button Content="Bestätigen" FontSize="20" MinHeight="35" MaxHeight="45" MinWidth="150" Command="{Binding PasswortEingabe}" Width="100" Margin="0,0,0,10" IsDefault="True"/>
 
@@ -213,7 +213,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -239,7 +239,7 @@
                                         <Label Content="Bitfolge: " FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="16"  VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="16"  VerticalContentAlignment="Center" MaxLength="2048" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -277,7 +277,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -338,7 +338,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -399,7 +399,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -425,7 +425,7 @@
                                         <Label Content="Polarisationsschemata: " FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="2048" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -463,7 +463,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -525,7 +525,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
                                 <Border Width="50" Height="50" Margin="10"  BorderBrush="Black" BorderThickness="1">
@@ -585,7 +585,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -600,7 +600,7 @@
                                         <Label Content="Zahl: " FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -636,7 +636,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
                                 <Border Width="50" Height="50" Margin="10"  BorderBrush="Black" BorderThickness="1">
@@ -696,7 +696,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
                                 <Border Width="50" Height="50" Margin="10"  BorderBrush="Black" BorderThickness="1">
@@ -747,7 +747,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
                                 <Border Width="50" Height="50" Margin="10"  BorderBrush="Black" BorderThickness="1">
@@ -807,7 +807,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -822,7 +822,7 @@
                                         <Label Content="Text: " FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="2048" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -857,7 +857,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
                                 <Border Width="50" Height="50" Margin="10"  BorderBrush="Black" BorderThickness="1">
@@ -909,7 +909,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
                                 <Border Width="50" Height="50" Margin="10"  BorderBrush="Black" BorderThickness="1">
@@ -932,7 +932,7 @@
                                         <Label Content="Text" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="2048" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -968,7 +968,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
                                 <Border Width="50" Height="50" Margin="10"  BorderBrush="Black" BorderThickness="1">
