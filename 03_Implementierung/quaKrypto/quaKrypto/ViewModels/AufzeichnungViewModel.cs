@@ -23,6 +23,7 @@ namespace quaKrypto.ViewModels
 
         public AufzeichnungViewModel(Navigator navigator, IUebungsszenario uebungsszenario)
         {
+            Wiki.Schwierigkeitsgrad = Models.Enums.SchwierigkeitsgradEnum.Leicht;
             this.uebungsszenario = uebungsszenario;
             HauptMenu = new((o) =>
             {

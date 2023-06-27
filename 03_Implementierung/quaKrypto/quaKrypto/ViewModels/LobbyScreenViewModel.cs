@@ -86,7 +86,6 @@ namespace quaKrypto.ViewModels
 
             HauptMenu = new((o) =>
             {
-                Wiki.Schwierigkeitsgrad = SchwierigkeitsgradEnum.Leicht;
                 for (int i = 0; i < EigeneRollen.Count; i++)
                 {
                     uebungsszenario.GebeRolleFrei(EigeneRollen[i].RolleTyp);
