@@ -183,7 +183,7 @@
             </Border>
 
             <Border x:Name="CraftingFensterDock" Visibility="{Binding SpielVisibility}" BorderBrush="Black" BorderThickness="1" Grid.Row="1" Grid.Column="2" Grid.RowSpan="4">
-                <TabControl TabStripPlacement="Bottom">
+                <TabControl TabStripPlacement="Bottom" SelectedIndex="{Binding CraftingFeldSelectedOperation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <TabControl.Template>
                         <ControlTemplate TargetType="TabControl">
                             <Border BorderBrush="Black" BorderThickness="1">
@@ -204,6 +204,7 @@
                             </Border>
                         </ControlTemplate>
                     </TabControl.Template>
+                    <TabItem Visibility="Collapsed"></TabItem>
                     <TabItem Visibility="{Binding BitfolgeGenerierenVisibility}" >
 
                         <TabItem.Header>

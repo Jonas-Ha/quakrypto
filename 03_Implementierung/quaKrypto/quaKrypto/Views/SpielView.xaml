@@ -143,7 +143,7 @@
             </Border>
 
             <Border x:Name="CraftingFensterDock" Visibility="{Binding SpielVisibility}" BorderBrush="Black" BorderThickness="1" Grid.Row="1" Grid.Column="2" Grid.RowSpan="2">
-                <TabControl TabStripPlacement="Bottom" SelectedItem="{Binding CraftingFeldSelectedOperation}">
+                <TabControl TabStripPlacement="Bottom" SelectedIndex="{Binding CraftingFeldSelectedOperation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <TabControl.Template>
                         <ControlTemplate TargetType="TabControl">
                             <Border BorderBrush="Black" BorderThickness="1">

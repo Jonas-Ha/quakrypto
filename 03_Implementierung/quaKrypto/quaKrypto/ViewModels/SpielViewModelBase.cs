@@ -31,6 +31,8 @@ namespace quaKrypto.ViewModels
         public ObservableCollection<Information> Muelleimer { get; set; }
         public ObservableCollection<Information> Informationsablage { get; set; }
 
+        public int CraftingFeldSelectedOperation { get; set; }
+
         protected List<Rolle> eigeneRollen;
         private Visibility warteVisibility;
         public Visibility WarteVisibility
@@ -958,7 +960,9 @@ namespace quaKrypto.ViewModels
         }
 
         protected void AktualisiereOperationenVisibility()
-        {           
+        {
+            CraftingFeldSelectedOperation = 0;
+            EigenschaftWurdeGeändert(nameof(CraftingFeldSelectedOperation));
             EigenschaftWurdeGeändert(nameof(BitfolgeGenerierenVisibility));
             EigenschaftWurdeGeändert(nameof(PolarisationsschemataGenerierenVisibility));
             EigenschaftWurdeGeändert(nameof(PhotonenGenerierenVisibility));
