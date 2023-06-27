@@ -139,14 +139,25 @@ namespace quaKrypto.ViewModels
         {
             //Nachrichten Senden
             NachrichtenSenden();
+            
+            //Informationen aus den Operanden abspeichern
+            OperandenInAblageLegen();
+
+            //Informationsablage unscharfe Photonen entfernen und zu Muelleimer hinzufuegen
+            for(int i= Informationsablage.Count-1; i >= 0 ; i--) 
+            {
+                if (Informationsablage[i].InformationsTyp == quaKrypto.Models.Enums.InformationsEnum.unscharfePhotonen) 
+                {
+                    Muelleimer.Add(Informationsablage[i]);
+                    Informationsablage.RemoveAt(i);
+                }
+            }
+
             //MülltonneLeeren
             for (int i = 0; i < Muelleimer.Count; i++)
             {
                 uebungsszenario.LoescheInformation(Muelleimer[i].InformationsID);
             }
-            
-            //Informationen aus den Operanden abspeichern
-            OperandenInAblageLegen();
 
             //Informationsablage abspeichern
             for(int i = 0;i < Informationsablage.Count; i++)
