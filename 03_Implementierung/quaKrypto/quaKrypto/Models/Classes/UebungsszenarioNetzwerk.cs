@@ -198,7 +198,7 @@ namespace quaKrypto.Models.Classes
                 {
                     foreach (Handlungsschritt handlungsschritt in aktuelleRolle.handlungsschritte)
                     {
-                        if (handlungsschritt.OperationsTyp == OperationsEnum.nachrichtSenden && (eigeneRollen.Contains(RolleEnum.Eve) || (handlungsschritt.Rolle == RolleEnum.Alice && eigeneRollen.Contains(RolleEnum.Bob)) || (handlungsschritt.Rolle == RolleEnum.Bob && eigeneRollen.Contains(RolleEnum.Alice))))
+                        if (handlungsschritt.OperationsTyp == OperationsEnum.nachrichtSenden) //&& (eigeneRollen.Contains(RolleEnum.Eve) || (handlungsschritt.Rolle == RolleEnum.Alice && eigeneRollen.Contains(RolleEnum.Bob)) || (handlungsschritt.Rolle == RolleEnum.Bob && eigeneRollen.Contains(RolleEnum.Alice))))
                         {
                             Uebertragungskanal.SpeicherNachrichtAb(handlungsschritt.Ergebnis);
                         }
@@ -226,7 +226,7 @@ namespace quaKrypto.Models.Classes
                 {
                     foreach (Handlungsschritt handlungsschritt in aktuelleRolle.handlungsschritte)
                     {
-                        if (handlungsschritt.OperationsTyp == OperationsEnum.nachrichtSenden && (eigeneRollen.Contains(RolleEnum.Eve) || (handlungsschritt.Rolle == RolleEnum.Alice && eigeneRollen.Contains(RolleEnum.Bob)) || (handlungsschritt.Rolle == RolleEnum.Bob && eigeneRollen.Contains(RolleEnum.Alice))))
+                        if (handlungsschritt.OperationsTyp == OperationsEnum.nachrichtSenden )//&& (eigeneRollen.Contains(RolleEnum.Eve) || (handlungsschritt.Rolle == RolleEnum.Alice && eigeneRollen.Contains(RolleEnum.Bob)) || (handlungsschritt.Rolle == RolleEnum.Bob && eigeneRollen.Contains(RolleEnum.Alice))))
                         {
                             Uebertragungskanal.SpeicherNachrichtAb(handlungsschritt.Ergebnis);
                         }
@@ -291,7 +291,18 @@ namespace quaKrypto.Models.Classes
 
                 //rollen.Where(rolle => rolle.RolleTyp == handlungsschritt.Rolle).First().BeginneZug("");
                 //HandlungsschrittAusführenLassen(handlungsschritt.OperationsTyp, handlungsschritt.Operand1, handlungsschritt.Operand2, handlungsschritt.ErgebnisName, handlungsschritt.Rolle);
-                if (handlungsschritt.OperationsTyp == OperationsEnum.nachrichtSenden && (eigeneRollen.Contains(RolleEnum.Eve) || (handlungsschritt.Rolle == RolleEnum.Alice && eigeneRollen.Contains(RolleEnum.Bob)) || (handlungsschritt.Rolle == RolleEnum.Bob && eigeneRollen.Contains(RolleEnum.Alice))))
+                if(handlungsschritt.OperationsTyp == OperationsEnum.nachrichtEmpfangen)
+                {
+                    if(handlungsschritt.Ergebnis.InformationsTyp == InformationsEnum.unscharfePhotonen)
+                    {
+                        Uebertragungskanal.LoescheNachricht(KanalEnum.photonenKanal, handlungsschritt.Ergebnis.InformationsID);
+                    }
+                    else
+                    {
+                        Uebertragungskanal.LoescheNachricht(KanalEnum.bitKanal, handlungsschritt.Ergebnis.InformationsID);
+                    }   
+                }
+                else if (handlungsschritt.OperationsTyp == OperationsEnum.nachrichtSenden)// && (eigeneRollen.Contains(RolleEnum.Eve) || (handlungsschritt.Rolle == RolleEnum.Alice && eigeneRollen.Contains(RolleEnum.Bob)) || (handlungsschritt.Rolle == RolleEnum.Bob && eigeneRollen.Contains(RolleEnum.Alice))))
                 {
                     Uebertragungskanal.SpeicherNachrichtAb(handlungsschritt.Ergebnis);
                 }
@@ -325,7 +336,18 @@ namespace quaKrypto.Models.Classes
                 Aufzeichnung.HaengeHandlungsschrittAn(handlungsschritt);
                 //rollen.Where(rolle => rolle.RolleTyp == handlungsschritt.Rolle).First().BeginneZug("");
                 //HandlungsschrittAusführenLassen(handlungsschritt.OperationsTyp, handlungsschritt.Operand1, handlungsschritt.Operand2, handlungsschritt.ErgebnisName, handlungsschritt.Rolle);
-                if (handlungsschritt.OperationsTyp == OperationsEnum.nachrichtSenden && (eigeneRollen.Contains(RolleEnum.Eve) || (handlungsschritt.Rolle == RolleEnum.Alice && eigeneRollen.Contains(RolleEnum.Bob)) || (handlungsschritt.Rolle == RolleEnum.Bob && eigeneRollen.Contains(RolleEnum.Alice))))
+                if (handlungsschritt.OperationsTyp == OperationsEnum.nachrichtEmpfangen)
+                {
+                    if (handlungsschritt.Ergebnis.InformationsTyp == InformationsEnum.unscharfePhotonen)
+                    {
+                        Uebertragungskanal.LoescheNachricht(KanalEnum.photonenKanal, handlungsschritt.Ergebnis.InformationsID);
+                    }
+                    else
+                    {
+                        Uebertragungskanal.LoescheNachricht(KanalEnum.bitKanal, handlungsschritt.Ergebnis.InformationsID);
+                    }
+                }
+                else if (handlungsschritt.OperationsTyp == OperationsEnum.nachrichtSenden)// && (eigeneRollen.Contains(RolleEnum.Eve) || (handlungsschritt.Rolle == RolleEnum.Alice && eigeneRollen.Contains(RolleEnum.Bob)) || (handlungsschritt.Rolle == RolleEnum.Bob && eigeneRollen.Contains(RolleEnum.Alice))))
                 {
                     Uebertragungskanal.SpeicherNachrichtAb(handlungsschritt.Ergebnis);
                 }

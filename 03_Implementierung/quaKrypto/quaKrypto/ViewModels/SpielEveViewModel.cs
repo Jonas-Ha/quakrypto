@@ -38,7 +38,7 @@ namespace quaKrypto.ViewModels
         public ObservableCollection<Information> BituebertragungAusgangBob { get; set; }
         public ObservableCollection<Information> PhotonenuebertragungAusgangAlice { get; set; }
         public ObservableCollection<Information> PhotonenuebertragungAusgangBob { get; set; }
-        
+
         public DelegateCommand ZugBeenden { get; set; }
         public SpielEveViewModel(Navigator navigator, IUebungsszenario uebungsszenario, List<Rolle> eigeneRollen) : base(navigator, uebungsszenario, eigeneRollen)
         {
@@ -102,7 +102,7 @@ namespace quaKrypto.ViewModels
         private void UebungsszenarioChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
 
-            if(e != null)
+            if (e != null)
             {
                 if (e.PropertyName is "aktuelleRolle")
                 {
@@ -130,13 +130,13 @@ namespace quaKrypto.ViewModels
                     OperandenInAblageLegen();
                     AktualisiereOperationenVisibility();
                 }
-                else if (e.PropertyName is "Beendet") 
-                { 
-                    if (uebungsszenario.Beendet) Beendet.Execute(null); 
+                else if (e.PropertyName is "Beendet")
+                {
+                    if (uebungsszenario.Beendet) Beendet.Execute(null);
                 }
             }
-            
-            
+
+
         }
 
         private void CollectionChangedMethod(object sender, NotifyCollectionChangedEventArgs e)
@@ -393,25 +393,53 @@ namespace quaKrypto.ViewModels
             for (int i = 0; i < uebungsszenario.Uebertragungskanal.BitKanal.Count; i++)
             {
                 Information empfinfo = uebungsszenario.Uebertragungskanal.BitKanal[i];
-                if(empfinfo.InformationsSender != uebungsszenario.AktuelleRolle.RolleTyp)
+                if (empfinfo.InformationsSender != uebungsszenario.AktuelleRolle.RolleTyp)
                 {
                     if (empfinfo.InformationsSender == RolleEnum.Alice)
+                    {
                         BituebertragungEingangAlice.Add(empfinfo);
+                        uebungsszenario.HandlungsschrittAusführenLassen(OperationsEnum.nachrichtEmpfangen,
+                            empfinfo,
+                            null,
+                            empfinfo.InformationsName,
+                            uebungsszenario.AktuelleRolle.RolleTyp);
+                    } 
                     else if (empfinfo.InformationsSender == RolleEnum.Bob)
+                    {
                         BituebertragungEingangBob.Add(empfinfo);
+                        uebungsszenario.HandlungsschrittAusführenLassen(OperationsEnum.nachrichtEmpfangen,
+                                empfinfo,
+                                null,
+                                empfinfo.InformationsName,
+                                uebungsszenario.AktuelleRolle.RolleTyp);
+                    }
                 }
-                
             }
             //Nachrichten Empfangen Handlungsschritte durchführen
             for (int i = 0; i < uebungsszenario.Uebertragungskanal.PhotonenKanal.Count; i++)
             {
                 Information empfinfo = uebungsszenario.Uebertragungskanal.PhotonenKanal[i];
-                if(empfinfo.InformationsSender != uebungsszenario.AktuelleRolle.RolleTyp)
+                if (empfinfo.InformationsSender != uebungsszenario.AktuelleRolle.RolleTyp)
                 {
                     if (empfinfo.InformationsEmpfaenger == RolleEnum.Alice)
+                    {
                         PhotonenuebertragungEingangAlice.Add(empfinfo);
+                        uebungsszenario.HandlungsschrittAusführenLassen(OperationsEnum.nachrichtEmpfangen,
+                            empfinfo,
+                            null,
+                            empfinfo.InformationsName,
+                            uebungsszenario.AktuelleRolle.RolleTyp);
+                    }
+
                     else if (empfinfo.InformationsEmpfaenger == RolleEnum.Bob)
+                    {
                         PhotonenuebertragungEingangBob.Add(empfinfo);
+                        uebungsszenario.HandlungsschrittAusführenLassen(OperationsEnum.nachrichtEmpfangen,
+                            empfinfo,
+                            null,
+                            empfinfo.InformationsName,
+                            uebungsszenario.AktuelleRolle.RolleTyp);
+                    }                       
                 }
             }
         }
