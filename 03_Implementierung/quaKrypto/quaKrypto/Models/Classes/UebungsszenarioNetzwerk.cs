@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -288,10 +289,10 @@ namespace quaKrypto.Models.Classes
             foreach (Handlungsschritt handlungsschritt in handlungsschritte)
             {
                 Aufzeichnung.HaengeHandlungsschrittAn(handlungsschritt);
-
+                foreach (Rolle rolle in Rollen) rolle.AktualisiereInformationsZaehler(Math.Max(handlungsschritt.Ergebnis == null ? 0 : handlungsschritt.Ergebnis.InformationsID, rolle.InformationsZaehler));
                 //rollen.Where(rolle => rolle.RolleTyp == handlungsschritt.Rolle).First().BeginneZug("");
                 //HandlungsschrittAusführenLassen(handlungsschritt.OperationsTyp, handlungsschritt.Operand1, handlungsschritt.Operand2, handlungsschritt.ErgebnisName, handlungsschritt.Rolle);
-                if(handlungsschritt.OperationsTyp == OperationsEnum.nachrichtEmpfangen)
+                if (handlungsschritt.OperationsTyp == OperationsEnum.nachrichtEmpfangen)
                 {
                     if(handlungsschritt.Ergebnis.InformationsTyp == InformationsEnum.unscharfePhotonen)
                     {
@@ -333,6 +334,7 @@ namespace quaKrypto.Models.Classes
         {
             foreach (Handlungsschritt handlungsschritt in handlungsschritte)
             {
+                foreach(Rolle rolle in Rollen)rolle.AktualisiereInformationsZaehler(Math.Max(handlungsschritt.Ergebnis==null ? 0: handlungsschritt.Ergebnis.InformationsID, rolle.InformationsZaehler));
                 Aufzeichnung.HaengeHandlungsschrittAn(handlungsschritt);
                 //rollen.Where(rolle => rolle.RolleTyp == handlungsschritt.Rolle).First().BeginneZug("");
                 //HandlungsschrittAusführenLassen(handlungsschritt.OperationsTyp, handlungsschritt.Operand1, handlungsschritt.Operand2, handlungsschritt.ErgebnisName, handlungsschritt.Rolle);
