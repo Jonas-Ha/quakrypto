@@ -19,7 +19,7 @@ namespace quaKrypto.ViewModels
 
         public HauptMenuViewModel(Navigator navigator, string? errorMessage = null)
         {
-
+            Wiki.Schwierigkeitsgrad = SchwierigkeitsgradEnum.Leicht;
             NetzwerkClient.ResetNetzwerkClient();
             NetzwerkHost.ResetNetzwerkHost();
 
