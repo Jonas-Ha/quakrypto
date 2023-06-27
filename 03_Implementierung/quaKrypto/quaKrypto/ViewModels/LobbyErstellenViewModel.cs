@@ -91,7 +91,11 @@ namespace quaKrypto.ViewModels
         { 
             get { return _ausgPhaseStart; } 
             set {
-                if (AusgPhaseEnd == value) AusgPhaseStart = value - 1;
+                if (AusgPhaseEnd == value) 
+                {
+                    if (AusgPhaseEnd == 0) AusgPhaseEnd += 1;
+                    else AusgPhaseStart = value - 1;
+                }
                 else _ausgPhaseStart = value; 
                 EigenschaftWurdeGeändert(nameof(AusgPhaseStart));
             } 
@@ -100,7 +104,11 @@ namespace quaKrypto.ViewModels
             get { return _ausgPhaseEnde; }
             set 
             {
-                if (AusgPhaseStart == value) AusgPhaseEnd = value + 1;
+                if (AusgPhaseStart == value)
+                {
+                    if (AusgPhaseStart == 5)AusgPhaseStart -= 1;
+                    else AusgPhaseEnd = value + 1;
+                }
                 else _ausgPhaseEnde = value;
                 EigenschaftWurdeGeändert(nameof(AusgPhaseEnd));
             } 
