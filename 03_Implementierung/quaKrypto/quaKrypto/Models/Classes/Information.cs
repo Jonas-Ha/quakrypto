@@ -197,11 +197,11 @@ namespace quaKrypto.Models.Classes
                     erg = Convert.ToBase64String(Encoding.UTF8.GetBytes((string)InformationsInhalt));
                 }
                 if (InformationsInhalt == null) return "";
-                return $"{InformationsInhalt.GetType()}{(char)243}{erg}";
+                return $"{InformationsInhalt.GetType()}>{erg}";
             }
             set
             {
-                string[] teile = value.Split((char)243);
+                string[] teile = value.Split(">");
 
                 Type? type = Type.GetType(teile[0]);
                 if (type != null)
