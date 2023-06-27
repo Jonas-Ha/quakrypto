@@ -104,10 +104,10 @@ namespace TestLibrary
             Information information = new Information(1, "Bitfolge", InformationsEnum.bitfolge, arrpol1, RolleEnum.Bob);
 
             //Act
-            Information empfangeneInformation = operationen.NachrichtEmpfangen(2, information, null, "EmpfangeneNachricht", null);
+            Information empfangeneInformation = operationen.NachrichtEmpfangen(1, information, null, "EmpfangeneNachricht", null);
 
             //Assert
-            Information erwarteteInformation = new Information(2, "EmpfangeneNachricht", InformationsEnum.bitfolge, arrpol1, null);
+            Information erwarteteInformation = new Information(1, "EmpfangeneNachricht", InformationsEnum.bitfolge, arrpol1, null);
             Assert.AreEqual(erwarteteInformation.InformationsID,empfangeneInformation.InformationsID);
             Assert.AreEqual(erwarteteInformation.InformationsName, empfangeneInformation.InformationsName);
             Assert.AreEqual(erwarteteInformation.InformationsTyp, empfangeneInformation.InformationsTyp);
