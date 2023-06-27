@@ -60,6 +60,10 @@ namespace quaKrypto.Models.Classes
             // Alice fängt jedesmal in einer Phase an, daher ist Bob immer als letztes dran gewesen
             this.aktuelleRolle = RolleEnum.Bob;
         }
+        public void AktuelleRolleSetzen(RolleEnum rolle)
+        {
+            aktuelleRolle = rolle;
+        }
 
         public RolleEnum NaechsteRolle()
         {

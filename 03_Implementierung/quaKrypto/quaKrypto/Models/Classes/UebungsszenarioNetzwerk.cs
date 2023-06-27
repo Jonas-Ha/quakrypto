@@ -329,6 +329,7 @@ namespace quaKrypto.Models.Classes
             {
                 if (Rollen[i].RolleTyp == nächsteRolle)
                 {
+                    Variante.AktuelleRolleSetzen(nächsteRolle);
                     aktuelleRolle = Rollen[i];
                     PropertyHasChanged(nameof(aktuelleRolle));
                     break;

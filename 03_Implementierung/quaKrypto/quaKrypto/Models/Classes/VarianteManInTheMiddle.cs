@@ -62,6 +62,11 @@ namespace quaKrypto.Models.Classes
             this.aktuelleRolle = RolleEnum.Eve;
 
         }
+        public void AktuelleRolleSetzen(RolleEnum rolle)
+        {
+            this.vorherigeRolle = this.aktuelleRolle;
+            aktuelleRolle = rolle;
+        }
 
         public RolleEnum NaechsteRolle()
         {
@@ -86,6 +91,7 @@ namespace quaKrypto.Models.Classes
 
             return this.aktuelleRolle;
         }
+
 
         public void BerechneAktuellePhase(object? sender, NotifyCollectionChangedEventArgs e)
         {
