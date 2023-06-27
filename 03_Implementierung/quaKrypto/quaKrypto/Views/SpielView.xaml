@@ -51,7 +51,6 @@
 
     </UserControl.Resources>
 
-
     <Grid>
         <Grid Background="White">
             <Grid.RowDefinitions>
@@ -89,7 +88,7 @@
                 <DockPanel>
                     <Label DockPanel.Dock="Top" Content="Bitübertragungskanal Eingang:" FontSize="15" />
                     <ListView HorizontalContentAlignment="Stretch" Background="LightGray" ItemsSource="{Binding Path=BituebertragungEingang}" FontSize="20"
-                          glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" MinHeight="125" ItemTemplate="{StaticResource InfoEingang}" >
+                            glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" MinHeight="125" ItemTemplate="{StaticResource InfoEingang}" >
                     </ListView>
                 </DockPanel>
             </Border>
@@ -98,7 +97,7 @@
                 <DockPanel>
                     <Label DockPanel.Dock="Top" Content="Photonenübertragungskanal Eingang:" FontSize="15"/>
                     <ListView HorizontalContentAlignment="Stretch" Background="LightGray" ItemsSource="{Binding Path=PhotonenuebertragungEingang}" FontSize="20"
-                          glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoEingang}">
+                            glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoEingang}">
                     </ListView>
                 </DockPanel>
             </Border>
@@ -107,7 +106,7 @@
                 <DockPanel Grid.Row="1" Grid.Column="2">
                     <Label DockPanel.Dock="Top" Content="Bitübertragungskanal Ausgang:" FontSize="15"/>
                     <ListView HorizontalContentAlignment="Stretch" Background="LightGray" ItemsSource="{Binding Path=BituebertragungAusgang}" FontSize="20"
-                          glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoAusgang}">
+                            glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoAusgang}">
                     </ListView>
                 </DockPanel>
             </Border>
@@ -116,7 +115,7 @@
                 <DockPanel>
                     <Label DockPanel.Dock="Top" Content="Photonenübertragungskanal Ausgang:" FontSize="15"/>
                     <ListView HorizontalContentAlignment="Stretch" Background="LightGray" ItemsSource="{Binding Path=PhotonenuebertragungAusgang}" FontSize="20"
-                          glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoAusgang}">
+                            glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoAusgang}">
                     </ListView>
                 </DockPanel>
             </Border>
@@ -135,7 +134,7 @@
                     <StackPanel Orientation="Vertical" DockPanel.Dock="Top">
                         <Label Content="Passwort eingeben:" FontSize="40" HorizontalContentAlignment="Center"/>
                         <Border BorderBrush="Black" BorderThickness="1" Margin="20,20,20,20">
-                            <TextBox x:Name="PasswortBox" Text="{Binding passwortFeld, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center"/>
+                            <TextBox x:Name="PasswortBox" Text="{Binding passwortFeld, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                         </Border>
                         <Button Content="Bestätigen" FontSize="20" MinHeight="35" MaxHeight="45" MinWidth="150" Command="{Binding PasswortEingabe}" Width="100" Margin="0,0,0,10" IsDefault="True"/>
 
@@ -158,9 +157,9 @@
                                     IsItemsHost="true"/>
                                     </ScrollViewer>
                                     <ContentPresenter x:Name="PART_SelectedContentHost"
-                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                          Margin="{TemplateBinding Padding}"
-                                          ContentSource="SelectedContent"/>
+                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                            Margin="{TemplateBinding Padding}"
+                                            ContentSource="SelectedContent"/>
                                 </DockPanel>
                             </Border>
                         </ControlTemplate>
@@ -170,61 +169,61 @@
                         <TabItem.Header>
                             <TextBlock TextWrapping="Wrap" ToolTip="Bitfolge erzeugen">
                             <InlineUIContainer>
-                                 <Image Name="BitfolgeErzeugen"  Source="../Icons/Spiel/BitfolgeErzeugen/icons8-binary-code-96.png" Width="30" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <Image Name="BitfolgeErzeugen"  Source="../Icons/Spiel/BitfolgeErzeugen/icons8-binary-code-96.png" Width="30" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </InlineUIContainer>
                             </TextBlock>
                         </TabItem.Header>
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" DockPanel.Dock="Top">
-                            <Label Content="Bitfolge erzeugen" FontSize="20" HorizontalContentAlignment="Center" FontWeight="Bold"/>
+                                <Label Content="Bitfolge erzeugen" FontSize="20" HorizontalContentAlignment="Center" FontWeight="Bold"/>
 
-                            <DockPanel Margin="10,0,10,0">
-                                <Border BorderBrush="Black" BorderThickness="1">
-                                    <Label Content="Name" FontSize="15"/>
+                                <DockPanel Margin="10,0,10,0">
+                                    <Border BorderBrush="Black" BorderThickness="1">
+                                        <Label Content="Name" FontSize="15"/>
+                                    </Border>
+                                    <Border BorderBrush="Black" BorderThickness="1">
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
+                                    </Border>
+                                </DockPanel>
+
+                                <Border Width="50" Height="50" Margin="10"  BorderBrush="Black" BorderThickness="1">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="../Icons/Spiel/BitfolgeErzeugen/icons8-binary-code-96.png" Width="50" Height="50"/>
+                                    </StackPanel>
                                 </Border>
-                                <Border BorderBrush="Black" BorderThickness="1">
-                                    <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center"/>
+
+                                <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
+                                    <Label Content="Zahl:" FontSize="15"/>
                                 </Border>
-                            </DockPanel>
 
-                            <Border Width="50" Height="50" Margin="10"  BorderBrush="Black" BorderThickness="1">
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="../Icons/Spiel/BitfolgeErzeugen/icons8-binary-code-96.png" Width="50" Height="50"/>
-                                </StackPanel>
-                            </Border>
-
-                            <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                                <Label Content="Zahl:" FontSize="15"/>
-                            </Border>
-
-                            <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,30">
-                                <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                                <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,30">
+                                    <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Operand1, UpdateSourceTrigger=PropertyChanged}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
-                                </ListView>
-                            </Border>
-
-                            <CheckBox x:Name="chk" Content="Manuell eingeben" IsChecked="{Binding EingabeBool, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,10,10" FontSize="15" VerticalContentAlignment="Center"/>
-                            <DockPanel Margin="10,0,10,10" Visibility="{Binding IsChecked,ElementName=chk,Converter={StaticResource b2v}}">
-                                <Border BorderBrush="Black" BorderThickness="1">
-                                    <Label Content="Bitfolge: " FontSize="15"/>
+                                    </ListView>
                                 </Border>
-                                <Border BorderBrush="Black" BorderThickness="1">
-                                    <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="15"  VerticalContentAlignment="Center"/>
+
+                                <CheckBox x:Name="chk" Content="Manuell eingeben" IsChecked="{Binding EingabeBool, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,10,10" FontSize="15" VerticalContentAlignment="Center"/>
+                                <DockPanel Margin="10,0,10,10" Visibility="{Binding IsChecked,ElementName=chk,Converter={StaticResource b2v}}">
+                                    <Border BorderBrush="Black" BorderThickness="1">
+                                        <Label Content="Bitfolge: " FontSize="15"/>
+                                    </Border>
+                                    <Border BorderBrush="Black" BorderThickness="1">
+                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="15"  VerticalContentAlignment="Center" MaxLength="8191" AcceptsTab="False"/>
+                                    </Border>
+                                </DockPanel>
+
+                                <Button x:Name="ErstellenButton" Command="{Binding BitFolgeErzeugen}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50">
+                                    <Image Source="../Icons/Spiel/Equal/equal.png" Width="40" Height="40"/>
+                                </Button>
+
+                                <Border BorderBrush="Black" BorderThickness="1" Margin="10,10,10,0">
+                                    <Label Content="Ergebnis:" FontSize="15"/>
                                 </Border>
-                            </DockPanel>
-
-                            <Button x:Name="ErstellenButton" Command="{Binding BitFolgeErzeugen}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50">
-                                <Image Source="../Icons/Spiel/Equal/equal.png" Width="40" Height="40"/>
-                            </Button>
-
-                            <Border BorderBrush="Black" BorderThickness="1" Margin="10,10,10,0">
-                                <Label Content="Ergebnis:" FontSize="15"/>
-                            </Border>
-                            <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
-                                <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
+                                <Border BorderBrush="Black" BorderThickness="1" Margin="10,0,10,0">
+                                    <ListView HorizontalContentAlignment="Stretch" Background="AliceBlue" ItemsSource="{Binding Path=Ergebnis}" FontSize="20" SelectionMode="Single" MinHeight="30"
                         glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" ItemTemplate="{StaticResource InfoCraftingFeld}">
-                                </ListView>
-                            </Border>
+                                    </ListView>
+                                </Border>
 
                             </StackPanel>
                         </ScrollViewer>
@@ -234,7 +233,7 @@
                         <TabItem.Header>
                             <TextBlock TextWrapping="Wrap" ToolTip="Ent/Verschlüsseln">
                             <InlineUIContainer>
-                                 <Image Source="../Icons/Spiel/EntVerschluesseln/icons8-key-96.png" Width="30" Height="30"/>
+                                    <Image Source="../Icons/Spiel/EntVerschluesseln/icons8-key-96.png" Width="30" Height="30"/>
                             </InlineUIContainer>
                             </TextBlock>
                         </TabItem.Header>
@@ -247,7 +246,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -295,7 +294,7 @@
                         <TabItem.Header>
                             <TextBlock TextWrapping="Wrap" ToolTip="Photonen erzeugen">
                             <InlineUIContainer>
-                                 <Image Source="../Icons/Spiel/PhotonenErzeugen/icons8-p-96.png" Width="30" Height="30"/>
+                                    <Image Source="../Icons/Spiel/PhotonenErzeugen/icons8-p-96.png" Width="30" Height="30"/>
                             </InlineUIContainer>
                             </TextBlock>
                         </TabItem.Header>
@@ -308,7 +307,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -356,7 +355,7 @@
                         <TabItem.Header>
                             <TextBlock TextWrapping="Wrap" ToolTip="Polarisationsschemata erzeugen">
                             <InlineUIContainer>
-                                 <Image Source="../Icons/Spiel/PolschaErzeugen/icons8-filter-96.png" Width="30" Height="30"/>
+                                    <Image Source="../Icons/Spiel/PolschaErzeugen/icons8-filter-96.png" Width="30" Height="30"/>
                             </InlineUIContainer>
                             </TextBlock>
                         </TabItem.Header>
@@ -369,7 +368,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -395,7 +394,7 @@
                                         <Label Content="Polarisationsschemata: " FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="8191" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -433,7 +432,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -495,7 +494,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
                                 <Border Width="50" Height="50" Margin="10"  BorderBrush="Black" BorderThickness="1">
@@ -555,7 +554,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -570,7 +569,7 @@
                                         <Label Content="Zahl: " FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40"/>
                                     </Border>
                                 </DockPanel>
 
@@ -606,7 +605,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
                                 <Border Width="50" Height="50" Margin="10"  BorderBrush="Black" BorderThickness="1">
@@ -666,7 +665,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
                                 <Border Width="50" Height="50" Margin="10"  BorderBrush="Black" BorderThickness="1">
@@ -717,7 +716,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
                                 <Border Width="50" Height="50" Margin="10"  BorderBrush="Black" BorderThickness="1">
@@ -777,7 +776,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -792,7 +791,7 @@
                                         <Label Content="Text: " FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="8191"/>
                                     </Border>
                                 </DockPanel>
 
@@ -828,7 +827,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
                                 <Border Width="50" Height="50" Margin="10"  BorderBrush="Black" BorderThickness="1">
@@ -880,7 +879,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
                                 <Border Width="50" Height="50" Margin="10"  BorderBrush="Black" BorderThickness="1">
@@ -903,7 +902,7 @@
                                         <Label Content="Text" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="8191" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -939,7 +938,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
                                 <Border Width="50" Height="50" Margin="10"  BorderBrush="Black" BorderThickness="1">
@@ -980,7 +979,7 @@
                 <DockPanel>
                     <Image DockPanel.Dock="Top" Source="../Icons/Spiel/Muelleimer/icons8-trash-96.png" Width="40" Height="50"/>
                     <ListView HorizontalContentAlignment="Stretch" DockPanel.Dock="Top"  Background="LightGray" ItemsSource="{Binding Path=Muelleimer}" FontSize="20"
-                          glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
+                            glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true">
                         <ListView.ItemTemplate>
                             <DataTemplate DataType="x:Information">
                                 <Grid Background="{Binding Path=InformationsTyp, Converter={StaticResource InfoFarbenWaehler}}">
@@ -1000,7 +999,7 @@
                 <DockPanel>
                     <Label DockPanel.Dock="Top" Content="Informations-Ablage: " FontSize="15"/>
                     <ListView  HorizontalContentAlignment="Stretch" Background="LightGray" ItemsSource="{Binding Path=Informationsablage}" FontSize="20"
-                          glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" MinHeight="110">
+                            glob:DragDropHelper.IsDragSource="true" glob:DragDropHelper.IsDropTarget="true" MinHeight="110">
                         <ListView.ItemTemplate>
                             <DataTemplate DataType="x:Information">
                                 <Grid Background="{Binding Path=InformationsTyp, Converter={StaticResource InfoFarbenWaehler}}">
@@ -1025,6 +1024,4 @@
         </Grid>
         <local:WikiButton/>
     </Grid>
-
-    
 </UserControl>

@@ -924,8 +924,11 @@ namespace quaKrypto.ViewModels
 
             if (Int32.TryParse(eingabe, out int j))
             {
-                convertedZahl = j;
-                return true;
+                if ((j > 0) && (j <= 8191))
+                {
+                    convertedZahl = j;
+                    return true;
+                }
             }
             return false;
         }

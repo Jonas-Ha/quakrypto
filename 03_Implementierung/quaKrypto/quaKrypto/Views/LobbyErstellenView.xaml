@@ -25,7 +25,7 @@
             </Grid.RowDefinitions>
             <Label Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="SemiBold" FontSize="40">Lobby erstellen</Label>
             <Label Grid.Row="1" Content="Name der Lobby:" VerticalAlignment="Center" FontSize="15" HorizontalAlignment="Right" Margin="10,10,30,10"/>
-            <TextBox x:Name="LobbyNameTextBox" Text="{Binding LobbyName, UpdateSourceTrigger=PropertyChanged}" MaxHeight="45" Grid.Row="1" Grid.Column="1" Margin="10" MaxLength="50" FontSize="15" VerticalContentAlignment="Center"/>
+            <TextBox x:Name="LobbyNameTextBox" Text="{Binding LobbyName, UpdateSourceTrigger=PropertyChanged }" MaxHeight="45" Grid.Row="1" Grid.Column="1" Margin="10" MaxLength="40" FontSize="15" VerticalContentAlignment="Center"/>
 
             <Label Grid.Row="2" Grid.Column="0" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,10,30,10">Auswahl des Protokolls:</Label>
             <ComboBox x:Name="ProtokollComboBox" Grid.Row="2" Grid.Column="1" MaxHeight="45" Margin="10,10,10,10" ItemsSource="{Binding Protokoll}" SelectedIndex="{Binding AusgProtokoll}" FontSize="15" VerticalContentAlignment="Center"/>
