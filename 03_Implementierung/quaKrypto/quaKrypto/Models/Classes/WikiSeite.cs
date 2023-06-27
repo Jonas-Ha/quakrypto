@@ -28,14 +28,16 @@ namespace quaKrypto.Models.Classes
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public string Identifier => identifier.ToString();
+        public int IdentifierInteger => identifier;
         public string WikiSeiteName { get { return wikiSeiteName; } set { wikiSeiteName = value; PropertyHasChanged(nameof(WikiSeiteName)); } }
         public Brush BorderBrush { get { return istAktiv ? Brushes.Black : Brushes.White; } }
         public string Inhalt { get { return inhalt; } set { inhalt = value; PropertyHasChanged(nameof(Inhalt)); } }
         public double Durchschein => istAktiv ? 1.0d : editierModus ? 0.5d : 1.0d;
 
-        public WikiSeite(string wikiSeiteName, string inhalt)
+        public WikiSeite(string wikiSeiteName, string inhalt, int identifier = -1)
         {
-            identifier = nextAvailableIdentifier++;
+            this.identifier = identifier != -1 ? identifier : nextAvailableIdentifier++;
+            if(this.identifier >= nextAvailableIdentifier) nextAvailableIdentifier = identifier;
             this.wikiSeiteName = wikiSeiteName;
             this.inhalt = inhalt;
         }
@@ -89,6 +91,10 @@ namespace quaKrypto.Models.Classes
         private void PropertyHasChanged(string nameOfProperty)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameOfProperty));
+        }
+        public static void StandardSeitenGeladen()
+        {
+            nextAvailableIdentifier = 6;
         }
     }
 }
