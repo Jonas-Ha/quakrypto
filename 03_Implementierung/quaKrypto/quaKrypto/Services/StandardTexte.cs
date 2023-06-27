@@ -58,7 +58,8 @@ namespace quaKrypto.Services
             "Doppelgänger",
             "Betriebswirtschaftslehre",
             "Summm",
-            "WochenMende"
+            "WochenMende",
+            "MentellyDad"
         };
 
         private static int seed;
