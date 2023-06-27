@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace quaKrypto.Models.Enums
 {
+    [Serializable]
     public enum InformationsEnum
     {
 		zahl,
@@ -21,6 +22,7 @@ namespace quaKrypto.Models.Enums
 		polarisationsschemata,
 		unscharfePhotonen,
 		asciiText,
-		verschluesselterText
+		verschluesselterText,
+		keinInhalt
 	}
 }

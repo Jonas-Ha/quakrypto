@@ -6,69 +6,133 @@
 // ********************************************************** 
 
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.VisualBasic;
+using quaKrypto.Models.Enums;
 using quaKrypto.Models.Interfaces;
 
 namespace quaKrypto.Models.Classes
 {
+    [Serializable]
     public class Rolle
     {
-        private Enums.RolleEnum rolle;
+        private RolleEnum rolle;
         private String alias;
         private String passwort;
-        private List<Information> informationsablage;
-        private uint informationszaehler;
-        public ObservableCollection<Handlungsschritt> handlungsschritte;
-        public event EventHandler handlungsschrittVerfuegbar;
+        private bool freigeschaltet;
+        private ObservableCollection<Information> informationsablage;
+        public ReadOnlyObservableCollection<Information> Informationsablage;
+        private int informationszaehler;
+        public List<Handlungsschritt> handlungsschritte; //Eigentlich nur für das Netzwerk benötigt
 
-        public Rolle(Enums.RolleEnum rolle, string alias, string passwort, IVariante variante)
+        //Dieser Konstruktor ist nur für die View zum Anzeigen in der LobbyView
+        public Rolle(RolleEnum rolle, string alias)
+        {
+            this.rolle = rolle;
+            this.alias = alias;
+        }
+
+        public Rolle(RolleEnum rolle, string alias, string passwort)
         {
             this.informationszaehler = 0;
             this.rolle = rolle;
             this.alias = alias;
             this.passwort = passwort;
-            informationsablage = new List<Information>();
-            handlungsschritte = new ObservableCollection<Handlungsschritt>();
-            handlungsschritte.CollectionChanged += variante.BerechneAktuellePhase;
+            this.freigeschaltet = false;
+            informationsablage = new ObservableCollection<Information>();
+            Informationsablage = new ReadOnlyObservableCollection<Information>(informationsablage);
+            handlungsschritte = new List<Handlungsschritt>();
         }
-        public String Alias 
-        { 
+
+        public string Alias
+        {
             get { return alias; }
             init { alias = value; }
         }
 
-        public Enums.RolleEnum RolleTyp
+        public RolleEnum RolleTyp
         {
             get { return rolle; }
         }
-        
+
+        public int InformationsZaehler
+        {
+            get { return informationszaehler; }
+        }
+        public bool Freigeschaltet
+        {
+            get { return freigeschaltet; }
+        }
+
         public bool BeginneZug(string passwort)
         {
-            if (this.passwort == passwort)return true;
+            if (this.passwort == passwort)
+            {
+                freigeschaltet = true;
+                return true;
+            }
             else return false;
         }
-        
-        public Handlungsschritt ErzeugeHandlungsschritt(Enums.OperationsEnum operationsTyp, Information operand1, Information operand2, String ergebnisInformationsName, Enums.RolleEnum rolle)
+        public void Add(Handlungsschritt handlungsschritt)
         {
-           return new Handlungsschritt(informationszaehler++, operationsTyp, operand1, operand2, ergebnisInformationsName, rolle);
+            handlungsschritte.Add(handlungsschritt);
         }
 
-        public void SpeicherInformationAb(Information information)
+        public Handlungsschritt ErzeugeHandlungsschritt(Enums.OperationsEnum operationsTyp, Information operand1, object operand2, String ergebnisInformationsName, Enums.RolleEnum rolle)
         {
-            informationsablage.Add(information);   
+            if (freigeschaltet)
+            {
+                var handlungsschritt = new Handlungsschritt(informationszaehler++, operationsTyp, operand1, operand2, ergebnisInformationsName, rolle);
+                if (operationsTyp == OperationsEnum.zugBeenden) freigeschaltet = false;
+                Add(handlungsschritt);
+                //handlungsschritte.Add(handlungsschritt);
+                return handlungsschritt;
+
+            }
+            throw new Exception("Rolle war nicht freigeschaltet");
+
         }
 
-        public void LoescheInformation(Information information)
+        public void SpeicherInformationAb(Information information, bool KI = false)
         {
-            informationsablage.Remove(information);
+            if (freigeschaltet || KI)
+            {
+                if (information == null) throw new NoNullAllowedException("Abzuspeichernde Information darf nicht null sein");
+                for (int i = 0; i < informationsablage.Count; i++)
+                {
+                    if (informationsablage[i].InformationsID == information.InformationsID) return;
+                }
+                informationsablage.Add(information);
+                return;
+            }
+            throw new Exception("Rolle war nicht freigeschaltet");
         }
 
-        public void AktualisiereInformationsZaehler(uint informationszaehler)
+        public bool LoescheInformation(int informationsID)
+        {
+            if (freigeschaltet)
+            {
+                for (int i = 0; i < informationsablage.Count; i++)
+                {
+                    if (informationsablage[i].InformationsID == informationsID)
+                    {
+                        informationsablage.RemoveAt(i);
+                        return true;
+                    }
+                }
+                return false;
+            }
+            throw new Exception("Rolle war nicht freigeschaltet");
+        }
+
+        public void AktualisiereInformationsZaehler(int informationszaehler)
         {
             this.informationszaehler = informationszaehler;
         }

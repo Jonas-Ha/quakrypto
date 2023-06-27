@@ -60,7 +60,7 @@ namespace quaKrypto.Models.Classes
             else return null;
         }
 
-        public void LoescheNachricht(Enums.KanalEnum kanal, uint informationsID)
+        public void LoescheNachricht(Enums.KanalEnum kanal, int informationsID)
         {
             if(kanal == Enums.KanalEnum.photonenKanal)
             {

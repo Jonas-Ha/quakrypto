@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -8,6 +8,11 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="Xceed.Wpf.Toolkit.NET5">
+      <HintPath>..\..\..\quakrypto\03_Implementierung\quaKrypto\quaKrypto\bin\Debug\net6.0-windows.Wpf.Toolkit.NET5.dll</HintPath>
+    </Reference>
+  </ItemGroup>
   <ItemGroup>
     <None Remove="Icons\Spiel\Alice\Alice_128px.png" />
     <None Remove="Icons\Spiel\Alice\Alice_128px_grey.png" />
@@ -19,9 +24,18 @@
     <None Remove="Icons\Spiel\Alice\Alice_512px_grey.png" />
     <None Remove="Icons\Spiel\Alice\Alice_64px.png" />
     <None Remove="Icons\Spiel\Alice\Alice_64px_grey.png" />
+    <None Remove="Icons\Spiel\Bitfolge negieren\Bifolge_negieren_48px.png" />
+    <None Remove="Icons\Spiel\Bitfolge negieren\Bitfolge_negieren_128px.png" />
+    <None Remove="Icons\Spiel\Bitfolge negieren\Bitfolge_negieren_24px.png" />
     <None Remove="Icons\Spiel\BitfolgeErzeugen\icons8-binary-code-24.png" />
     <None Remove="Icons\Spiel\BitfolgeErzeugen\icons8-binary-code-48.png" />
     <None Remove="Icons\Spiel\BitfolgeErzeugen\icons8-binary-code-96.png" />
+    <None Remove="Icons\Spiel\Bitmaske generieren\Bitmaske_generieren_128px.png" />
+    <None Remove="Icons\Spiel\Bitmaske generieren\Bitmaske_generieren_24px.png" />
+    <None Remove="Icons\Spiel\Bitmaske generieren\Bitmaske_generieren_48px.png" />
+    <None Remove="Icons\Spiel\Bits frei bearbeiten\Bits_frei_bearbeiten_128px.png" />
+    <None Remove="Icons\Spiel\Bits frei bearbeiten\Bits_frei_bearbeiten_24px.png" />
+    <None Remove="Icons\Spiel\Bits frei bearbeiten\Bits_frei_bearbeiten_48px.png" />
     <None Remove="Icons\Spiel\Bob\Bob_128px.png" />
     <None Remove="Icons\Spiel\Bob\Bob_128px_grey.png" />
     <None Remove="Icons\Spiel\Bob\Bob_256px.png" />
@@ -35,6 +49,7 @@
     <None Remove="Icons\Spiel\EntVerschluesseln\icons8-key-24.png" />
     <None Remove="Icons\Spiel\EntVerschluesseln\icons8-key-48.png" />
     <None Remove="Icons\Spiel\EntVerschluesseln\icons8-key-96.png" />
+    <None Remove="Icons\Spiel\Equal\equal.png" />
     <None Remove="Icons\Spiel\Eve\Eve_128px.png" />
     <None Remove="Icons\Spiel\Eve\Eve_128px_grey.png" />
     <None Remove="Icons\Spiel\Eve\Eve_256px.png" />
@@ -45,6 +60,12 @@
     <None Remove="Icons\Spiel\Eve\Eve_512px_grey.png" />
     <None Remove="Icons\Spiel\Eve\Eve_64px.png" />
     <None Remove="Icons\Spiel\Eve\Eve_64px_grey.png" />
+    <None Remove="Icons\Spiel\Eve\Eve_dg_128px.png" />
+    <None Remove="Icons\Spiel\Eve\Eve_dg_256px.png" />
+    <None Remove="Icons\Spiel\Eve\Eve_dg_32px.png" />
+    <None Remove="Icons\Spiel\Eve\Eve_dg_512px.png" />
+    <None Remove="Icons\Spiel\Eve\Eve_dg_64px.png" />
+    <None Remove="Icons\Spiel\InformationUmbenennen\icons8-signature-24.png" />
     <None Remove="Icons\Spiel\Muelleimer\icons8-trash-144.png" />
     <None Remove="Icons\Spiel\Muelleimer\icons8-trash-144.svg" />
     <None Remove="Icons\Spiel\Muelleimer\icons8-trash-24.png" />
@@ -56,6 +77,9 @@
     <None Remove="Icons\Spiel\PhotonenErzeugen\icons8-p-24.png" />
     <None Remove="Icons\Spiel\PhotonenErzeugen\icons8-p-48.png" />
     <None Remove="Icons\Spiel\PhotonenErzeugen\icons8-p-96.png" />
+    <None Remove="Icons\Spiel\Phtotonen zu Bitfolge\Photonen_zu_Bitfolge_128px.png" />
+    <None Remove="Icons\Spiel\Phtotonen zu Bitfolge\Photonen_zu_Bitfolge_24px.png" />
+    <None Remove="Icons\Spiel\Phtotonen zu Bitfolge\Photonen_zu_Bitfolge_48px.png" />
     <None Remove="Icons\Spiel\PolschaErzeugen\icons8-filter-24.png" />
     <None Remove="Icons\Spiel\PolschaErzeugen\icons8-filter-48.png" />
     <None Remove="Icons\Spiel\PolschaErzeugen\icons8-filter-96.png" />
@@ -65,9 +89,15 @@
     <None Remove="Icons\Spiel\Streichen\icons8-erase-24.png" />
     <None Remove="Icons\Spiel\Streichen\icons8-erase-48.png" />
     <None Remove="Icons\Spiel\Streichen\icons8-erase-96.png" />
+    <None Remove="Icons\Spiel\Text generieren\Text_generieren_128px.png" />
+    <None Remove="Icons\Spiel\Text generieren\Text_generieren_24px.png" />
+    <None Remove="Icons\Spiel\Text generieren\Text_generieren_48px.png" />
     <None Remove="Icons\Spiel\TextErzeugenUmbenennen\icons8-inscription-24.png" />
     <None Remove="Icons\Spiel\TextErzeugenUmbenennen\icons8-inscription-48.png" />
     <None Remove="Icons\Spiel\TextErzeugenUmbenennen\icons8-inscription-96.png" />
+    <None Remove="Icons\Spiel\Textlänge bestimmen\Textlänge_bestimmen_128px.png" />
+    <None Remove="Icons\Spiel\Textlänge bestimmen\Textlänge_bestimmen_24px.png" />
+    <None Remove="Icons\Spiel\Textlänge bestimmen\Textlänge_bestimmen_48px.png" />
     <None Remove="Icons\Spiel\Vergleichen\icons8-scale-24.png" />
     <None Remove="Icons\Spiel\Vergleichen\icons8-scale-48.png" />
     <None Remove="Icons\Spiel\Vergleichen\icons8-scale-96.png" />
@@ -80,7 +110,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModels\" />
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -94,9 +124,18 @@
     <Resource Include="Icons\Spiel\Alice\Alice_512px_grey.png" />
     <Resource Include="Icons\Spiel\Alice\Alice_64px.png" />
     <Resource Include="Icons\Spiel\Alice\Alice_64px_grey.png" />
+    <Resource Include="Icons\Spiel\Bitfolge negieren\Bifolge_negieren_48px.png" />
+    <Resource Include="Icons\Spiel\Bitfolge negieren\Bitfolge_negieren_128px.png" />
+    <Resource Include="Icons\Spiel\Bitfolge negieren\Bitfolge_negieren_24px.png" />
     <Resource Include="Icons\Spiel\BitfolgeErzeugen\icons8-binary-code-24.png" />
     <Resource Include="Icons\Spiel\BitfolgeErzeugen\icons8-binary-code-48.png" />
     <Resource Include="Icons\Spiel\BitfolgeErzeugen\icons8-binary-code-96.png" />
+    <Resource Include="Icons\Spiel\Bitmaske generieren\Bitmaske_generieren_128px.png" />
+    <Resource Include="Icons\Spiel\Bitmaske generieren\Bitmaske_generieren_24px.png" />
+    <Resource Include="Icons\Spiel\Bitmaske generieren\Bitmaske_generieren_48px.png" />
+    <Resource Include="Icons\Spiel\Bits frei bearbeiten\Bits_frei_bearbeiten_128px.png" />
+    <Resource Include="Icons\Spiel\Bits frei bearbeiten\Bits_frei_bearbeiten_24px.png" />
+    <Resource Include="Icons\Spiel\Bits frei bearbeiten\Bits_frei_bearbeiten_48px.png" />
     <Resource Include="Icons\Spiel\Bob\Bob_128px.png" />
     <Resource Include="Icons\Spiel\Bob\Bob_128px_grey.png" />
     <Resource Include="Icons\Spiel\Bob\Bob_256px.png" />
@@ -110,6 +149,7 @@
     <Resource Include="Icons\Spiel\EntVerschluesseln\icons8-key-24.png" />
     <Resource Include="Icons\Spiel\EntVerschluesseln\icons8-key-48.png" />
     <Resource Include="Icons\Spiel\EntVerschluesseln\icons8-key-96.png" />
+    <Resource Include="Icons\Spiel\Equal\equal.png" />
     <Resource Include="Icons\Spiel\Eve\Eve_128px.png" />
     <Resource Include="Icons\Spiel\Eve\Eve_128px_grey.png" />
     <Resource Include="Icons\Spiel\Eve\Eve_256px.png" />
@@ -120,6 +160,12 @@
     <Resource Include="Icons\Spiel\Eve\Eve_512px_grey.png" />
     <Resource Include="Icons\Spiel\Eve\Eve_64px.png" />
     <Resource Include="Icons\Spiel\Eve\Eve_64px_grey.png" />
+    <Resource Include="Icons\Spiel\Eve\Eve_dg_128px.png" />
+    <Resource Include="Icons\Spiel\Eve\Eve_dg_256px.png" />
+    <Resource Include="Icons\Spiel\Eve\Eve_dg_32px.png" />
+    <Resource Include="Icons\Spiel\Eve\Eve_dg_512px.png" />
+    <Resource Include="Icons\Spiel\Eve\Eve_dg_64px.png" />
+    <Resource Include="Icons\Spiel\InformationUmbenennen\icons8-signature-24.png" />
     <Resource Include="Icons\Spiel\Muelleimer\icons8-trash-144.png" />
     <Resource Include="Icons\Spiel\Muelleimer\icons8-trash-144.svg" />
     <Resource Include="Icons\Spiel\Muelleimer\icons8-trash-24.png" />
@@ -131,6 +177,9 @@
     <Resource Include="Icons\Spiel\PhotonenErzeugen\icons8-p-24.png" />
     <Resource Include="Icons\Spiel\PhotonenErzeugen\icons8-p-48.png" />
     <Resource Include="Icons\Spiel\PhotonenErzeugen\icons8-p-96.png" />
+    <Resource Include="Icons\Spiel\Phtotonen zu Bitfolge\Photonen_zu_Bitfolge_128px.png" />
+    <Resource Include="Icons\Spiel\Phtotonen zu Bitfolge\Photonen_zu_Bitfolge_24px.png" />
+    <Resource Include="Icons\Spiel\Phtotonen zu Bitfolge\Photonen_zu_Bitfolge_48px.png" />
     <Resource Include="Icons\Spiel\PolschaErzeugen\icons8-filter-24.png" />
     <Resource Include="Icons\Spiel\PolschaErzeugen\icons8-filter-48.png" />
     <Resource Include="Icons\Spiel\PolschaErzeugen\icons8-filter-96.png" />
@@ -140,9 +189,15 @@
     <Resource Include="Icons\Spiel\Streichen\icons8-erase-24.png" />
     <Resource Include="Icons\Spiel\Streichen\icons8-erase-48.png" />
     <Resource Include="Icons\Spiel\Streichen\icons8-erase-96.png" />
+    <Resource Include="Icons\Spiel\Text generieren\Text_generieren_128px.png" />
+    <Resource Include="Icons\Spiel\Text generieren\Text_generieren_24px.png" />
+    <Resource Include="Icons\Spiel\Text generieren\Text_generieren_48px.png" />
     <Resource Include="Icons\Spiel\TextErzeugenUmbenennen\icons8-inscription-24.png" />
     <Resource Include="Icons\Spiel\TextErzeugenUmbenennen\icons8-inscription-48.png" />
     <Resource Include="Icons\Spiel\TextErzeugenUmbenennen\icons8-inscription-96.png" />
+    <Resource Include="Icons\Spiel\Textlänge bestimmen\Textlänge_bestimmen_128px.png" />
+    <Resource Include="Icons\Spiel\Textlänge bestimmen\Textlänge_bestimmen_24px.png" />
+    <Resource Include="Icons\Spiel\Textlänge bestimmen\Textlänge_bestimmen_48px.png" />
     <Resource Include="Icons\Spiel\Vergleichen\icons8-scale-24.png" />
     <Resource Include="Icons\Spiel\Vergleichen\icons8-scale-48.png" />
     <Resource Include="Icons\Spiel\Vergleichen\icons8-scale-96.png" />

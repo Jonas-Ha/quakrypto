@@ -13,16 +13,21 @@ using System.Threading.Tasks;
 using quaKrypto.Models.Interfaces;
 using quaKrypto.Models.Enums;
 using System.Collections.Specialized;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace quaKrypto.Models.Classes
 {
-    public class VarianteManInTheMiddle : IVariante
+    public class VarianteManInTheMiddle : IVariante, INotifyPropertyChanged
     {
         private uint aktuellePhase;
-        private List<RolleEnum> moeglicheRollen = new List<RolleEnum> { RolleEnum.Alice, RolleEnum.Bob };
+        public readonly IList<RolleEnum> moeglicheRollen = new ReadOnlyCollection<RolleEnum>
+            (new List<RolleEnum> { RolleEnum.Alice, RolleEnum.Bob, RolleEnum.Eve });
 
         private RolleEnum vorherigeRolle;
         private RolleEnum aktuelleRolle;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public uint AktuellePhase
         {
@@ -34,17 +39,16 @@ namespace quaKrypto.Models.Classes
             get { return aktuelleRolle; }
         }
 
-        public string VariantenName
+        public static string VariantenName
         {
-            get { return "Lauschangriff"; }
+            get { return "Man-In-The-Middle"; }
         }
 
         public string ProtokollName
         {
             get { return "BB84"; }
         }
-
-        public List<RolleEnum> MoeglicheRollen
+        public IList<RolleEnum> MoeglicheRollen
         {
             get { return moeglicheRollen; }
         }
@@ -58,18 +62,36 @@ namespace quaKrypto.Models.Classes
             this.aktuelleRolle = RolleEnum.Eve;
 
         }
+        public void AktuelleRolleSetzen(RolleEnum rolle)
+        {
+            this.vorherigeRolle = this.aktuelleRolle;
+            aktuelleRolle = rolle;
+        }
 
         public RolleEnum NaechsteRolle()
         {
             if (this.aktuelleRolle == RolleEnum.Eve)
             {
-                if (vorherigeRolle == RolleEnum.Bob) this.aktuelleRolle = RolleEnum.Alice;
-                else if (vorherigeRolle == RolleEnum.Alice) this.aktuelleRolle = RolleEnum.Bob;
+                if (vorherigeRolle == RolleEnum.Bob)
+                {
+                    this.vorherigeRolle = this.aktuelleRolle;
+                    this.aktuelleRolle = RolleEnum.Alice;
+                }
+                else if (vorherigeRolle == RolleEnum.Alice)
+                {
+                    this.vorherigeRolle = this.aktuelleRolle;
+                    this.aktuelleRolle = RolleEnum.Bob;
+                }
             }
-            else this.aktuelleRolle = RolleEnum.Eve;
+            else 
+            {
+                this.vorherigeRolle = this.aktuelleRolle;
+                this.aktuelleRolle = RolleEnum.Eve; 
+            }
 
             return this.aktuelleRolle;
         }
+
 
         public void BerechneAktuellePhase(object? sender, NotifyCollectionChangedEventArgs e)
         {
@@ -79,13 +101,14 @@ namespace quaKrypto.Models.Classes
                 {
                     Handlungsschritt neusterHandlungsschritt = (Handlungsschritt)e.NewItems[0]!;
                     if (aktuellePhase is 0 or 1 && neusterHandlungsschritt.OperationsTyp is OperationsEnum.zugBeenden &&
-                        aktuelleRolle == RolleEnum.Eve) aktuellePhase += 1;
+                        neusterHandlungsschritt.Rolle == RolleEnum.Bob) { aktuellePhase += 1; PropertyHasChanged(nameof(aktuellePhase)); }
                     if (aktuellePhase == 2 && neusterHandlungsschritt.OperationsTyp == OperationsEnum.bitsStreichen &&
-                        aktuelleRolle == RolleEnum.Alice) aktuellePhase += 1;
-                    if (aktuellePhase == 3 && neusterHandlungsschritt.OperationsTyp == OperationsEnum.bitfolgenVergleichen && aktuelleRolle == RolleEnum.Alice) aktuellePhase += 1;
+                        neusterHandlungsschritt.Rolle == RolleEnum.Alice) { aktuellePhase += 1; PropertyHasChanged(nameof(aktuellePhase)); }
+                    if (aktuellePhase == 3 && neusterHandlungsschritt.OperationsTyp == OperationsEnum.bitfolgenVergleichen &&
+                        neusterHandlungsschritt.Rolle == RolleEnum.Alice) { aktuellePhase += 1; PropertyHasChanged(nameof(aktuellePhase)); }
                     if (aktuellePhase == 4 &&
                         neusterHandlungsschritt.OperationsTyp == OperationsEnum.textEntschluesseln &&
-                        aktuelleRolle == RolleEnum.Bob) aktuellePhase += 1;
+                        neusterHandlungsschritt.Rolle == RolleEnum.Bob) { aktuellePhase += 1; PropertyHasChanged(nameof(aktuellePhase)); }
                 }
             }
         }
@@ -94,9 +117,9 @@ namespace quaKrypto.Models.Classes
         {
             switch (schwierigkeitsgrad)
             {
-                case SchwierigkeitsgradEnum.leicht: return GebeHilfestellungLeicht();
-                case SchwierigkeitsgradEnum.mittel: return GebeHilfestellungMittel();
-                case SchwierigkeitsgradEnum.schwer: return new List<OperationsEnum>();
+                case SchwierigkeitsgradEnum.Leicht: return GebeHilfestellungLeicht();
+                case SchwierigkeitsgradEnum.Mittel: return GebeHilfestellungMittel();
+                case SchwierigkeitsgradEnum.Schwer: return new List<OperationsEnum>();
                 default: return new List<OperationsEnum>();
             }
         }
@@ -104,13 +127,19 @@ namespace quaKrypto.Models.Classes
         private List<OperationsEnum> GebeHilfestellungLeicht()
         {
             List<OperationsEnum> op = new List<OperationsEnum>();
+            op.Add(OperationsEnum.informationUmbenennen);
 
             if (this.aktuellePhase == 0)
             {
-                if (this.aktuelleRolle == RolleEnum.Alice)
+                if (this.aktuelleRolle == RolleEnum.Alice || this.aktuelleRolle == RolleEnum.Eve)
                 {
                     op.Add(OperationsEnum.textGenerieren);
                     op.Add(OperationsEnum.zahlGenerieren);
+                    op.Add(OperationsEnum.textLaengeBestimmen);
+                }
+                else if (this.aktuelleRolle == RolleEnum.Bob)
+                {
+
                 }
             }
             else if (this.aktuellePhase == 1)
@@ -123,12 +152,14 @@ namespace quaKrypto.Models.Classes
                     op.Add(OperationsEnum.polarisationsschemataGenerierenZahl);
                     op.Add(OperationsEnum.photonenGenerieren);
                 }
-                else
+                else if (this.aktuelleRolle == RolleEnum.Bob || this.aktuelleRolle == RolleEnum.Eve)
                 {
                     op.Add(OperationsEnum.polarisationsschemataGenerierenAngabe);
                     op.Add(OperationsEnum.polarisationsschemataGenerierenZahl);
                     op.Add(OperationsEnum.photonenZuBitfolge);
+                    if (this.aktuelleRolle == RolleEnum.Eve) op.Add(OperationsEnum.photonenGenerieren);
                 }
+
             }
             else if (this.aktuellePhase == 2)
             {
@@ -136,11 +167,14 @@ namespace quaKrypto.Models.Classes
                 {
                     op.Add(OperationsEnum.bitsStreichen);
                 }
-                else
+                else if (this.aktuelleRolle == RolleEnum.Bob || this.aktuelleRolle == RolleEnum.Eve)
                 {
                     op.Add(OperationsEnum.polschataVergleichen);
                     op.Add(OperationsEnum.bitsStreichen);
                 }
+
+
+
             }
             else if (this.aktuellePhase == 3)
             {
@@ -150,10 +184,23 @@ namespace quaKrypto.Models.Classes
                     op.Add(OperationsEnum.bitmaskeGenerieren);
                     op.Add(OperationsEnum.bitsStreichen);
                     op.Add(OperationsEnum.bitfolgenVergleichen);
+                    op.Add(OperationsEnum.textLaengeBestimmen);
+                    op.Add(OperationsEnum.bitfolgeNegieren);
+
+                }
+                else if (this.aktuelleRolle == RolleEnum.Bob)
+                {
+                    op.Add(OperationsEnum.bitsStreichen);
+                    op.Add(OperationsEnum.bitfolgeNegieren);
                 }
                 else
                 {
+                    op.Add(OperationsEnum.zahlGenerieren);
+                    op.Add(OperationsEnum.bitmaskeGenerieren);
+                    op.Add(OperationsEnum.textLaengeBestimmen);
                     op.Add(OperationsEnum.bitsStreichen);
+                    op.Add(OperationsEnum.bitfolgeNegieren);
+
                 }
             }
             else if (this.aktuellePhase == 4)
@@ -161,84 +208,81 @@ namespace quaKrypto.Models.Classes
                 if (this.aktuelleRolle == RolleEnum.Alice)
                 {
                     op.Add(OperationsEnum.textVerschluesseln);
+                    op.Add(OperationsEnum.bitfolgenVergleichen);
                 }
-                else
+                else if (this.aktuelleRolle == RolleEnum.Bob)
                 {
                     op.Add(OperationsEnum.textEntschluesseln);
                 }
+                else
+                {
+                    op.Add(OperationsEnum.textVerschluesseln);
+                    op.Add(OperationsEnum.textEntschluesseln);
+                    op.Add(OperationsEnum.textGenerieren);
+                }
             }
+
+            return op;
 
             return op;
         }
 
         private List<OperationsEnum> GebeHilfestellungMittel()
         {
-            List<OperationsEnum> op = new List<OperationsEnum>();
+            List<OperationsEnum> op = Enum.GetValues(typeof(OperationsEnum)).Cast<OperationsEnum>().ToList();
 
-            if (this.aktuellePhase == 0)
+            switch (this.aktuellePhase)
             {
-                if (this.aktuelleRolle == RolleEnum.Alice)
-                {
-                    op.Add(OperationsEnum.textGenerieren);
-                    op.Add(OperationsEnum.zahlGenerieren);
-                }
-            }
-            else if (this.aktuellePhase == 1)
-            {
-                if (this.aktuelleRolle == RolleEnum.Alice)
-                {
-                    op.Add(OperationsEnum.bitfolgeGenerierenAngabe);
-                    op.Add(OperationsEnum.bitfolgeGenerierenZahl);
-                    op.Add(OperationsEnum.polarisationsschemataGenerierenAngabe);
-                    op.Add(OperationsEnum.polarisationsschemataGenerierenZahl);
-                    op.Add(OperationsEnum.photonenGenerieren);
-                }
-                else
-                {
-                    op.Add(OperationsEnum.polarisationsschemataGenerierenAngabe);
-                    op.Add(OperationsEnum.polarisationsschemataGenerierenZahl);
-                    op.Add(OperationsEnum.photonenZuBitfolge);
-                }
-            }
-            else if (this.aktuellePhase == 2)
-            {
-                if (this.aktuelleRolle == RolleEnum.Alice)
-                {
-                    op.Add(OperationsEnum.bitsStreichen);
-                }
-                else
-                {
-                    op.Add(OperationsEnum.polschataVergleichen);
-                    op.Add(OperationsEnum.bitsStreichen);
-                }
-            }
-            else if (this.aktuellePhase == 3)
-            {
-                if (this.aktuelleRolle == RolleEnum.Alice)
-                {
-                    op.Add(OperationsEnum.zahlGenerieren);
-                    op.Add(OperationsEnum.bitmaskeGenerieren);
-                    op.Add(OperationsEnum.bitsStreichen);
-                    op.Add(OperationsEnum.bitfolgenVergleichen);
-                }
-                else
-                {
-                    op.Add(OperationsEnum.bitsStreichen);
-                }
-            }
-            else if (this.aktuellePhase == 4)
-            {
-                if (this.aktuelleRolle == RolleEnum.Alice)
-                {
-                    op.Add(OperationsEnum.textVerschluesseln);
-                }
-                else
-                {
-                    op.Add(OperationsEnum.textEntschluesseln);
-                }
+                case 0:
+                    op.Remove(OperationsEnum.bitfolgeNegieren);
+                    op.Remove(OperationsEnum.bitfolgenVergleichen);
+                    op.Remove(OperationsEnum.bitsFreiBearbeiten);
+                    op.Remove(OperationsEnum.bitsStreichen);
+                    op.Remove(OperationsEnum.polschataVergleichen);
+                    op.Remove(OperationsEnum.textEntschluesseln);
+                    op.Remove(OperationsEnum.textVerschluesseln);
+                    break;
+                case 1:
+                    op.Remove(OperationsEnum.bitfolgeNegieren);
+                    op.Remove(OperationsEnum.bitfolgenVergleichen);
+                    op.Remove(OperationsEnum.bitsFreiBearbeiten);
+                    op.Remove(OperationsEnum.bitsStreichen);
+                    op.Remove(OperationsEnum.polschataVergleichen);
+                    op.Remove(OperationsEnum.textEntschluesseln);
+                    op.Remove(OperationsEnum.textVerschluesseln);
+                    break;
+                case 2:
+                    op.Remove(OperationsEnum.bitfolgeGenerierenAngabe);
+                    op.Remove(OperationsEnum.bitmaskeGenerieren);
+                    op.Remove(OperationsEnum.bitfolgeGenerierenZahl);
+                    op.Remove(OperationsEnum.photonenGenerieren);
+                    op.Remove(OperationsEnum.polarisationsschemataGenerierenAngabe);
+                    op.Remove(OperationsEnum.polarisationsschemataGenerierenZahl);
+                    op.Remove(OperationsEnum.textGenerieren);
+                    op.Remove(OperationsEnum.zahlGenerieren);
+                    op.Remove(OperationsEnum.textEntschluesseln);
+                    op.Remove(OperationsEnum.textVerschluesseln);
+                    break;
+                case 3:
+                    op.Remove(OperationsEnum.textEntschluesseln);
+                    op.Remove(OperationsEnum.textVerschluesseln);
+                    break;
+                case 4:
+                    op.Remove(OperationsEnum.bitfolgeGenerierenAngabe);
+                    op.Remove(OperationsEnum.bitmaskeGenerieren);
+                    op.Remove(OperationsEnum.bitfolgeGenerierenZahl);
+                    op.Remove(OperationsEnum.photonenGenerieren);
+                    op.Remove(OperationsEnum.polarisationsschemataGenerierenAngabe);
+                    op.Remove(OperationsEnum.polarisationsschemataGenerierenZahl);
+                    break;
             }
 
             return op;
+        }
+
+        private void PropertyHasChanged(string nameOfProperty)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameOfProperty));
         }
     }
 }

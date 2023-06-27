@@ -1,56 +1,377 @@
 ﻿using quaKrypto.Commands;
+using quaKrypto.Models.Classes;
+using quaKrypto.Models.Enums;
 using quaKrypto.Models.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.Specialized;
+using System.Windows;
+using Information = quaKrypto.Models.Classes.Information;
 
 namespace quaKrypto.ViewModels
 {
-    public class SpielViewModel : BaseViewModel
+    public class SpielViewModel : SpielViewModelBase
     {
-        private IUebungsszenario uebungsszenario;
+        private Navigator navigator;
 
-        public ObservableCollection<string> BituebertragungEingang { get; set; }
-        public ObservableCollection<string> PhotonenuebertragungEingang { get; set; }
-        public ObservableCollection<string> BituebertragungAusgang { get; set; }
-        public ObservableCollection<string> PhotonenuebertragungAusgang { get; set; }
-        public string CraftingFeldPhotonen { get; set; }
-        public string CraftingFeldPolarisation { get; set; }
-        public string CraftingFeldErgebnis { get; set; }
-        public string Muelleimer { get; set; }
-        public string Informationsablage { get; set; }
+        private SpielEveViewModel spielEveViewModel;
+        private bool once = false;
+        public SpielEveViewModel SpielEveViewModel { 
+            set
+            { 
+                if (!once) 
+                { 
+                    spielEveViewModel = value;
+                    once = true;
+                } 
+            } 
+        }
+        public ObservableCollection<Information> BituebertragungEingang { get; set; }
+        public ObservableCollection<Information> PhotonenuebertragungEingang { get; set; }
+        public ObservableCollection<Information> BituebertragungAusgang { get; set; }
+        public ObservableCollection<Information> PhotonenuebertragungAusgang { get; set; }
 
-        public DelegateCommand HauptMenu { get; set; }
-        public SpielViewModel(Navigator navigator, IUebungsszenario uebungsszenario)
+        public DelegateCommand ZugBeenden { get; set; }
+
+        public SpielViewModel(Navigator navigator, IUebungsszenario uebungsszenario, List<Rolle> eigeneRollen) : base(navigator, uebungsszenario, eigeneRollen)
         {
-            this.uebungsszenario = uebungsszenario;
+            setzeAktPhaseView();
+            setzeAktRolleView();
+            this.BituebertragungEingang = new ObservableCollection<Information>();
+            this.PhotonenuebertragungEingang = new ObservableCollection<Information>();
+
+            this.BituebertragungAusgang = new ObservableCollection<Information>();
+            this.PhotonenuebertragungAusgang = new ObservableCollection<Information>();
+
+            BituebertragungAusgang.CollectionChanged += new NotifyCollectionChangedEventHandler(CollectionChangedMethod);
+            PhotonenuebertragungAusgang.CollectionChanged += new NotifyCollectionChangedEventHandler(CollectionChangedMethod);
+
+            uebungsszenario.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(UebungsszenarioChanged);
+            
+            //Informationsablage = new ObservableCollection<Information>();
+            this.navigator = navigator;
+
             HauptMenu = new((o) =>
             {
-                navigator.aktuellesViewModel = new HauptMenuViewModel(navigator);
+                if (uebungsszenario.AktuelleRolle.Freigeschaltet) zugBeendenOhneSenden();
+                Application.Current.Dispatcher.Invoke(() => { navigator.aktuellesViewModel = new AufzeichnungViewModel(navigator, uebungsszenario); });
 
-            }, null);
+                if (uebungsszenario.GetType() == typeof(UebungsszenarioNetzwerk))
+                {
+                    if (((UebungsszenarioNetzwerk)uebungsszenario).Host) NetzwerkHost.BeendeUebungsszenario();
+                    else NetzwerkClient.BeendeUebungsszenario();
+                }
 
-            this.BituebertragungEingang = new ObservableCollection<string>();
-            this.PhotonenuebertragungEingang = new ObservableCollection<string>();
 
-            this.BituebertragungAusgang = new ObservableCollection<string>();
-            this.PhotonenuebertragungAusgang = new ObservableCollection<string>();
+            }, (o) => true);
 
-            this.BituebertragungEingang.Add("Simon");
-            this.BituebertragungEingang.Add("Moeez");
+            ZugBeenden = new((o) =>
+            {
+                AenderZustand(Enums.SpielEnum.warten);
+                zugBeenden();
+                setzeAktPhaseView();
+            }, (o) => ZugBeendenStartBedingung());
 
-            this.PhotonenuebertragungEingang.Add("Alex");
-            this.PhotonenuebertragungEingang.Add("Mentel");
+            PasswortEingabe = new((o) =>
+            {
+                if (uebungsszenario.GebeBildschirmFrei(passwortFeld))
+                {
+                    InformationenLaden();
+                    AenderZustand(Enums.SpielEnum.aktiv);
+                }
+                else
+                {
+                    //Ungültiges Passwort was tun? -AD
+                    //Programm Beenden und Löschen und Win32 löschen -DM
+                }
 
-            this.BituebertragungAusgang.Add("Jonas");
-            this.BituebertragungAusgang.Add("Leo");
+            }, (o) => passwortFeld != "");
+        }
 
-            this.PhotonenuebertragungAusgang.Add("Domi");
-            this.PhotonenuebertragungAusgang.Add("Kris");
 
+        private void UebungsszenarioChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e != null)
+            {
+                if (e.PropertyName is "aktuelleRolle")
+                {
+                    if (eigeneRollen.Contains(uebungsszenario.AktuelleRolle))
+                    {
+                        //Prüfen ob Eve dran ist
+                        if (uebungsszenario.AktuelleRolle.RolleTyp == RolleEnum.Eve)
+                        {
+                            //ViewModelWechseln
+                            navigator.aktuellesViewModel = spielEveViewModel;
+                        }
+                        else
+                        {
+                            //Visibility ändern
+                            AenderZustand(Enums.SpielEnum.passwortEingabe);
+                        }
+                    }
+                    else
+                    {
+                        //Wartescreen
+                        AenderZustand(Enums.SpielEnum.warten);
+                    }
+                    setzeAktRolleView();
+                    verfügbareOperationen = uebungsszenario.Variante.GebeHilfestellung(uebungsszenario.Schwierigkeitsgrad);
+                    OperandenInAblageLegen();
+                    AktualisiereOperationenVisibility();
+                }
+                else if (e.PropertyName is "Beendet")
+                {
+                    if (uebungsszenario.Beendet) Beendet.Execute(null);//navigator.aktuellesViewModel = ;
+                }
+            }    
+        }
+
+
+        private void CollectionChangedMethod(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            CanExecuteZugBeenden();
+        }
+
+        private void CanExecuteZugBeenden()
+        {
+            ZugBeenden.RaiseCanExecuteChanged();
+        }
+        private void zugBeenden()
+        {
+            //Nachrichten Senden
+            NachrichtenSenden();
+
+            //Informationen aus den Operanden abspeichern
+            InformationenInAblageLegen();
+
+            //Informationsablage unscharfe Photonen entfernen und zu Muelleimer hinzufuegen
+            for(int i= Informationsablage.Count-1; i >= 0 ; i--) 
+            {
+                if (Informationsablage[i].InformationsTyp == quaKrypto.Models.Enums.InformationsEnum.unscharfePhotonen) 
+                {
+                    Muelleimer.Add(Informationsablage[i]);
+                    Informationsablage.RemoveAt(i);
+                }
+            }
+
+            //MülltonneLeeren
+            for (int i = 0; i < Muelleimer.Count; i++)
+            {
+                uebungsszenario.LoescheInformation(Muelleimer[i].InformationsID);
+            }
+
+            //Informationsablage abspeichern
+            for(int i = 0;i < Informationsablage.Count; i++)
+            {
+                uebungsszenario.SpeichereInformationenAb(Informationsablage[i]);
+            }
+
+            //leeren aller Listen für die View
+            ClearViewListen();
+
+            //leeren aller TextBoxen
+            ClearViewTextBox();
+
+            uebungsszenario.HandlungsschrittAusführenLassen(
+                                    OperationsEnum.zugBeenden,
+                                    null,
+                                    null, 
+                                    null,
+                                    uebungsszenario.AktuelleRolle.RolleTyp
+                                    );
+            uebungsszenario.NaechsterZug();
+        }
+
+        private void zugBeendenOhneSenden()
+        {
+            //MülltonneLeeren
+            for (int i = 0; i < Muelleimer.Count; i++)
+            {
+                uebungsszenario.LoescheInformation(Muelleimer[i].InformationsID);
+            }
+
+            //Informationen aus den Operanden abspeichern
+            InformationenInAblageLegen();
+
+            //Informationsablage abspeichern
+            for (int i = 0; i < Informationsablage.Count; i++)
+            {
+                uebungsszenario.SpeichereInformationenAb(Informationsablage[i]);
+            }
+
+            //leeren aller Listen für die View
+            ClearViewListen();
+
+            //leeren aller TextBoxen
+            ClearViewTextBox();
+
+            uebungsszenario.HandlungsschrittAusführenLassen(
+                                    OperationsEnum.zugBeenden,
+                                    null,
+                                    null,
+                                    null,
+                                    uebungsszenario.AktuelleRolle.RolleTyp
+                                    );
+            uebungsszenario.NaechsterZug();
+        }
+
+        private void NachrichtenSenden()
+        {
+            RolleEnum empf = RolleEnum.Alice;
+            if (uebungsszenario.AktuelleRolle.RolleTyp == RolleEnum.Alice) empf = RolleEnum.Bob;
+            else if (uebungsszenario.AktuelleRolle.RolleTyp == RolleEnum.Bob) empf = RolleEnum.Alice;
+            Information info = new Information(-1, "AutomatischeAngabe", InformationsEnum.keinInhalt, empf, null);
+            for (int i = 0; i<BituebertragungAusgang.Count; i++)
+            {
+                uebungsszenario.HandlungsschrittAusführenLassen(
+                                    OperationsEnum.nachrichtSenden,
+                                    BituebertragungAusgang[i],
+                                    info,  
+                                    "NachrichtDummy",
+                                    uebungsszenario.AktuelleRolle.RolleTyp
+                                    );
+            }
+            for (int i = 0; i < PhotonenuebertragungAusgang.Count; i++)
+            {
+                
+                uebungsszenario.HandlungsschrittAusführenLassen(
+                                    OperationsEnum.nachrichtSenden,
+                                    PhotonenuebertragungAusgang[i],
+                                    info,
+                                    "NachrichtDummy",
+                                    uebungsszenario.AktuelleRolle.RolleTyp
+                                    );
+            }
+        }
+
+        private void OperandenInAblageLegen()
+        {
+            for (int i = 0; i < Operand1.Count; i++)
+            {
+                Informationsablage.Add(Operand1[i]);
+            }
+            for (int i = 0; i < Operand2.Count; i++)
+            {
+                Informationsablage.Add(Operand2[i]);
+            }
+            for (int i = 0; i < Ergebnis.Count; i++)
+            {
+                Informationsablage.Add(Ergebnis[i]);
+            }
+        }
+        private void InformationenInAblageLegen()
+        {
+            for (int i = 0; i < Operand1.Count; i++)
+            {
+                Informationsablage.Add(Operand1[i]);
+            }
+            for (int i = 0; i < Operand2.Count; i++)
+            {
+                Informationsablage.Add(Operand2[i]);
+            }
+            for (int i = 0; i < Ergebnis.Count; i++)
+            {
+                Informationsablage.Add(Ergebnis[i]);
+            }
+            for (int i = 0; i < BituebertragungAusgang.Count; i++)
+            {
+                Informationsablage.Add(BituebertragungAusgang[i]);
+            }
+            for (int i = 0; i < PhotonenuebertragungAusgang.Count; i++)
+            {
+                Informationsablage.Add(PhotonenuebertragungAusgang[i]);
+            }
+        }
+
+        private void ClearViewListen()
+        {
+            Informationsablage.Clear();
+            Muelleimer.Clear();
+            Operand1.Clear();
+            Operand2.Clear();
+            Ergebnis.Clear();
+            BituebertragungEingang.Clear();
+            PhotonenuebertragungEingang.Clear();
+            BituebertragungAusgang.Clear();
+            PhotonenuebertragungAusgang.Clear();
+        }
+
+        private bool ZugBeendenStartBedingung()
+        {
+            for(int i = 0; i < BituebertragungAusgang.Count; i++)
+            {
+                if (BituebertragungAusgang[i] == null)return false;
+                if (BituebertragungAusgang[i].InformationsTyp == InformationsEnum.photonen 
+                    || BituebertragungAusgang[i].InformationsTyp == InformationsEnum.unscharfePhotonen) return false;
+            }
+
+            for (int i = 0; i < PhotonenuebertragungAusgang.Count; i++)
+            {
+                if (PhotonenuebertragungAusgang[i] == null) return false;
+                if (PhotonenuebertragungAusgang[i].InformationsTyp != InformationsEnum.photonen) return false;
+            }
+            return true;
+        }
+
+        private void InformationenLaden()
+        {
+            //Informationsablage wiederherstellen
+            for (int i = 0; i < uebungsszenario.AktuelleRolle.Informationsablage.Count; i++)
+            {
+                Informationsablage.Add(uebungsszenario.AktuelleRolle.Informationsablage[i]);
+            }
+
+            InformationenEmpfangen();
+            InformationenLöschen();
+
+        }
+        //Lädt die Informationen aus den Übertragungskanälen ein
+        private void InformationenEmpfangen()
+        {
+            //Nachrichten Empfangen Handlungsschritte durchführen
+            for (int i = 0; i < uebungsszenario.Uebertragungskanal.BitKanal.Count; i++)
+            {
+                Information empfinfo = uebungsszenario.Uebertragungskanal.BitKanal[i];
+                if (empfinfo.InformationsEmpfaenger == uebungsszenario.AktuelleRolle.RolleTyp)
+                {
+                    uebungsszenario.HandlungsschrittAusführenLassen(OperationsEnum.nachrichtEmpfangen,
+                        empfinfo,
+                        null,
+                        empfinfo.InformationsName,
+                        uebungsszenario.AktuelleRolle.RolleTyp);
+                    BituebertragungEingang.Add(empfinfo);
+                }
+
+            }
+            //Nachrichten Empfangen Handlungsschritte durchführen
+            for (int i = 0; i < uebungsszenario.Uebertragungskanal.PhotonenKanal.Count; i++)
+            {
+                Information empfinfo = uebungsszenario.Uebertragungskanal.PhotonenKanal[i];
+                if (empfinfo.InformationsEmpfaenger == uebungsszenario.AktuelleRolle.RolleTyp)
+                {
+                    uebungsszenario.HandlungsschrittAusführenLassen(OperationsEnum.nachrichtEmpfangen,
+                        empfinfo,
+                        null,
+                        empfinfo.InformationsName,
+                        uebungsszenario.AktuelleRolle.RolleTyp);
+                    PhotonenuebertragungEingang.Add(empfinfo);
+                }
+
+            }
+        }
+
+        //Löscht die Empfangenen Informationen aus den Übertragungskanälen
+        private void InformationenLöschen()
+        {
+            //Löschen der Empfangenen Nachrichten aus dem Übertragungskanälen
+            foreach (Information info in BituebertragungEingang)
+            {
+                uebungsszenario.LoescheInformationAusUebertragungskanal(KanalEnum.bitKanal, info.InformationsID);
+            }
+            foreach (Information info in PhotonenuebertragungEingang)
+            {
+                uebungsszenario.LoescheInformationAusUebertragungskanal(KanalEnum.photonenKanal, info.InformationsID);
+            }
         }
     }
 }

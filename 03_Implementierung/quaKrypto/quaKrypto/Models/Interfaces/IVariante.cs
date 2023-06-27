@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ using quaKrypto.Models.Enums;
 
 namespace quaKrypto.Models.Interfaces
 {
-    public interface IVariante
+    public interface IVariante : INotifyPropertyChanged
     {
         public uint AktuellePhase
         { get; }
@@ -25,14 +26,16 @@ namespace quaKrypto.Models.Interfaces
         { get; }
 
 
-        public string VariantenName
+        public static string VariantenName
         { get; }
 
         public string ProtokollName 
         { get; }
 
-        public List<RolleEnum> MoeglicheRollen
+        public IList<RolleEnum> MoeglicheRollen
         { get; }
+
+        public void AktuelleRolleSetzen(RolleEnum rolle);
 
         public RolleEnum NaechsteRolle();
         public List<OperationsEnum> GebeHilfestellung(SchwierigkeitsgradEnum schwierigkeitsgrad);

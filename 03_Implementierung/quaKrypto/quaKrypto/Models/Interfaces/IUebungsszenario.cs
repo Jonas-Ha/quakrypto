@@ -7,6 +7,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,12 +17,15 @@ using quaKrypto.Models.Enums;
 
 namespace quaKrypto.Models.Interfaces
 {
-    public interface IUebungsszenario
+    public interface IUebungsszenario : INotifyPropertyChanged
     {
-        public List<Rolle> Rollen
+        public ReadOnlyObservableCollection<Rolle> Rollen
         { get; }
 
-        public Enums.SchwierigkeitsgradEnum Schwierigkeitsgrad
+        public Rolle AktuelleRolle
+        { get; }
+
+        public SchwierigkeitsgradEnum Schwierigkeitsgrad
         { get; }
 
         public IVariante Variante 
@@ -41,21 +46,27 @@ namespace quaKrypto.Models.Interfaces
         public string Name
         { get; }
 
+        public bool HostHatGestartet 
+        { get; }
+
+        public bool Beendet
+        { get; }
+
         //Diese Funktionen werden dem View Model als Interface angeboten
 
         // Füge ein Rollen Objekt zum Übungsszenario hinzu
         // Gibt false zurück, wenn der RollenTyp bereits belegt ist
-        public bool RolleHinzufuegen(Rolle rolle);
+        public bool RolleHinzufuegen(Rolle rolle, bool eigeneRolle);
 
         // Entferne ein Rolle mit bestimmten Typ
         public void GebeRolleFrei(RolleEnum rolle);
 
         //Wird aufgerufen wenn das Spiel gestartet wird.
-        public void Starten();
+        public bool Starten();
 
         //Wird aufgerufen wenn ein Benutzer auf Zug Beenden klickt
         //Gibt false zurück wenn das Übungsszenario durchgespielt wurde
-        public bool NaechsterZug();
+        public void NaechsterZug();
 
         //Wird aufgerufen wenn ein Benutzer versucht den gesperrten Bildschirm zu entsperren
         //Gibt false zurück wenn das Passwort nicht mit der aktuellen Rolle übereinstimmt - true wenn es passt
@@ -63,12 +74,14 @@ namespace quaKrypto.Models.Interfaces
 
         //Gibt ein Handlungsschritt objekt and die aktuelle rolle weiter, die ihn dann ausführt
         //Gibt das dadurch erstellte Informationsobjekt zurück
-        public Information HandlungsschrittAusführenLassen(Handlungsschritt handlungsschritt);
+        public Information HandlungsschrittAusführenLassen(Enums.OperationsEnum operationsTyp, Information operand1, object? operand2, String ergebnisInformationsName, Enums.RolleEnum ausfuerendeRolle);
 
         //Speichert die Information mit der übergebenen ID im Speicher der aktuellen Rolle ab
-        public void SpeichereInformationenAb(uint informationID);
+        public void SpeichereInformationenAb(Information information);
         //Löscht die Information mit der übergebenen ID aus dem Speicher der aktuellen Rolle
-        public void LoescheInformation(uint informationID);
+        public void LoescheInformation(int informationID);
+        //Löscht eine Information aus dem Übertragungskanal
+        public void LoescheInformationAusUebertragungskanal(KanalEnum kanal, int informatonsID);
         //Soll aufgerufen werden wenn das Übungsszenario beendet werden soll
         public void Beenden();
 

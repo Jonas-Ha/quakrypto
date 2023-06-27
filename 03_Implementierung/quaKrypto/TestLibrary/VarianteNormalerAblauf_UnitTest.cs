@@ -27,7 +27,7 @@ namespace TestLibrary
         public void NaechsteRolle_Erster_Aufruf_Alice_Erfolg()
         {
             // Arrange 
-            VarianteNormalerAblauf normalerAblauf = new VarianteNormalerAblauf(0, SchwierigkeitsgradEnum.leicht);
+            VarianteNormalerAblauf normalerAblauf = new VarianteNormalerAblauf(0, SchwierigkeitsgradEnum.Leicht);
 
             // Act
             RolleEnum rolle = normalerAblauf.NaechsteRolle();
@@ -46,7 +46,7 @@ namespace TestLibrary
         public void NaechsteRolle_N_mal_Ausfuehren_Erfolg(int anzahlAusfuehren, RolleEnum erwarteteRolle)
         {
             // Arrange 
-            VarianteNormalerAblauf normalerAblauf = new VarianteNormalerAblauf(0, SchwierigkeitsgradEnum.leicht);
+            VarianteNormalerAblauf normalerAblauf = new VarianteNormalerAblauf(0, SchwierigkeitsgradEnum.Leicht);
             RolleEnum rolle = RolleEnum.Alice;
 
             // Act
@@ -62,7 +62,7 @@ namespace TestLibrary
         [Test]
         public void GebeHilfestellung_Phase0_Alice_leicht_Erfolg()
         {
-            VarianteNormalerAblauf normalerAblauf = new VarianteNormalerAblauf(0, SchwierigkeitsgradEnum.leicht);
+            VarianteNormalerAblauf normalerAblauf = new VarianteNormalerAblauf(0, SchwierigkeitsgradEnum.Leicht);
 
             normalerAblauf.NaechsteRolle();
             List<OperationsEnum> op = normalerAblauf.GebeHilfestellung();
@@ -75,7 +75,7 @@ namespace TestLibrary
         [Test]
         public void GebeHilfestellung_Phase0_Bob_leicht_Erfolg()
         {
-            VarianteNormalerAblauf normalerAblauf = new VarianteNormalerAblauf(0, SchwierigkeitsgradEnum.leicht);
+            VarianteNormalerAblauf normalerAblauf = new VarianteNormalerAblauf(0, SchwierigkeitsgradEnum.Leicht);
 
             normalerAblauf.NaechsteRolle();
             List<OperationsEnum> op = normalerAblauf.GebeHilfestellung();
@@ -86,7 +86,7 @@ namespace TestLibrary
         [Test]
         public void GebeHilfestellung_Phase1_Alice_leicht_Erfolg()
         {
-            VarianteNormalerAblauf normalerAblauf = new VarianteNormalerAblauf(0, SchwierigkeitsgradEnum.leicht);
+            VarianteNormalerAblauf normalerAblauf = new VarianteNormalerAblauf(0, SchwierigkeitsgradEnum.Leicht);
 
             normalerAblauf.NaechsteRolle();
             normalerAblauf.NaechsteRolle();
@@ -104,7 +104,7 @@ namespace TestLibrary
         [Test]
         public void GebeHilfestellung_Phase1_Bob_leicht_Erfolg()
         {
-            VarianteNormalerAblauf normalerAblauf = new VarianteNormalerAblauf(0, SchwierigkeitsgradEnum.leicht);
+            VarianteNormalerAblauf normalerAblauf = new VarianteNormalerAblauf(0, SchwierigkeitsgradEnum.Leicht);
 
             normalerAblauf.NaechsteRolle();
             normalerAblauf.NaechsteRolle();

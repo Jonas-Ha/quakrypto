@@ -7,7 +7,7 @@
         xmlns:services="clr-namespace:quaKrypto.Services"
         xmlns:viewmodel="clr-namespace:quaKrypto.ViewModels"
         mc:Ignorable="d"
-        Title="Wiki" Height="450" Width="800"
+        Title="Wiki" MinHeight="450" MinWidth="800"
         Closing="WikiWirdBeendet">
     <Window.DataContext>
         <viewmodel:WikiViewModel x:Name="model"/>
@@ -15,9 +15,9 @@
 
     <DockPanel Margin="10">
 
-        <GroupBox DockPanel.Dock="Left" Margin="0,0,10,0" MaxWidth="202">
+        <GroupBox DockPanel.Dock="Left" Margin="0,0,10,0" Width="220">
             <GroupBox.Header>
-                <Label Content="Wiki Seiten" FontSize="19" FontWeight="Thin"/>
+                <Label Content="Wiki Seiten" FontSize="20" FontWeight="SemiBold"/>
             </GroupBox.Header>
             <Grid>
                 <Grid.RowDefinitions>
@@ -26,36 +26,36 @@
                 </Grid.RowDefinitions>
 
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" SnapsToDevicePixels="True">
-                    <ItemsControl ItemsSource="{Binding Source={x:Static viewmodel:WikiViewModel.WikiSeiten}}" Tag="{Binding .}">
+                    <ItemsControl ItemsSource="{Binding Source={x:Static viewmodel:WikiViewModel.WikiSeiten}}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border BorderThickness="2" BorderBrush="{Binding BorderBrush}" CornerRadius="10">
+                                <Border BorderThickness="2" BorderBrush="{Binding BorderBrush}" CornerRadius="4">
                                     <StackPanel Orientation="Horizontal">
                                         <StackPanel.InputBindings>
                                             <MouseBinding Gesture="LeftClick" Command="{Binding SeiteSelektiert, Source={x:Reference Name=model}}" CommandParameter="{Binding Identifier}"/>
                                         </StackPanel.InputBindings>
                                         <Label Content="{Binding Identifier}" Visibility="Collapsed"/>
                                         <Image Source="../Icons/Wiki/seite.png" Width="30" Height="30"/>
-                                        <Label Content="{Binding WikiSeiteName}" FontWeight="Thin"  FontSize="20" Opacity="{Binding Durchschein}"/>
+                                        <Label Content="{Binding WikiSeiteName}" FontWeight="Thin"  FontSize="15" Opacity="{Binding Durchschein}"/>
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </ScrollViewer>
-                <GroupBox VerticalAlignment="Bottom" Grid.Row="1" Header="Optionen">
+                <GroupBox VerticalAlignment="Bottom" Grid.Row="1" Header="Optionen" FontWeight="SemiBold" FontSize="20">
                     <StackPanel Orientation="Horizontal" Margin="10">
-                        <Image Source="../Icons/Wiki/erweitern.png" ToolTip="Das Wiki durch eine neue Seite Erweitern" Focusable="True">
+                        <Image Source="../Icons/Wiki/erweitern.png" ToolTip="Das Wiki durch eine neue Seite Erweitern" Focusable="True" Cursor="{Binding Cursor}">
                             <Image.InputBindings>
                                 <MouseBinding Gesture="LeftClick" Command="{Binding SeitenErweitern}"/>
                             </Image.InputBindings>
                         </Image>
-                        <Image Source="../Icons/Wiki/bearbeiten.png" Margin="10,0" ToolTip="Die Aktive Seite des Wikis Bearbeiten" Focusable="True">
+                        <Image Source="../Icons/Wiki/bearbeiten.png" Margin="10,0" ToolTip="Die Aktive Seite des Wikis Bearbeiten" Focusable="True" Cursor="Hand">
                             <Image.InputBindings>
                                 <MouseBinding Gesture="LeftClick" Command="{Binding SeiteBearbeiten}"/>
                             </Image.InputBindings>
                         </Image>
-                        <Image Source="../Icons/Wiki/entfernen.png" ToolTip="Entfernen der Aktiven Seite des Wikis" Focusable="True">
+                        <Image Source="../Icons/Wiki/entfernen.png" ToolTip="Entfernen der Aktiven Seite des Wikis" Focusable="True" Cursor="{Binding Cursor}">
                             <Image.InputBindings>
                                 <MouseBinding Gesture="LeftClick" Command="{Binding SeiteEntfernen}"/>
                             </Image.InputBindings>
@@ -66,17 +66,20 @@
 
         </GroupBox>
 
-        <TextBox Margin="0,4,0,0"  DockPanel.Dock="Top" Text="{Binding SelektierteWikiSeite.WikiSeiteName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="39" FontWeight="Thin" Visibility="{Binding TextBoxSichtbar}">
+        <TextBox MaxLength="40" Margin="0,4,0,0"  DockPanel.Dock="Top" Text="{Binding SelektierteWikiSeite.WikiSeiteName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" FontWeight="SemiBold" Visibility="{Binding TextBoxSichtbar}">
             <TextBox.InputBindings>
                 <MouseBinding Gesture="LeftDoubleClick" Command="{Binding SeiteBearbeiten}"/>
             </TextBox.InputBindings>
         </TextBox>
-        <Label Margin="0,0,0,-4" DockPanel.Dock="Top" Content="{Binding SelektierteWikiSeite.WikiSeiteName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="39" FontWeight="Thin" Visibility="{Binding LabelSichtbar}">
+        <Label Margin="0,0,0,-4" DockPanel.Dock="Top" Content="{Binding SelektierteWikiSeite.WikiSeiteName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" FontWeight="SemiBold" Visibility="{Binding LabelSichtbar}">
             <Label.InputBindings>
                 <MouseBinding Gesture="LeftDoubleClick" Command="{Binding SeiteBearbeiten}"/>
             </Label.InputBindings>
         </Label>
-        <GroupBox Header="Inhalt">
+        <GroupBox>
+            <GroupBox.Header>
+                <Label Content="Inhalt" FontSize="20" FontWeight="SemiBold"/>
+            </GroupBox.Header>
             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                 <StackPanel Orientation="Vertical">
                     <TextBox Text="{Binding SelektierteWikiSeite.Inhalt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding TextBoxSichtbar}" AcceptsReturn="True" AcceptsTab="True" FontSize="15">
@@ -84,7 +87,7 @@
                             <MouseBinding Gesture="LeftDoubleClick" Command="{Binding SeiteBearbeiten}"/>
                         </TextBox.InputBindings>
                     </TextBox>
-                    <services:EigenerTextBlock InlineList="{Binding SelektierteWikiSeite.InlineList}"  Margin="3,1,0,0" Visibility="{Binding LabelSichtbar}" FontSize="15" >
+                    <services:EigenerTextBlock InlineList="{Binding SelektierteWikiSeite.InlineList, UpdateSourceTrigger=PropertyChanged}" Margin="3,1,0,0" Visibility="{Binding LabelSichtbar}" FontSize="15" >
                         <TextBlock.InputBindings>
                             <MouseBinding Gesture="LeftDoubleClick" Command="{Binding SeiteBearbeiten}"/>
                         </TextBlock.InputBindings>

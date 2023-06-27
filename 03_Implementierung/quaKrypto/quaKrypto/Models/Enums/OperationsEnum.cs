@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace quaKrypto.Models.Enums
 {
+    [Serializable]
     public enum OperationsEnum
     {
 		nachrichtSenden,
@@ -26,13 +27,16 @@ namespace quaKrypto.Models.Enums
 		bitmaskeGenerieren,
 		polschataVergleichen,
 		bitfolgenVergleichen,
+		bitfolgeNegieren,
 		photonenZuBitfolge,
         textGenerieren,
+		textLaengeBestimmen,
         textVerschluesseln,
 		textEntschluesseln,
 		bitsStreichen,
 		bitsFreiBearbeiten,
 		zahlGenerieren,
-		zugBeenden
+        informationUmbenennen,
+        zugBeenden,
 	}
 }

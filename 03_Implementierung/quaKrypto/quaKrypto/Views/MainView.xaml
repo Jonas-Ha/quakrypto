@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewmodels="clr-namespace:quaKrypto.ViewModels"
         xmlns:views="clr-namespace:quaKrypto.Views"
-        
+        Closing="Window_Closing"
         mc:Ignorable="d"
-        Title="MainView" Height="500" Width="800" MinHeight="500" MinWidth="800">
+        Title="QuaKrypto" Height="800" Width="1300" MinHeight="700" MinWidth="1300">
     <ContentControl Content="{Binding AktuellesViewModel}">
         <ContentControl.Resources>
             <DataTemplate DataType="{x:Type viewmodels:HauptMenuViewModel}">
@@ -15,9 +15,6 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewmodels:AufzeichnungViewModel}">
                 <views:AufzeichnungView/>
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type viewmodels:BenutzerFestlegenViewModel}">
-                <views:BenutzerFestlegenView/>
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewmodels:LobbyBeitrittViewModel}">
                 <views:LobbyBeitrittView/>
@@ -27,9 +24,6 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewmodels:LobbyScreenViewModel}">
                 <views:LobbyScreenView/>
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type viewmodels:RolleEntsperrenViewModel}">
-                <views:RolleEntsperrenView/>
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewmodels:SpielEveViewModel}">
                 <views:SpielEveView/>

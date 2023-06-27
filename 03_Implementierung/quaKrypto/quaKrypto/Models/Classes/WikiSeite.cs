@@ -1,23 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
-using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
-using static System.Net.WebRequestMethods;
 
 namespace quaKrypto.Models.Classes
 {
     public class WikiSeite : INotifyPropertyChanged
     {
         private ObservableCollection<Inline> inlineList = new();
-        public ObservableCollection<Inline> InlineList { get { return inlineList; } set { inlineList = value; } }
+        public ObservableCollection<Inline> InlineList
+        {
+            get => inlineList;
+            set => inlineList = value;
+        }
 
         private static int nextAvailableIdentifier = 0;
         private readonly int identifier;
@@ -29,15 +27,17 @@ namespace quaKrypto.Models.Classes
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public string Identifier { get { return identifier.ToString(); } }
+        public string Identifier => identifier.ToString();
+        public int IdentifierInteger => identifier;
         public string WikiSeiteName { get { return wikiSeiteName; } set { wikiSeiteName = value; PropertyHasChanged(nameof(WikiSeiteName)); } }
         public Brush BorderBrush { get { return istAktiv ? Brushes.Black : Brushes.White; } }
         public string Inhalt { get { return inhalt; } set { inhalt = value; PropertyHasChanged(nameof(Inhalt)); } }
-        public double Durchschein { get { return istAktiv ? 1.0d : editierModus ? 0.5d : 1.0d; } }
+        public double Durchschein => istAktiv ? 1.0d : editierModus ? 0.5d : 1.0d;
 
-        public WikiSeite(string wikiSeiteName, string inhalt)
+        public WikiSeite(string wikiSeiteName, string inhalt, int identifier = -1)
         {
-            identifier = nextAvailableIdentifier++;
+            this.identifier = identifier != -1 ? identifier : nextAvailableIdentifier++;
+            if(this.identifier >= nextAvailableIdentifier) nextAvailableIdentifier = identifier;
             this.wikiSeiteName = wikiSeiteName;
             this.inhalt = inhalt;
         }
@@ -47,7 +47,6 @@ namespace quaKrypto.Models.Classes
             istAktiv = aktiv;
             if (editierModus == false && istAktiv)
             {
-                Trace.WriteLine("SetzeAktivStatus");
                 inlineList.Clear();
                 string[] inhaltZeilen = Inhalt.Split('\n');
                 foreach (string zeile in inhaltZeilen)
@@ -55,10 +54,9 @@ namespace quaKrypto.Models.Classes
                     Match match = Regex.Match(zeile, @"[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?");
                     if (match.Success)
                     {
-                        Trace.WriteLine("Match success");
                         string[] parts = zeile.Split(match.Value);
                         inlineList.Add(new Run { Text = parts[0] });
-                        Hyperlink hyperlink = new(new Run(match.Value)) { NavigateUri = new Uri(match.Value.StartsWith("https://") || match.Value.StartsWith("http://")? match.Value : "https://" + match.Value) };
+                        Hyperlink hyperlink = new(new Run(match.Value)) { NavigateUri = new Uri(match.Value.StartsWith("https://") || match.Value.StartsWith("http://") ? match.Value : "https://" + match.Value) };
                         hyperlink.RequestNavigate += new System.Windows.Navigation.RequestNavigateEventHandler((sender, e) =>
                         {
                             Process.Start(new ProcessStartInfo { FileName = e.Uri.AbsoluteUri, UseShellExecute = true }); ;
@@ -77,6 +75,7 @@ namespace quaKrypto.Models.Classes
             PropertyHasChanged(nameof(BorderBrush));
             PropertyHasChanged(nameof(WikiSeiteName));
             PropertyHasChanged(nameof(Inhalt));
+            PropertyHasChanged(nameof(InlineList));
         }
         public void SetzeEditierModus(bool neuerEditierModus)
         {
@@ -84,7 +83,6 @@ namespace quaKrypto.Models.Classes
             PropertyHasChanged(nameof(Durchschein));
             if (istAktiv == true && neuerEditierModus == false)
             {
-                Trace.WriteLine("EditierModus");
                 inlineList.Clear();
                 inlineList.Add(new Run { Text = Inhalt });
             }
@@ -93,6 +91,10 @@ namespace quaKrypto.Models.Classes
         private void PropertyHasChanged(string nameOfProperty)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameOfProperty));
+        }
+        public static void StandardSeitenGeladen()
+        {
+            nextAvailableIdentifier = 6;
         }
     }
 }

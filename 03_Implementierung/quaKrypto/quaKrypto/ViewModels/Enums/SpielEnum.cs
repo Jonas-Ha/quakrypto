@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace quaKrypto.Models.Classes
+namespace quaKrypto.ViewModels.Enums
 {
-    public class UebungsszenarioUebersicht
+    public enum SpielEnum
     {
-
+        warten,
+        passwortEingabe,
+        aktiv
     }
 }

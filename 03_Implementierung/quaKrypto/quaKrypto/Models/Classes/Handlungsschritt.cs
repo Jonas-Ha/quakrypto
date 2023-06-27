@@ -14,12 +14,13 @@ using quaKrypto.Models.Enums;
 
 namespace quaKrypto.Models.Classes
 {
+    [Serializable]
     public class Handlungsschritt
     {
         private OperationsEnum operationsTyp;
         private Information operand1;
-        private Information operand2;
-        private String ergebnisName;
+        private object operand2;
+        private string ergebnisName;
         private Information ergebnis;
         private RolleEnum rolle;
         private uint aktuellePhase;
@@ -38,15 +39,20 @@ namespace quaKrypto.Models.Classes
                 { OperationsEnum.bitmaskeGenerieren, op.BitmaskeGenerieren },
                 { OperationsEnum.polschataVergleichen, op.PolschataVergleichen },
                 { OperationsEnum.bitfolgenVergleichen, op.BitfolgenVergleichen },
+                { OperationsEnum.bitfolgeNegieren, op.BitfolgeNegieren },
                 { OperationsEnum.photonenZuBitfolge, op.PhotonenZuBitfolge },
+                { OperationsEnum.textGenerieren, op.TextGenerieren },
+                { OperationsEnum.textLaengeBestimmen, op.TextLaengeBestimmen },
                 { OperationsEnum.textVerschluesseln, op.TextVerschluesseln },
                 { OperationsEnum.textEntschluesseln, op.TextEntschluesseln },
                 { OperationsEnum.bitsStreichen, op.BitsStreichen },
                 { OperationsEnum.bitsFreiBearbeiten, op.BitsFreiBearbeiten },
+                { OperationsEnum.zahlGenerieren, op.ZahlGenerieren },
+                { OperationsEnum.informationUmbenennen, op.InformationUmbenennen },
                 { OperationsEnum.zugBeenden, op.ZugBeenden },
             };
-
-        public Handlungsschritt(uint informationsID, Enums.OperationsEnum operationsTyp, Information operand1, Information operand2, String ergebnisName, RolleEnum rolle)
+        public Handlungsschritt() { }
+        public Handlungsschritt(int informationsID, Enums.OperationsEnum operationsTyp, Information operand1, object operand2, String ergebnisName, RolleEnum rolle)
         {
             this.OperationsTyp = operationsTyp;
             this.Operand1 = operand1;
@@ -58,9 +64,10 @@ namespace quaKrypto.Models.Classes
 
             if (HandlungsschrittKommando.TryGetValue(OperationsTyp, out del))
             {
-                var Ergebnis = del.DynamicInvoke(informationsID, OperationsTyp, Operand1, Operand2, ErgebnisName) as Information;
-                if ((Ergebnis != null)) this.Ergebnis = Ergebnis;  
+                var Ergebnis = del.DynamicInvoke(informationsID, Operand1, Operand2, ErgebnisName, Rolle) as Information; //Rolle hier nur bei Nachricht senden benötigt
+                if ((Ergebnis != null)) this.Ergebnis = Ergebnis;
             }
+            else throw new InvalidOperationException("Für diesen Operationstypen wurde keine Operation gefunden");
         }
 
         public OperationsEnum OperationsTyp
@@ -75,13 +82,13 @@ namespace quaKrypto.Models.Classes
             init { operand1 = value; }
         }
 
-        public Information Operand2
+        public object Operand2
         {
             get { return operand2; }
             init { operand2 = value; }
         }
 
-        public String ErgebnisName
+        public string ErgebnisName
         {
             get { return ergebnisName; }
             set { ergebnisName = value; }
@@ -103,12 +110,6 @@ namespace quaKrypto.Models.Classes
         {
             get { return aktuellePhase; }
             set { aktuellePhase = value; }
-        }
-
-        public void HandlungsschrittAusfuehren()
-        {
-
-            
         }
     }
 }
