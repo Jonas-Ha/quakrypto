@@ -323,7 +323,7 @@ namespace quaKrypto.Models.Classes
                     Information VAprüfbitsDifferenzAlice = operationen.BitfolgenVergleichen(zähler--, VAprüfbitsAlice, VAprüfbitsBob, "Unterschied Prüfbits");
                     //PHASE 4 Beginn
                     // - -- - -- - -
-                    if (startPhase >= 1)
+                    if (startPhase == 1)
                     {
                         rolleAlice.SpeicherInformationAb(ausgangsTextAlice, true);
                         rolleAlice.SpeicherInformationAb(mindestSchlüssellängeAlice, true);
@@ -331,8 +331,13 @@ namespace quaKrypto.Models.Classes
                         rolleEve.SpeicherInformationAb(schlüssellängeAlice, true);
                         rolleBob.SpeicherInformationAb(schlüssellängeAlice, true);
                     }
-                    if (startPhase >= 2)
+                    else if (startPhase == 2)
                     {
+                        rolleAlice.SpeicherInformationAb(ausgangsTextAlice, true);
+                        rolleAlice.SpeicherInformationAb(mindestSchlüssellängeAlice, true);
+                        rolleAlice.SpeicherInformationAb(schlüssellängeAlice, true);
+                        rolleEve.SpeicherInformationAb(schlüssellängeAlice, true);
+                        rolleBob.SpeicherInformationAb(schlüssellängeAlice, true);
                         rolleAlice.SpeicherInformationAb(VAschlüsselbits1Alice, true);
                         rolleAlice.SpeicherInformationAb(VApolschataAlice, true);
                         rolleAlice.SpeicherInformationAb(VAphotonenAlice, true);
@@ -344,8 +349,23 @@ namespace quaKrypto.Models.Classes
                         rolleBob.SpeicherInformationAb(VAunscharfePhotonenBob, true);
                         rolleBob.SpeicherInformationAb(VAschlüsselbits1Bob, true);
                     }
-                    if (startPhase >= 3)
+                    else if (startPhase == 3)
                     {
+                        rolleAlice.SpeicherInformationAb(ausgangsTextAlice, true);
+                        rolleAlice.SpeicherInformationAb(mindestSchlüssellängeAlice, true);
+                        rolleAlice.SpeicherInformationAb(schlüssellängeAlice, true);
+                        rolleEve.SpeicherInformationAb(schlüssellängeAlice, true);
+                        rolleBob.SpeicherInformationAb(schlüssellängeAlice, true);
+                        rolleAlice.SpeicherInformationAb(VAschlüsselbits1Alice, true);
+                        rolleAlice.SpeicherInformationAb(VApolschataAlice, true);
+                        rolleAlice.SpeicherInformationAb(VAphotonenAlice, true);
+                        rolleEve.SpeicherInformationAb(VApolschataEve, true);
+                        rolleEve.SpeicherInformationAb(VAunscharfePhotonenEve, true);
+                        rolleEve.SpeicherInformationAb(VAschlüsselbits1Eve, true);
+                        rolleEve.SpeicherInformationAb(VAphotonenEve, true);
+                        rolleBob.SpeicherInformationAb(VApolschataBob, true);
+                        rolleBob.SpeicherInformationAb(VAunscharfePhotonenBob, true);
+                        rolleBob.SpeicherInformationAb(VAschlüsselbits1Bob, true);
                         rolleEve.SpeicherInformationAb(VApolschataAlice, true);
                         rolleEve.SpeicherInformationAb(VApolschataDifferenzEve, true);
                         rolleBob.SpeicherInformationAb(VApolschataAlice, true);
@@ -357,8 +377,33 @@ namespace quaKrypto.Models.Classes
                         rolleAlice.SpeicherInformationAb(VApolschataDifferenzBob, true);
                         rolleAlice.SpeicherInformationAb(VAschlüsselbits2Alice, true);
                     }
-                    if (startPhase >= 4)
+                    else if (startPhase == 4)
                     {
+                        rolleAlice.SpeicherInformationAb(ausgangsTextAlice, true);
+                        rolleAlice.SpeicherInformationAb(mindestSchlüssellängeAlice, true);
+                        rolleAlice.SpeicherInformationAb(schlüssellängeAlice, true);
+                        rolleEve.SpeicherInformationAb(schlüssellängeAlice, true);
+                        rolleBob.SpeicherInformationAb(schlüssellängeAlice, true);
+                        rolleAlice.SpeicherInformationAb(VAschlüsselbits1Alice, true);
+                        rolleAlice.SpeicherInformationAb(VApolschataAlice, true);
+                        rolleAlice.SpeicherInformationAb(VAphotonenAlice, true);
+                        rolleEve.SpeicherInformationAb(VApolschataEve, true);
+                        rolleEve.SpeicherInformationAb(VAunscharfePhotonenEve, true);
+                        rolleEve.SpeicherInformationAb(VAschlüsselbits1Eve, true);
+                        rolleEve.SpeicherInformationAb(VAphotonenEve, true);
+                        rolleBob.SpeicherInformationAb(VApolschataBob, true);
+                        rolleBob.SpeicherInformationAb(VAunscharfePhotonenBob, true);
+                        rolleBob.SpeicherInformationAb(VAschlüsselbits1Bob, true);
+                        rolleEve.SpeicherInformationAb(VApolschataAlice, true);
+                        rolleEve.SpeicherInformationAb(VApolschataDifferenzEve, true);
+                        rolleBob.SpeicherInformationAb(VApolschataAlice, true);
+                        rolleBob.SpeicherInformationAb(VApolschataDifferenzBob, true);
+                        rolleBob.SpeicherInformationAb(VAschlüsselbits2Bob, true);
+                        rolleEve.SpeicherInformationAb(VApolschataDifferenzBob, true);
+                        rolleEve.SpeicherInformationAb(VAschlüsselbits2Eve, true);
+                        rolleEve.SpeicherInformationAb(VAbitmaskeDifferenzZuBobEve, true);
+                        rolleAlice.SpeicherInformationAb(VApolschataDifferenzBob, true);
+                        rolleAlice.SpeicherInformationAb(VAschlüsselbits2Alice, true);
                         rolleAlice.SpeicherInformationAb(VAprüfbitAnzahl, true);
                         rolleAlice.SpeicherInformationAb(VAlängePrüfmaske, true);
                         rolleAlice.SpeicherInformationAb(VAprüfmaske, true);
