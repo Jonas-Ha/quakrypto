@@ -190,11 +190,11 @@ namespace quaKrypto.Models.Classes
                 }
                 else if (InformationsTyp == InformationsEnum.asciiText && InformationsInhalt.GetType() == typeof(string))
                 {
-                    erg = (string)InformationsInhalt;
+                    erg = Convert.ToBase64String(Encoding.UTF8.GetBytes((string)InformationsInhalt));
                 }
                 else if (InformationsTyp == InformationsEnum.verschluesselterText && InformationsInhalt.GetType() == typeof(string))
                 {
-                    erg = (string)InformationsInhalt;
+                    erg = Convert.ToBase64String(Encoding.UTF8.GetBytes((string)InformationsInhalt));
                 }
                 if (InformationsInhalt == null) return "";
                 return $"{InformationsInhalt.GetType()}{(char)243}{erg}";
@@ -226,7 +226,7 @@ namespace quaKrypto.Models.Classes
                     }
                     else if (type.Equals(new string("").GetType()))
                     {
-                        informationsInhalt = teile[1];
+                        informationsInhalt = Encoding.UTF8.GetString(Convert.FromBase64String(teile[1]));
                     }
                     else if (type.Equals(new int().GetType()))
                     {
