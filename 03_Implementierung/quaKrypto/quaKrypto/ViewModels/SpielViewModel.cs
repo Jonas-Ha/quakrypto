@@ -5,6 +5,7 @@ using quaKrypto.Models.Interfaces;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Windows;
 using Information = quaKrypto.Models.Classes.Information;
 
 namespace quaKrypto.ViewModels
@@ -49,6 +50,20 @@ namespace quaKrypto.ViewModels
             
             //Informationsablage = new ObservableCollection<Information>();
             this.navigator = navigator;
+
+            HauptMenu = new((o) =>
+            {
+                if (uebungsszenario.AktuelleRolle.Freigeschaltet) zugBeendenOhneSenden();
+                Application.Current.Dispatcher.Invoke(() => { navigator.aktuellesViewModel = new AufzeichnungViewModel(navigator, uebungsszenario); });
+
+                if (uebungsszenario.GetType() == typeof(UebungsszenarioNetzwerk))
+                {
+                    if (((UebungsszenarioNetzwerk)uebungsszenario).Host) NetzwerkHost.BeendeUebungsszenario();
+                    else NetzwerkClient.BeendeUebungsszenario();
+                }
+
+
+            }, (o) => true);
 
             ZugBeenden = new((o) =>
             {
@@ -154,6 +169,40 @@ namespace quaKrypto.ViewModels
                                     );
             uebungsszenario.NaechsterZug();
         }
+
+        private void zugBeendenOhneSenden()
+        {
+            //MülltonneLeeren
+            for (int i = 0; i < Muelleimer.Count; i++)
+            {
+                uebungsszenario.LoescheInformation(Muelleimer[i].InformationsID);
+            }
+
+            //Informationen aus den Operanden abspeichern
+            OperandenInAblageLegen();
+
+            //Informationsablage abspeichern
+            for (int i = 0; i < Informationsablage.Count; i++)
+            {
+                uebungsszenario.SpeichereInformationenAb(Informationsablage[i]);
+            }
+
+            //leeren aller Listen für die View
+            ClearViewListen();
+
+            //leeren aller TextBoxen
+            ClearViewTextBox();
+
+            uebungsszenario.HandlungsschrittAusführenLassen(
+                                    OperationsEnum.zugBeenden,
+                                    null,
+                                    null,
+                                    null,
+                                    uebungsszenario.AktuelleRolle.RolleTyp
+                                    );
+            uebungsszenario.NaechsterZug();
+        }
+
         private void NachrichtenSenden()
         {
             RolleEnum empf = RolleEnum.Alice;

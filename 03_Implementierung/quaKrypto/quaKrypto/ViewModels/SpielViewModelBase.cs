@@ -328,18 +328,7 @@ namespace quaKrypto.ViewModels
             if (this.eigeneRollen.Contains(this.uebungsszenario.AktuelleRolle)) AenderZustand(Enums.SpielEnum.passwortEingabe);
             else AenderZustand(Enums.SpielEnum.warten);
 
-            HauptMenu = new((o) =>
-            {
-                Application.Current.Dispatcher.Invoke(() => { navigator.aktuellesViewModel = new AufzeichnungViewModel(navigator, uebungsszenario); });
-                
-                if (uebungsszenario.GetType() == typeof(UebungsszenarioNetzwerk))
-                {
-                    if (((UebungsszenarioNetzwerk)uebungsszenario).Host) NetzwerkHost.BeendeUebungsszenario();
-                    else NetzwerkClient.BeendeUebungsszenario();
-                }
-                
 
-            }, (o) => true);
 
             Beendet = new((o) =>
             {

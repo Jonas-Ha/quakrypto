@@ -65,6 +65,12 @@ namespace quaKrypto.Models.Classes
 
         }
 
+        public void AktuelleRolleSetzen(RolleEnum rolle)
+        {
+            this.vorherigeRolle = this.aktuelleRolle;
+            aktuelleRolle = rolle;
+        }
+
         public RolleEnum NaechsteRolle()
         {
             if (this.aktuelleRolle == RolleEnum.Eve)

@@ -66,6 +66,10 @@ namespace quaKrypto.Models.Classes
         {
             get { return informationszaehler; }
         }
+        public bool Freigeschaltet
+        {
+            get { return freigeschaltet; }
+        }
 
         public bool BeginneZug(string passwort)
         {
