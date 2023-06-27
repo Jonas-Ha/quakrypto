@@ -127,6 +127,7 @@ namespace quaKrypto.Models.Classes
         private List<OperationsEnum> GebeHilfestellungLeicht()
         {
             List<OperationsEnum> op = new List<OperationsEnum>();
+            op.Add(OperationsEnum.informationUmbenennen);
 
             if (this.aktuellePhase == 0)
             {
@@ -134,15 +135,16 @@ namespace quaKrypto.Models.Classes
                 {
                     op.Add(OperationsEnum.textGenerieren);
                     op.Add(OperationsEnum.zahlGenerieren);
+                    op.Add(OperationsEnum.textLaengeBestimmen);
                 }
                 else if (this.aktuelleRolle == RolleEnum.Bob)
                 {
-                    
+
                 }
             }
             else if (this.aktuellePhase == 1)
             {
-                if (this.aktuelleRolle == RolleEnum.Alice || this.aktuelleRolle == RolleEnum.Eve)
+                if (this.aktuelleRolle == RolleEnum.Alice)
                 {
                     op.Add(OperationsEnum.bitfolgeGenerierenAngabe);
                     op.Add(OperationsEnum.bitfolgeGenerierenZahl);
@@ -150,12 +152,14 @@ namespace quaKrypto.Models.Classes
                     op.Add(OperationsEnum.polarisationsschemataGenerierenZahl);
                     op.Add(OperationsEnum.photonenGenerieren);
                 }
-                else if (this.aktuelleRolle == RolleEnum.Bob)
+                else if (this.aktuelleRolle == RolleEnum.Bob || this.aktuelleRolle == RolleEnum.Eve)
                 {
                     op.Add(OperationsEnum.polarisationsschemataGenerierenAngabe);
                     op.Add(OperationsEnum.polarisationsschemataGenerierenZahl);
                     op.Add(OperationsEnum.photonenZuBitfolge);
+                    if (this.aktuelleRolle == RolleEnum.Eve) op.Add(OperationsEnum.photonenGenerieren);
                 }
+
             }
             else if (this.aktuellePhase == 2)
             {
@@ -169,6 +173,8 @@ namespace quaKrypto.Models.Classes
                     op.Add(OperationsEnum.bitsStreichen);
                 }
 
+
+
             }
             else if (this.aktuellePhase == 3)
             {
@@ -178,17 +184,23 @@ namespace quaKrypto.Models.Classes
                     op.Add(OperationsEnum.bitmaskeGenerieren);
                     op.Add(OperationsEnum.bitsStreichen);
                     op.Add(OperationsEnum.bitfolgenVergleichen);
+                    op.Add(OperationsEnum.textLaengeBestimmen);
+                    op.Add(OperationsEnum.bitfolgeNegieren);
+
                 }
                 else if (this.aktuelleRolle == RolleEnum.Bob)
                 {
                     op.Add(OperationsEnum.bitsStreichen);
+                    op.Add(OperationsEnum.bitfolgeNegieren);
                 }
                 else
                 {
                     op.Add(OperationsEnum.zahlGenerieren);
                     op.Add(OperationsEnum.bitmaskeGenerieren);
-                    op.Add(OperationsEnum.bitfolgenVergleichen);
+                    op.Add(OperationsEnum.textLaengeBestimmen);
                     op.Add(OperationsEnum.bitsStreichen);
+                    op.Add(OperationsEnum.bitfolgeNegieren);
+
                 }
             }
             else if (this.aktuellePhase == 4)
@@ -196,6 +208,7 @@ namespace quaKrypto.Models.Classes
                 if (this.aktuelleRolle == RolleEnum.Alice)
                 {
                     op.Add(OperationsEnum.textVerschluesseln);
+                    op.Add(OperationsEnum.bitfolgenVergleichen);
                 }
                 else if (this.aktuelleRolle == RolleEnum.Bob)
                 {
@@ -205,8 +218,11 @@ namespace quaKrypto.Models.Classes
                 {
                     op.Add(OperationsEnum.textVerschluesseln);
                     op.Add(OperationsEnum.textEntschluesseln);
+                    op.Add(OperationsEnum.textGenerieren);
                 }
             }
+
+            return op;
 
             return op;
         }

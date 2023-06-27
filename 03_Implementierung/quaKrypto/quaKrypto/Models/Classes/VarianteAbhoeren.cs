@@ -137,7 +137,7 @@ namespace quaKrypto.Models.Classes
                 {
                     op.Add(OperationsEnum.textGenerieren);
                     op.Add(OperationsEnum.zahlGenerieren);
-                    op.Add(Oper)
+                    op.Add(OperationsEnum.textLaengeBestimmen);
                 }
                 else if (this.aktuelleRolle == RolleEnum.Bob)
                 {
