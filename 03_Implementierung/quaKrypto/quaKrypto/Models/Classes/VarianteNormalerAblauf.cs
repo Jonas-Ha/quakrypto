@@ -113,11 +113,13 @@ namespace quaKrypto.Models.Classes
         private List<OperationsEnum> GebeHilfestellungLeicht()
         {
             List<OperationsEnum> op = new List<OperationsEnum>();
+            op.Add(OperationsEnum.informationUmbenennen);
 
             if (this.aktuellePhase == 0)
             {
                 if (this.aktuelleRolle == RolleEnum.Alice)
                 {
+                    op.Add(OperationsEnum.textLaengeBestimmen);
                     op.Add(OperationsEnum.textGenerieren);
                     op.Add(OperationsEnum.zahlGenerieren);
                 }
@@ -159,6 +161,7 @@ namespace quaKrypto.Models.Classes
                     op.Add(OperationsEnum.bitmaskeGenerieren);
                     op.Add(OperationsEnum.bitsStreichen);
                     op.Add(OperationsEnum.bitfolgenVergleichen);
+                    op.Add(OperationsEnum.textLaengeBestimmen);
                 }
                 else
                 {
