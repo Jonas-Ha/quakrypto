@@ -963,6 +963,7 @@ namespace quaKrypto.ViewModels
         protected void AktualisiereOperationenVisibility()
         {
             CraftingFeldSelectedOperation = 0;
+
             EigenschaftWurdeGeändert(nameof(CraftingFeldSelectedOperation));
             EigenschaftWurdeGeändert(nameof(BitfolgeGenerierenVisibility));
             EigenschaftWurdeGeändert(nameof(PolarisationsschemataGenerierenVisibility));
