@@ -162,10 +162,12 @@ namespace quaKrypto.Models.Classes
                     op.Add(OperationsEnum.bitsStreichen);
                     op.Add(OperationsEnum.bitfolgenVergleichen);
                     op.Add(OperationsEnum.textLaengeBestimmen);
+                    op.Add(OperationsEnum.bitfolgeNegieren);
                 }
                 else
                 {
                     op.Add(OperationsEnum.bitsStreichen);
+                    op.Add(OperationsEnum.bitfolgeNegieren);
                 }
             }
             else if (this.aktuellePhase == 4)

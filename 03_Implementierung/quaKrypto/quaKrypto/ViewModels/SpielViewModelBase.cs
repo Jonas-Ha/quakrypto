@@ -233,7 +233,7 @@ namespace quaKrypto.ViewModels
             get
             {
                 if (uebungsszenario.Schwierigkeitsgrad == SchwierigkeitsgradEnum.Schwer) return Visibility.Visible;
-                return !(verfügbareOperationen.Contains(OperationsEnum.bitfolgeNegieren)) ? Visibility.Collapsed : Visibility.Visible;
+                return !(verfügbareOperationen.Contains(OperationsEnum.photonenZuBitfolge)) ? Visibility.Collapsed : Visibility.Visible;
             }
         }
 
