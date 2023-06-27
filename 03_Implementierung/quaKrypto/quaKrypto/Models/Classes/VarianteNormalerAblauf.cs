@@ -175,6 +175,7 @@ namespace quaKrypto.Models.Classes
                 if (this.aktuelleRolle == RolleEnum.Alice)
                 {
                     op.Add(OperationsEnum.textVerschluesseln);
+                    op.Add(OperationsEnum.bitfolgenVergleichen);
                 }
                 else
                 {
