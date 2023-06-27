@@ -57,6 +57,8 @@ namespace quaKrypto.ViewModels
         {
             this.uebungsszenario = uebungsszenario;
 
+            Wiki.Schwierigkeitsgrad = uebungsszenario.Schwierigkeitsgrad;
+
             uebungsszenario.PropertyChanged += new((o, a) =>
             {
                 if (uebungsszenario.HostHatGestartet)
@@ -84,6 +86,7 @@ namespace quaKrypto.ViewModels
 
             HauptMenu = new((o) =>
             {
+                Wiki.Schwierigkeitsgrad = SchwierigkeitsgradEnum.Leicht;
                 for (int i = 0; i < EigeneRollen.Count; i++)
                 {
                     uebungsszenario.GebeRolleFrei(EigeneRollen[i].RolleTyp);
