@@ -222,6 +222,16 @@ namespace quaKrypto.Models.Classes
             }
             else
             {
+                if (eigeneRollen.Count != 1)
+                {
+                    foreach (Handlungsschritt handlungsschritt in aktuelleRolle.handlungsschritte)
+                    {
+                        if (handlungsschritt.OperationsTyp == OperationsEnum.nachrichtSenden && (eigeneRollen.Contains(RolleEnum.Eve) || (handlungsschritt.Rolle == RolleEnum.Alice && eigeneRollen.Contains(RolleEnum.Bob)) || (handlungsschritt.Rolle == RolleEnum.Bob && eigeneRollen.Contains(RolleEnum.Alice))))
+                        {
+                            Uebertragungskanal.SpeicherNachrichtAb(handlungsschritt.Ergebnis);
+                        }
+                    }
+                }
                 NetzwerkClient.BeendeZug(aktuelleRolle.handlungsschritte);
             }
 
