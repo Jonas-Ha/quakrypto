@@ -519,21 +519,21 @@ namespace quaKrypto.ViewModels
             bool eve = false;
             for (int i = 0; i < uebungsszenario.Rollen.Count; i++)
             {
-                if (uebungsszenario.Rollen[i].RolleTyp == Models.Enums.RolleEnum.Alice)
+                if (uebungsszenario.Rollen[i]?.RolleTyp == RolleEnum.Alice)
                 {
                     AliceUebungsszenario = uebungsszenario.Rollen[i].Alias;
                     alice = true;
                     AliceBoxesVisible = Visibility.Collapsed;
                     AliceSelected = Visibility.Visible;
                 }
-                else if (uebungsszenario.Rollen[i].RolleTyp == Models.Enums.RolleEnum.Bob)
+                else if (uebungsszenario.Rollen[i]?.RolleTyp == RolleEnum.Bob)
                 {
                     BobUebungsszenario = uebungsszenario.Rollen[i].Alias;
                     bob = true;
                     BobBoxesVisible = Visibility.Collapsed;
                     BobSelected = Visibility.Visible;
                 }
-                else if (uebungsszenario.Rollen[i].RolleTyp == Models.Enums.RolleEnum.Eve)
+                else if (uebungsszenario.Rollen[i]?.RolleTyp == RolleEnum.Eve)
                 {
                     EveUebungsszenario = uebungsszenario.Rollen[i].Alias;
                     eve = true;
@@ -570,7 +570,7 @@ namespace quaKrypto.ViewModels
                 }
 
             }
-            Application.Current.Dispatcher.Invoke(new Action(() => LobbyErstellen.RaiseCanExecuteChanged()));
+            Application.Current?.Dispatcher.Invoke(new Action(() => LobbyErstellen.RaiseCanExecuteChanged()));
 
         }
         private bool LobbyErstellenStartBedingung()
