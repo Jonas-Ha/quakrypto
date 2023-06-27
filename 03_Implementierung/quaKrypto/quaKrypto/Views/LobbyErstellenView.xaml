@@ -25,7 +25,7 @@
             </Grid.RowDefinitions>
             <Label Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="SemiBold" FontSize="40">Lobby erstellen</Label>
             <Label Grid.Row="1" Content="Name der Lobby:" VerticalAlignment="Center" FontSize="15" HorizontalAlignment="Right" Margin="10,10,30,10"/>
-            <TextBox x:Name="LobbyNameTextBox" Text="{Binding LobbyName}" MaxHeight="45" Grid.Row="1" Grid.Column="1" Margin="10" MaxLength="50" FontSize="15" VerticalContentAlignment="Center"/>
+            <TextBox x:Name="LobbyNameTextBox" Text="{Binding LobbyName, UpdateSourceTrigger=PropertyChanged}" MaxHeight="45" Grid.Row="1" Grid.Column="1" Margin="10" MaxLength="50" FontSize="15" VerticalContentAlignment="Center"/>
 
             <Label Grid.Row="2" Grid.Column="0" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,10,30,10">Auswahl des Protokolls:</Label>
             <ComboBox x:Name="ProtokollComboBox" Grid.Row="2" Grid.Column="1" MaxHeight="45" Margin="10,10,10,10" ItemsSource="{Binding Protokoll}" SelectedIndex="{Binding AusgProtokoll}" FontSize="15" VerticalContentAlignment="Center"/>
@@ -37,7 +37,7 @@
             <ComboBox x:Name="SchwierigkeitTextBox" Grid.Row="4" Grid.Column="1" MaxHeight="45" Margin="10,10,10,10" ItemsSource="{Binding SchwierigkeitsgradAuswahl}" SelectedIndex="{Binding AusgSchwierigkeit}" FontSize="15" VerticalContentAlignment="Center"/>
 
             <Label Grid.Row="5" Grid.Column="0" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,10,30,10">Auswahl der Phasen:</Label>
-            <xctk:RangeSlider Grid.Column="1" MaxHeight="45" Grid.Row="5" LowerValue="{Binding AusgPhaseStart}" HigherValue="{Binding AusgPhaseEnd}" Maximum="5" TickFrequency="1" IsSnapToTickEnabled="True"  Minimum="0" VerticalAlignment="Center" Margin="10"/>
+            <xctk:RangeSlider Grid.Column="1" MaxHeight="45" Grid.Row="5" LowerValue="{Binding AusgPhaseStart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HigherValue="{Binding AusgPhaseEnd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Maximum="5" TickFrequency="1" IsSnapToTickEnabled="True" Minimum="0" VerticalAlignment="Center" Margin="10"/>
             <!--<TextBox x:Name="ScalerTextBox" Grid.Row="4" Grid.Column="1" Margin="10,10,10,10"></TextBox>-->
             <Label Grid.Row="6" Grid.Column="0" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,10,30,10">Auswahl des Verbindungstyps:</Label>
             <!--<ComboBox x:Name="LobbyartTextBox" Grid.Row="5" Grid.Column="1" Margin="10,10,10,10" ItemsSource="{Binding Verbindungstyp}"></ComboBox>-->

@@ -97,8 +97,6 @@ namespace quaKrypto.Models.Classes
 
         public bool Starten()
         {
-
-
             var benoetigteRollen = Variante.MoeglicheRollen;
             if (Rollen.Count != benoetigteRollen.Count) return false;
             for (int i = 0; i < benoetigteRollen.Count; i++)
@@ -124,6 +122,7 @@ namespace quaKrypto.Models.Classes
                     break;
                 }
             }
+            PropertyHasChanged(nameof(aktuelleRolle));
             return true;
         }
 

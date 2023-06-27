@@ -76,8 +76,15 @@
                     <Label Content="{Binding AktuellePhaseAnzeige}" FontSize="15"/>
                 </StackPanel>
             </StackPanel>
-            <Button Width="200" Height="30" FontSize="15" x:Name="ZugBeendenButton" Command="{Binding ZugBeenden}" Content="Zug beenden" Grid.Column="3" Grid.Row="0" Visibility="{Binding SpielVisibility}"/>
-
+            <Grid Grid.Column="3" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Width="200" Height="30" FontSize="15" x:Name="AlleOperationenAnzeigne" Command="{Binding OperationenAnzeigen}" Content="Operationen anzeigen" Grid.Column="0" Visibility="{Binding SpielVisibility}"/>
+                <Button Width="200" Height="30" FontSize="15" x:Name="ZugBeendenButton" Command="{Binding ZugBeenden}" Content="Zug beenden" Grid.Column="1"  Visibility="{Binding SpielVisibility}"/>
+            </Grid>
+            
             <Border x:Name="BituebertragungskanalEingangDock" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1" Visibility="{Binding SpielVisibility}">
                 <DockPanel>
                     <Label DockPanel.Dock="Top" Content="Bitübertragungskanal Eingang:" FontSize="15" />
@@ -158,7 +165,7 @@
                             </Border>
                         </ControlTemplate>
                     </TabControl.Template>
-                    <TabItem>
+                    <TabItem Visibility="{Binding BitfolgeGenerierenVisibility}" >
                         
                         <TabItem.Header>
                             <TextBlock TextWrapping="Wrap" ToolTip="Bitfolge erzeugen">
@@ -223,7 +230,7 @@
                         </ScrollViewer>
                     </TabItem>
 
-                    <TabItem>
+                    <TabItem Visibility="{Binding TextVerEntschlüsselnVisibility}">
                         <TabItem.Header>
                             <TextBlock TextWrapping="Wrap" ToolTip="Ent/Verschlüsseln">
                             <InlineUIContainer>
@@ -284,7 +291,7 @@
                         </ScrollViewer>
                     </TabItem>
 
-                    <TabItem>
+                    <TabItem Visibility="{Binding PhotonenGenerierenVisibility}" >
                         <TabItem.Header>
                             <TextBlock TextWrapping="Wrap" ToolTip="Photonen erzeugen">
                             <InlineUIContainer>
@@ -345,7 +352,7 @@
                         </ScrollViewer>
                     </TabItem>
 
-                    <TabItem>
+                    <TabItem Visibility="{Binding PolarisationsschemataGenerierenVisibility}">
                         <TabItem.Header>
                             <TextBlock TextWrapping="Wrap" ToolTip="Polarisationsschemata erzeugen">
                             <InlineUIContainer>
@@ -409,7 +416,7 @@
                         </ScrollViewer>
                     </TabItem>
 
-                    <TabItem>
+                    <TabItem Visibility="{Binding BitsStreichenVisibility}">
                         <TabItem.Header>
                             <TextBlock TextWrapping="Wrap" ToolTip="Streichen (Bits)">
                             <InlineUIContainer>
@@ -471,7 +478,7 @@
                         </ScrollViewer>
                     </TabItem>
 
-                    <TabItem>
+                    <TabItem Visibility="{Binding VergleichenVisibility}">
                         <TabItem.Header>
                             <TextBlock TextWrapping="Wrap" ToolTip="Vergleichen">
                             <InlineUIContainer>
@@ -532,7 +539,7 @@
                         </ScrollViewer>
                     </TabItem>
 
-                    <TabItem>
+                    <TabItem Visibility="{Binding ZahlGenerierenVisibility}">
                         <TabItem.Header>
                             <TextBlock TextWrapping="Wrap" ToolTip="Zahl erzeugen">
                             <InlineUIContainer>
@@ -583,7 +590,7 @@
                         </ScrollViewer>
                     </TabItem>
 
-                    <TabItem>
+                    <TabItem Visibility="{Binding BitMaskeGenerierenVisibility}">
                         <TabItem.Header>
                             <TextBlock TextWrapping="Wrap" ToolTip="Bitmaske generieren">
                             <InlineUIContainer>
@@ -643,7 +650,7 @@
                         </ScrollViewer>
                     </TabItem>
 
-                    <TabItem>
+                    <TabItem Visibility="{Binding BitfolgeNegierenVisibility}">
                         <TabItem.Header>
                             <TextBlock TextWrapping="Wrap" ToolTip="Bitfolge negieren">
                             <InlineUIContainer>
@@ -694,7 +701,7 @@
                         </ScrollViewer>
                     </TabItem>
 
-                    <TabItem>
+                    <TabItem Visibility="{Binding PhotonenZuBitfolgeVisibility}">
                         <TabItem.Header>
                             <TextBlock TextWrapping="Wrap" ToolTip="Photonen zu Bitfolge">
                             <InlineUIContainer>
@@ -754,7 +761,7 @@
                         </ScrollViewer>
                     </TabItem>
 
-                    <TabItem>
+                    <TabItem Visibility="{Binding TextGenerierenVisibility}">
                         <TabItem.Header>
                             <TextBlock TextWrapping="Wrap" ToolTip="Text generieren">
                             <InlineUIContainer>
@@ -804,9 +811,10 @@
                             </StackPanel>
                         </ScrollViewer>
                     </TabItem>
-                    <TabItem>
+
+                    <TabItem Visibility="{Binding TextLaengeBestimmenVisibility}">
                         <TabItem.Header>
-                            <TextBlock TextWrapping="Wrap" ToolTip="Textlänge bestimmen">
+                            <TextBlock TextWrapping="Wrap" ToolTip="Informationslänge bestimmen">
                             <InlineUIContainer>
                                 <Image Source="../Icons/Spiel/Textlänge bestimmen/textlänge_bestimmen_128px.png" Width="30" Height="30"/>
                             </InlineUIContainer>
@@ -855,7 +863,7 @@
                         </ScrollViewer>
                     </TabItem>
 
-                    <TabItem>
+                    <TabItem Visibility="{Binding BitsFreiBearbeitenVisibility}">
                         <TabItem.Header>
                             <TextBlock TextWrapping="Wrap" ToolTip="Bits frei bearbeiten">
                             <InlineUIContainer>
@@ -915,8 +923,7 @@
                         </ScrollViewer>
                     </TabItem>
 
-
-                    <TabItem>
+                    <TabItem Visibility="{Binding InformationUmbenennenVisibility}">
                         <TabItem.Header>
                             <TextBlock TextWrapping="Wrap" ToolTip="Information umbenennen">
                             <InlineUIContainer>
