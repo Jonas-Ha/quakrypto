@@ -341,3 +341,4 @@ ASALocalRun/
 # Lockfiles from Word
 .~lock*
 /03_Implementierung/quaKrypto/Wiki Standardseiten
+/03_Implementierung/quaKrypto/.vs/quaKrypto/v17/TestStore/0/testlog.manifest
