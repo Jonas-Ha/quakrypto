@@ -404,6 +404,7 @@ namespace quaKrypto.Models.Classes
             StandardTexte.Seed = seed;
             Operationen operationen = new(seed);
 
+            int schwierigkeit = (int)Schwierigkeitsgrad;
             int zähler = -1;
 
             Information ausgangsTextAlice = new(zähler--, "Geheimtext", InformationsEnum.asciiText, StandardTexte.BekommeZufälligenText());
@@ -439,41 +440,73 @@ namespace quaKrypto.Models.Classes
                     Information NAprüfbitsDifferenzAlice = operationen.BitfolgenVergleichen(zähler--, NAprüfbitsAlice, NAprüfbitsBob, "Unterschied Prüfbits");
                     //Phase 4 Beginn
                     // - -- - -- - - 
-                    if (startPhase >= 1)
+                    if (startPhase == 1)
                     {
                         rolleAlice.SpeicherInformationAb(ausgangsTextAlice, true);
-                        rolleAlice.SpeicherInformationAb(mindestSchlüssellängeAlice, true);
+                        if (schwierigkeit > 0) rolleAlice.SpeicherInformationAb(mindestSchlüssellängeAlice, true);
                         rolleAlice.SpeicherInformationAb(schlüssellängeAlice, true);
                         rolleBob.SpeicherInformationAb(schlüssellängeAlice, true);
                     }
-                    if (startPhase >= 2)
+                    else if (startPhase == 2)
                     {
+                        rolleAlice.SpeicherInformationAb(ausgangsTextAlice, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(mindestSchlüssellängeAlice, true);
+                        if (schwierigkeit > 0) rolleAlice.SpeicherInformationAb(schlüssellängeAlice, true);
+                        if (schwierigkeit > 0) rolleBob.SpeicherInformationAb(schlüssellängeAlice, true);
+                        //-----------//
                         rolleAlice.SpeicherInformationAb(NAschlüsselbits1Alice, true);
                         rolleAlice.SpeicherInformationAb(NApolschataAlice, true);
-                        rolleAlice.SpeicherInformationAb(NAphotonenAlice, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(NAphotonenAlice, true);
                         rolleBob.SpeicherInformationAb(NApolschataBob, true);
-                        rolleBob.SpeicherInformationAb(NAunscharfePhotonenBob, true);
                         rolleBob.SpeicherInformationAb(NAschlüsselbits1Bob, true);
                     }
-                    if (startPhase >= 3)
+                    else if (startPhase == 3)
                     {
-                        rolleBob.SpeicherInformationAb(NApolschataAlice, true);
-                        rolleBob.SpeicherInformationAb(NApolschataDifferenzBob, true);
+                        rolleAlice.SpeicherInformationAb(ausgangsTextAlice, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(mindestSchlüssellängeAlice, true);
+                        if (schwierigkeit > 0) rolleAlice.SpeicherInformationAb(schlüssellängeAlice, true);
+                        if (schwierigkeit > 0) rolleBob.SpeicherInformationAb(schlüssellängeAlice, true);
+                        //-----------//
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(NAschlüsselbits1Alice, true);
+                        if (schwierigkeit > 0) rolleAlice.SpeicherInformationAb(NApolschataAlice, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(NAphotonenAlice, true);
+                        if (schwierigkeit > 1) rolleBob.SpeicherInformationAb(NApolschataBob, true);
+                        if (schwierigkeit > 0) rolleBob.SpeicherInformationAb(NAschlüsselbits1Bob, true);
+                        //-----------//
+                        if (schwierigkeit > 1) rolleBob.SpeicherInformationAb(NApolschataAlice, true);
+                        if (schwierigkeit > 0) rolleBob.SpeicherInformationAb(NApolschataDifferenzBob, true);
                         rolleBob.SpeicherInformationAb(NAschlüsselbits2Bob, true);
-                        rolleAlice.SpeicherInformationAb(NApolschataDifferenzBob, true);
+                        if (schwierigkeit > 0) rolleAlice.SpeicherInformationAb(NApolschataDifferenzBob, true);
                         rolleAlice.SpeicherInformationAb(NAschlüsselbits2Alice, true);
                     }
-                    if (startPhase >= 4)
+                    else if (startPhase == 4)
                     {
-                        rolleAlice.SpeicherInformationAb(NAprüfbitAnzahl, true);
-                        rolleAlice.SpeicherInformationAb(NAlängePrüfmaske, true);
-                        rolleAlice.SpeicherInformationAb(NAprüfmaske, true);
-                        rolleAlice.SpeicherInformationAb(NAprüfbitsAlice, true);
+                        rolleAlice.SpeicherInformationAb(ausgangsTextAlice, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(mindestSchlüssellängeAlice, true);
+                        if (schwierigkeit > 0) rolleAlice.SpeicherInformationAb(schlüssellängeAlice, true);
+                        if (schwierigkeit > 0) rolleBob.SpeicherInformationAb(schlüssellängeAlice, true);
+                        //-----------//
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(NAschlüsselbits1Alice, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(NApolschataAlice, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(NAphotonenAlice, true);
+                        if (schwierigkeit > 1) rolleBob.SpeicherInformationAb(NApolschataBob, true);
+                        if (schwierigkeit > 0) rolleBob.SpeicherInformationAb(NAschlüsselbits1Bob, true);
+                        //-----------//
+                        if (schwierigkeit > 1) rolleBob.SpeicherInformationAb(NApolschataAlice, true);
+                        if (schwierigkeit > 0) rolleBob.SpeicherInformationAb(NApolschataDifferenzBob, true);
+                        if (schwierigkeit > 0) rolleBob.SpeicherInformationAb(NAschlüsselbits2Bob, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(NApolschataDifferenzBob, true);
+                        if (schwierigkeit > 0) rolleAlice.SpeicherInformationAb(NAschlüsselbits2Alice, true);
+                        //-----------//
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(NAprüfbitAnzahl, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(NAlängePrüfmaske, true);
+                        if (schwierigkeit > 0) rolleAlice.SpeicherInformationAb(NAprüfmaske, true);
+                        if (schwierigkeit > 0) rolleAlice.SpeicherInformationAb(NAprüfbitsAlice, true);
                         rolleAlice.SpeicherInformationAb(NAschlüsselbits3Alice, true);
-                        rolleBob.SpeicherInformationAb(NAprüfmaske, true);
-                        rolleBob.SpeicherInformationAb(NAprüfbitsBob, true);
+                        if (schwierigkeit > 1) rolleBob.SpeicherInformationAb(NAprüfmaske, true);
+                        if (schwierigkeit > 0) rolleBob.SpeicherInformationAb(NAprüfbitsBob, true);
                         rolleBob.SpeicherInformationAb(NAschlüsselbits3Bob, true);
-                        rolleAlice.SpeicherInformationAb(NAprüfbitsBob, true);
+                        if (schwierigkeit > 0) rolleAlice.SpeicherInformationAb(NAprüfbitsBob, true);
                         rolleAlice.SpeicherInformationAb(NAprüfbitsDifferenzAlice, true);
                     }
                     break;
@@ -519,56 +552,101 @@ namespace quaKrypto.Models.Classes
                     Information VAprüfbitsDifferenzAlice = operationen.BitfolgenVergleichen(zähler--, VAprüfbitsAlice, VAprüfbitsBob, "Unterschied Prüfbits");
                     //PHASE 4 Beginn
                     // - -- - -- - -
-                    if (startPhase >= 1)
+                    if (startPhase == 1)
                     {
                         rolleAlice.SpeicherInformationAb(ausgangsTextAlice, true);
-                        rolleAlice.SpeicherInformationAb(mindestSchlüssellängeAlice, true);
+                        if (schwierigkeit > 0) rolleAlice.SpeicherInformationAb(mindestSchlüssellängeAlice, true);
                         rolleAlice.SpeicherInformationAb(schlüssellängeAlice, true);
                         rolleEve.SpeicherInformationAb(schlüssellängeAlice, true);
                         rolleBob.SpeicherInformationAb(schlüssellängeAlice, true);
                     }
-                    if (startPhase >= 2)
+                    else if (startPhase == 2)
                     {
+                        rolleAlice.SpeicherInformationAb(ausgangsTextAlice, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(mindestSchlüssellängeAlice, true);
+                        if (schwierigkeit > 0) rolleAlice.SpeicherInformationAb(schlüssellängeAlice, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(schlüssellängeAlice, true);
+                        if (schwierigkeit > 0) rolleBob.SpeicherInformationAb(schlüssellängeAlice, true);
+                        //---------//
                         rolleAlice.SpeicherInformationAb(VAschlüsselbits1Alice, true);
                         rolleAlice.SpeicherInformationAb(VApolschataAlice, true);
-                        rolleAlice.SpeicherInformationAb(VAphotonenAlice, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(VAphotonenAlice, true);
                         rolleEve.SpeicherInformationAb(VApolschataEve, true);
-                        rolleEve.SpeicherInformationAb(VAunscharfePhotonenEve, true);
                         rolleEve.SpeicherInformationAb(VAschlüsselbits1Eve, true);
-                        rolleEve.SpeicherInformationAb(VAphotonenEve, true);
+                        if (schwierigkeit > 0) rolleEve.SpeicherInformationAb(VAphotonenEve, true);
                         rolleBob.SpeicherInformationAb(VApolschataBob, true);
-                        rolleBob.SpeicherInformationAb(VAunscharfePhotonenBob, true);
                         rolleBob.SpeicherInformationAb(VAschlüsselbits1Bob, true);
                     }
-                    if (startPhase >= 3)
+                    else if (startPhase == 3)
                     {
-                        rolleEve.SpeicherInformationAb(VApolschataAlice, true);
-                        rolleEve.SpeicherInformationAb(VApolschataDifferenzEve, true);
-                        rolleBob.SpeicherInformationAb(VApolschataAlice, true);
-                        rolleBob.SpeicherInformationAb(VApolschataDifferenzBob, true);
+                        rolleAlice.SpeicherInformationAb(ausgangsTextAlice, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(mindestSchlüssellängeAlice, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(schlüssellängeAlice, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(schlüssellängeAlice, true);
+                        if (schwierigkeit > 1) rolleBob.SpeicherInformationAb(schlüssellängeAlice, true);
+                        //---------//
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(VAschlüsselbits1Alice, true);
+                        if (schwierigkeit > 0) rolleAlice.SpeicherInformationAb(VApolschataAlice, true);
+                        if (schwierigkeit > 0) rolleAlice.SpeicherInformationAb(VAphotonenAlice, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(VApolschataEve, true);
+                        if (schwierigkeit > 0) rolleEve.SpeicherInformationAb(VAschlüsselbits1Eve, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(VAphotonenEve, true);
+                        if (schwierigkeit > 0) rolleBob.SpeicherInformationAb(VApolschataBob, true);
+                        if (schwierigkeit > 1) rolleBob.SpeicherInformationAb(VAschlüsselbits1Bob, true);
+                        //---------//
+                        if (schwierigkeit > 0) rolleEve.SpeicherInformationAb(VApolschataAlice, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(VApolschataDifferenzEve, true);
+                        if (schwierigkeit > 0) rolleBob.SpeicherInformationAb(VApolschataAlice, true);
+                        if (schwierigkeit > 1) rolleBob.SpeicherInformationAb(VApolschataDifferenzBob, true);
                         rolleBob.SpeicherInformationAb(VAschlüsselbits2Bob, true);
-                        rolleEve.SpeicherInformationAb(VApolschataDifferenzBob, true);
+                        if (schwierigkeit > 0) rolleEve.SpeicherInformationAb(VApolschataDifferenzBob, true);
                         rolleEve.SpeicherInformationAb(VAschlüsselbits2Eve, true);
                         rolleEve.SpeicherInformationAb(VAbitmaskeDifferenzZuBobEve, true);
-                        rolleAlice.SpeicherInformationAb(VApolschataDifferenzBob, true);
+                        if (schwierigkeit > 0) rolleAlice.SpeicherInformationAb(VApolschataDifferenzBob, true);
                         rolleAlice.SpeicherInformationAb(VAschlüsselbits2Alice, true);
                     }
-                    if (startPhase >= 4)
+                    else if (startPhase == 4)
                     {
-                        rolleAlice.SpeicherInformationAb(VAprüfbitAnzahl, true);
-                        rolleAlice.SpeicherInformationAb(VAlängePrüfmaske, true);
-                        rolleAlice.SpeicherInformationAb(VAprüfmaske, true);
-                        rolleAlice.SpeicherInformationAb(VAprüfbitsAlice, true);
+                        rolleAlice.SpeicherInformationAb(ausgangsTextAlice, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(mindestSchlüssellängeAlice, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(schlüssellängeAlice, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(schlüssellängeAlice, true);
+                        if (schwierigkeit > 1) rolleBob.SpeicherInformationAb(schlüssellängeAlice, true);
+                        //---------//
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(VAschlüsselbits1Alice, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(VApolschataAlice, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(VAphotonenAlice, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(VApolschataEve, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(VAschlüsselbits1Eve, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(VAphotonenEve, true);
+                        if (schwierigkeit > 1) rolleBob.SpeicherInformationAb(VApolschataBob, true);
+                        if (schwierigkeit > 1) rolleBob.SpeicherInformationAb(VAschlüsselbits1Bob, true);
+                        //---------//
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(VApolschataAlice, true);
+                        if (schwierigkeit > 0) rolleEve.SpeicherInformationAb(VApolschataDifferenzEve, true);
+                        if (schwierigkeit > 1) rolleBob.SpeicherInformationAb(VApolschataAlice, true);
+                        if (schwierigkeit > 1) rolleBob.SpeicherInformationAb(VApolschataDifferenzBob, true);
+                        if (schwierigkeit > 0) rolleBob.SpeicherInformationAb(VAschlüsselbits2Bob, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(VApolschataDifferenzBob, true);
+                        if (schwierigkeit > 0) rolleEve.SpeicherInformationAb(VAschlüsselbits2Eve, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(VAbitmaskeDifferenzZuBobEve, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(VApolschataDifferenzBob, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(VAschlüsselbits2Alice, true);
+                        //---------//
+                        if (schwierigkeit > 0) rolleAlice.SpeicherInformationAb(VAprüfbitAnzahl, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(VAlängePrüfmaske, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(VAprüfmaske, true);
+                        if (schwierigkeit > 0) rolleAlice.SpeicherInformationAb(VAprüfbitsAlice, true);
                         rolleAlice.SpeicherInformationAb(VAschlüsselbits3Alice, true);
-                        rolleEve.SpeicherInformationAb(VAprüfmaske, true);
-                        rolleEve.SpeicherInformationAb(VAprüfbitsEve, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(VAprüfmaske, true);
+                        if (schwierigkeit > 0) rolleEve.SpeicherInformationAb(VAprüfbitsEve, true);
                         rolleEve.SpeicherInformationAb(VAschlüsselbits3Eve, true);
-                        rolleBob.SpeicherInformationAb(VAprüfmaske, true);
-                        rolleBob.SpeicherInformationAb(VAprüfbitsBob, true);
+                        if (schwierigkeit > 1) rolleBob.SpeicherInformationAb(VAprüfmaske, true);
+                        if (schwierigkeit > 0) rolleBob.SpeicherInformationAb(VAprüfbitsBob, true);
                         rolleBob.SpeicherInformationAb(VAschlüsselbits3Bob, true);
-                        rolleEve.SpeicherInformationAb(VAprüfbitsBob, true);
+                        if (schwierigkeit > 0) rolleEve.SpeicherInformationAb(VAprüfbitsBob, true);
                         rolleEve.SpeicherInformationAb(VAprüfbitsDifferenzEve, true);
-                        rolleAlice.SpeicherInformationAb(VAprüfbitsBob, true);
+                        if (schwierigkeit > 0) rolleAlice.SpeicherInformationAb(VAprüfbitsBob, true);
                         rolleAlice.SpeicherInformationAb(VAprüfbitsDifferenzAlice, true);
                     }
                     break;
@@ -625,67 +703,125 @@ namespace quaKrypto.Models.Classes
                     Information MITMprüfbitsDifferenzAlice = operationen.BitfolgenVergleichen(zähler--, MITMprüfbitsAlice, MITMprüfbitsAliceEve, "Unterschied Prüfbits");
                     //PHASE 4 Beginn
                     // - -- - -- - -
-                    if (startPhase >= 1)
+                    if (startPhase == 1)
                     {
                         rolleAlice.SpeicherInformationAb(ausgangsTextAlice, true);
-                        rolleAlice.SpeicherInformationAb(mindestSchlüssellängeAlice, true);
+                        if (schwierigkeit > 0) rolleAlice.SpeicherInformationAb(mindestSchlüssellängeAlice, true);
                         rolleAlice.SpeicherInformationAb(schlüssellängeAlice, true);
                         rolleEve.SpeicherInformationAb(schlüssellängeAlice, true);
                         rolleEve.SpeicherInformationAb(MITMausgangsTextEve, true);
-                        rolleEve.SpeicherInformationAb(MITMmindestSchlüssellängeEve, true);
+                        if (schwierigkeit > 0) rolleEve.SpeicherInformationAb(MITMmindestSchlüssellängeEve, true);
                         rolleEve.SpeicherInformationAb(MITMschlüssellängeEve, true);
                         rolleBob.SpeicherInformationAb(MITMschlüssellängeEve, true);
                     }
-                    if (startPhase >= 2)
+                    else if (startPhase == 2)
                     {
+                        rolleAlice.SpeicherInformationAb(ausgangsTextAlice, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(mindestSchlüssellängeAlice, true);
+                        if (schwierigkeit > 0) rolleAlice.SpeicherInformationAb(schlüssellängeAlice, true);
+                        if (schwierigkeit > 0) rolleEve.SpeicherInformationAb(schlüssellängeAlice, true);
+                        rolleEve.SpeicherInformationAb(MITMausgangsTextEve, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(MITMmindestSchlüssellängeEve, true);
+                        if (schwierigkeit > 0) rolleEve.SpeicherInformationAb(MITMschlüssellängeEve, true);
+                        if (schwierigkeit > 0) rolleBob.SpeicherInformationAb(MITMschlüssellängeEve, true);
+                        //-----------//
                         rolleAlice.SpeicherInformationAb(MITMschlüsselbits1Alice, true);
-                        rolleAlice.SpeicherInformationAb(MITMpolschataAlice, true);
-                        rolleAlice.SpeicherInformationAb(MITMphotonenAlice, true);
+                        if (schwierigkeit > 0) rolleAlice.SpeicherInformationAb(MITMpolschataAlice, true);
+                        if (schwierigkeit > 0) rolleAlice.SpeicherInformationAb(MITMphotonenAlice, true);
                         rolleEve.SpeicherInformationAb(MITMpolschataAliceEve, true);
-                        rolleEve.SpeicherInformationAb(MITMunscharfePhotonenEve, true);
                         rolleEve.SpeicherInformationAb(MITMschlüsselbits1AliceEve, true);
                         rolleEve.SpeicherInformationAb(MITMschlüsselbits1EveBob, true);
                         rolleEve.SpeicherInformationAb(MITMpolschataEveBob, true);
                         rolleEve.SpeicherInformationAb(MITMphotonenEveBob, true);
                         rolleBob.SpeicherInformationAb(MITMpolschataBob, true);
-                        rolleBob.SpeicherInformationAb(MITMunscharfePhotonenBob, true);
                         rolleBob.SpeicherInformationAb(MITMschlüsselbits1Bob, true);
                     }
-                    if (startPhase >= 3)
+                    else if (startPhase == 3)
                     {
-                        rolleEve.SpeicherInformationAb(MITMpolschataAlice, true);
-                        rolleEve.SpeicherInformationAb(MITMpolschataDifferenzAliceEve, true);
+                        rolleAlice.SpeicherInformationAb(ausgangsTextAlice, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(mindestSchlüssellängeAlice, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(schlüssellängeAlice, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(schlüssellängeAlice, true);
+                        rolleEve.SpeicherInformationAb(MITMausgangsTextEve, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(MITMmindestSchlüssellängeEve, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(MITMschlüssellängeEve, true);
+                        if (schwierigkeit > 1) rolleBob.SpeicherInformationAb(MITMschlüssellängeEve, true);
+                        //-----------//
+                        if (schwierigkeit > 0) rolleAlice.SpeicherInformationAb(MITMschlüsselbits1Alice, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(MITMpolschataAlice, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(MITMphotonenAlice, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(MITMpolschataAliceEve, true);
+                        if (schwierigkeit > 0) rolleEve.SpeicherInformationAb(MITMschlüsselbits1AliceEve, true);
+                        if (schwierigkeit > 0) rolleEve.SpeicherInformationAb(MITMschlüsselbits1EveBob, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(MITMpolschataEveBob, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(MITMphotonenEveBob, true);
+                        if (schwierigkeit > 1) rolleBob.SpeicherInformationAb(MITMpolschataBob, true);
+                        if (schwierigkeit > 0) rolleBob.SpeicherInformationAb(MITMschlüsselbits1Bob, true);
+                        //-----------//
+                        if (schwierigkeit > 0) rolleEve.SpeicherInformationAb(MITMpolschataAlice, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(MITMpolschataDifferenzAliceEve, true);
                         rolleEve.SpeicherInformationAb(MITMschlüsselbits2AliceEve, true);
-                        rolleAlice.SpeicherInformationAb(MITMpolschataDifferenzAliceEve, true);
-                        rolleBob.SpeicherInformationAb(MITMpolschataEveBob, true);
-                        rolleBob.SpeicherInformationAb(MITMpolschataDifferenzBob, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(MITMpolschataDifferenzAliceEve, true);
+                        if (schwierigkeit > 0) rolleBob.SpeicherInformationAb(MITMpolschataEveBob, true);
+                        if (schwierigkeit > 1) rolleBob.SpeicherInformationAb(MITMpolschataDifferenzBob, true);
                         rolleBob.SpeicherInformationAb(MITMschlüsselbits2Bob, true);
-                        rolleEve.SpeicherInformationAb(MITMpolschataDifferenzBob, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(MITMpolschataDifferenzBob, true);
                         rolleEve.SpeicherInformationAb(MITMschlüsselbits2EveBob, true);
                         rolleAlice.SpeicherInformationAb(MITMschlüsselbits2Alice, true);
                     }
-                    if (startPhase >= 4)
+                    else if (startPhase == 4)
                     {
-                        rolleAlice.SpeicherInformationAb(MITMprüfbitAnzahlAlice, true);
-                        rolleAlice.SpeicherInformationAb(MITMlängePrüfmaskeAlice, true);
-                        rolleAlice.SpeicherInformationAb(MITMprüfmaskeAlice, true);
-                        rolleAlice.SpeicherInformationAb(MITMprüfbitsAlice, true);
+                        rolleAlice.SpeicherInformationAb(ausgangsTextAlice, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(mindestSchlüssellängeAlice, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(schlüssellängeAlice, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(schlüssellängeAlice, true);
+                        rolleEve.SpeicherInformationAb(MITMausgangsTextEve, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(MITMmindestSchlüssellängeEve, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(MITMschlüssellängeEve, true);
+                        if (schwierigkeit > 1) rolleBob.SpeicherInformationAb(MITMschlüssellängeEve, true);
+                        //-----------//
+                        if (schwierigkeit > 0) rolleAlice.SpeicherInformationAb(MITMschlüsselbits1Alice, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(MITMpolschataAlice, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(MITMphotonenAlice, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(MITMpolschataAliceEve, true);
+                        if (schwierigkeit > 0) rolleEve.SpeicherInformationAb(MITMschlüsselbits1AliceEve, true);
+                        if (schwierigkeit > 0) rolleEve.SpeicherInformationAb(MITMschlüsselbits1EveBob, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(MITMpolschataEveBob, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(MITMphotonenEveBob, true);
+                        if (schwierigkeit > 1) rolleBob.SpeicherInformationAb(MITMpolschataBob, true);
+                        if (schwierigkeit > 0) rolleBob.SpeicherInformationAb(MITMschlüsselbits1Bob, true);
+                        //-----------//
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(MITMpolschataAlice, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(MITMpolschataDifferenzAliceEve, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(MITMschlüsselbits2AliceEve, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(MITMpolschataDifferenzAliceEve, true);
+                        if (schwierigkeit > 1) rolleBob.SpeicherInformationAb(MITMpolschataEveBob, true);
+                        if (schwierigkeit > 1) rolleBob.SpeicherInformationAb(MITMpolschataDifferenzBob, true);
+                        if (schwierigkeit > 1) rolleBob.SpeicherInformationAb(MITMschlüsselbits2Bob, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(MITMpolschataDifferenzBob, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(MITMschlüsselbits2EveBob, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(MITMschlüsselbits2Alice, true);
+                        //-----------//
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(MITMprüfbitAnzahlAlice, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(MITMlängePrüfmaskeAlice, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(MITMprüfmaskeAlice, true);
+                        if (schwierigkeit > 0) rolleAlice.SpeicherInformationAb(MITMprüfbitsAlice, true);
                         rolleAlice.SpeicherInformationAb(MITMschlüsselbits3Alice, true);
-                        rolleEve.SpeicherInformationAb(MITMprüfmaskeAlice, true);
-                        rolleEve.SpeicherInformationAb(MITMprüfbitsAliceEve, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(MITMprüfmaskeAlice, true);
+                        if (schwierigkeit > 0) rolleEve.SpeicherInformationAb(MITMprüfbitsAliceEve, true);
                         rolleEve.SpeicherInformationAb(MITMschlüsselbits3AliceEve, true);
-                        rolleAlice.SpeicherInformationAb(MITMprüfbitsAliceEve, true);
-                        rolleEve.SpeicherInformationAb(MITMprüfbitAnzahlEveBob, true);
-                        rolleEve.SpeicherInformationAb(MITMlängePrüfmaskeEveBob, true);
-                        rolleEve.SpeicherInformationAb(MITMprüfmaskeEveBob, true);
-                        rolleEve.SpeicherInformationAb(MITMprüfbitsEveBob, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(MITMprüfbitsAliceEve, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(MITMprüfbitAnzahlEveBob, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(MITMlängePrüfmaskeEveBob, true);
+                        if (schwierigkeit > 1) rolleEve.SpeicherInformationAb(MITMprüfmaskeEveBob, true);
+                        if (schwierigkeit > 0) rolleEve.SpeicherInformationAb(MITMprüfbitsEveBob, true);
                         rolleEve.SpeicherInformationAb(MITMschlüsselbits3EveBob, true);
-                        rolleBob.SpeicherInformationAb(MITMprüfmaskeEveBob, true);
-                        rolleBob.SpeicherInformationAb(MITMprüfbitsBob, true);
+                        if (schwierigkeit > 1) rolleBob.SpeicherInformationAb(MITMprüfmaskeEveBob, true);
+                        if (schwierigkeit > 0) rolleBob.SpeicherInformationAb(MITMprüfbitsBob, true);
                         rolleBob.SpeicherInformationAb(MITMschlüsselbits3Bob, true);
-                        rolleEve.SpeicherInformationAb(MITMprüfbitsBob, true);
+                        if (schwierigkeit > 0) rolleEve.SpeicherInformationAb(MITMprüfbitsBob, true);
                         rolleEve.SpeicherInformationAb(MITMprüfbitsDifferenzEve, true);
-                        rolleAlice.SpeicherInformationAb(MITMprüfbitsAliceEve, true);
+                        if (schwierigkeit > 1) rolleAlice.SpeicherInformationAb(MITMprüfbitsAliceEve, true);
                         rolleAlice.SpeicherInformationAb(MITMprüfbitsDifferenzAlice, true);
                     }
                     break;

@@ -112,6 +112,8 @@ namespace quaKrypto.ViewModels
                         AenderZustand(Enums.SpielEnum.warten);
                     }
                     setzeAktRolleView();
+                    verfügbareOperationen = uebungsszenario.Variante.GebeHilfestellung(uebungsszenario.Schwierigkeitsgrad);
+                    AktualisiereOperationenVisibility();
                 }
                 else if (e.PropertyName is "Beendet") 
                 { 

@@ -78,7 +78,15 @@
                     <Label Content="{Binding AktuellePhaseAnzeige}" FontSize="15"/>
                 </StackPanel>
             </StackPanel>
-            <Button Width="200" Height="30" FontSize="15" x:Name="ZugBeendenButton" Command="{Binding ZugBeenden}" Content="Zug beenden" Grid.Column="3" Grid.Row="0" Visibility="{Binding SpielVisibility}"/>
+            <Grid Grid.Column="3" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Width="200" Height="30" FontSize="15" x:Name="AlleOperationenAnzeigne" Command="{Binding OperationenAnzeigen}" Content="Operationen anzeigen" Grid.Column="0" Visibility="{Binding SpielVisibility}"/>
+                <Button Width="200" Height="30" FontSize="15" x:Name="ZugBeendenButton" Command="{Binding ZugBeenden}" Content="Zug beenden" Grid.Column="1"  Visibility="{Binding SpielVisibility}"/>
+            </Grid>
+            
 
             <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1" Visibility="{Binding SpielVisibility}">
                 <DockPanel>
@@ -196,7 +204,8 @@
                             </Border>
                         </ControlTemplate>
                     </TabControl.Template>
-                    <TabItem>
+                    <TabItem Visibility="{Binding BitfolgeGenerierenVisibility}" >
+
                         <TabItem.Header>
                             <TextBlock TextWrapping="Wrap" ToolTip="Bitfolge erzeugen">
                             <InlineUIContainer>
@@ -213,7 +222,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -233,13 +242,13 @@
                                     </ListView>
                                 </Border>
 
-                                <CheckBox x:Name="chk" Content="Manuell eingeben" IsChecked="{Binding EingabeBool, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,10,10" FontSize="15"/>
+                                <CheckBox x:Name="chk" Content="Manuell eingeben" IsChecked="{Binding EingabeBool, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,10,10" FontSize="15" VerticalContentAlignment="Center"/>
                                 <DockPanel Margin="10,0,10,10" Visibility="{Binding IsChecked,ElementName=chk,Converter={StaticResource b2v}}">
                                     <Border BorderBrush="Black" BorderThickness="1">
                                         <Label Content="Bitfolge: " FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="16"  VerticalContentAlignment="Center" MaxLength="8191" AcceptsTab="False"/>
+                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="15"  VerticalContentAlignment="Center" MaxLength="8191" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -260,7 +269,7 @@
                         </ScrollViewer>
                     </TabItem>
 
-                    <TabItem>
+                    <TabItem Visibility="{Binding TextVerEntschlüsselnVisibility}">
                         <TabItem.Header>
                             <TextBlock TextWrapping="Wrap" ToolTip="Ent/Verschlüsseln">
                             <InlineUIContainer>
@@ -277,7 +286,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -321,7 +330,7 @@
                         </ScrollViewer>
                     </TabItem>
 
-                    <TabItem>
+                    <TabItem Visibility="{Binding PhotonenGenerierenVisibility}" >
                         <TabItem.Header>
                             <TextBlock TextWrapping="Wrap" ToolTip="Photonen erzeugen">
                             <InlineUIContainer>
@@ -338,7 +347,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -382,7 +391,7 @@
                         </ScrollViewer>
                     </TabItem>
 
-                    <TabItem>
+                    <TabItem Visibility="{Binding PolarisationsschemataGenerierenVisibility}">
                         <TabItem.Header>
                             <TextBlock TextWrapping="Wrap" ToolTip="Polarisationsschemata erzeugen">
                             <InlineUIContainer>
@@ -399,7 +408,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -419,13 +428,13 @@
                                     </ListView>
                                 </Border>
 
-                                <CheckBox x:Name="chk2" Content="Manuell eingeben" IsChecked="{Binding EingabeBool, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,10,10" FontSize="15"/>
+                                <CheckBox x:Name="chk2" Content="Manuell eingeben" IsChecked="{Binding EingabeBool, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,10,10" FontSize="15" VerticalContentAlignment="Center"/>
                                 <DockPanel Margin="10,0,10,10" Visibility="{Binding IsChecked,ElementName=chk2,Converter={StaticResource b2v2}}">
                                     <Border BorderBrush="Black" BorderThickness="1">
                                         <Label Content="Polarisationsschemata: " FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="8191" AcceptsTab="False"/>
+                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="8191" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -446,7 +455,7 @@
                         </ScrollViewer>
                     </TabItem>
 
-                    <TabItem>
+                    <TabItem Visibility="{Binding BitsStreichenVisibility}">
                         <TabItem.Header>
                             <TextBlock TextWrapping="Wrap" ToolTip="Streichen (Bits)">
                             <InlineUIContainer>
@@ -463,7 +472,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -508,7 +517,7 @@
                         </ScrollViewer>
                     </TabItem>
 
-                    <TabItem>
+                    <TabItem Visibility="{Binding VergleichenVisibility}">
                         <TabItem.Header>
                             <TextBlock TextWrapping="Wrap" ToolTip="Vergleichen">
                             <InlineUIContainer>
@@ -525,7 +534,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
                                 <Border Width="50" Height="50" Margin="10"  BorderBrush="Black" BorderThickness="1">
@@ -569,7 +578,7 @@
                         </ScrollViewer>
                     </TabItem>
 
-                    <TabItem>
+                    <TabItem Visibility="{Binding ZahlGenerierenVisibility}">
                         <TabItem.Header>
                             <TextBlock TextWrapping="Wrap" ToolTip="Zahl erzeugen">
                             <InlineUIContainer>
@@ -585,7 +594,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -600,7 +609,7 @@
                                         <Label Content="Zahl: " FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
+                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -620,7 +629,7 @@
                         </ScrollViewer>
                     </TabItem>
 
-                    <TabItem>
+                    <TabItem Visibility="{Binding BitMaskeGenerierenVisibility}">
                         <TabItem.Header>
                             <TextBlock TextWrapping="Wrap" ToolTip="Bitmaske generieren">
                             <InlineUIContainer>
@@ -636,7 +645,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
                                 <Border Width="50" Height="50" Margin="10"  BorderBrush="Black" BorderThickness="1">
@@ -680,7 +689,7 @@
                         </ScrollViewer>
                     </TabItem>
 
-                    <TabItem>
+                    <TabItem Visibility="{Binding BitfolgeNegierenVisibility}">
                         <TabItem.Header>
                             <TextBlock TextWrapping="Wrap" ToolTip="Bitfolge negieren">
                             <InlineUIContainer>
@@ -696,7 +705,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
                                 <Border Width="50" Height="50" Margin="10"  BorderBrush="Black" BorderThickness="1">
@@ -731,7 +740,7 @@
                         </ScrollViewer>
                     </TabItem>
 
-                    <TabItem>
+                    <TabItem Visibility="{Binding PhotonenZuBitfolgeVisibility}">
                         <TabItem.Header>
                             <TextBlock TextWrapping="Wrap" ToolTip="Photonen zu Bitfolge">
                             <InlineUIContainer>
@@ -747,7 +756,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
                                 <Border Width="50" Height="50" Margin="10"  BorderBrush="Black" BorderThickness="1">
@@ -791,7 +800,7 @@
                         </ScrollViewer>
                     </TabItem>
 
-                    <TabItem>
+                    <TabItem Visibility="{Binding TextGenerierenVisibility}">
                         <TabItem.Header>
                             <TextBlock TextWrapping="Wrap" ToolTip="Text generieren">
                             <InlineUIContainer>
@@ -807,7 +816,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -822,7 +831,7 @@
                                         <Label Content="Text: " FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="8191" AcceptsTab="False"/>
+                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="8191" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -841,9 +850,10 @@
                             </StackPanel>
                         </ScrollViewer>
                     </TabItem>
-                    <TabItem>
+
+                    <TabItem Visibility="{Binding TextLaengeBestimmenVisibility}">
                         <TabItem.Header>
-                            <TextBlock TextWrapping="Wrap" ToolTip="Textlänge bestimmen">
+                            <TextBlock TextWrapping="Wrap" ToolTip="Informationslänge bestimmen">
                             <InlineUIContainer>
                                 <Image Source="../Icons/Spiel/Textlänge bestimmen/textlänge_bestimmen_128px.png" Width="30" Height="30"/>
                             </InlineUIContainer>
@@ -857,7 +867,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
                                 <Border Width="50" Height="50" Margin="10"  BorderBrush="Black" BorderThickness="1">
@@ -892,7 +902,7 @@
                         </ScrollViewer>
                     </TabItem>
 
-                    <TabItem>
+                    <TabItem Visibility="{Binding BitsFreiBearbeitenVisibility}">
                         <TabItem.Header>
                             <TextBlock TextWrapping="Wrap" ToolTip="Bits frei bearbeiten">
                             <InlineUIContainer>
@@ -909,7 +919,7 @@
                                         <Label Content="Name" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
+                                        <TextBox Text="{Binding Informationsname, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="40" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
                                 <Border Width="50" Height="50" Margin="10"  BorderBrush="Black" BorderThickness="1">
@@ -932,7 +942,7 @@
                                         <Label Content="Text" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="8191" AcceptsTab="False"/>
+                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="15" VerticalContentAlignment="Center" MaxLength="8191" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -951,8 +961,8 @@
                             </StackPanel>
                         </ScrollViewer>
                     </TabItem>
-                    
-                    <TabItem>
+
+                    <TabItem Visibility="{Binding InformationUmbenennenVisibility}">
                         <TabItem.Header>
                             <TextBlock TextWrapping="Wrap" ToolTip="Information umbenennen">
                             <InlineUIContainer>
