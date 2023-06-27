@@ -30,7 +30,7 @@ namespace quaKrypto.Services
                     int indexOfNewItem = e.NewItems.Count - 1;
                     if (e.NewItems[indexOfNewItem] != null)
                     {
-                        Inlines.Add(e.NewItems[indexOfNewItem] as Inline);
+                        Application.Current.Dispatcher.Invoke(() => { Inlines.Add(e.NewItems[indexOfNewItem] as Inline); });
                     }
                 }
             }
