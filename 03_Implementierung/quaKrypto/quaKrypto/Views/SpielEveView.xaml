@@ -239,7 +239,7 @@
                                         <Label Content="Bitfolge: " FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="16"  VerticalContentAlignment="Center" MaxLength="2048" AcceptsTab="False"/>
+                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="16"  VerticalContentAlignment="Center" MaxLength="8191" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -425,7 +425,7 @@
                                         <Label Content="Polarisationsschemata: " FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="2048" AcceptsTab="False"/>
+                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="8191" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -822,7 +822,7 @@
                                         <Label Content="Text: " FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="2048" AcceptsTab="False"/>
+                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="8191" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
@@ -932,7 +932,7 @@
                                         <Label Content="Text" FontSize="15"/>
                                     </Border>
                                     <Border BorderBrush="Black" BorderThickness="1">
-                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="2048" AcceptsTab="False"/>
+                                        <TextBox Text="{Binding Eingabe, UpdateSourceTrigger=PropertyChanged}" FontSize="16" VerticalContentAlignment="Center" MaxLength="8191" AcceptsTab="False"/>
                                     </Border>
                                 </DockPanel>
 
