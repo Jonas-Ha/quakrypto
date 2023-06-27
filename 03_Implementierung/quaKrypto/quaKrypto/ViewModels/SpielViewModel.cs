@@ -116,6 +116,7 @@ namespace quaKrypto.ViewModels
                     }
                     setzeAktRolleView();
                     verfügbareOperationen = uebungsszenario.Variante.GebeHilfestellung(uebungsszenario.Schwierigkeitsgrad);
+                    OperandenInAblageLegen();
                     AktualisiereOperationenVisibility();
                 }
                 else if (e.PropertyName is "Beendet")
@@ -139,9 +140,9 @@ namespace quaKrypto.ViewModels
         {
             //Nachrichten Senden
             NachrichtenSenden();
-            
+
             //Informationen aus den Operanden abspeichern
-            OperandenInAblageLegen();
+            InformationenInAblageLegen();
 
             //Informationsablage unscharfe Photonen entfernen und zu Muelleimer hinzufuegen
             for(int i= Informationsablage.Count-1; i >= 0 ; i--) 
@@ -190,7 +191,7 @@ namespace quaKrypto.ViewModels
             }
 
             //Informationen aus den Operanden abspeichern
-            OperandenInAblageLegen();
+            InformationenInAblageLegen();
 
             //Informationsablage abspeichern
             for (int i = 0; i < Informationsablage.Count; i++)
@@ -244,6 +245,21 @@ namespace quaKrypto.ViewModels
         }
 
         private void OperandenInAblageLegen()
+        {
+            for (int i = 0; i < Operand1.Count; i++)
+            {
+                Informationsablage.Add(Operand1[i]);
+            }
+            for (int i = 0; i < Operand2.Count; i++)
+            {
+                Informationsablage.Add(Operand2[i]);
+            }
+            for (int i = 0; i < Ergebnis.Count; i++)
+            {
+                Informationsablage.Add(Ergebnis[i]);
+            }
+        }
+        private void InformationenInAblageLegen()
         {
             for (int i = 0; i < Operand1.Count; i++)
             {
