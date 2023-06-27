@@ -834,7 +834,7 @@ namespace quaKrypto.ViewModels
                 Informationsname == "" ||
                 Eingabe == null ||
                 Eingabe == "" ||
-                Eingabe.Length < 256) return false;
+                Eingabe.Length > 256) return false;
             return true;
         }
 
