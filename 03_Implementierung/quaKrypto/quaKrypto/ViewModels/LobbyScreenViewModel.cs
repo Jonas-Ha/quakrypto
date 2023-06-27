@@ -220,7 +220,6 @@ namespace quaKrypto.ViewModels
             else
             {
                 Variante = VarianteManInTheMiddle.VariantenName;
-                Variante = VarianteAbhoeren.VariantenName;
                 EveBoxesVisible = Visibility.Visible;
                 EveSelected = Visibility.Collapsed;
                 EveLabel = Visibility.Visible;

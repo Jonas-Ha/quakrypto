@@ -128,9 +128,13 @@ namespace quaKrypto.Models.Classes
                     {
                         networkStream.Write(nachrichtZumSenden, 0, nachrichtZumSenden.Length);
                     }
+                    IPAddress? savedIPAddress = null;
                     foreach (NetworkStream networkStream in rolleNetworkStreams.Values)
                     {
+                        IPEndPoint? endPoint = (IPEndPoint?)networkStream.Socket.LocalEndPoint;
+                        if (savedIPAddress != null && endPoint != null && savedIPAddress == endPoint.Address) break;
                         networkStream.Write(nachrichtZumSenden, 0, nachrichtZumSenden.Length);
+                        savedIPAddress = endPoint != null ? endPoint.Address : null;
                     }
                 }
                 else
@@ -204,7 +208,7 @@ namespace quaKrypto.Models.Classes
         //Schnittstelle fürs Übungsszenario
         public static void SendeAufzeichnungsUpdate(List<Handlungsschritt> neueHandlungsschritte, RolleEnum? empfänger = null)
         {
-            //Eventuell Encoding vom Serializer benutzen oder anderweitig lösen
+            if (empfänger != null && rolleNetworkStreams.Count == 2 && rolleNetworkStreams.ElementAt(0).Value.Equals(rolleNetworkStreams.ElementAt(1).Value)) return;
             XmlSerializer xmlSerializer = new(typeof(List<Handlungsschritt>));
             using StringWriter stringWriter = new();
             xmlSerializer.Serialize(stringWriter, neueHandlungsschritte);
@@ -286,7 +290,7 @@ namespace quaKrypto.Models.Classes
                                 case ZUG_BEENDEN:
                                     List<Handlungsschritt> listeEmpfangenerHandlungsschritte = new();
                                     XmlSerializer xmlHandlungsschrittSerializer = new(typeof(List<Handlungsschritt>));
-                                    using (StringReader stringReader = new StringReader(empfangeneNachrichtTeile[0]))
+                                    using (StringReader stringReader = new(empfangeneNachrichtTeile[0]))
                                     {
                                         object? deserialisiertesObjekt = xmlHandlungsschrittSerializer.Deserialize(stringReader);
                                         if (deserialisiertesObjekt != null)
