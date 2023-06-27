@@ -56,7 +56,7 @@ namespace quaKrypto.Models.Classes
                 throw new ArgumentNullException("Object reference not set to an instance of an object");
             }
 
-            return new Information(informationsID, ergebnisName, operand1.InformationsTyp, operand1.InformationsInhalt, null);
+            return new Information(operand1.InformationsID, ergebnisName, operand1.InformationsTyp, operand1.InformationsInhalt, null);
         }
 
         //Überlegung: Streichen der Funktion NachrichtAbhoeren, da identisch zu NachrichtEmpfangen (Leopold Bialek, Alexander Dennner)
