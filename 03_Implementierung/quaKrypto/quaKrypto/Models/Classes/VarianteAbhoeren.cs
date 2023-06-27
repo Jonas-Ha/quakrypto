@@ -128,7 +128,8 @@ namespace quaKrypto.Models.Classes
 
         private List<OperationsEnum> GebeHilfestellungLeicht()
         {
-                        List<OperationsEnum> op = new List<OperationsEnum>();
+            List<OperationsEnum> op = new List<OperationsEnum>();
+            op.Add(OperationsEnum.informationUmbenennen);
 
             if (this.aktuellePhase == 0)
             {
@@ -136,6 +137,7 @@ namespace quaKrypto.Models.Classes
                 {
                     op.Add(OperationsEnum.textGenerieren);
                     op.Add(OperationsEnum.zahlGenerieren);
+                    op.Add(Oper)
                 }
                 else if (this.aktuelleRolle == RolleEnum.Bob)
                 {
@@ -157,6 +159,7 @@ namespace quaKrypto.Models.Classes
                     op.Add(OperationsEnum.polarisationsschemataGenerierenAngabe);
                     op.Add(OperationsEnum.polarisationsschemataGenerierenZahl);
                     op.Add(OperationsEnum.photonenZuBitfolge);
+                    if(this.aktuelleRolle == RolleEnum.Eve) op.Add(OperationsEnum.photonenGenerieren);
                 }                
 
             }
@@ -183,17 +186,22 @@ namespace quaKrypto.Models.Classes
                     op.Add(OperationsEnum.bitmaskeGenerieren);
                     op.Add(OperationsEnum.bitsStreichen);
                     op.Add(OperationsEnum.bitfolgenVergleichen);
+                    op.Add(OperationsEnum.textLaengeBestimmen);
+                    op.Add(OperationsEnum.bitfolgeNegieren);
+
                 }
                 else if (this.aktuelleRolle == RolleEnum.Bob)
                 {
                     op.Add(OperationsEnum.bitsStreichen);
+                    op.Add(OperationsEnum.bitfolgeNegieren);
                 }
                 else
                 {
                     op.Add(OperationsEnum.zahlGenerieren);
                     op.Add(OperationsEnum.bitmaskeGenerieren);
                     op.Add(OperationsEnum.bitsStreichen);
-                    
+                    op.Add(OperationsEnum.bitfolgeNegieren);
+
                 }
             }
             else if (this.aktuellePhase == 4)
@@ -201,6 +209,7 @@ namespace quaKrypto.Models.Classes
                 if (this.aktuelleRolle == RolleEnum.Alice)
                 {
                     op.Add(OperationsEnum.textVerschluesseln);
+                    op.Add(OperationsEnum.bitfolgenVergleichen);
                 }
                 else if (this.aktuelleRolle == RolleEnum.Bob)
                 {
