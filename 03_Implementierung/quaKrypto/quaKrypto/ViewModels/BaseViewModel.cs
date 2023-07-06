@@ -13,9 +13,13 @@ namespace quaKrypto.ViewModels
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
-
+        /// <summary>
+        /// Funktion aller ViewModels zur Benachrichtigung der Oberfläche das sich ein Wert geändert hat
+        /// </summary>
+        /// <param name="eigenschaftsName"></param>
         protected virtual void EigenschaftWurdeGeändert([CallerMemberName] string? eigenschaftsName = null)
         {
+            //Invoken des PropertyCheanged Events
             if (string.IsNullOrEmpty(eigenschaftsName)) return;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(eigenschaftsName));
         }

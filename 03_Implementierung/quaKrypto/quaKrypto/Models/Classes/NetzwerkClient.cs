@@ -1,4 +1,11 @@
-﻿using System;
+﻿// **********************************************************
+// File: NetzwerkClient.cs
+// Autor: Daniel Hannes
+// erstellt am: 18.05.2023
+// Projekt: quakrypto
+// ********************************************************** 
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -14,8 +21,10 @@ using System.Windows;
 
 namespace quaKrypto.Models.Classes
 {
+    //Diese statische Klasse stellt funktionen für einen Client im Netzwerk bereit.
     public static class NetzwerkClient
     {
+        //Dies sind die Indentifier für die Kommunikation über das Netzwerk
         private const byte LOBBYINFORMATION = 0x01;
         private const byte LOBBY_NICHT_MEHR_VERFUEGBAR = 0x02;
         private const byte ROLLENINFORMATION = 0x03;
@@ -27,9 +36,11 @@ namespace quaKrypto.Models.Classes
         private const byte AUFZEICHNUNG_UPDATE = 0x09;
         private const byte UEBUNGSSZENARIO_ENDE = 0x10;
 
+        //Das sind die vorher ausgemachten Ports, um eine Kommunikation zu erstellen.
         private const int UDP_LISTEN_PORT = 18523;
         private const int UDP_SEND_PORT = 18524;
 
+        //Das sind die Member, welche für eine Kommunikation benötigt werden.
         private static UdpClient? udpClient = null;
         private static TcpClient? tcpClient = null;
 
@@ -37,17 +48,20 @@ namespace quaKrypto.Models.Classes
 
         private static NetworkStream? networkStream = null;
 
+        //Hier werden alle verfügbaren Lobbys mit IP-Adresse für den internen gebrauch abgespeichert.
         private static Dictionary<IPAddress, UebungsszenarioNetzwerkBeitrittInfo> verfügbareLobbys = new();
 
-        //Schnittstelle für Lobby Beitreten
+        //Diese ObservableCollection beinhaltet die Information für alle Lobbys, welche verfügbar sind.
         public static ObservableCollection<UebungsszenarioNetzwerkBeitrittInfo> VerfuegbareLobbys { get; } = new();
 
+        //Hier wird das Übungsszenario abgespeichert, um funktionen aufzurufen, wenn bestimmte Befehle über das Netzwerk gesendet werden.
         private static UebungsszenarioNetzwerk? uebungsszenario;
-
         public static UebungsszenarioNetzwerk Ubungsszenario { set { uebungsszenario = value; } }
 
+        //Diese Observable Collection gibt an, wenn eine Lobby nicht mehr verfügbar ist, nachdem man dieser beigetreten ist.
         public static ObservableCollection<int> ErrorCollection { get; } = new();
 
+        //Diese Methode setzt die Netzwerkklasse wieder zurück, nachdem ein Spiel z.B. abgeschlossen wurde.
         public static void ResetNetzwerkClient()
         {
             udpClient?.Close();
@@ -66,7 +80,8 @@ namespace quaKrypto.Models.Classes
         }
 
         #region UDP
-        //Schnittstelle LobyyBeitrittView
+        //Diese Methode stößt das Suchen nach verfügbaren Lobbys im Netzwerk an.
+        //Es wird ein neuer Thread gestartet, welcher einen UDP-Client auf dem spezifizierten Port erstellt, um für Nachrichten von Hosts zu hören.
         public static void BeginneSucheNachLobbys()
         {
             new Thread(() =>
@@ -79,6 +94,7 @@ namespace quaKrypto.Models.Classes
                     try
                     {
                         if (udpClient == null) break;
+                        //Hier wird eine neue Nachricht empfangen und diese wird zerteilt, um daraus die Informationen über die Lobby zu ziehen.
                         byte[] kompletteNachrichtAlsBytes = udpClient.Receive(ref senderAdresse);
                         if (kompletteNachrichtAlsBytes.Length == 0) break;
                         byte commandIdentifier = kompletteNachrichtAlsBytes[0];
@@ -86,11 +102,13 @@ namespace quaKrypto.Models.Classes
                         {
                             string[] empfangeneNachrichtTeile = Encoding.UTF8.GetString(kompletteNachrichtAlsBytes[1..]).Split('\t');
                             UebungsszenarioNetzwerkBeitrittInfo netzwerkBeitrittInfo = new(senderAdresse.Address, empfangeneNachrichtTeile[0], empfangeneNachrichtTeile[1], empfangeneNachrichtTeile[2], Enum.TryParse(empfangeneNachrichtTeile[3], out SchwierigkeitsgradEnum schwierigkeit) ? schwierigkeit : SchwierigkeitsgradEnum.Leicht, bool.TryParse(empfangeneNachrichtTeile[4], out bool aliceBesetzt) && aliceBesetzt, bool.TryParse(empfangeneNachrichtTeile[5], out bool bobBesetzt) && bobBesetzt, bool.TryParse(empfangeneNachrichtTeile[6], out bool eveBesetzt) && eveBesetzt) { StartPhase = uint.TryParse(empfangeneNachrichtTeile[7], out uint startPhase) ? startPhase : 0, EndPhase = uint.TryParse(empfangeneNachrichtTeile[8], out uint endPhase) ? endPhase : 5, HostPort = int.TryParse(empfangeneNachrichtTeile[9], out int hostPort) ? hostPort : 0 };
+                            //Hier wurde eine Lobby von einem neuen Host gefunden
                             if (!verfügbareLobbys.ContainsKey(senderAdresse.Address))
                             {
                                 verfügbareLobbys.Add(senderAdresse.Address, netzwerkBeitrittInfo);
                                 Application.Current.Dispatcher.Invoke(new Action(() => VerfuegbareLobbys.Add(netzwerkBeitrittInfo)));
                             }
+                            //Und hier wurde ein Update einer Lobby gefunden, welche bereits bekannt war.
                             else
                             {
                                 verfügbareLobbys[senderAdresse.Address] = netzwerkBeitrittInfo;
@@ -106,6 +124,7 @@ namespace quaKrypto.Models.Classes
                                 ));
                             }
                         }
+                        //Wenn eine Lobby nicht mehr verfügbar ist, so muss diese entfernt werden
                         else if (commandIdentifier == LOBBY_NICHT_MEHR_VERFUEGBAR)
                         {
                             Application.Current.Dispatcher.Invoke(new Action(() => { if (verfügbareLobbys.ContainsKey(senderAdresse.Address) && VerfuegbareLobbys.Any(l => l.IPAddress.Equals(senderAdresse.Address))) VerfuegbareLobbys.Remove(VerfuegbareLobbys.First(l => l.IPAddress.Equals(senderAdresse.Address))); }));
@@ -118,7 +137,7 @@ namespace quaKrypto.Models.Classes
             }).Start();
         }
 
-        //Schnittstelle zu LobbyBeitrittView
+        //Diese Methode soll von anderen Klassen aufgerufen werden, wenn die Suche nach Lobbys beendet werden soll.
         public static void BeendeSucheNachLobbys()
         {
             udpClient?.Close();
@@ -131,6 +150,7 @@ namespace quaKrypto.Models.Classes
         #endregion
 
         #region TCP
+        //Dies ist eine interne Hilfsmethode, um eine Nachricht über TCP zu senden. Es wird der Identifier und die Nachricht angegeben und diese Nachricht wird dann gesendet.
         private static void SendeNachrichtTCP(byte commandIdentifier, string nachricht)
         {
             if (networkStream == null) return;
@@ -140,12 +160,14 @@ namespace quaKrypto.Models.Classes
             Array.Copy(nachrichtAlsByteArray, 0, nachrichtZumSenden, 1, nachrichtAlsByteArray.Length);
             for (int i = 0; i < 3; i++)
             {
+                //Hier wird dreimal eine Nullterminierund als Trennzeichen verwendet.
                 nachrichtZumSenden[^(1 + i)] = (byte)'\0';
             }
             networkStream.Write(nachrichtZumSenden, 0, nachrichtZumSenden.Length);
         }
 
-        //Schnittstelle mit Lobby Beitreten
+        //Diese Methode wird aufgerufen, wenn sich ein Client dazu entschlossen hat, einer Lobby beizutreten.
+        //Es wird die NetzwerkBeitrittInfo übergeben, in welcher sich die IP-Adresse der Lobby befindet.
         public static bool VerbindeMitUebungsszenario(UebungsszenarioNetzwerkBeitrittInfo netzwerkBeitrittInfo)
         {
             if (tcpClient != null) return false;
@@ -157,6 +179,7 @@ namespace quaKrypto.Models.Classes
             return true;
         }
 
+        //Diese Methode Trennt die Verbindung mit einem Host.
         public static void TrenneVerbindungMitUebungsszenario()
         {
             networkStream?.Close();
@@ -167,19 +190,20 @@ namespace quaKrypto.Models.Classes
             tcpClient = null;
         }
 
-        //Schnittstelle LobbyScreenView
+        //Diese Methode wird aufgerufen, wenn sich der Client für eine Rolle mit einem Alias entschieden hat.
         public static void WaehleRolle(RolleEnum gewählteRolle, string alias)
         {
             SendeNachrichtTCP(ROLLE_WAEHLEN, gewählteRolle.ToString() + '\t' + alias.Replace("\t", ""));
         }
 
-        //Schnittstelle LobbyScreenView
+        //Diese Methode wird aufgerufen, wenn der Client eine Rolle wieder freigeben will.
         public static void GebeRolleFrei(RolleEnum freizugebendeRolle)
         {
             SendeNachrichtTCP(ROLLE_FREIGEBEN, freizugebendeRolle.ToString());
         }
 
-        //Schnittstelle für Übungsszenario
+        //Diese Methode wird aufgerufen, wenn der Client seinen Zug beendet hat.
+        //Es werden die durchgeführten Schritte mitgeschickt, welche davor zu XML serialisiert werden.
         public static void BeendeZug(List<Handlungsschritt> handlungsschritte)
         {
             XmlSerializer xmlSerializer = new(typeof(List<Handlungsschritt>));
@@ -188,13 +212,14 @@ namespace quaKrypto.Models.Classes
             SendeNachrichtTCP(ZUG_BEENDEN, stringWriter.ToString());
         }
 
-        //Schnittstelle fürs Übungsszenario
+        //Diese Methode wird aufgerufen, wenn der Client das Übungsszenario aus welchem Grund auch immer verlässt.
         public static void BeendeUebungsszenario()
         {
             SendeNachrichtTCP(UEBUNGSSZENARIO_ENDE, "");
             TrenneVerbindungMitUebungsszenario();
         }
 
+        //Das ist der TCP Listening Thread. Dieser kümmert sich im Hintergrund um die eingehenden Nachrichten des Hosts und handelt entsprechend.
         private static void StarteTCPListeningThread(NetworkStream networkStream)
         {
             new Thread(() =>
@@ -204,6 +229,7 @@ namespace quaKrypto.Models.Classes
                 {
                     try
                     {
+                        //Hier wird eine neue Nachricht vom Host empfangen.
                         networkStream.Read(kompletteNachrichtAlsBytes, 0, TCP_RECEIVE_BUFFER_SIZE);
                         string[] empfangeneGanzeNachrichten = Encoding.UTF8.GetString(kompletteNachrichtAlsBytes).Split("\0\0\0");
                         foreach (string ganzeNachricht in empfangeneGanzeNachrichten)
@@ -214,6 +240,7 @@ namespace quaKrypto.Models.Classes
                             for (int i = 0; i < empfangeneNachrichtTeile.Length; i++) empfangeneNachrichtTeile[i] = empfangeneNachrichtTeile[i].TrimEnd('\0');
                             switch (commandIdentifier)
                             {
+                                //Hier gibt es ein Update vom Host über die verfügbaren Rollen.
                                 case ROLLENINFORMATION:
                                     Rolle? rolleAlice, rolleBob, rolleEve;
                                     rolleAlice = empfangeneNachrichtTeile[0] == "" ? null : new Rolle(RolleEnum.Alice, empfangeneNachrichtTeile[0], "");
@@ -223,13 +250,16 @@ namespace quaKrypto.Models.Classes
 
                                     uebungsszenario?.NeueRollenInformation(rolleAlice, rolleBob, rolleEve);
                                     break;
+                                //Hier wurde das Übungsszenario vom Host gestartet.
                                 case UEBUNGSSZENARIO_STARTEN:
                                     uebungsszenario?.GeneriereInformationenFürRollen(int.TryParse(empfangeneNachrichtTeile[1], out int hostSeed) ? hostSeed : -1);
                                     uebungsszenario?.UebungsszenarioWurdeGestartet(Enum.TryParse(empfangeneNachrichtTeile[0], out RolleEnum startRolle) ? startRolle : RolleEnum.Alice);
                                     break;
+                                //Hier hat der Host dem Client die Kontrolle übergeben.
                                 case KONTROLLE_UEBERGEBEN:
                                     uebungsszenario?.KontrolleErhalten(Enum.TryParse(empfangeneNachrichtTeile[0], out RolleEnum nächsteRolle) ? nächsteRolle : RolleEnum.Alice);
                                     break;
+                                //Hier gibt es neue Handlungsschritte, welche ausgeführt wurden. Diese müssen natürlich wieder zuerst deserialisiert werden.
                                 case AUFZEICHNUNG_UPDATE:
                                     List<Handlungsschritt> listeEmpfangenerHandlungsschritte = new();
                                     XmlSerializer xmlHandlungsschrittSerializer = new(typeof(List<Handlungsschritt>));
@@ -242,13 +272,16 @@ namespace quaKrypto.Models.Classes
                                         }
                                     }
                                     break;
+                                //Hier wurde das Übungsszenario vom Host beendet.
                                 case UEBUNGSSZENARIO_ENDE:
                                     uebungsszenario?.Beenden();
+                                    TrenneVerbindungMitUebungsszenario();
                                     break;
+                                //Hier ist die Lobby nicht mehr verfügbar.
                                 case LOBBY_NICHT_MEHR_VERFUEGBAR:
+                                    uebungsszenario?.Beenden();
                                     TrenneVerbindungMitUebungsszenario();
                                     ErrorCollection.Add(1);
-                                    //TODO: Messagebox zeigen und zurück zum Hauptmenü
                                     break;
                             }
                         }
@@ -256,24 +289,11 @@ namespace quaKrypto.Models.Classes
                     }
                     catch (Exception e)
                     {
+                        //Bei einem Fehler wird der Fehler rausgeschrieben und der networkStream wird geschlossen.
                         Trace.WriteLine(e.ToString());
                         networkStream.Close();
                         break;
                     }
-                    /*
-                    catch (Exception) {
-                        if (uebungsszenario?.HostHatGestartet ?? false)
-                        {
-                            uebungsszenario?.Beenden();
-                        }
-                        else if(!uebungsszenario?.HostHatGestartet ?? false)
-                        {
-                            ErrorCollection.Add(1);
-                            TrenneVerbindungMitUebungsszenario();
-                        }
-                        Trace.WriteLine("Eine Socket-Exception wurde beim TCP-Empfangen im Client mit dem Host geworfen"); uebungsszenario?.Beenden();
-                        break;
-                    }*/
                 }
             }).Start();
         }

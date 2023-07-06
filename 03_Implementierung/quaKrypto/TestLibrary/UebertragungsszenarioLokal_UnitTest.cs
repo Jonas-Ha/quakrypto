@@ -47,7 +47,7 @@ namespace TestLibrary
         public void UebungsszenarioLokal_RollenAnlegen_Erfolg()
         {
             //Arrange
-            IVariante varianteAb = new VarianteAbhoeren(1);
+            IVariante varianteAb = new VarianteAbhören(1);
             UebungsszenarioLokal Ueb = new UebungsszenarioLokal(SchwierigkeitsgradEnum.Leicht, varianteAb, 1, 4, nameueb);
 
             Rolle rolle = new Rolle(rolleEnum, alias, passwort);
@@ -69,7 +69,7 @@ namespace TestLibrary
         public void UebungsszenarioLokal_RollenAnlegen_Failed()
         {
             //Arrange
-            IVariante varianteAb = new VarianteAbhoeren(1);
+            IVariante varianteAb = new VarianteAbhören(1);
             UebungsszenarioLokal Ueb = new UebungsszenarioLokal(SchwierigkeitsgradEnum.Leicht, varianteAb, 1, 4, nameueb);
             Rolle rolle = new Rolle(rolleEnum, alias, passwort);
             Rolle rolle2 = new Rolle(rolleEnumEve, aliasEve, passwortEve);
@@ -93,7 +93,7 @@ namespace TestLibrary
         public void UebungsszenarioLokal_GebeRolleFrei_Erfolg()
         {
             //Arrange
-            IVariante varianteAb = new VarianteAbhoeren(1);
+            IVariante varianteAb = new VarianteAbhören(1);
             UebungsszenarioLokal Ueb = new UebungsszenarioLokal(SchwierigkeitsgradEnum.Leicht, varianteAb, 1, 4, nameueb);
             Rolle rolle = new Rolle(rolleEnum, alias, passwort);
             Rolle rolle2 = new Rolle(rolleEnumEve, aliasEve, passwortEve);
@@ -117,7 +117,7 @@ namespace TestLibrary
         public void UebungsszenarioLokal_Starten_Erfolg()
         {
             //Arrange
-            IVariante varianteAb = new VarianteAbhoeren(1);
+            IVariante varianteAb = new VarianteAbhören(1);
             UebungsszenarioLokal Ueb = new UebungsszenarioLokal(SchwierigkeitsgradEnum.Leicht, varianteAb, 1, 4, nameueb);
             Rolle rolle = new Rolle(rolleEnum, alias, passwort);
             Rolle rolle2 = new Rolle(rolleEnumEve, aliasEve, passwortEve);
@@ -135,7 +135,7 @@ namespace TestLibrary
         public void UebungsszenarioLokal_Starten_Failed_ZuwenigeRollen()
         {
             //Arrange
-            IVariante varianteAb = new VarianteAbhoeren(1);
+            IVariante varianteAb = new VarianteAbhören(1);
             UebungsszenarioLokal Ueb = new UebungsszenarioLokal(SchwierigkeitsgradEnum.Leicht, varianteAb, 0, 4, nameueb);
             Rolle rolle = new Rolle(rolleEnum, alias, passwort);
             Rolle rolle2 = new Rolle(rolleEnumEve, aliasEve, passwortEve);
@@ -211,7 +211,7 @@ namespace TestLibrary
         public void UebungsszenarioLokal_GebeBildschrimFrei_Failed_FalscheRollen()
         {
             //Arrange
-            IVariante varianteAb = new VarianteAbhoeren(1);
+            IVariante varianteAb = new VarianteAbhören(1);
             UebungsszenarioLokal Ueb2 = new UebungsszenarioLokal(SchwierigkeitsgradEnum.Leicht, varianteAb, 0, 4, nameueb);
             Rolle rolle = new Rolle(rolleEnum, alias, passwort);
             Rolle rolle2 = new Rolle(rolleEnumEve, aliasEve, passwortEve);
@@ -264,13 +264,16 @@ namespace TestLibrary
             Rolle rolle = new Rolle(rolleEnum, alias, passwort);
             Rolle rolle3 = new Rolle(rolleEnumBob, aliasBob, passwortBob);
 
+            //Act
             Ueb.RolleHinzufuegen(rolle);
             Ueb.RolleHinzufuegen(rolle3);
 
+            //Assert
             Assert.IsTrue(Ueb.Starten());
             Assert.AreEqual(rolle, Ueb.AktuelleRolle);
             Assert.IsTrue(Ueb.AktuelleRolle.BeginneZug(passwort));
 
+            //Act2
             Information text = new Information(0, "text", InformationsEnum.asciiText, "HelloWorld", null);
             Information laenge = new Information(0, "laenge", InformationsEnum.zahl, 80, null);
 
@@ -280,10 +283,13 @@ namespace TestLibrary
             Ueb.SpeichereInformationenAb(erg1);
             Ueb.SpeichereInformationenAb(erg2);
 
+            //Assert2
             Assert.AreEqual(erg1, Ueb.AktuelleRolle.Informationsablage[0]);
             Assert.AreEqual(erg2, Ueb.AktuelleRolle.Informationsablage[1]);
 
+            //Act3
             Ueb.LoescheInformation(erg1.InformationsID);
+            //Assert3
             Assert.AreEqual(erg2, Ueb.AktuelleRolle.Informationsablage[0]);
         }
     }

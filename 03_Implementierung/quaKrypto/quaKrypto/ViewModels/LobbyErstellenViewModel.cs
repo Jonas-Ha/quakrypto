@@ -15,7 +15,9 @@ namespace quaKrypto.ViewModels
 {
     public class LobbyErstellenViewModel : BaseViewModel
     {
+        //Command zum Rücksprung ins HauptMenu
         public DelegateCommand HauptMenu { get; set; }
+        //Command um zum LobbyScreen ViewModel
         public DelegateCommand LobbyErstellen { get; set; }
         
         public LobbyErstellenViewModel(Navigator navigator)
@@ -28,6 +30,7 @@ namespace quaKrypto.ViewModels
             }, null);
             LobbyErstellen = new((o) =>
             {
+                //Abfragen und erstellen einer eigenen Variante die im LobbyScreen benutzt wird
                 IVariante ausgewaehlteVariante;
                 if (AusgVariante == 0)
                 {
@@ -35,15 +38,16 @@ namespace quaKrypto.ViewModels
                 }
                 else if (AusgVariante == 1)
                 {
-                    ausgewaehlteVariante = new VarianteAbhoeren((uint)AusgPhaseStart);
+                    ausgewaehlteVariante = new VarianteAbhören((uint)AusgPhaseStart);
                 }
                 else
                 {
                     ausgewaehlteVariante = new VarianteManInTheMiddle((uint)AusgPhaseStart);
                 }
-
+                
                 if (NetzwerkBasiert)
                 {
+                    //Erstellen einer Netzwerkbasierten Lobby
                     UebungsszenarioNetzwerkBeitrittInfo ErstelltesSzenarioInfo = new UebungsszenarioNetzwerkBeitrittInfo(IPAddress.Any, LobbyName, Protokoll[AusgProtokoll], VarianteAuswahl[AusgVariante], AusgSchwierigkeit == 0 ? SchwierigkeitsgradEnum.Leicht : AusgSchwierigkeit == 1 ? SchwierigkeitsgradEnum.Mittel : SchwierigkeitsgradEnum.Schwer, false, false, false);
                     ErstelltesSzenarioInfo.StartPhase = (uint)AusgPhaseStart;
                     ErstelltesSzenarioInfo.EndPhase = (uint)AusgPhaseEnd;
@@ -53,6 +57,7 @@ namespace quaKrypto.ViewModels
                 }
                 else
                 {                 
+                    //Erstellen der Lokalen Lobby
                     UebungsszenarioLokal uebungsszenarioLokal = new UebungsszenarioLokal(AusgSchwierigkeit == 0 ? SchwierigkeitsgradEnum.Leicht : AusgSchwierigkeit == 1 ? SchwierigkeitsgradEnum.Mittel : SchwierigkeitsgradEnum.Schwer, ausgewaehlteVariante, (uint)AusgPhaseStart, (uint)AusgPhaseEnd, LobbyName);
                     navigator.aktuellesViewModel = new LobbyScreenViewModel(navigator, uebungsszenarioLokal, true);
                 }
@@ -67,7 +72,7 @@ namespace quaKrypto.ViewModels
             SchwierigkeitsgradAuswahl.Add(SchwierigkeitsgradEnum.Schwer.ToString());
             VarianteAuswahl = new ObservableCollection<string>();
             VarianteAuswahl.Add(VarianteNormalerAblauf.VariantenName);
-            VarianteAuswahl.Add(VarianteAbhoeren.VariantenName);
+            VarianteAuswahl.Add(VarianteAbhören.VariantenName);
             VarianteAuswahl.Add(VarianteManInTheMiddle.VariantenName);
             Protokoll = new ObservableCollection<string>();
             Protokoll.Add("BB84");
@@ -75,6 +80,7 @@ namespace quaKrypto.ViewModels
             Verbindungstyp.Add("Lokal");
             Verbindungstyp.Add("Netzwerkbasiert");
         }
+        //Variablen zur Haltung der einzelnen Daten aus der View
         private string _lobbyName = string.Empty;
         private int _ausgProtokoll = -1;
         private int _ausgSchwierigkeit = -1;
@@ -82,7 +88,7 @@ namespace quaKrypto.ViewModels
         private int _ausgPhaseStart;
         private int _ausgPhaseEnde;
         private bool _netzwerkbasiert = false;
-        
+        //Propertys für die Viewdaten
         public string LobbyName { get { return _lobbyName; } set { _lobbyName = value; this.EigenschaftWurdeGeändert(); this.LobbyErstellen.RaiseCanExecuteChanged(); } }
         public int AusgProtokoll { get {  return _ausgProtokoll; } set { _ausgProtokoll = value; this.EigenschaftWurdeGeändert(); this.LobbyErstellen.RaiseCanExecuteChanged(); } }
         public int AusgSchwierigkeit { get { return _ausgSchwierigkeit; } set { _ausgSchwierigkeit = value; this.EigenschaftWurdeGeändert(); this.LobbyErstellen.RaiseCanExecuteChanged(); } }

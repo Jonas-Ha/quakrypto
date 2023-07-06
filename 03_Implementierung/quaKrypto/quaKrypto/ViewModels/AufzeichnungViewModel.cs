@@ -13,14 +13,23 @@ namespace quaKrypto.ViewModels
     public class AufzeichnungViewModel : BaseViewModel
     {
         private IUebungsszenario uebungsszenario;
-
+        /// <summary>
+        /// Die Liste der durchgeführten Handlungsschritte
+        /// Wird aus dem uebungsszenario bezogen
+        /// </summary>
         public ObservableCollection<Handlungsschritt> Handlungsschritte 
         {
             get { return uebungsszenario.Aufzeichnung.Handlungsschritte; }
         }
-
+        /// <summary>
+        /// Command zur Rückkehr ins Hauptmenü
+        /// </summary>
         public DelegateCommand HauptMenu { get; set; }
-
+        /// <summary>
+        /// Konstruktor des ViewModels
+        /// </summary>
+        /// <param name="navigator"></param>
+        /// <param name="uebungsszenario"></param>
         public AufzeichnungViewModel(Navigator navigator, IUebungsszenario uebungsszenario)
         {
             Wiki.Schwierigkeitsgrad = Models.Enums.SchwierigkeitsgradEnum.Leicht;

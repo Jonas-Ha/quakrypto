@@ -1,10 +1,20 @@
-﻿using System;
+﻿// **********************************************************
+// File: StandardTexte.cs
+// Autor: Daniel Hannes
+// erstellt am: 27.06.2023
+// Projekt: quakrypto
+// ********************************************************** 
+
+using System;
 using System.Collections.Generic;
 
 namespace quaKrypto.Services
 {
+    //Diese Klasse ist nur dazu da, um dem Benutzer, wenn er eine StartPhase ungleich 0 ausgewählt hat, einen Geheimtext zu geben,
+    //um daraufhin alles weitere von diesem Geheimtext aus zu berechnen.
     public static class StandardTexte
     {
+        //Das ist die selbst erstellte Liste, welche die einzelnen Wörter in sich trägt.
         private static readonly List<string> texte = new()
         {
             "Multilingual",
@@ -62,14 +72,14 @@ namespace quaKrypto.Services
             "MentellyDad"
         };
 
+        //Das ist der Seed, welcher Benutzt wird, um zufällig ein Wort aus der Liste auszuwählen.
+        //Der Seed wird beim Starten des Spiels übertragen, um für alle Benutzer die selben Wörter zu berechnen.
         private static int seed;
         public static int Seed { get => seed; set { seed = value; random = new Random(seed); } }
         private static Random random = new(Seed);
 
-        public static string BekommeZufälligenText()
-        {
-            return texte[random.Next(texte.Count)];
-        }
+        //Das ist die Methode, um ein zufälliges Wort zu bekommen.
+        public static string BekommeZufälligenText() => texte[random.Next(texte.Count)];
 
     }
 }

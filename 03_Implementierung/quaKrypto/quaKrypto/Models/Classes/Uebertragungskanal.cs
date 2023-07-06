@@ -5,17 +5,12 @@
 // Projekt: quakrypto
 // ********************************************************** 
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace quaKrypto.Models.Classes
 {
     public class Uebertragungskanal
     {
-        // Eventuell noch zu einer ObservableCollection machen - Alexander Denner
         private List<Information> photonenKanal;
         private List<Information> bitKanal;
 
@@ -35,6 +30,9 @@ namespace quaKrypto.Models.Classes
             get { return bitKanal; }
         }
 
+        // legt eine Information auf dem entsprechenden Übertragungskanal ab
+        // informationsTyp --> Photonen: photonenkanal
+        // informationsTyp !=  Photonen: bitkanal
         public void SpeicherNachrichtAb(Information information)
         {
             if(information.InformationsTyp == Enums.InformationsEnum.unscharfePhotonen)
@@ -47,6 +45,7 @@ namespace quaKrypto.Models.Classes
             }
         }
 
+        // gibt eine Liste aus Informationen aus den entsprechenden Kanälen zurück
         public List<Information>? LeseKanalAus(Enums.KanalEnum kanal)
         {
             if(kanal == Enums.KanalEnum.photonenKanal)
@@ -60,6 +59,7 @@ namespace quaKrypto.Models.Classes
             else return null;
         }
 
+        // entfernt eine Nachricht aus dem Übertragungskanal
         public void LoescheNachricht(Enums.KanalEnum kanal, int informationsID)
         {
             if(kanal == Enums.KanalEnum.photonenKanal)

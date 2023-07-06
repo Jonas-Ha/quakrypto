@@ -1,4 +1,11 @@
-﻿using System;
+﻿// **********************************************************
+// File: Wiki.cs
+// Autor: Daniel Hannes
+// erstellt am: 18.05.2023
+// Projekt: quakrypto
+// ********************************************************** 
+
+using System;
 using System.Linq;
 using System.IO;
 using System.Collections.ObjectModel;
@@ -7,43 +14,48 @@ using quaKrypto.Models.Enums;
 
 namespace quaKrypto.Models.Classes
 {
+    //Diese Klasse repräsentiert das Wiki mit der ganzen Logik, welche dahinter steckt.
     public static class Wiki
     {
+        //Das sind die Propertys dieser Klasse.
         private static readonly string WIKI_BENUTZERSEITEN_ORDNERNAME = Path.Combine(Environment.CurrentDirectory, "Wiki Benutzerseiten");
-        private static ObservableCollection<WikiSeite> wikiSeiten = new() { new WikiSeite("Neue Seite", "") };
-        public static ObservableCollection<WikiSeite> WikiSeiten => wikiSeiten;
+        public static ObservableCollection<WikiSeite> WikiSeiten { get; } = new() { new WikiSeite("Neue Seite", "") };
 
+        //Der Schwierigkeitsgrad gibt an, welche Seiten des Wikis geladen sein sollen und welche nicht.
         private static SchwierigkeitsgradEnum schwierigkeitsgrad = SchwierigkeitsgradEnum.Leicht;
         public static SchwierigkeitsgradEnum Schwierigkeitsgrad
         {
-            get => schwierigkeitsgrad; set
+            get => schwierigkeitsgrad;
+            set
             {
-                if (schwierigkeitsgrad != value)
-                {
-                    schwierigkeitsgrad = value;
-                    SpeichereBenutzerWikiSeiten();
-                    WikiStandardseitenService.LadeAlleWikiSeitenMitSchwierigkeit(schwierigkeitsgrad);
-                    LadeBenutzerWikiSeiten();
-                }
+                //Wenn sich der Schwierigkeitsgrad verändert, so sollen andere Wikiseiten geladen werden.
+                if (schwierigkeitsgrad == value) return;
+                schwierigkeitsgrad = value;
+                SpeichereBenutzerWikiSeiten();
+                WikiStandardseitenService.LadeAlleWikiSeitenMitSchwierigkeit(schwierigkeitsgrad);
+                LadeBenutzerWikiSeiten();
             }
         }
 
+        //Der index der Selektierten Seite gibt an, welche WikiSeite gerade ausgewählt ist.
         private static int indexDerSelektiertenSeite = 0;
         private static int IndexDerSelektiertenSeite
         {
             get => indexDerSelektiertenSeite;
             set
             {
-                wikiSeiten.ElementAt(indexDerSelektiertenSeite < wikiSeiten.Count ? indexDerSelektiertenSeite : 0).SetzeAktivStatus(false);
+                //Wenn sich der Index der selektierten Seite ändert, so wird die vorher ausgewählte Wikiseite darüber informiert sowie die neu ausgewählte.
+                WikiSeiten.ElementAt(indexDerSelektiertenSeite < WikiSeiten.Count ? indexDerSelektiertenSeite : 0).SetzeAktivStatus(false);
                 indexDerSelektiertenSeite = value;
-                wikiSeiten.ElementAt(indexDerSelektiertenSeite).SetzeAktivStatus(true);
+                WikiSeiten.ElementAt(indexDerSelektiertenSeite).SetzeAktivStatus(true);
             }
         }
-        public static WikiSeite SelektierteWikiSeite => wikiSeiten.ElementAt(indexDerSelektiertenSeite);
+        public static WikiSeite SelektierteWikiSeite => WikiSeiten.ElementAt(indexDerSelektiertenSeite);
 
-        private static bool wikiIstOffen = false;
-        public static bool WikiIstOffen { get => wikiIstOffen; set => wikiIstOffen = value; }
+        public static bool WikiIstOffen { get; set; }
 
+        //Im Konstruktor wird der Ordner für die vom Benutzer angelegten WikiSeiten erstellt, falls noch nicht vorhanden.
+        //Außerdem werden die Standardseiten geladen, sowie alle Seiten, welche vom Benutzer angelegt wurden.
         static Wiki()
         {
             if (!Directory.Exists(WIKI_BENUTZERSEITEN_ORDNERNAME)) _ = Directory.CreateDirectory(WIKI_BENUTZERSEITEN_ORDNERNAME);
@@ -53,26 +65,30 @@ namespace quaKrypto.Models.Classes
             IndexDerSelektiertenSeite = IndexDerSelektiertenSeite;
         }
 
+        //In dieser Methode werden alle Seiten geladen, welche der Benutzer angelegt hat.
         private static void LadeBenutzerWikiSeiten()
         {
             string[] dateien = Directory.GetFiles(WIKI_BENUTZERSEITEN_ORDNERNAME);
             foreach (string datei in dateien)
             {
-                if (File.Exists(datei)) wikiSeiten.Add(new WikiSeite(Path.GetFileName(datei).Split(") ")[1], File.ReadAllText(datei)));
+                if (File.Exists(datei)) WikiSeiten.Add(new WikiSeite(Path.GetFileName(datei).Split(") ")[1], File.ReadAllText(datei)));
             }
             IndexDerSelektiertenSeite = 0;
         }
 
+        //Hier werden alle Seiten abgespeichert, welche der Benutzer angelegt hat.
         public static void SpeichereBenutzerWikiSeiten()
         {
             string[] dateien = Directory.GetFiles(WIKI_BENUTZERSEITEN_ORDNERNAME);
+            //Zuerst werden alle alten Dateien gelöscht
             foreach (string datei in dateien)
             {
                 File.Delete(datei);
             }
+            //Und dann neue Dateien mit den Wikiseiten erzeugt.
             foreach (WikiSeite wikiSeite in WikiSeiten)
             {
-                if(wikiSeite.IdentifierInteger > 5)
+                if (wikiSeite.IdentifierInteger > 5)
                 {
                     File.WriteAllText(Path.Combine(WIKI_BENUTZERSEITEN_ORDNERNAME, $"({wikiSeite.Identifier}) {EntferneVerbotenesVonDateiNamen(wikiSeite.WikiSeiteName)}"), wikiSeite.Inhalt);
                     wikiSeite.SetzeAktivStatus(false);
@@ -81,26 +97,32 @@ namespace quaKrypto.Models.Classes
             }
             indexDerSelektiertenSeite = 0;
         }
+
+        //Dies ist eine Hilfsmethode, um anhand eines Identifiers einen Index zu bekommen.
         private static int BekommeIndexVonIdentifier(string identifier) => WikiSeiten.IndexOf(WikiSeiten.Where(wikiSeite => wikiSeite.Identifier == identifier).First());
 
-
+        //Diese Methode wird vom ViewModel aufgerufen, wenn der Benutzer eine neue Seite anlegen will.
         public static void SeitenErweitern()
         {
-            wikiSeiten.Add(new WikiSeite("Neue Seite", ""));
-            IndexDerSelektiertenSeite = wikiSeiten.Count - 1;
+            WikiSeiten.Add(new WikiSeite("Neue Seite", ""));
+            IndexDerSelektiertenSeite = WikiSeiten.Count - 1;
         }
 
+        //Diese Methode wird vom ViewModel aufgerufen, wenn der Benutzer eine alte Seite löschen will.
         public static void SeiteEntfernen()
         {
-            if (IndexDerSelektiertenSeite == 0 && wikiSeiten.Count <= 1) return;
+            if (IndexDerSelektiertenSeite == 0 && WikiSeiten.Count <= 1) return;
             WikiSeiten.RemoveAt(IndexDerSelektiertenSeite);
             IndexDerSelektiertenSeite = IndexDerSelektiertenSeite >= WikiSeiten.Count ? --IndexDerSelektiertenSeite : IndexDerSelektiertenSeite;
         }
 
+        //Diese Methode wird vom ViewModel aufgerufen, wenn der Benutzer eine neue Seite auswählt.
         public static void SeiteSelektieren(string identifier) => IndexDerSelektiertenSeite = BekommeIndexVonIdentifier(identifier);
 
+        //Hier wird die erste Seite des Wikis selektiert.
         public static void SelektiereDieErsteSeite() => IndexDerSelektiertenSeite = 0;
 
+        //Dies ist eine Hilfsmethode, um aus den Namen von der Wikiseite alle verbotenen Zeichen für Windows zu entfernen. 
         private static string EntferneVerbotenesVonDateiNamen(string stringWelcherBereinigtWerdenSoll)
         {
             stringWelcherBereinigtWerdenSoll = stringWelcherBereinigtWerdenSoll.Replace('<', ' ');

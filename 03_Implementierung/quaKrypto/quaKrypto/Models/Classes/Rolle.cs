@@ -6,33 +6,34 @@
 // ********************************************************** 
 
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualBasic;
 using quaKrypto.Models.Enums;
-using quaKrypto.Models.Interfaces;
 
 namespace quaKrypto.Models.Classes
 {
     [Serializable]
     public class Rolle
     {
+        /*
+         * Die möglichen Typen sind dem Enum <RolleEnum> zu entnehmen (alice, bob, eve)
+         * Jede Rolle besitzt einen Alias und ein Passwort.
+         */
         private RolleEnum rolle;
         private String alias;
         private String passwort;
+
         private bool freigeschaltet;
+        private int informationszaehler;
+
         private ObservableCollection<Information> informationsablage;
         public ReadOnlyObservableCollection<Information> Informationsablage;
-        private int informationszaehler;
-        public List<Handlungsschritt> handlungsschritte; //Eigentlich nur für das Netzwerk benötigt
 
-        //Dieser Konstruktor ist nur für die View zum Anzeigen in der LobbyView
+        // wird für das Übungsszenario im Netzwerk benötigt
+        public List<Handlungsschritt> handlungsschritte;
+
+        // Dieser Konstruktor ist nur für die View zum Anzeigen in der LobbyView
         public Rolle(RolleEnum rolle, string alias)
         {
             this.rolle = rolle;
@@ -80,6 +81,7 @@ namespace quaKrypto.Models.Classes
             }
             else return false;
         }
+
         public void Add(Handlungsschritt handlungsschritt)
         {
             handlungsschritte.Add(handlungsschritt);
@@ -89,17 +91,18 @@ namespace quaKrypto.Models.Classes
         {
             if (freigeschaltet)
             {
+                // Handlungsschritt ausführen
                 var handlungsschritt = new Handlungsschritt(informationszaehler++, operationsTyp, operand1, operand2, ergebnisInformationsName, rolle);
+                // nach Handlungsschritt ZugBeenden wird freigeschaltet auf 'false' gesetzt und an die Liste aus Handlungsschritten angehängt
                 if (operationsTyp == OperationsEnum.zugBeenden) freigeschaltet = false;
                 Add(handlungsschritt);
-                //handlungsschritte.Add(handlungsschritt);
+                // Liste aus Handlungsschritten wird zurückgegeben
                 return handlungsschritt;
-
             }
             throw new Exception("Rolle war nicht freigeschaltet");
-
         }
 
+        // legt eine Information in der Informationsablage einer Rolle ab
         public void SpeicherInformationAb(Information information, bool KI = false)
         {
             if (freigeschaltet || KI)
@@ -115,6 +118,7 @@ namespace quaKrypto.Models.Classes
             throw new Exception("Rolle war nicht freigeschaltet");
         }
 
+        // entfernt eine Information aus der Informationsablage einer Rolle
         public bool LoescheInformation(int informationsID)
         {
             if (freigeschaltet)
