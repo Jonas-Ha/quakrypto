@@ -10,12 +10,17 @@ using System.Collections;
 using System.Windows.Documents;
 using System.Reflection;
 using System.Diagnostics;
+using Xceed.Wpf.Toolkit;
+using System.Runtime.ConstrainedExecution;
+using System.Xml.Linq;
 
 namespace quaKrypto
 {
+    // Diese Klasse implementiert eine Hilfsklasse "DragDropHelper",
+    // die Funktionen zum Unterstützen von Drag & Drop-Vorgängen in WPF-Anwendungen bereitstellt
     public class DragDropHelper
     {
-        // source and target
+        // Quelle und Ziel des Drag & Drop Elements
         private DataFormat format = DataFormats.GetDataFormat("DragDropItemsControl");
         private Point initialMousePosition;
         private Vector initialMouseOffset;
@@ -23,16 +28,16 @@ namespace quaKrypto
         private DraggedAdorner draggedAdorner;
         private InsertionAdorner insertionAdorner;
         private Window topWindow;
-        // source
+        // Quelle des Drag & Drop Elements
         private ItemsControl sourceItemsControl;
         private FrameworkElement sourceItemContainer;
-        // target
+        // Ziel des Drag & Drop Elements
         private ItemsControl targetItemsControl;
         private FrameworkElement targetItemContainer;
         private bool hasVerticalOrientation;
         private int insertionIndex;
         private bool isInFirstHalf;
-        // singleton
+        // singleton-Patten
         private static DragDropHelper instance;
         private static DragDropHelper Instance
         {
@@ -46,6 +51,9 @@ namespace quaKrypto
             }
         }
 
+
+
+        // Festlegen und Abrufen einer DataTemplate-Eigenschaft für ein DependencyObject
         public static bool GetIsDragSource(DependencyObject obj)
         {
             return (bool)obj.GetValue(IsDragSourceProperty);
@@ -86,6 +94,11 @@ namespace quaKrypto
         public static readonly DependencyProperty DragDropTemplateProperty =
             DependencyProperty.RegisterAttached("DragDropTemplate", typeof(DataTemplate), typeof(DragDropHelper), new UIPropertyMetadata(null));
 
+
+
+        // Diese Methode wird aufgerufen, wenn sich der Wert der angefügten Eigenschaft "IsDragSource" an einem ItemsControl ändert
+        // Sie fügt dem ItemsControl entsprechende Event-Handler für die Vorschauereignisse "PreviewMouseLeftButtonDown",
+        // "PreviewMouseLeftButtonUp" und "PreviewMouseMove" hinzu oder entfernt sie, basierend auf dem neuen Wert der Eigenschaft
         private static void IsDragSourceChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
             var dragSource = obj as ItemsControl;
@@ -106,6 +119,10 @@ namespace quaKrypto
             }
         }
 
+        // Diese Methode wird aufgerufen, wenn sich der Wert der angefügten Eigenschaft "IsDropTarget" an einem ItemsControl ändert.
+        // Sie aktiviert bzw. deaktiviert die "AllowDrop"-Eigenschaft des ItemsControl, basierend auf dem neuen Wert der Eigenschaft.
+        // Zusätzlich werden entsprechende Event-Handler für die Vorschauereignisse "PreviewDrop", "PreviewDragEnter",
+        // "PreviewDragOver" und "PreviewDragLeave" hinzugefügt oder entfernt, um das Ablegen von Elementen auf dem Drop-Ziel zu ermöglichen bzw.zu deaktivieren.
         private static void IsDropTargetChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
             var dropTarget = obj as ItemsControl;
@@ -130,8 +147,11 @@ namespace quaKrypto
             }
         }
 
-        // DragSource
 
+        // Diese Methode behandelt das Ereignis "PreviewMouseLeftButtonDown" für eine Drag-Quelle (ItemsControl)
+        // Sie speichert das Quell-ItemsControl und die ursprüngliche Mausposition.
+        // Dann wird das angeklickte Element anhand des Visual-Elements,
+        // das das Ereignis ausgelöst hat, identifiziert und das entsprechende Datenobjekt gespeichert.
         private void DragSource_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             sourceItemsControl = (ItemsControl)sender;
@@ -139,7 +159,6 @@ namespace quaKrypto
 
             if (visual == null)
             {
-                // Programm Stürzt ab wenn Visual Null ist, deswegen dieser Fix 
                 Debug.WriteLine("Visual is null.");
                 return;
             }
@@ -154,19 +173,21 @@ namespace quaKrypto
             }
         }
 
-        // Drag = mouse down + move by a certain amount
+        // Diese Methode behandelt das Ereignis "PreviewMouseMove" für eine Drag-Quelle (ItemsControl).
+        // Wenn ein Element gezogen wird, wird überprüft, ob die Mausbewegung eine ausreichende Entfernung erreicht hat, um den Drag & Drop-Vorgang zu starten.
+        // Wenn dies der Fall ist, wird das draggedData-Objekt in ein DataObject verpackt
+        // und die Methode DoDragDrop wird aufgerufen, um den Drag & Drop-Vorgang zu initiieren.
+        // Während des Vorgangs werden auch verschiedene Event-Handler auf dem Fenster hinzugefügt
         private void DragSource_PreviewMouseMove(object sender, MouseEventArgs e)
         {
             if (draggedData != null)
             {
-                // Only drag when user moved the mouse by a reasonable amount.
                 if (Utilities.IsMovementBigEnough(initialMousePosition, e.GetPosition(topWindow)))
                 {
                     initialMouseOffset = initialMousePosition - sourceItemContainer.TranslatePoint(new Point(0, 0), topWindow);
 
                     DataObject data = new DataObject(format.Name, draggedData);
 
-                    // Adding events to the window to make sure dragged adorner comes up when mouse is not over a drop target.
                     bool previousAllowDrop = topWindow.AllowDrop;
                     topWindow.AllowDrop = true;
                     topWindow.DragEnter += TopWindow_DragEnter;
@@ -175,11 +196,6 @@ namespace quaKrypto
 
                     DragDropEffects effects = DragDrop.DoDragDrop((DependencyObject)sender, data, DragDropEffects.Move);
 
-                    // Without this call, there would be a bug in the following scenario: Click on a data item, and drag
-                    // the mouse very fast outside of the window. When doing this really fast, for some reason I don't get 
-                    // the Window leave event, and the dragged adorner is left behind.
-                    // With this call, the dragged adorner will disappear when we release the mouse outside of the window,
-                    // which is when the DoDragDrop synchronous method returns.
                     RemoveDraggedAdorner();
 
                     topWindow.AllowDrop = previousAllowDrop;
@@ -192,13 +208,16 @@ namespace quaKrypto
             }
         }
 
+        // Diese Methode behandelt das Ereignis "PreviewMouseLeftButtonUp" für eine Drag-Quelle (ItemsControl).
+        // Sie setzt das draggedData-Objekt auf null, um anzuzeigen, dass der Drag & Drop-Vorgang abgeschlossen ist.
         private void DragSource_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             draggedData = null;
         }
 
-        // DropTarget
-
+        // Diese Methode behandelt das Ereignis "PreviewDragEnter" für ein Drop-Ziel
+        // Sie speichert das Ziel-ItemsControl und ruft die Methode DecideDropTarget auf, um das genaue Drop-Ziel zu bestimmen.
+        // Wenn das gezogene Element nicht null ist, wird der gezogene Adorner angezeigt und der Einfüge-Adorner erstellt.
         private void DropTarget_PreviewDragEnter(object sender, DragEventArgs e)
         {
             targetItemsControl = (ItemsControl)sender;
@@ -207,13 +226,15 @@ namespace quaKrypto
             DecideDropTarget(e);
             if (draggedItem != null)
             {
-                // Dragged Adorner is created on the first enter only.
                 ShowDraggedAdorner(e.GetPosition(topWindow));
                 CreateInsertionAdorner();
             }
             e.Handled = true;
         }
 
+        // Diese Methode behandelt das Ereignis "PreviewDragOver" für ein Drop-Ziel (ItemsControl).
+        // Sie ruft erneut die Methode DecideDropTarget auf, um das Drop-Ziel zu bestimmen.
+        // Wenn das gezogene Element nicht null ist, wird der gezogene Adorner aktualisiert und die Position des Einfüge-Adorners wird aktualisiert.
         private void DropTarget_PreviewDragOver(object sender, DragEventArgs e)
         {
             object draggedItem = e.Data.GetData(format.Name);
@@ -221,13 +242,17 @@ namespace quaKrypto
             DecideDropTarget(e);
             if (draggedItem != null)
             {
-                // Dragged Adorner is only updated here - it has already been created in DragEnter.
                 ShowDraggedAdorner(e.GetPosition(topWindow));
                 UpdateInsertionAdornerPosition();
             }
             e.Handled = true;
         }
 
+
+        // Diese Methode behandelt das Ereignis "PreviewDrop" für ein Drop-Ziel (ItemsControl).
+        // Sie überprüft, ob ein gültiges gezogenes Element vorhanden ist,
+        // und entfernt es gegebenenfalls aus der Drag-Quelle und fügt es dem Drop-Ziel hinzu.
+        // Die Methode entfernt auch den gezogenen Adorner und den Einfüge-Adorner.
         private void DropTarget_PreviewDrop(object sender, DragEventArgs e)
         {
             object draggedItem = e.Data.GetData(format.Name);
@@ -239,7 +264,6 @@ namespace quaKrypto
                 {
                     indexRemoved = Utilities.RemoveItemFromItemsControl(sourceItemsControl, draggedItem);
                 }
-                // This happens when we drag an item to a later position within the same ItemsControl.
                 if (indexRemoved != -1 && sourceItemsControl == targetItemsControl && indexRemoved < insertionIndex)
                 {
                     insertionIndex--;
@@ -252,10 +276,10 @@ namespace quaKrypto
             e.Handled = true;
         }
 
+        // Diese Methode behandelt das Ereignis "PreviewDragLeave" für ein Drop-Ziel (ItemsControl).
+        // Wenn das gezogene Element nicht null ist, wird der Einfüge-Adorner entfernt.
         private void DropTarget_PreviewDragLeave(object sender, DragEventArgs e)
         {
-            // Dragged Adorner is only created once on DragEnter + every time we enter the window. 
-            // It's only removed once on the DragDrop, and every time we leave the window. (so no need to remove it here)
             object draggedItem = e.Data.GetData(format.Name);
 
             if (draggedItem != null)
@@ -265,13 +289,11 @@ namespace quaKrypto
             e.Handled = true;
         }
 
-        // If the types of the dragged data and ItemsControl's source are compatible, 
-        // there are 3 situations to have into account when deciding the drop target:
-        // 1. mouse is over an items container
-        // 2. mouse is over the empty part of an ItemsControl, but ItemsControl is not empty
-        // 3. mouse is over an empty ItemsControl.
-        // The goal of this method is to decide on the values of the following properties: 
-        // targetItemContainer, insertionIndex and isInFirstHalf.
+        // Diese Methode wird verwendet, um das genaue Drop-Ziel zu bestimmen,
+        // basierend auf den Eigenschaften des gezogenen Elements und des Drop-Ziels.
+        // Sie verwendet Informationen wie die Mausposition, die Orientierung des Drop-Ziels
+        // und die Position des gezogenen Elements innerhalb des Drop-Ziels, um zu bestimmen,
+        // ob das Element über oder unter einem vorhandenen Element eingefügt werden soll.
         private void DecideDropTarget(DragEventArgs e)
         {
             int targetItemsControlCount = targetItemsControl.Items.Count;
@@ -316,8 +338,8 @@ namespace quaKrypto
             }
         }
 
-        // Can the dragged data be added to the destination collection?
-        // It can if destination is bound to IList<allowed type>, IList or not data bound.
+        // Die Methode IsDropDataTypeAllowed(DragEventArgs e) wird in der DragDropHelper-Klasse verwendet,
+        // um zu überprüfen, ob der Datentyp des gezogenen Elements für das Drop-Ziel zugelassen ist. 
         private bool IsDropDataTypeAllowed(object draggedItem)
         {
             bool isDropDataTypeAllowed;
@@ -344,7 +366,7 @@ namespace quaKrypto
                         isDropDataTypeAllowed = false;
                     }
                 }
-                else // the ItemsControl's ItemsSource is not data bound.
+                else
                 {
                     isDropDataTypeAllowed = true;
                 }
@@ -356,8 +378,13 @@ namespace quaKrypto
             return isDropDataTypeAllowed;
         }
 
-        // Window
 
+
+        // Window
+        // Folgende Methoden reagieren auf die Ereignisse des übergeordeten Fensters
+
+        // Diese Methode behandelt das Ereignis DragEnter des übergeordneten Fensters,
+        // wenn sich der Mauszeiger während des Drag & Drop-Vorgangs in das Fenster bewegt.
         private void TopWindow_DragEnter(object sender, DragEventArgs e)
         {
             ShowDraggedAdorner(e.GetPosition(topWindow));
@@ -365,6 +392,8 @@ namespace quaKrypto
             e.Handled = true;
         }
 
+        // Diese Methode behandelt das Ereignis DragOver des übergeordneten Fensters,
+        // wenn sich der Mauszeiger während des Drag & Drop-Vorgangs über dem Fenster befindet.
         private void TopWindow_DragOver(object sender, DragEventArgs e)
         {
             ShowDraggedAdorner(e.GetPosition(topWindow));
@@ -372,15 +401,22 @@ namespace quaKrypto
             e.Handled = true;
         }
 
+        // Diese Methode behandelt das Ereignis DragLeave des übergeordneten Fensters,
+        // wenn sich der Mauszeiger während des Drag & Drop-Vorgangs aus dem Fenster bewegt.
         private void TopWindow_DragLeave(object sender, DragEventArgs e)
         {
             RemoveDraggedAdorner();
             e.Handled = true;
         }
 
-        // Adorners
 
-        // Creates or updates the dragged Adorner. 
+
+
+
+        // Adorners
+        // Folgende Methoden sind für die visuelle Darstellung von Adornern während des Drag & Drop-Prozesses verantwortlich
+
+        // Diese Methode zeigt den gezogenen Adorner an, der das gezogene Element visuell repräsentiert.
         private void ShowDraggedAdorner(Point currentPosition)
         {
             if (draggedAdorner == null)
@@ -391,6 +427,7 @@ namespace quaKrypto
             draggedAdorner.SetPosition(currentPosition.X - initialMousePosition.X + initialMouseOffset.X, currentPosition.Y - initialMousePosition.Y + initialMouseOffset.Y);
         }
 
+        // Diese Methode entfernt den gezogenen Adorner aus dem übergeordneten Fenster.
         private void RemoveDraggedAdorner()
         {
             if (draggedAdorner != null)
@@ -400,18 +437,19 @@ namespace quaKrypto
             }
         }
 
+        // Diese Methode erstellt einen Einfüge-Adorner, der anzeigt,
+        // an welcher Stelle das gezogene Element in das Drop-Ziel eingefügt wird.
         private void CreateInsertionAdorner()
         {
             if (targetItemContainer != null)
             {
-                // Here, I need to get adorner layer from targetItemContainer and not targetItemsControl. 
-                // This way I get the AdornerLayer within ScrollContentPresenter, and not the one under AdornerDecorator (Snoop is awesome).
-                // If I used targetItemsControl, the adorner would hang out of ItemsControl when there's a horizontal scroll bar.
                 var adornerLayer = AdornerLayer.GetAdornerLayer(targetItemContainer);
                 insertionAdorner = new InsertionAdorner(hasVerticalOrientation, isInFirstHalf, targetItemContainer, adornerLayer);
             }
         }
 
+        // Diese Methode aktualisiert die Position des Einfüge-Adorners,
+        // basierend auf der aktuellen Mausposition während des Drag & Drop-Vorgangs.
         private void UpdateInsertionAdornerPosition()
         {
             if (insertionAdorner != null)
@@ -421,6 +459,7 @@ namespace quaKrypto
             }
         }
 
+        // Diese Methode entfernt den Einfüge-Adorner aus dem übergeordneten Fenster.
         private void RemoveInsertionAdorner()
         {
             if (insertionAdorner != null)

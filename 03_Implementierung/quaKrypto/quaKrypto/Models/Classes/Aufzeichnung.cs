@@ -5,17 +5,14 @@
 // Projekt: quakrypto
 // ********************************************************** 
 
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace quaKrypto.Models.Classes
 {
     public class Aufzeichnung
     {
+        // dynamische Datensammlung aus den ausgeführten Handlungsschritten aller ausgeführten Handlungsschritte
+        // --> diese Datensammlung wird in der Aufzeichnung bei Beendigung eines Übungsszenarios angezeigt
         private ObservableCollection<Handlungsschritt> handlungsschritte;
 
         public Aufzeichnung()

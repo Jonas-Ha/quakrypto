@@ -36,6 +36,7 @@ namespace quaKrypto.ViewModels
         private string _bobuebungsszenario = "";
         private string _eveuebungsszenario = "";
         private List<Rolle> _eigeneRollen = new List<Rolle>();
+        //Visibiltys der LobbySteuerelemente
         private Visibility _aliceboxesvisible = Visibility.Visible;
         private Visibility _aliceselected = Visibility.Collapsed;
         private Visibility _bobboxesvisible = Visibility.Visible;
@@ -44,6 +45,7 @@ namespace quaKrypto.ViewModels
         private Visibility _eveselected = Visibility.Collapsed;
         private Visibility _evelabel = Visibility.Collapsed;
         DependencyPropertyChangedEventHandler UebungszenarioStarten;
+        //Commands für Hauptmenu, Lobbyerstellen(Spielstarten), und die Rollenbelegen Commands
         public DelegateCommand HauptMenu { get; set; }
         public DelegateCommand LobbyErstellen { get; set; }
         public DelegateCommand Alicebestaetigen { get; set; }
@@ -58,7 +60,7 @@ namespace quaKrypto.ViewModels
             this.uebungsszenario = uebungsszenario;
 
             Wiki.Schwierigkeitsgrad = uebungsszenario.Schwierigkeitsgrad;
-
+            //Fügt einen EventHanlder für das PropertyChanged event hinzu
             uebungsszenario.PropertyChanged += new((o, a) =>
             {
                 if (uebungsszenario.HostHatGestartet)
@@ -72,7 +74,7 @@ namespace quaKrypto.ViewModels
             });
 
             ((INotifyCollectionChanged)this.uebungsszenario.Rollen).CollectionChanged += new NotifyCollectionChangedEventHandler(RollenChanged);
-
+            //Connection zum Spiel beendet, Handler wird entfernt
             void handler(object? sender, NotifyCollectionChangedEventArgs e)
             {
                 NetzwerkClient.ErrorCollection.CollectionChanged -= handler;
@@ -81,7 +83,7 @@ namespace quaKrypto.ViewModels
                     HauptMenu?.Execute(new string("Connection Closed by the Host"));
                 }
             }
-
+            //Wenn der User kein Host ist, wird der Handler hinzugefügt
             if (!ishost) NetzwerkClient.ErrorCollection.CollectionChanged += handler;
 
             HauptMenu = new((o) =>
@@ -107,7 +109,6 @@ namespace quaKrypto.ViewModels
             LobbyErstellen = new((o) =>
             {
                 uebungsszenario.Starten();
-                //uebungsszenario.AktuelleRolle.BeginneZug(_passwortalice);
                 SpielEveViewModel eveViewModel = new SpielEveViewModel(navigator, uebungsszenario, EigeneRollen);
                 SpielViewModel spielViewModel = new SpielViewModel(navigator, uebungsszenario, EigeneRollen);
                 spielViewModel.SpielEveViewModel = eveViewModel;
@@ -210,9 +211,9 @@ namespace quaKrypto.ViewModels
                 EveSelected = Visibility.Hidden;
                 EveLabel = Visibility.Hidden;
             }
-            else if (uebungsszenario.Variante.ToString().Contains("VarianteAbhoeren"))
+            else if (uebungsszenario.Variante.ToString().Contains("VarianteAbhören"))
             {
-                Variante = VarianteAbhoeren.VariantenName;
+                Variante = VarianteAbhören.VariantenName;
                 EveBoxesVisible = Visibility.Visible;
                 EveSelected = Visibility.Collapsed;
                 EveLabel = Visibility.Visible;
@@ -230,6 +231,7 @@ namespace quaKrypto.ViewModels
             Protokoll = "BB84";
 
         }
+        //Propertys zur Darstellung der Viewinformationen
         public string LobbyName
         {
             get { return _lobbyname; }
@@ -440,6 +442,7 @@ namespace quaKrypto.ViewModels
             EveSelected = Visibility.Visible;
             AliasEveText = AliasEveText;
         }
+        //Alice wird freigegeben
         private void AliceFreigeben()
         {
             AliceBoxesVisible = Visibility.Visible;
@@ -457,13 +460,14 @@ namespace quaKrypto.ViewModels
             ClearAlice.RaiseCanExecuteChanged();
             LobbyErstellen.RaiseCanExecuteChanged();
         }
+        //Darf Alice freigegeben werden?
         private bool AliceFreigebenStartBedingung()
         {
             Rolle? gefunden = EigeneRollen.Where(r => r.RolleTyp == RolleEnum.Alice).FirstOrDefault();
             if (gefunden == null || gefunden == default(Rolle)) return false;
             return true;
         }
-
+        //Bob wird freigegeben
         private void BobFreigeben()
         {
             BobBoxesVisible = Visibility.Visible;
@@ -481,13 +485,14 @@ namespace quaKrypto.ViewModels
             ClearBob.RaiseCanExecuteChanged();
             LobbyErstellen.RaiseCanExecuteChanged();
         }
+        //Darf Bob freigegeben werden?
         private bool BobFreigebenStartBedingung()
         {
             Rolle? gefunden = EigeneRollen.Where(r => r.RolleTyp == RolleEnum.Bob).FirstOrDefault();
             if (gefunden == null || gefunden == default(Rolle)) return false;
             return true;
         }
-
+        //Eve wird freigegeben
         private void EveFreigeben()
         {
             EveBoxesVisible = Visibility.Visible;
@@ -505,13 +510,15 @@ namespace quaKrypto.ViewModels
             ClearEve.RaiseCanExecuteChanged();
             LobbyErstellen.RaiseCanExecuteChanged();
         }
+        //Darf Eve freigegeben werden?
+        //Wird hier geprüft
         private bool EveFreigebenStartBedingung()
         {
             Rolle? gefunden = EigeneRollen.Where(r => r.RolleTyp == RolleEnum.Eve).FirstOrDefault();
             if (gefunden == null || gefunden == default(Rolle)) return false;
             return true;
         }
-
+        //Funktion wird aufgerufen wenn sich eine Rolle geändert hat
         private void RollenChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             bool alice = false;
@@ -573,9 +580,10 @@ namespace quaKrypto.ViewModels
             Application.Current?.Dispatcher.Invoke(new Action(() => LobbyErstellen.RaiseCanExecuteChanged()));
 
         }
+        //Startbedingung um die Lobby zum Starten
         private bool LobbyErstellenStartBedingung()
         {
-            IList<RolleEnum> benötigteRollen = uebungsszenario.Variante.MoeglicheRollen;
+            IList<RolleEnum> benötigteRollen = uebungsszenario.Variante.MöglicheRollen;
             foreach (RolleEnum rolle in benötigteRollen)
             {
                 Rolle? gefunden = uebungsszenario.Rollen.Where(r => r.RolleTyp == rolle).FirstOrDefault();

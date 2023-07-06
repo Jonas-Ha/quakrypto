@@ -5,12 +5,7 @@
 // Projekt: quakrypto
 // ********************************************************** 
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+// Enum aller spielbaren Schwierigkeitsgrade
 namespace quaKrypto.Models.Enums
 {
     public enum SchwierigkeitsgradEnum

@@ -5,12 +5,7 @@
 // Projekt: quakrypto
 // ********************************************************** 
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+// Enum für die beiden Kanaltypen Photonenübertragungskanal und Bitkanal des BB84-Protokolls
 namespace quaKrypto.Models.Enums
 {
     public enum KanalEnum

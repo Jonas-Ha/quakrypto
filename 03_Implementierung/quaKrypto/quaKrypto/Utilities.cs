@@ -11,8 +11,10 @@ namespace quaKrypto
 {
     public static class Utilities
     {
-        // Finds the orientation of the panel of the ItemsControl that contains the itemContainer passed as a parameter.
-        // The orientation is needed to figure out where to draw the adorner that indicates where the item will be dropped.
+        // Die Funktion überprüft, ob das übergebene FrameworkElement einen vertikalen Orientierungstyp aufweist.
+        // Sie verwendet die VisualTreeHelper-Klasse, um das übergeordnete Panel des Elements zu ermitteln und dann zu prüfen,
+        // ob es sich um ein StackPanel oder ein WrapPanel handelt.
+        // Die Ausrichtung wird benötigt, um herauszufinden, wo der Adorner gezeichnet werden soll, der angibt, wo das Element abgelegt wird.
         public static bool HasVerticalOrientation(FrameworkElement itemContainer)
         {
             bool hasVerticalOrientation = true;
@@ -30,11 +32,13 @@ namespace quaKrypto
                 {
                     hasVerticalOrientation = wrapPanel.Orientation == Orientation.Vertical;
                 }
-                // You can add support for more panel types here.
             }
             return hasVerticalOrientation;
         }
 
+        // Die Funktion fügt ein Element an einer bestimmten Position in den ItemsControl ein.
+        // Sie prüft zunächst, ob der ItemsControl eine ItemsSource hat, und fügt das Element entsprechend ein, entweder
+        // direkt in die Items-Liste oder in eine IList-Implementierung.
         public static void InsertItemInItemsControl(ItemsControl itemsControl, object itemToInsert, int insertionIndex)
         {
             if (itemToInsert != null)
@@ -45,7 +49,6 @@ namespace quaKrypto
                 {
                     itemsControl.Items.Insert(insertionIndex, itemToInsert);
                 }
-                // Is the ItemsSource IList or IList<T>? If so, insert the dragged item in the list.
                 else if (itemsSource is IList)
                 {
                     ((IList)itemsSource).Insert(insertionIndex, itemToInsert);
@@ -62,6 +65,9 @@ namespace quaKrypto
             }
         }
 
+        // Die Funktion entfernt ein Element aus dem ItemsControl. Ähnlich wie bei "InsertItemInItemsControl"
+        // überprüft sie zunächst, ob der ItemsControl eine ItemsSource hat, und entfernt das Element entweder
+        // direkt aus der Items-Liste oder aus einer IList-Implementierung.
         public static int RemoveItemFromItemsControl(ItemsControl itemsControl, object itemToRemove)
         {
             int indexToBeRemoved = -1;
@@ -76,7 +82,6 @@ namespace quaKrypto
                     {
                         itemsControl.Items.RemoveAt(indexToBeRemoved);
                     }
-                    // Is the ItemsSource IList or IList<T>? If so, remove the item from the list.
                     else if (itemsSource is IList)
                     {
                         ((IList)itemsSource).RemoveAt(indexToBeRemoved);
@@ -95,6 +100,10 @@ namespace quaKrypto
             return indexToBeRemoved;
         }
 
+        // Die Funktion überprüft, ob der angeklickte Punkt sich in der oberen Hälfte
+        // (bei vertikaler Orientierung) oder linken Hälfte (bei horizontaler Orientierung) des
+        // Container-FrameworkElements befindet. Die Überprüfung erfolgt anhand der übergebenen Koordinaten
+        // des Punktes und der Größe des Containers.
         public static bool IsInFirstHalf(FrameworkElement container, Point clickedPoint, bool hasVerticalOrientation)
         {
             if (hasVerticalOrientation)
@@ -104,6 +113,10 @@ namespace quaKrypto
             return clickedPoint.X < container.ActualWidth / 2;
         }
 
+        // Die Funktion überprüft, ob die Bewegung zwischen der anfänglichen Mausposition und der aktuellen Position
+        // groß genug ist, um als bedeutende Bewegung betrachtet zu werden. Die Überprüfung erfolgt anhand der
+        // Differenz zwischen den X- und Y-Koordinaten der beiden Punkte und den minimalen horizontalen und
+        // vertikalen Bewegungsdistanzen, die in den Systemparametern definiert sind.
         public static bool IsMovementBigEnough(Point initialMousePosition, Point currentPosition)
         {
             return Math.Abs(currentPosition.X - initialMousePosition.X) >= SystemParameters.MinimumHorizontalDragDistance ||

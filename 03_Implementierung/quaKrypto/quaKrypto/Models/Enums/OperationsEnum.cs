@@ -6,11 +6,8 @@
 // ********************************************************** 
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
+// Enum aller durch die Rolle ausführbaren Operationen
 namespace quaKrypto.Models.Enums
 {
     [Serializable]

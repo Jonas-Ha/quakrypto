@@ -6,11 +6,8 @@
 // ********************************************************** 
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
+// Enum, das alle möglichen Rollen des BB84-Protokolls beinhaltet
 namespace quaKrypto.Models.Enums
 {
     [Serializable]

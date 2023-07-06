@@ -20,6 +20,7 @@ namespace quaKrypto.Views
     /// </summary>
     public partial class LobbyBeitrittView : UserControl
     {
+        //Variablen für die Bewegungen des Wikibuttons
         private readonly int zeitInMsBisWikiButtonBewegtWird = 100;
         private long zeitStempelLetztesMalWikiButtonAngeklickt = 0;
         private bool letzterClickWarNachUnten = false;

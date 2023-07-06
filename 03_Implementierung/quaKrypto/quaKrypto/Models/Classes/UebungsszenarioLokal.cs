@@ -6,16 +6,11 @@
 // ********************************************************** 
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using quaKrypto.Models.Interfaces;
 using quaKrypto.Models.Enums;
-using System.Data;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using Microsoft.VisualBasic;
 using quaKrypto.Services;
 
 namespace quaKrypto.Models.Classes
@@ -25,32 +20,43 @@ namespace quaKrypto.Models.Classes
         private ObservableCollection<Rolle> rollen;
         private ReadOnlyObservableCollection<Rolle> rollenActual;
         private Rolle aktuelleRolle;
+
         private SchwierigkeitsgradEnum schwierigkeitsgrad;
         private IVariante variante;
+
         private uint startPhase;
         private uint endPhase;
+
         private Uebertragungskanal uebertragungskanal;
         private Aufzeichnung aufzeichnung;
+
         private string name;
+        // gibt an, ob das Übungsszenario beendet wurde
         private bool beendet;
+
+        // Wird gerufen, wenn die Variante sich ändert
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public UebungsszenarioLokal(SchwierigkeitsgradEnum schwierigkeitsgrad, IVariante variante, uint startPhase, uint endPhase, string name)
         {
             this.rollen = new ObservableCollection<Rolle>();
             this.rollenActual = new ReadOnlyObservableCollection<Rolle>(this.rollen);
+
             this.schwierigkeitsgrad = schwierigkeitsgrad;
             this.variante = variante;
+
             this.startPhase = startPhase;
             this.endPhase = endPhase;
+
             this.uebertragungskanal = new Uebertragungskanal();
             this.aufzeichnung = new Aufzeichnung();
+            // berechnet die aktuelle Phase
             this.aufzeichnung.Handlungsschritte.CollectionChanged += this.variante.BerechneAktuellePhase;
-            this.Variante.PropertyChanged += new PropertyChangedEventHandler(VarianteChanged);
+
             this.name = name;
             this.beendet = false;
 
-
+            this.Variante.PropertyChanged += new PropertyChangedEventHandler(VarianteChanged);
         }
 
         public ReadOnlyObservableCollection<Rolle> Rollen => rollenActual;
@@ -64,7 +70,8 @@ namespace quaKrypto.Models.Classes
         public string Name { get { return name; } }
         public bool Beendet { get { return beendet; } }
         public bool HostHatGestartet { get { return false; } }
-        //Überprüft ob die Rolle bereits vergeben ist und falls nicht wird die Rolle hinzugefügt und gibt zurück ob die Rolle hinzugefügt
+
+        // Überprüft ob die Rolle bereits vergeben ist und falls nicht wird die Rolle hinzugefügt und gibt zurück ob die Rolle hinzugefügt
         public bool RolleHinzufuegen(Rolle rolle, bool eigeneRolle = false)
         {
             bool verfügbar = true;
@@ -83,6 +90,7 @@ namespace quaKrypto.Models.Classes
             return verfügbar;
         }
 
+        // vorhandene Rollen können aus einem Übungsszenario mit dieser Methode entfernt werden, um einen Austritt aus der Lobby zu ermöglichen
         public void GebeRolleFrei(RolleEnum rolle)
         {
             for (int i = 0; i < Rollen.Count; i++)
@@ -95,10 +103,13 @@ namespace quaKrypto.Models.Classes
             }
         }
 
+        // startet das eigentliche Übungsszenario
         public bool Starten()
         {
-            var benoetigteRollen = Variante.MoeglicheRollen;
+            // Überprüfung, ob alle Rollen belegt sind
+            var benoetigteRollen = Variante.MöglicheRollen;
             if (Rollen.Count != benoetigteRollen.Count) return false;
+
             for (int i = 0; i < benoetigteRollen.Count; i++)
             {
                 bool istvorhanden = false;
@@ -112,8 +123,13 @@ namespace quaKrypto.Models.Classes
                 }
                 if (!istvorhanden) return false;
             }
+
+            // Vorgenerierung von Informationen für einen Eintritt in einer späteren Phase
             GeneriereInformationenFürRollen();
-            RolleEnum aktRolle = Variante.NaechsteRolle();
+
+            // initiale Berechnung der aktuellen Rolle
+            RolleEnum aktRolle = Variante.NächsteRolle();
+
             for (int i = 0; i < Rollen.Count; i++)
             {
                 if (aktRolle == Rollen[i].RolleTyp)
@@ -122,19 +138,20 @@ namespace quaKrypto.Models.Classes
                     break;
                 }
             }
+
             PropertyHasChanged(nameof(aktuelleRolle));
             return true;
         }
 
+        // Schaltet auf die nächste Rolle weiter und gibt die Kontrolle der Oberfläche für diese frei
         public void NaechsterZug()
         {
-            //List<Handlungsschritt> handlungsschritte = aktuelleRolle.handlungsschritte;
-
-            //Aufzeichnung.HaengeListeHandlungsschritteAn(handlungsschritte.ToList());
-            //Die Handlungsschritte müssen hier noch überprüft werden um die Informationsablage auf den richtigen Stand zu bekommen
+            // Die Handlungsschritte müssen hier noch überprüft werden, um die Informationsablage auf den richtigen Stand zu bekommen
             aktuelleRolle.handlungsschritte.Clear();
 
-            RolleEnum aktRolle = Variante.NaechsteRolle();
+            // Berechnung der aktuellen Rolle
+            RolleEnum aktRolle = Variante.NächsteRolle();
+
             for (int i = 0; i < Rollen.Count; i++)
             {
                 if (aktRolle == Rollen[i].RolleTyp)
@@ -145,49 +162,64 @@ namespace quaKrypto.Models.Classes
                     break;
                 }
             }
+
             PropertyHasChanged(nameof(aktuelleRolle));
         }
 
+        // Prüft das Passwort der Rolle und gibt den Bildschirm frei
         public bool GebeBildschirmFrei(string Passwort)
         {
             return aktuelleRolle.BeginneZug(Passwort);
         }
 
+
         public Information HandlungsschrittAusführenLassen(Enums.OperationsEnum operationsTyp, Information operand1, object operand2, String ergebnisInformationsName, Enums.RolleEnum rolle)
         {
+            // Handlungsschritt wird erzeugt
             Handlungsschritt handlungsschritt = aktuelleRolle.ErzeugeHandlungsschritt(operationsTyp, operand1, operand2, ergebnisInformationsName, rolle);
+            // dem Handlungsschritt wird die aktuelle Phase zugeordnet
             handlungsschritt.AktuellePhase = Variante.AktuellePhase;
+
+            // spezielles Handling für NachrichtSenden Handlungsschritte --> Nachricht wird in den Übertragungskanal gelegt
             if (operationsTyp == OperationsEnum.nachrichtSenden) Uebertragungskanal.SpeicherNachrichtAb(handlungsschritt.Ergebnis);
+            // Anhänge aller Handlungsschritte an die Aufzeichnung des Übungsszenarios
             Aufzeichnung.HaengeHandlungsschrittAn(handlungsschritt);
+            // Rückgabe des Ergebnisses
             return handlungsschritt.Ergebnis;
         }
 
-        //Speichert eine Information in der Ablage der aktuellen Rolle
+        // Speichert eine Information in der Ablage der aktuellen Rolle
         public void SpeichereInformationenAb(Information information)
         {
             aktuelleRolle.SpeicherInformationAb(information);
         }
 
+        // Löscht eine Information in der Ablage der aktuellen Rolle
         public void LoescheInformation(int informationID)
         {
             aktuelleRolle.LoescheInformation(informationID);
         }
 
+        // Löscht eine Information im Übertragungskanal der aktuellen Rolle
         public void LoescheInformationAusUebertragungskanal(KanalEnum kanal, int informatonsID)
         {
             Uebertragungskanal.LoescheNachricht(kanal, informatonsID);
         }
 
+        // Beenden des Übungsszenarios
         public void Beenden()
         {
             beendet = true;
             PropertyHasChanged(nameof(Beendet));
         }
 
+        // Überprüft, ob das Übungsszenario beendet werden muss
         private void VarianteChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
+            // aktuelle Phase darf die Endphase nicht überschreiten
             if (variante.AktuellePhase >= endPhase)
             {
+                // Beenden des Übungsszenarios
                 Beenden();
                 return;
             }
@@ -198,6 +230,7 @@ namespace quaKrypto.Models.Classes
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameOfProperty));
         }
 
+        // Vorgenerierung von Informationen für Startphase ungleich 0
         public int GeneriereInformationenFürRollen(int hostSeed = -1)
         {
             if (startPhase > 4 || startPhase < 1) return -1;
@@ -313,7 +346,7 @@ namespace quaKrypto.Models.Classes
                         rolleAlice.SpeicherInformationAb(NAprüfbitsDifferenzAlice, true);
                     }
                     break;
-                case VarianteAbhoeren:
+                case VarianteAbhören:
                     //PHASE 1 Beginn
                     Information VAschlüsselbits1Alice = operationen.BitfolgeGenerierenZahl(zähler--, schlüssellängeAlice, null, "Schlüsselbits - Anfang");
                     Information VApolschataAlice = operationen.PolarisationsschemataGenerierenZahl(zähler--, schlüssellängeAlice, null, "Polarisationsschemata");

@@ -30,7 +30,7 @@ namespace TestLibrary
         RolleEnum rolleEnum = RolleEnum.Alice;
         string alias = "alias_alice";
         string passwort = "passwort_alice";
-        IVariante variante = new VarianteAbhoeren(1);
+        IVariante variante = new VarianteAbhören(1);
 
         
 
