@@ -1,423 +1,333 @@
-@startuml Klassendiagramm_UI
-
-skinparam pageMargin 10
-skinparam pageExternalColor gray
-skinparam pageBorderColor black
-
-
-class App
-{
-	- navigator : Navigator
-	- MainWindow : MainView
+@startuml
+class AufzeichnungViewModel {
+    - uebungsszenario : IUebungsszenario
+    + Handlungsschritte : ObservableCollection<Handlungsschritt> <<get>>
+    + HauptMenu : DelegateCommand <<get>> <<set>>
+    + AufzeichnungViewModel(navigator:Navigator, uebungsszenario:IUebungsszenario)
 }
-
-package Commands
-{
-	class DelegateCommand
-	{
-		+ CanExecuteChanged : event Eventhandler
-		+ execute : Action<object>
-		+ canExecute : Predicate<object>?
-		+ DelegateCommand()
-		+ CanExecute() : bool
-		+ Execute(): void
-		+ RaiseCanExecuteChanged(): void
-	}
+BaseViewModel <|-- AufzeichnungViewModel
+class BaseViewModel {
+    +  <<event>> PropertyChanged : PropertyChangedEventHandler? 
+    # <<virtual>> EigenschaftWurdeGeändert(eigenschaftsName:string?) : void
 }
-
-class InsertionAdorner
-{
- 	- isSeparatorHorizontal : bool
-	+ IsInFirstHalf : bool
-	- adornerLayer : AdornerLayer
-	- pen : Pen
-	- triangle : PathGeometry
-	+ InsertionAdorner() : void
-	# OnRender() : void
-	- DrawTriangle() : void
-	- CalculateStartAndEndPoint() : void
-	+ Detach() : void
+INotifyPropertyChanged <|-- BaseViewModel
+class HauptMenuViewModel {
+    + LobbyBeitritt : DelegateCommand <<get>> <<set>>
+    + LobbyErstellen : DelegateCommand <<get>> <<set>>
+    + HauptMenuViewModel(navigator:Navigator, errorMessage:string?)
 }
-
-class DraggedAdorner
-{
-	- contentPresenter : ContentPresenter
-	- left : double
-	- top : double
-	- adornerLayer : AdornerLayer
-	+ DraggedAdorner() : void
-	+ SetPosition() : void
-	# MeasureOverride() : Size
-	# ArrangeOverride() : Size
-	# GetVisualChild() : Visual
-	# VisualChildrenCount() : int
-	# GetDesiredTransform() : GeneralTransform
-	+ Detach() : void
+BaseViewModel <|-- HauptMenuViewModel
+class LobbyBeitrittViewModel {
+    + HauptMenu : DelegateCommand <<get>> <<set>>
+    + LobbyBeitreten : DelegateCommand <<get>> <<set>>
+    - uebungsszenarioNetzwerkBeitrittInfo : UebungsszenarioNetzwerkBeitrittInfo? = null
+    + SelectedLobby : UebungsszenarioNetzwerkBeitrittInfo? <<get>> <<set>>
+    + VerfuegbarLobbys : ObservableCollection<UebungsszenarioNetzwerkBeitrittInfo> <<get>>
+    + LobbyBeitrittViewModel(navigator:Navigator)
 }
-
-class DragDropHelper
-{
-	- format : DataFormat
-	- initialMousePosition : Point
-	- initialMouseOffset : Vector
-	- draggedData : object
-	- draggedAdorner : DraggedAdorner
-	- insertionAdorner : InsertionAdorner
-	- topWindow : Window
-	- sourceItemsControl : ItemsControl
-	- sourceItemContainer : FrameworkElement
-	- targetItemsControl : ItemsControl
-	- targetItemContainer : FrameworkElement
-	- hasVerticalOrientation : bool
-	- insertionIndex : int
-	- isInFirstHalf : bool
-	- instance : DragDropHelper
-	- Instance : DragDropHelper {readOnly}
-	+ GetIsDragSource() : bool
-	+ SetIsDragSource() : void
-	+ IsDragSourceProperty : DependencyProperty
-	+ GetIsDropTarget() : bool
-	+ SetIsDropTarget() :void
-	+ IsDropTargetProperty :DependencyProperty
-	+ GetDragDropTemplate() : DataTemplate
-	+ SetDragDropTemplate() :void
-	+ DragDropTemplateProperty :DependencyProperty
-	- IsDragSourceChanged() :void
-	- IsDropTargetChanged() :void
-	- DragSource_PreviewMouseLeftButtonDown() :void
-	- DragSource_PreviewMouseMove() :void
-	- DragSource_PreviewMouseLeftButtonUp() :void
-	- DropTarget_PreviewDragEnter() :void
-	- DropTarget_PreviewDragOver() :void
-	- DropTarget_PreviewDrop() :void
-	- DropTarget_PreviewDragLeave() :void
-	- DecideDropTarget() :void
-	- IsDropDataTypeAllowed() : bool
-	- TopWindow_DragEnter() :void
-	- TopWindow_DragOver() :void
-	- TopWindow_DragLeave() :void
-	- ShowDraggedAdorner() :void
-	- RemoveDraggedAdorner() :void
-	- CreateInsertionAdorner() :void
-	- UpdateInsertionAdornerPosition() :void
-	- RemoveInsertionAdorner() :void
+BaseViewModel <|-- LobbyBeitrittViewModel
+class LobbyErstellenViewModel {
+    + HauptMenu : DelegateCommand <<get>> <<set>>
+    + LobbyErstellen : DelegateCommand <<get>> <<set>>
+    + LobbyErstellenViewModel(navigator:Navigator)
+    - _lobbyName : string
+    - _ausgProtokoll : int
+    - _ausgSchwierigkeit : int
+    - _ausgVariante : int
+    - _ausgPhaseStart : int
+    - _ausgPhaseEnde : int
+    - _netzwerkbasiert : bool = false
+    + LobbyName : string <<get>> <<set>>
+    + AusgProtokoll : int <<get>> <<set>>
+    + AusgSchwierigkeit : int <<get>> <<set>>
+    + AusgVariante : int <<get>> <<set>>
+    + AusgPhaseStart : int <<get>> <<set>>
+    + AusgPhaseEnd : int <<get>> <<set>>
+    + Protokoll : ObservableCollection<string> <<get>> <<set>>
+    + SchwierigkeitsgradAuswahl : ObservableCollection<string> <<get>> <<set>>
+    + VarianteAuswahl : ObservableCollection<string> <<get>> <<set>>
+    + Verbindungstyp : ObservableCollection<string> <<get>> <<set>>
+    + NetzwerkBasiert : bool <<get>> <<set>>
 }
-
-class Utilities
-{
-	+ HasVerticalOrientation() : bool
-	+ InsertItemInItemsControl() : void
-	+ RemoveItemFromItemsControl() : int
-	+ IsInFirstHalf() : bool
-	+ IsMovementBigEnough() : bool
-}
-
-/'************************************************************'/
-/'PACKAGE UI												  '/
-/'************************************************************'/
-package UI
-{
-	together{
-		class MainView
-		{
-		}
-
-		class MainViewModel
-		{
-			- _navigator : Navigator
-			+ AktuellesViewModel : BaseViewModel {readOnly}
-			+ MainViewModel(Navigator)
-			- aktuellesViewModelGeaendert() : void
-		}
-
-		class Navigator
-		{
-			+ aktuellesViewModelGeaendert : event Action
-			- _aktuellesviewModel : BaseViewModel
-			+ aktuellesViewModel() : BaseViewModel
-			+ aktuellesViewModel() : BaseViewModel
-			- ViewModelWurdeGeändert() : void
-		}
-
-		class BaseViewModel
-		{
-			+ PropertyChanged : event
-			+ BaseViewModel() : void
-			+ PropertyChangedEventHandler() : event
-			# OnPropertyChanged() : void
-			# RaisedPropertyChanged() : void
-		}
-	}
-
-	together{
-		class LobbyErstellenViewModel
-		{
-			- _lobbyname: string 
-			- _ausgProtokoll: int 
-			- _ausgSchwierigkeit: int 
-			- _ausgVariante: int 
-			- _ausgPhaseStart: int 
-			- _ausgPhaseEnde: int 
-			- _netzwerkbasiert: bool 
-			+ Lobbyname: string 
-			+ AusgProtokoll: int 
-			+ AusgSchwierigkeit: int 
-			+ AusgVariante: int 
-			+ AusgPhaseStart: int 
-			+ AusgPhaseEnde: int 
-			+ Netzwerkbasiert: bool 
-			+ LobbyErstellen : DelegateCommand
-			+ HauptMenu : DelegateCommand
-			+ LobbyErstellenViewModel() : void	
-		}
-
-		class LobbyErstellenView
-		{
-		}
-	}
-	
-	together{
-		class LobbyBeitrittViewModel
-		{
-			+ HauptMenu : DelegateCommand
-			+ LobbyBeitreten : DelegateCommand
-			- _ausgewaehlteLobby : int
-			+ verfuegbareLobbys : ObservableCollection 
-			+ ausgewaehlteLobby : int 
-			+ LobbyBeitretenViewModel() : void 
-			+ SpielBeitreten() : void 
-			+ SpielBeitreten : DelegateCommand 
-			+ ZurueckZumHauptmenue : DelegateCommand 
-		}
-
-		class LobbyBeitrittView
-		{
-		}
-	}
-	
-	together{
-		class HauptMenueViewModel
-		{
-			+ HauptMenueViewModel() : void
-			+ LobbyErstellen : DelegateCommand
-			# LobbyBeitreten : DelegateCommand
-		}
-			
-		class HauptMenueView
-		{
-		}
-	}
-	
-	together{
-		class LobbyScreenViewModel
-		{
-			+ NameLobby : string
-			+ Variante : string
-			+ Schwierigkeitsgrad : string
-			+ Phase : string
-			+ Protokoll : string
-			+ AliasAliceText : string
-			+ AliasBobText : string
-			+ AliasEveText : string
-			+ PasswortAliceText : string
-			+ PasswortBobText : string
-			+ PasswortEveText : string
-			+ BenutzerRollenCollection : ObservableCollection()
-			+ LobbyViewModel() : void
-			+ SpielStarten() : void
-			+ SpielStarten : DelegateCommand
-			+ LobbyVerlassen : DelegateCommand
-			+ ButtonBestaetigen : DelegateCommand
-			+ ButtonHauptmenue : DelegateCommand
-			+ ButtonWiki : DelegateCommand
-		}
-
-		class LobbyScreenView
-		{
-		}
-	}
-	
-	together{
-		class WikiViewModel
-		{
-			+ WikiSeiten : ObservableCollection<WikiSeite>
-			+ SelektierteWikiSeite : WikiSeite
-			- editierModus : bool
-			+ EditierModus : bool
-			+ LabelSichtbar : Visibility
-			+ TextBoxSichtbar : Visibility
-			+ SeitenErweitern : DelegateCommand
-			+ SeitenBearbeiten : DelegateCommand
-			+ SeiteEntfernen : DelegateCommand
-			+ SeiteSelektiert : DelegateCommand
-			+ WikiViewModel() : void
-			+ Umbenennen : DelegateCommand
-			+ WikiVerlassen : DelegateCommand
-			+ ZumHauptmenue : DelegateCommand
-		}
-
-		class WikiView
-		{
-		}
-		
-		class WikiButton
-		{
-		}
-	}
-	
-
-	together{
-		class AufzeichnungViewModel
-		{
-			- uebungsszenario : IUebungsszenario
-			+ HauptMenu : DelegateCommand
-			+ AufzeichnungViewModel() : void
-		}
-
-		class AufzeichnungView
-		{
-		}
-	}
-
-	together{
-		class SpielViewModel
-		{
-			- uebungsszenario : IUebungsszenario
-			+ HauptMenu : DelegateCommand
-			+ BituebertragungEingang: ObservableCollection<Information>
-			+ PhotonenuebertragungEingang : ObservableCollection<Information>  
-			+ BituebertragungAusgang : ObservableCollection<Information>
-			+ PhotonenuebertragungAusgang : ObservableCollection<Information>  
-			+ CraftingFeldPhotonen : Information
-			+ CraftingFeldPolarisation : Information
-			+ CraftingFeldErgebnis : Information
-			+ Muelleimer : Information
-			+ Informationsablage : Information 
-			+ SpielEveViewModel() : void
-			+ BitfolgeErzeugen : DelegateCommand /'Bitzahlen Icon'/
-			+ Ver_Entschluesseln : DelegateCommand /'Schluessel Icon'/
-			+ PhotonenErzeugen : DelegateCommand /'P Icon'/
-			+ PolschaErzeugen : DelegateCommand /'Filter Icon'/
-			+ Streichen : DelegateCommand /'Radiergummi Icon'/
-			+ TextEditieren : DelegateCommand /'Editieren Icon'/
-			+ Vergleichen : DelegateCommand /'Waage Icon'/
-			+ ZahlErzeugen : DelegateCommand /'Raute Icon'/
-			+ ZufaelligGenerieren : DelegateCommand /'Wuerfel Icon'/
-			+ Fragezeichen : DelegateCommand /'Fragezeichen Icon'/
-			+ ZugBeenden : DelegateCommand
-			+ Hauptmenue : DelegateCommand
-			+ OperationAusfuhren : DelegateCommand
-			+ InformationLoeschen : DelegateCommand
-		}
-		
-		class SpielView
-		{
-		}
-
-		note right of SpielViewModel
-		Bitzahlen Icon : BitfolgeErzeugenCommand()
-		Schluessel Icon : Ver_EntschluesselnCommand()
-		P Icon : PhotonenErzeugenCommand()
-		Filter Icon : PolschaErzeugenCommand()
-		Radiergummi Icon : StreichenCommand()
-		Editieren Icon : TextEditierenCommand()
-		Waage Icon : VergleichenCommand()
-		Raute Icon : ZahlErzeugenCommand()
-		Wuerfel Icon : ZufaelligGenerierenCommand()
-		Fragezeichen Icon : FragezeichenCommand()
-		end note
-	}
-
-	together{
-		class SpielEveViewModel
-		{
-			- uebungsszenario : IUebungsszenario
-			+ HauptMenu : DelegateCommand
-			+ BituebertragungEingangAlice : ObservableCollection<Information> 
-			+ BituebertragungEingangBob : ObservableCollection<Information>
-			+ PhotonenuebertragungEingangAlice : ObservableCollection<Information>
-			+ PhotonenuebertragungEingangBob : ObservableCollection<Information>  
-			+ BituebertragungAusgangAlice : ObservableCollection<Information>
-			+ BituebertragungAusgangBob : ObservableCollection<Information>
-			+ PhotonenuebertragungAusgangAlice : ObservableCollection<Information>
-			+ PhotonenuebertragungAusgangBob : ObservableCollection<Information>  
-			+ CraftingFeldPhotonen : Information
-			+ CraftingFeldPolarisation : Information
-			+ CraftingFeldErgebnis : Information
-			+ Muelleimer : Information
-			+ Informationsablage : Information 
-			+ SpielEveViewModel() : void
-			+ BitfolgeErzeugen : DelegateCommand /'Bitzahlen Icon'/
-			+ Ver_Entschluesseln : DelegateCommand /'Schluessel Icon'/
-			+ PhotonenErzeugen : DelegateCommand /'P Icon'/
-			+ PolschaErzeugen : DelegateCommand /'Filter Icon'/
-			+ Streichen : DelegateCommand /'Radiergummi Icon'/
-			+ TextEditieren : DelegateCommand /'Editieren Icon'/
-			+ Vergleichen : DelegateCommand /'Waage Icon'/
-			+ ZahlErzeugen : DelegateCommand /'Raute Icon'/
-			+ ZufaelligGenerieren : DelegateCommand /'Wuerfel Icon'/
-			+ Fragezeichen : DelegateCommand /'Fragezeichen Icon'/
-			+ ZugBeenden : DelegateCommand
-			+ Hauptmenue : DelegateCommand
-			+ OperationAusfuhren : DelegateCommand
-			+ InformationLoeschen : DelegateCommand
-		}
-
-		class SpielEveView
-		{
-		}
-
-		note left of SpielEveViewModel
-		Bitzahlen Icon : BitfolgeErzeugenCommand() : void
-		Schluessel Icon : Ver_EntschluesselnCommand() : void
-		P Icon : PhotonenErzeugenCommand() : void
-		Filter Icon : PolschaErzeugenCommand() : void
-		Radiergummi Icon : StreichenCommand() : void
-		Editieren Icon : TextEditierenCommand() : void
-		Waage Icon : VergleichenCommand() : void
-		Raute Icon : ZahlErzeugenCommand() : void
-		Wuerfel Icon : ZufaelligGenerierenCommand() : void
-		Fragezeichen Icon : FragezeichenCommand() : void
-		end note
-	}
-	
-	together{
-		class RolleEntsperrenViewModel
-		{
-			- passwort : string
-			+ RolleEntsperren : DelegateCommand 
-			+ ZumHauptmenue : DelegateCommand
-		}
-
-		class RolleEntsperrenView
-		{
-		}
-	}
-
-	
-}
-App -- MainView
-App -- Navigator
-MainView -- MainViewModel
-BaseViewModel <|-u- RolleEntsperrenViewModel
-BaseViewModel <|-u- AufzeichnungViewModel
-BaseViewModel <|-u- SpielEveViewModel
-BaseViewModel <|-u- SpielViewModel
-BaseViewModel <|-u- LobbyBeitrittViewModel
-BaseViewModel <|-u- LobbyScreenViewModel
-BaseViewModel <|-- WikiViewModel
-BaseViewModel <|-- HauptMenueViewModel
 BaseViewModel <|-- LobbyErstellenViewModel
+class LobbyScreenViewModel {
+    - uebungsszenario : IUebungsszenario
+    - _lobbyname : string
+    - _variante : string
+    - _schwierigkeit : string
+    - _phase : string
+    - _protokoll : string
+    - _passwortalice : string = ""
+    - _aliasalice : string = ""
+    - _passwortbob : string = ""
+    - _aliasbob : string = ""
+    - _passworteve : string = ""
+    - _aliaseve : string = ""
+    - _aliceuebungsszenario : string = ""
+    - _bobuebungsszenario : string = ""
+    - _eveuebungsszenario : string = ""
+    - _eigeneRollen : List<Rolle>
+    - _aliceboxesvisible : Visibility
+    - _aliceselected : Visibility
+    - _bobboxesvisible : Visibility
+    - _bobselected : Visibility
+    - _eveboxesvisible : Visibility
+    - _eveselected : Visibility
+    - _evelabel : Visibility
+    - UebungszenarioStarten : DependencyPropertyChangedEventHandler
+    + HauptMenu : DelegateCommand <<get>> <<set>>
+    + LobbyErstellen : DelegateCommand <<get>> <<set>>
+    + Alicebestaetigen : DelegateCommand <<get>> <<set>>
+    + Bobbestaetigen : DelegateCommand <<get>> <<set>>
+    + Evebestaetigen : DelegateCommand <<get>> <<set>>
+    + ClearAlice : DelegateCommand <<get>> <<set>>
+    + ClearBob : DelegateCommand <<get>> <<set>>
+    + ClearEve : DelegateCommand <<get>> <<set>>
+    + EigeneRollen : List<Rolle>
+    + LobbyScreenViewModel(navigator:Navigator, uebungsszenario:IUebungsszenario, ishost:bool)
+    + LobbyName : string <<get>> <<set>>
+    + Variante : string <<get>> <<set>>
+    + Schwierigkeit : string <<get>> <<set>>
+    + Phase : string <<get>> <<set>>
+    + Protokoll : string <<get>> <<set>>
+    + AliasAliceText : string <<get>> <<set>>
+    + AliceUebungsszenario : string <<get>> <<set>>
+    + BobUebungsszenario : string <<get>> <<set>>
+    + EveUebungsszenario : string <<get>> <<set>>
+    + PasswortAliceText : string <<get>> <<set>>
+    + AliasBobText : string <<get>> <<set>>
+    + PasswortBobText : string <<get>> <<set>>
+    + AliasEveText : string <<get>> <<set>>
+    + PasswortEveText : string <<get>> <<set>>
+    + AliceBoxesVisible : Visibility <<get>> <<set>>
+    + AliceSelected : Visibility <<get>> <<set>>
+    + BobBoxesVisible : Visibility <<get>> <<set>>
+    + BobSelected : Visibility <<get>> <<set>>
+    + EveBoxesVisible : Visibility <<get>> <<set>>
+    + EveSelected : Visibility <<get>> <<set>>
+    + EveLabel : Visibility <<get>> <<set>>
+    - AliceCommand(parameter:object) : void
+    - BobCommand(parameter:object) : void
+    - EveCommand(parameter:object) : void
+    - AliceFreigeben() : void
+    - AliceFreigebenStartBedingung() : bool
+    - BobFreigeben() : void
+    - BobFreigebenStartBedingung() : bool
+    - EveFreigeben() : void
+    - EveFreigebenStartBedingung() : bool
+    - RollenChanged(sender:object, e:NotifyCollectionChangedEventArgs) : void
+    - LobbyErstellenStartBedingung() : bool
+    + Ueberschrift : string <<get>>
+}
+BaseViewModel <|-- LobbyScreenViewModel
+class MainViewModel {
+    - <<readonly>> _navigator : Navigator
+    + AktuellesViewModel : BaseViewModel <<get>>
+    + MainViewModel(navigator:Navigator)
+    - aktuellesViewModelGeandert() : void
+}
 BaseViewModel <|-- MainViewModel
-Navigator -- MainViewModel
-SpielView -- SpielViewModel
-SpielEveView -- SpielEveViewModel
-RolleEntsperrenView -- RolleEntsperrenViewModel
-LobbyErstellenView -- LobbyErstellenViewModel
-LobbyBeitrittView -- LobbyBeitrittViewModel
-AufzeichnungView -- AufzeichnungViewModel
-HauptMenueView -- HauptMenueViewModel
-LobbyScreenView -- LobbyScreenViewModel
-WikiView -- WikiViewModel
-
+class Navigator {
+    +  <<event>> aktuellesViewModelGeaendert : Action? 
+    - _aktuellesviewModel : BaseViewModel?
+    + aktuellesViewModel : BaseViewModel <<get>> <<set>>
+    - ViewModelWurdeGeändert() : void
+}
+class RolleEntsperrenViewModel {
+    - uebungsszenario : IUebungsszenario
+    + HauptMenu : DelegateCommand <<get>> <<set>>
+    + RolleEntsperrenViewModel(navigator:Navigator, uebungsszenario:IUebungsszenario)
+}
+BaseViewModel <|-- RolleEntsperrenViewModel
+class SpielEveViewModel {
+    - navigator : Navigator
+    - spielViewModel : SpielViewModel
+    - once : bool = false
+    + SpielViewModel : SpielViewModel <<set>>
+    + BituebertragungEingangAlice : ObservableCollection<Information> <<get>> <<set>>
+    + BituebertragungEingangBob : ObservableCollection<Information> <<get>> <<set>>
+    + PhotonenuebertragungEingangAlice : ObservableCollection<Information> <<get>> <<set>>
+    + PhotonenuebertragungEingangBob : ObservableCollection<Information> <<get>> <<set>>
+    + BituebertragungAusgangAlice : ObservableCollection<Information> <<get>> <<set>>
+    + BituebertragungAusgangBob : ObservableCollection<Information> <<get>> <<set>>
+    + PhotonenuebertragungAusgangAlice : ObservableCollection<Information> <<get>> <<set>>
+    + PhotonenuebertragungAusgangBob : ObservableCollection<Information> <<get>> <<set>>
+    + ZugBeenden : DelegateCommand <<get>> <<set>>
+    + SpielEveViewModel(navigator:Navigator, uebungsszenario:IUebungsszenario, eigeneRollen:List<Rolle>)
+    - UebungsszenarioChanged(sender:object, e:System.ComponentModel.PropertyChangedEventArgs) : void
+    - CollectionChangedMethod(sender:object, e:NotifyCollectionChangedEventArgs) : void
+    - CanExecuteZugBeenden() : void
+    - zugBeenden() : void
+    - zugBeendenOhneSenden() : void
+    - NachrichtenSenden() : void
+    - InformationenInAblageLegen() : void
+    - ClearViewListen() : void
+    - ZugBeendenStartBedingung() : bool
+    - InformationenLaden() : void
+    - InformationenEmpfangen() : void
+    - InformationenLöschen() : void
+}
+SpielViewModelBase <|-- SpielEveViewModel
+class SpielViewModel {
+    - navigator : Navigator
+    - spielEveViewModel : SpielEveViewModel
+    - once : bool = false
+    + SpielEveViewModel : SpielEveViewModel <<set>>
+    + BituebertragungEingang : ObservableCollection<Information> <<get>> <<set>>
+    + PhotonenuebertragungEingang : ObservableCollection<Information> <<get>> <<set>>
+    + BituebertragungAusgang : ObservableCollection<Information> <<get>> <<set>>
+    + PhotonenuebertragungAusgang : ObservableCollection<Information> <<get>> <<set>>
+    + ZugBeenden : DelegateCommand <<get>> <<set>>
+    + SpielViewModel(navigator:Navigator, uebungsszenario:IUebungsszenario, eigeneRollen:List<Rolle>)
+    - UebungsszenarioChanged(sender:object, e:System.ComponentModel.PropertyChangedEventArgs) : void
+    - CollectionChangedMethod(sender:object, e:NotifyCollectionChangedEventArgs) : void
+    - CanExecuteZugBeenden() : void
+    - zugBeenden() : void
+    - zugBeendenOhneSenden() : void
+    - NachrichtenSenden() : void
+    - InformationenInAblageLegen() : void
+    - ClearViewListen() : void
+    - ZugBeendenStartBedingung() : bool
+    - InformationenLaden() : void
+    - InformationenEmpfangen() : void
+    - InformationenLöschen() : void
+}
+SpielViewModelBase <|-- SpielViewModel
+class SpielViewModelBase {
+    # uebungsszenario : IUebungsszenario
+    - hilfsoperationen : Operationen
+    + Muelleimer : ObservableCollection<Information> <<get>> <<set>>
+    + Informationsablage : ObservableCollection<Information> <<get>> <<set>>
+    + CraftingFeldSelectedOperation : int <<get>> <<set>>
+    # eigeneRollen : List<Rolle>
+    - warteVisibility : Visibility
+    + WarteVisibility : Visibility <<get>> <<set>>
+    - passwortEingabeVisibility : Visibility
+    + PasswortEingabeVisibility : Visibility <<get>> <<set>>
+    - spielVisibility : Visibility
+    + SpielVisibility : Visibility <<get>> <<set>>
+    - passwort : string
+    + passwortFeld : string <<get>> <<set>>
+    - rolleIcon : string
+    + RolleIcon : string <<set>> <<get>>
+    - aktuelleRolleAnzeige : string
+    + AktuelleRolleAnzeige : string <<set>> <<get>>
+    - aktuellePhaseAnzeige : string
+    + AktuellePhaseAnzeige : string <<set>> <<get>>
+    - vorherigePhase : uint = 0
+    - aktuellePhase : uint = 0
+    - informationsname : string
+    + Informationsname : string <<get>> <<set>>
+    - operand1 : ObservableCollection<Information>
+    + Operand1 : ObservableCollection<Information> <<get>> <<set>>
+    - operandBitsFrei : ObservableCollection<Information>
+    + OperandBitsFrei : ObservableCollection<Information> <<get>> <<set>>
+    - operand2 : ObservableCollection<Information>
+    + Operand2 : ObservableCollection<Information> <<get>> <<set>>
+    - eingabeBool : bool
+    + EingabeBool : bool <<get>> <<set>>
+    - eingabe : string
+    + Eingabe : string <<get>> <<set>>
+    - ergebnis : ObservableCollection<Information>
+    + Ergebnis : ObservableCollection<Information> <<get>> <<set>>
+    # verfügbareOperationen : List<OperationsEnum>
+    + BitfolgeGenerierenVisibility : Visibility <<get>>
+    + PolarisationsschemataGenerierenVisibility : Visibility <<get>>
+    + PhotonenGenerierenVisibility : Visibility <<get>>
+    + BitMaskeGenerierenVisibility : Visibility <<get>>
+    + VergleichenVisibility : Visibility <<get>>
+    + BitfolgeNegierenVisibility : Visibility <<get>>
+    + PhotonenZuBitfolgeVisibility : Visibility <<get>>
+    + TextGenerierenVisibility : Visibility <<get>>
+    + TextLaengeBestimmenVisibility : Visibility <<get>>
+    + TextVerEntschlüsselnVisibility : Visibility <<get>>
+    + BitsStreichenVisibility : Visibility <<get>>
+    + BitsFreiBearbeitenVisibility : Visibility <<get>>
+    + ZahlGenerierenVisibility : Visibility <<get>>
+    + InformationUmbenennenVisibility : Visibility <<get>>
+    + HauptMenu : DelegateCommand <<get>> <<set>>
+    + Beendet : DelegateCommand <<get>> <<set>>
+    + PasswortEingabe : DelegateCommand <<get>> <<set>>
+    + OperationenAnzeigen : DelegateCommand <<get>> <<set>>
+    + BitFolgeErzeugen : DelegateCommand <<get>> <<set>>
+    + EntVerschlüsseln : DelegateCommand <<get>> <<set>>
+    + PhotonenErzeugen : DelegateCommand <<get>> <<set>>
+    + PolschaErzeugen : DelegateCommand <<get>> <<set>>
+    + Streichen : DelegateCommand <<get>> <<set>>
+    + Vergleichen : DelegateCommand <<get>> <<set>>
+    + ZahlErzeugen : DelegateCommand <<get>> <<set>>
+    + BitMaskeGenerieren : DelegateCommand <<get>> <<set>>
+    + BitfolgeNegieren : DelegateCommand <<get>> <<set>>
+    + PhotonenZuBitfolge : DelegateCommand <<get>> <<set>>
+    + TextGenerieren : DelegateCommand <<get>> <<set>>
+    + TextLaengeBestimmen : DelegateCommand <<get>> <<set>>
+    + BitsFreiBearbeiten : DelegateCommand <<get>> <<set>>
+    + InformationUmbenennen : DelegateCommand <<get>> <<set>>
+    + SpielViewModelBase(navigator:Navigator, uebungsszenario:IUebungsszenario, eigeneRollen:List<Rolle>)
+    - VarianteChanged(sender:object, e:System.ComponentModel.PropertyChangedEventArgs) : void
+    - PhaseAktualisieren() : void
+    # OperandenInAblageLegen() : void
+    - CollectionChangedMethod(sender:object, e:NotifyCollectionChangedEventArgs) : void
+    - CollectionChangedMethodBitsFrei(sender:object, e:NotifyCollectionChangedEventArgs) : void
+    # setzeAktRolleView() : void
+    # setzeAktPhaseView() : void
+    # ClearViewTextBox() : void
+    - CanExecute() : void
+    - bitfolgeErzeugen() : Information
+    - bitfolgeErzeugenStartBedingung() : bool
+    - entVerschlüsseln() : Information
+    - entVerschlüsselnStartBedingung() : bool
+    - photonenErzeugen() : Information
+    - photonenErzeugenStartBedingung() : bool
+    - polschaErzeugen() : Information
+    - polschaErzeugenStartBedingung() : bool
+    - streichen() : Information
+    - streichenStartBedingung() : bool
+    - vergleichen() : Information
+    - vergleichenStartBedingung() : bool
+    - zahlErzeugen() : Information
+    - zahlErzeugenStartBedingung() : bool
+    - bitMaskeGenerieren() : Information
+    - bitMaskeGenerierenStartBedingung() : bool
+    - bitfolgeNegieren() : Information
+    - bitfolgeNegierenStartBedingung() : bool
+    - photonenZuBitfolge() : Information
+    - photonenZuBitfolgeStartBedingung() : bool
+    - textGenerieren() : Information
+    - textGenerierenStartBedingung() : bool
+    - textLaengeBestimmen() : Information
+    - textLaengeBestimmenStartBedingung() : bool
+    - bitsFreiBearbeiten() : Information
+    - bitsFreiBearbeitenStartBedingung() : bool
+    - informationUmbenennen() : Information
+    - informationUmbenennenStartBedingung() : bool
+    - convertedBitArray : bool[]
+    - StringToBitArray(eingabe:string) : bool
+    - StringToBitArrayPolscha(eingabe:string) : bool
+    - convertedZahl : int
+    - StringToZahl(eingabe:string) : bool
+    # AenderZustand(spiel:Enums.SpielEnum) : void
+    # AktualisiereOperationenVisibility() : void
+}
+BaseViewModel <|-- SpielViewModelBase
+class WikiViewModel {
+    + {static} WikiSeiten : ObservableCollection<WikiSeite> <<get>>
+    + SelektierteWikiSeite : WikiSeite <<get>>
+    - editierModus : bool = false
+    + EditierModus : bool <<get>> <<set>>
+    + LabelSichtbar : Visibility <<get>>
+    + TextBoxSichtbar : Visibility <<get>>
+    + Cursor : string <<get>>
+    + SeitenErweitern : DelegateCommand <<get>> <<set>>
+    + SeiteBearbeiten : DelegateCommand <<get>> <<set>>
+    + SeiteEntfernen : DelegateCommand <<get>> <<set>>
+    + SeiteSelektiert : DelegateCommand <<get>> <<set>>
+    + WikiViewModel()
+}
+BaseViewModel <|-- WikiViewModel
+enum SpielEnum {
+    warten,
+    passwortEingabe,
+    aktiv,
+}
 @enduml

@@ -1,5 +1,4 @@
-@startuml Klassen_Modell
-
+@startuml
 skinparam pageMargin 10
 skinparam pageExternalColor gray
 skinparam pageBorderColor black
@@ -12,79 +11,105 @@ package Model
 	together {
 		interface IUebungsszenario <<interface>>
 		{
-			+ Rollen: List<Rolle> {readOnly}
-			+ Schwierigkeitsgrad: SchwierigkeitsgradEnum {readOnly}
-			+ Variante: IVariante {readOnly}
-			+ StartPhase: uint {readOnly}
-			+ EndPhase: uint {readOnly}
-			+ Uebertragungskanal: Uebertragungskanal {readOnly}
-			+ Aufzeichnung: Aufzeichnung {readOnly}
-			+ Name: string {readOnly}
-			+ RolleHinzufuegen(rolle: Rolle): bool
-			+ GebeRolleFrei(rolle: RolleEnum)
-			+ Starten()
-			+ NaechsterZug(): bool
-			+ GebeBildschrimFrei(passwort: string): bool 
-			+ HandlungsschrittAusfuehrenLassen(handlungsschritt: Handlungsschritt): Information
-			+ SpeichereInformationenAb(informationID: uint)
-			+ LoescheInformatione(informationID: uint)
-			+ Beenden()
+      + Rollen : ReadOnlyObservableCollection<Rolle> <<get>>
+      + AktuelleRolle : Rolle <<get>>
+      + Schwierigkeitsgrad : SchwierigkeitsgradEnum <<get>>
+      + Variante : IVariante <<get>>
+		  + StartPhase : uint <<get>>
+      + EndPhase : uint <<get>>
+      + Uebertragungskanal : Uebertragungskanal <<get>>
+      + Augzeichnung : Aufzeichnung <<get>>
+      + Name : string <<get>>
+      + HostHatGestartet : bool <<get>>
+      + Beendet : bool <<get>>
+    + RolleHinzufuegen(rolle:Rolle, eigeneRolle:bool) : bool
+    + GebeRolleFrei(rolle:RolleEnum) : void
+    + Starten() : bool
+    + NaechsterZug() : void
+    + GebeBildschirmFrei(Passwort:String) : bool
+    + HandlungsschrittAusführenLassen(operationsTyp:Enums.OperationsEnum, operand1:Information, operand2:object?, ergebnisInformationsName:String, ausfuerendeRolle:Enums.RolleEnum) : Information
+    + SpeichereInformationenAb(information:Information) : void
+    + LoescheInformation(informationID:int) : void
+    + LoescheInformationAusUebertragungskanal(kanal:KanalEnum, informatonsID:int) : void
+    + Beenden() : void
 		}
 
 		class UebungsszenarioLokal implements IUebungsszenario
 		{
-			+ UebungsszenarioLokal(schwierigkeitsgrad: SchwierigkeitsgradEnum, variante: IVariante, startPhase: uint, endPhase: uint) <<create>>
-			+ RolleHinzufuegen(rolle: Rolle): bool
-			+ GebeRolleFrei(rolle: RolleEnum)
-			+ Starten()
-			+ NaechsterZug(): bool
-			+ GebeBildschrimFrei(passwort: string): bool 
-			+ HandlungsschrittAusfuehrenLassen(handlungsschritt: Handlungsschritt): Information
-			+ SpeichereInformationenAb(informationID: uint)
-			+ LoescheInformatione(informationID: uint)
-			+ Beenden()
+			+  <<event>> PropertyChanged : PropertyChangedEventHandler?
+      + Rollen : ReadOnlyObservableCollection<Rolle> <<get>>
+      + AktuelleRolle : Rolle <<get>>
+      + Schwierigkeitsgrad : SchwierigkeitsgradEnum <<get>>
+      + Variante : IVariante <<get>>
+		  + StartPhase : uint <<get>>
+      + EndPhase : uint <<get>>
+      + Uebertragungskanal : Uebertragungskanal <<get>>
+      + Augzeichnung : Aufzeichnung <<get>>
+      + Name : string <<get>>
+      + HostHatGestartet : bool <<get>>
+      + Beendet : bool <<get>>
+    + UebungsszenarioLokal(schwierigkeitsgrad:SchwierigkeitsgradEnum, variante:IVariante, startPhase:uint, endPhase:uint, name:string)
+    + RolleHinzufuegen(rolle:Rolle, eigeneRolle:bool) : bool
+    + GebeRolleFrei(rolle:RolleEnum) : void
+    + Starten() : bool
+    + NaechsterZug() : void
+    + GebeBildschirmFrei(Passwort:string) : bool
+    + HandlungsschrittAusführenLassen(operationsTyp:Enums.OperationsEnum, operand1:Information, operand2:object, ergebnisInformationsName:String, rolle:Enums.RolleEnum) : Information
+    + SpeichereInformationenAb(information:Information) : void
+    + LoescheInformation(informationID:int) : void
+    + LoescheInformationAusUebertragungskanal(kanal:KanalEnum, informatonsID:int) : void
+    + Beenden() : void
+    + GeneriereInformationenFürRollen(hostSeed:int) : int
 		}
 
 		class UebungsszenarioNetzwerk implements IUebungsszenario
 		{
-			+ UebungsszenarioNetzwerk(schwierigkeitsgrad: SchwierigkeitsgradEnum, variante: IVariante, startPhase: uint, endPhase: uint) <<create>>
-			+ RolleHinzufuegen(rolle: Rolle): bool
-			+ GebeRolleFrei(rolle: RolleEnum)
-			+ Starten()
-			+ NaechsterZug(): bool
-			+ GebeBildschrimFrei(passwort: string): bool 
-			+ HandlungsschrittAusfuehrenLassen(handlungsschritt: Handlungsschritt): Information
-			+ SpeichereInformationenAb(informationID: uint)
-			+ LoescheInformatione(informationID: uint)
-			+ Beenden()
-			+ ZugWurdeBeendet(handlungsschritte: List<Handlungsschritt>)
-			+ UebungsszenarioWurdeBeendetHost()
-			+ UebungsszenarioWurdeBeendetClient()
-			+ AufzeichnungUpdate(handlungsschritte: List<Handlungsschritt>)
-			+ KontrolleErhalten()
-			+ UebungsszenarioWurdeGestartet()
-			+ NeueRollenInformation(rolleAlice: Rolle, rolleBob: Rolle?, rolleEve: Rolle?)
+    +  <<event>> PropertyChanged : PropertyChangedEventHandler? 
+    + Rollen : ReadOnlyObservableCollection<Rolle> <<get>>
+      + AktuelleRolle : Rolle <<get>>
+      + Schwierigkeitsgrad : SchwierigkeitsgradEnum <<get>>
+      + Variante : IVariante <<get>>
+		  + StartPhase : uint <<get>>
+      + EndPhase : uint <<get>>
+      + Uebertragungskanal : Uebertragungskanal <<get>>
+      + Augzeichnung : Aufzeichnung <<get>>
+      + Name : string <<get>>
+      + HostHatGestartet : bool <<get>>
+      + Beendet : bool <<get>>
+    + UebungsszenarioNetzwerk(schwierigkeitsgrad:SchwierigkeitsgradEnum, variante:IVariante, startPhase:uint, endPhase:uint, name:string, host:bool)
+    + RolleHinzufuegen(rolle:Rolle, eigeneRolle:bool) : bool
+    + GebeRolleFrei(rolle:RolleEnum) : void
+    + Starten() : bool
+    + NaechsterZug() : void
+    + GebeBildschirmFrei(Passwort:string) : bool
+    + HandlungsschrittAusführenLassen(operationsTyp:OperationsEnum, operand1:Information, operand2:object, ergebnisInformationsName:string, ausFührer:RolleEnum) : Information
+    + SpeichereInformationenAb(information:Information) : void
+    + LoescheInformation(informationsID:int) : void
+    + LoescheInformationAusUebertragungskanal(kanal:KanalEnum, informatonsID:int) : void
+    + Beenden() : void
+    + ZugWurdeBeendet(handlungsschritte:List<Handlungsschritt>) : void
+    + AufzeichnungUpdate(handlungsschritte:List<Handlungsschritt>) : void
+    + KontrolleErhalten(nächsteRolle:RolleEnum) : void
+    + UebungsszenarioWurdeGestartet(startRolle:RolleEnum) : void
+    + NeueRollenInformation(rolleAlice:Rolle?, rolleBob:Rolle?, rolleEve:Rolle?) : void
+    + GeneriereInformationenFürRollen(hostSeed:int) : int
 		}
 	}
 
 	together {
-		class Aufzeichnung
-		{
-			+ Handlungsschritte : List<Handlungsschritt> {readOnly}
-			+ Aufzeichnung() <<create>>
-			+ HaengeHandlungsschrittAn(Handlungsschritt: Handlungsschritt)
-			+ HaengeListeHandlungsschritteAn(Handlungsschritte: List<Handlungsschritt>)
-		}
-
-		class Uebertragungskanal
-		{
-			+ photonenKanal : List<Information> {readOnly}
-			+ bitKanal : List<Information> {readOnly}
-			+ Uebertragungskanal() <<create>>
-			+ SpeicherNachrichtAb(informartion: Information)
-			+ LeseKanalAus(kanal: KanalEnum): List<Information>
-			+ LoescheNachricht(kanal: KanalEnum, informationID: uint)
-		}
+		class Aufzeichnung {
+    + Aufzeichnung()
+    + Handlungsschritte : ObservableCollection<Handlungsschritt>? <<get>>
+    + HaengeHandlungsschrittAn(handlungsschritt:Handlungsschritt) : void
+}
+		class Uebertragungskanal {
+      + PhotonenKanal: List<Information> <<get>>
+      + BitKanal: List<Information> <<get>>
+    + Uebertragungskanal()
+    + SpeicherNachrichtAb(information:Information) : void
+    + LeseKanalAus(kanal:Enums.KanalEnum) : List<Information>?
+    + LoescheNachricht(kanal:Enums.KanalEnum, informationsID:int) : void
+}
 
 		enum KanalEnum
 		{
@@ -101,99 +126,113 @@ package Model
 	}
 	
 	together {
-		class Operationen
-		{
-			+ NachrichtSenden() : Information
-			+ NachrichtEmpfangen() : Information 
-			+ NachrichtAbhoeren() : Information 
-			+ BitfolgeGenerierenZahl() : Information 
-			+ BitfolgeGenerierenAngabe() : Information 
-			+ PolarisationsschemataGenerierenZahl() : Information 
-			+ PolarisationsschemataGenerierenAngabe() : Information 
-			+ PhotonenGenerieren() : Information 
-			+ BitmaskeGenerieren() : Information 
-			+ PolschataVergleichen() : Information 
-			+ BitfolgenVergleichen() : Information 
-			+ PhotonenZuBitfolge() : Information 
-			+ TextVerschluesseln() : Information 
-			+ TextEntschluesseln() : Information 
-			+ BitsStreichen() : Information 
-			+ BitsFreiBearbeiten() : Information 
-			+ ZugBeenden() : bool 
-		}
+		class Operationen {
+    + Operationen(seed:int)
+    + NachrichtSenden(informationsID:int, operand1:Information, operand2:Information, ergebnisName:String, sender:RolleEnum) : Information
+    + NachrichtEmpfangen(informationsID:int, operand1:Information, operand2:Information, ergebnisName:String, sender:RolleEnum?) : Information
+    + NachrichtAbhoeren(informationsID:int, operand1:Information, operand2:Information, ergebnisName:String, sender:RolleEnum?) : Information
+    + BitfolgeGenerierenZahl(informationsID:int, operand1:Information, operand2:Information?, ergebnisName:String, sender:RolleEnum?) : Information
+    + BitfolgeGenerierenAngabe(informationsID:int, operand1:Information, operand2:Information, ergebnisName:String, sender:RolleEnum?) : Information
+    + PolarisationsschemataGenerierenZahl(informationsID:int, operand1:Information, operand2:Information?, ergebnisName:string, sender:RolleEnum?) : Information
+    + PolarisationsschemataGenerierenAngabe(informationsID:int, operand1:Information, operand2:Information, ergebnisName:String, sender:RolleEnum?) : Information
+    + PhotonenGenerieren(informationsID:int, operand1:Information, operand2:Information, ergebnisName:String, sender:RolleEnum?) : Information
+    + BitmaskeGenerieren(informationsID:int, operand1:Information, operand2:Information, ergebnisName:String, sender:RolleEnum?) : Information
+    + PolschataVergleichen(informationsID:int, operand1:Information, operand2:Information, ergebnisName:String, sender:RolleEnum?) : Information
+    + BitfolgenVergleichen(informationsID:int, operand1:Information, operand2:Information, ergebnisName:String, sender:RolleEnum?) : Information
+    + BitfolgeNegieren(informationsID:int, operand1:Information, operand2:Information?, ergebnisName:String, sender:RolleEnum?) : Information
+    + PhotonenZuBitfolge(informationsID:int, operand1:Information, operand2:Information, ergebnisName:String, sender:RolleEnum?) : Information
+    + TextGenerieren(informationsID:int, operand1:Information?, operand2:Information, ergebnisName:String, sender:RolleEnum?) : Information
+    + TextLaengeBestimmen(informationsID:int, operand1:Information, operand2:Information?, ergebnisName:String, sender:RolleEnum?) : Information
+    + TextVerschluesseln(informationsID:int, operand1:Information, operand2:Information, ergebnisName:String, sender:RolleEnum?) : Information
+    + TextEntschluesseln(informationsID:int, operand1:Information, operand2:Information, ergebnisName:String, sender:RolleEnum?) : Information
+    + BitsStreichen(informationsID:int, operand1:Information, operand2:Information, ergebnisName:String, sender:RolleEnum?) : Information
+    + BitsFreiBearbeiten(informationsID:int, operand1:Information, operand2:Information?, ergebnisName:String, sender:RolleEnum?) : Information
+    + ZahlGenerieren(informationsID:int, operand1:Information?, operand2:Information, ergebnisName:String, sender:RolleEnum?) : Information
+    + InformationUmbenennen(informationsID:int, operand1:Information, operand2:Information, ergebnisName:String, sender:RolleEnum?) : Information
+    + ZugBeenden(informationsID:int?, operand1:Information, operand2:Information, ergebnisName:String, sender:RolleEnum?) : Information?
+}
 
-		enum OperationsEnum
-		{
-			NachrichtSenden
-			NachrichtEmpfangen
-			NachrichtAbhoeren
-			BitfolgeGenerierenZahl
-			BitfolgeGenerierenAngabe
-			PolarisationsschemataGenerierenZahl
-			PolarisationsschemataGenerierenAngabe
-			PhotonenGenerieren
-			BitmaskeGenerieren
-			PolschataVergleichen
-			BitfolgenVergleichen
-			PhotonenZuBitfolge
-			TextGenerieren
-			TextVerschluesseln
-			TextEntschluesseln
-			BitsStreichen
-			BitsFreiBearbeiten
-			TexGenerieren
-			ZahlGenerieren
-			ZugBeenden
-		}
+		enum OperationsEnum {
+    nachrichtSenden,
+    nachrichtEmpfangen,
+    nachrichtAbhoeren,
+    bitfolgeGenerierenZahl,
+    bitfolgeGenerierenAngabe,
+    polarisationsschemataGenerierenZahl,
+    polarisationsschemataGenerierenAngabe,
+    photonenGenerieren,
+    bitmaskeGenerieren,
+    polschataVergleichen,
+    bitfolgenVergleichen,
+    bitfolgeNegieren,
+    photonenZuBitfolge,
+    textGenerieren,
+    textLaengeBestimmen,
+    textVerschluesseln,
+    textEntschluesseln,
+    bitsStreichen,
+    bitsFreiBearbeiten,
+    zahlGenerieren,
+    informationUmbenennen,
+    zugBeenden,
+}
 	}
 
 	together {
-		class Information
-		{
-			+ Information(informationID: uint, informartionsName: string, informartionsTyp: InformationsEnum, informartionsEmpfaenger: RolleEnum, informartionsInhalt: object) <<create>>
-			+ InformationsID: uint {readOnly}
-			+ InformationsName: string {readOnly}
-			+ InformationsTyp: InformationsEnum {readOnly}
-			+ InformationsEmpfaenger: RolleEnum {readOnly}
-			+ InformationsInhalt: object {readOnly}
-		}
+		class Information {
+    + Information()
+    + Information(informationsID:int, informationsName:string, informationsTyp:InformationsEnum, informationsInhalt:object, informationsEmpfaenger:RolleEnum?, informationsSender:RolleEnum?)
+    + InformationsID : int <<get>> <<init>>
+    + InformationsName : string <<get>> <<init>>
+    + InformationsTyp : InformationsEnum <<get>> <<init>>
+    + InformationsInhalt : object <<get>> <<init>>
+    + ShouldSerializeInformationsEmpfaenger() : bool
+    + InformationsEmpfaenger : RolleEnum? <<get>> <<init>>
+    + ShouldSerializeInformationsSender() : bool
+    + InformationsSender : RolleEnum? <<get>> <<init>>
+    + InformationsNameToString : string <<get>>
+    + InformationsInhaltToString : string <<get>>
+    + InformationsinhaltSerialized : string <<get>> <<set>>
+}
 
-		class Handlungsschritt
-		{
-			- {static} op : Operationen
-			- {static} HandlungsschrittKommando : Dictionary<OperationsEnum, Delegate>
-			+ Handlungsschritt(informationsID: uint, operationsTyp: OperationsEnum, operand1: Information, operand2: Information, ergebnisName: String, rolle: RolleEnum) <<create>>
-			+ OperationsTyp: OperationsEnum {readOnly}
-			+ Operand1: Information {readOnly}
-			+ Operand2: Information {readOnly}
-			+ Ergebnis: Information
-			+ ErgebnisName: string
-			+ Rolle: RolleEnum {readOnly}
-			+ AktuellePhase: uint
-			+ HandlungsschrittAusfuehren()
-		}
+		class Handlungsschritt {
+    + Handlungsschritt()
+    + Handlungsschritt(informationsID:int, operationsTyp:Enums.OperationsEnum, operand1:Information, operand2:object, ergebnisName:String, rolle:RolleEnum)
+    + OperationsTyp: OperationsEnum <<get>> <<init>>
+    + Operand1 : Information <<get>> <<init>>
+    + Operand2 : object <<get>> <<init>>
+    + ErgebnisName : string <<get>> <<set>>
+    + Ergebnis : Information <<get>> <<set>>
+    + Rolle : RolleEnum <<get>> <<init>>
+    + AktuellePhase : uint <<get>> <<set>>
+}
 
-		class Rolle
-		{
-			+ Rolle(rolle: RolleEnum, alias: string, passwort: string) <<create>>
-			+ RolleTyp: Rolle {readOnly}
-			+ BeginneZug(passwort: string): bool
-			+ ErzeugeHandlungsschritt(operationsTyp: OperationsEnum, operand1: Information, operand2: Information, ergebnisInformationsName: String, rolle: RolleEnum): Handlungsschritt
-			+ SpeichereInformationenAb(informartion: Information)
-			+ LoescheInformatione(information: Information)
-			+ AktualisiereInformationsZaehler(informartionszaehler: uint)
-		}
+		class Rolle {
+      + Informatonsablage: ReadOnlyObservableCollection<Information>
+    + Rolle(rolle:RolleEnum, alias:string)
+    + Rolle(rolle:RolleEnum, alias:string, passwort:string)
+    + Alias : string <<get>> <<init>>
+    + RolleTyp : RolleEnum <<get>>
+    + InformationsZaehler : int <<get>>
+    + Freigeschaltet : bool <<get>>
+    + BeginneZug(passwort:string) : bool
+    + Add(handlungsschritt:Handlungsschritt) : void
+    + ErzeugeHandlungsschritt(operationsTyp:Enums.OperationsEnum, operand1:Information, operand2:object, ergebnisInformationsName:String, rolle:Enums.RolleEnum) : Handlungsschritt
+    + SpeicherInformationAb(information:Information, KI:bool) : void
+    + LoescheInformation(informationsID:int) : bool
+    + AktualisiereInformationsZaehler(informationszaehler:int) : void
+}
 
-		enum InformationsEnum
-		{
-			Zahl
-			Bitfolge
-			Photonen
-			Polarisationsschemata
-			unscharfePhotonen
-			ASCII-Text
-			VerschluesselterText
-		}
+		enum InformationsEnum {
+    zahl,
+    bitfolge,
+    photonen,
+    polarisationsschemata,
+    unscharfePhotonen,
+    asciiText,
+    verschluesselterText,
+    keinInhalt,
+}
 
 		enum RolleEnum
 		{
@@ -205,103 +244,138 @@ package Model
 
 	together {
 
-		class NetzwerkClient {
-			+ {static} VerfuegbareLobbys: ObservableCollection<Lobby> {readOnly}
-			+ {static} BeginneSucheNachLobbys()
-			+ {static} BeendeSucheNachLobbys()
-			+ {static} VerbindeMitUebungsszenario(netzwerkBeitrittInfo: UebungsszenarioNetzwerkBeitritt)
-			+ {static} WaehleRolle(gewählteRolle: RolleEnum, alias: string)
-			+ {static} GebeRolleFrei(freizugebendeRolle: RolleEnum)
-			+ {static} BeendeZug(handlundsschritte: List<Handlungsschritt>)
-			+ {static} BeendeUebungsszenario()
-			+ {static} Uebungsszenario: UebungsszenarioNetzwerk {writeOnly}
-		}
+		class NetzwerkClient <<static>> {
+      + {Static} VerfuegbareLobbys : ObservableCollection<UebungsszenarioNetzwerkBeitrittInfo> <<get>>
+      + {Static} Ubungsszenario: UebnungsszenarioNetzwerk <<set>>
+      + {Static} ErrorCollection: ObservableCollection<int> <<get>>
+    + {static} ResetNetzwerkClient() : void
+    + {static} BeginneSucheNachLobbys() : void
+    + {static} BeendeSucheNachLobbys() : void
+    + {static} VerbindeMitUebungsszenario(netzwerkBeitrittInfo:UebungsszenarioNetzwerkBeitrittInfo) : bool
+    + {static} TrenneVerbindungMitUebungsszenario() : void
+    + {static} WaehleRolle(gewählteRolle:RolleEnum, alias:string) : void
+    + {static} GebeRolleFrei(freizugebendeRolle:RolleEnum) : void
+    + {static} BeendeZug(handlungsschritte:List<Handlungsschritt>) : void
+    + {static} BeendeUebungsszenario() : void
+}
 
-		class NetzwerkHost {
-			+ {static} AliceRolle: Rolle {readOnly}
-			+ {static} BobRolle: Rolle {readOnly}
-			+ {static} EveRolle: Rolle {readOnly}
-			+ {static} BeendeTCPLobby()
-			+ {static} SendeRollenInformation()
-			+ {static} StarteUebungsszenario()
-			+ {static} UebergebeKontrolle(nächsteRolle: Rolle)
-			+ {static} SendeAufzeichnungsUpdate(empfänger: Rolle, neueHandlungsschritte: List<Handlungsschritt>)
-			+ {static} BeginneZyklischesSendenVonLobbyinformation(netzwerkBeitrittInfo: UebungsszenarioNetzwerkBeitritt)
-			+ {static} BeendeUebungsszenario()
-			+ {static} Uebungsszenario: UebungsszenarioNetzwerk {writeOnly}
-		}
+		class NetzwerkHost <<static>> {
+    + {static} AliceRolle : Rolle? <<get>> <<set>>
+    + {static} BobRolle : Rolle? <<get>> <<set>>
+    + {static} EveRolle : Rolle? <<get>> <<set>>
+     + {Static} Ubungsszenario: UebnungsszenarioNetzwerk <<set>>
+    + {static} BeendenErlaubt : bool <<get>> <<set>> = true
+    + {static} ResetNetzwerkHost() : void
+    + {static} <<async>> BeginneZyklischesSendenVonLobbyinformation(netzwerkBeitrittInfo:UebungsszenarioNetzwerkBeitrittInfo, portToSendTo:int) : void
+    + {static} BeendeZyklischesSendenVonLobbyinformation() : void
+    + {static} BeendeTCPLobby() : void
+    + {static} SendeRollenInformation() : void
+    + {static} StarteUebungsszenario(startRolle:RolleEnum, seed:int) : void
+    + {static} UebergebeKontrolle(nächsteRolle:RolleEnum) : void
+    + {static} SendeAufzeichnungsUpdate(neueHandlungsschritte:List<Handlungsschritt>, empfänger:RolleEnum?) : void
+    + {static} BeendeUebungsszenario() : void
+}
 
 		class UebungsszeanrioNetzwerkBeitrittInfo {
-			+ IPAdresse: IPAddress
-			+ Lobbyname: string
-			+ Protokoll: string
-			+ Variante: string
-			+ Schwierigkeitsgrad: SchwierigkeitsgradEnum
-			+ AliceIcon: BitmapImage
-			+ BobIcon: BitmapImage
-			+ EveIcon: BitmapImage
-			+ UebungsszeanrioNetzwerkBeitrittInfo(address: IPAddress, lobbyname: string, protokoll: string, variante: string, schwierigkeitsgrad: SchwierigkeitsgradEnum, aliceIcon: BitmapImage, bobIcon: BitmapImage, eveIcon: BitmapImage) <<create>>
+			+ UebungsszenarioNetzwerkBeitrittInfo(address:IPAddress, lobbyname:string, protokoll:string, variante:string, schwierigkeitsgrad:SchwierigkeitsgradEnum, aliceState:bool, bobState:bool, eveState:bool)
+    + IPAddress : IPAddress <<get>> <<set>>
+    + Lobbyname : string <<get>> <<set>>
+    + Protokoll : string <<get>> <<set>>
+    + Variante : string <<get>> <<set>>
+    + StartPhase : uint <<get>> <<set>>
+    + EndPhase : uint <<get>> <<set>>
+    + Schwierigkeitsgrad : SchwierigkeitsgradEnum <<get>> <<set>>
+    + AliceIcon: BitmapImage <<get>>
+    + BobIcon: BitmapImage <<get>>
+    + EveIcon: BitmapImage <<get>>
+    + AliceState : bool <<get>> <<set>>
+    + BobState : bool <<get>> <<set>>
+    + EveState : bool <<get>> <<set>>
+    + HostPort : int <<get>> <<set>>
+    +  <<event>> PropertyChanged : PropertyChangedEventHandler? 
+    + Changed(a:string) : void
 		}
 	}
 
 	together {
 		interface IVariante <<interface>>
 		{
-			+ AktuellePhase: uint {readOnly}
-			+ AktuelleRolle: RolleEnum {readOnly}
-			+ VarianteName: string {readOnly}
-			+ ProtokollName: string {readOnly}
-			+ MoeglicheRollen: List<RolleEnum> {readOnly}
-			+ NaechsteRolle(): RolleEnum
-			+ GebeHilfestellung(schwierigkeitsgrad: SchwierigkeitsgradEnum) : List<OperationsEnum>
-			+ BerechneAktuellePhase(sender: object, e: NotifyCollectionChangedEventArgs)
+			  + AktuellePhase : uint <<get>>
+        + AktuelleRolle : RolleEnum <<get>> <<set>>
+    + {static} VariantenName : string <<get>>
+    + ProtokollName : string <<get>>
+    + NächsteRolle() : RolleEnum
+    + GebeHilfestellung(schwierigkeitsgrad:SchwierigkeitsgradEnum) : List<OperationsEnum>
+    + BerechneAktuellePhase(sender:object?, e:NotifyCollectionChangedEventArgs) : void
 		}
 
 		class VarianteNormalerAblauf implements IVariante
 		{
-			+ VarianteNormalerAblauf(startPhase: uint) <<create>>
-			+ NaechsteRolle(): RolleEnum
-			+ GebeHilfestellung(schwierigkeitsgrad: SchwierigkeitsgradEnum) : List<OperationsEnum>
-			+ BerechneAktuellePhase(sender: object, e: NotifyCollectionChangedEventArgs)
+			    +  <<event>> PropertyChanged : PropertyChangedEventHandler? 
+    + AktuellePhase : uint <<get>>
+     + AktuelleRolle : RolleEnum <<get>> <<set>>
+    + {static} VariantenName : string <<get>>
+    + ProtokollName : string <<get>>
+    + VarianteNormalerAblauf(startPhase:uint)
+    + NächsteRolle() : RolleEnum
+    + BerechneAktuellePhase(sender:object?, e:NotifyCollectionChangedEventArgs) : void
+    + GebeHilfestellung(schwierigkeitsgrad:SchwierigkeitsgradEnum) : List<OperationsEnum>
 		}
 
 		class VarianteAbhoeren implements IVariante
 		{
-			+ VarianteAbhoeren(startPhase: uint) <<create>>
-			+ NaechsteRolle(): RolleEnum
-			+ GebeHilfestellung(schwierigkeitsgrad: SchwierigkeitsgradEnum) : List<OperationsEnum>
-			+ BerechneAktuellePhase(sender: object, e: NotifyCollectionChangedEventArgs)
+			+  <<event>> PropertyChanged : PropertyChangedEventHandler? 
+    + AktuellePhase : uint <<get>>
+     + AktuelleRolle : RolleEnum <<get>> <<set>>
+    + {static} VariantenName : string <<get>>
+    + ProtokollName : string <<get>>
+    + VarianteAbhören(startPhase:uint)
+    + NächsteRolle() : RolleEnum
+    + BerechneAktuellePhase(sender:object?, e:NotifyCollectionChangedEventArgs) : void
+    + GebeHilfestellung(schwierigkeitsgrad:SchwierigkeitsgradEnum) : List<OperationsEnum>
 		}
 
 		class VarianteManInTheMiddle implements IVariante
 		{
-			+ VarianteManInTheMiddle(startPhase: uint) <<create>>
-			+ NaechsteRolle(): RolleEnum
-			+ GebeHilfestellung(schwierigkeitsgrad: SchwierigkeitsgradEnum) : List<OperationsEnum>
-			+ BerechneAktuellePhase(sender: object, e: NotifyCollectionChangedEventArgs)
+			+  <<event>> PropertyChanged : PropertyChangedEventHandler? 
+    + AktuellePhase : uint <<get>>
+     + AktuelleRolle : RolleEnum <<get>> <<set>>
+    + {static} VariantenName : string <<get>>
+    + ProtokollName : string <<get>>
+    + VarianteManInTheMiddle(startPhase:uint)
+    + NächsteRolle() : RolleEnum
+    + BerechneAktuellePhase(sender:object?, e:NotifyCollectionChangedEventArgs) : void
+    + GebeHilfestellung(schwierigkeitsgrad:SchwierigkeitsgradEnum) : List<OperationsEnum>
 		}
 	}
 
 	together {
 		class Wiki
 		{
-			+ {static} WikiSeiten: ObservableCollection<WikiSeite> {readOnly}
-			+ {static} WikiIstOffen: bool {readOnly}
-			+ Wiki() <<create>>
-			+ SpeichereAlleWikiSeiten()
-			+ SeitenErweitern()
-			+ SeiteEntfernen()
-			+ SeiteSelektieren(identifier: string)
+      + {static} WikiSeiten: ObservableCollection<WikiSeite> <<get>>
+      + {static} Schwierigkeitsgrad : SchwierigkeitsgradEnum <<get>> <<set>>
+      + {static} SelektierteWikiSeite : WikiSeite <<get>>
+			    + {static} WikiIstOffen : bool <<get>> <<set>>
+    + {static} SpeichereBenutzerWikiSeiten() : void
+    + {static} SeitenErweitern() : void
+    + {static} SeiteEntfernen() : void
+    + {static} SeiteSelektieren(identifier:string) : void
+    + {static} SelektiereDieErsteSeite() : void
 		}
 
 		class WikiSeite {
-			+ {static} InlineList: ObservableCollection<Inline> {readOnly}
-			+ Identifier: string {readOnly}
-			+ WikiSeiteName: string
-			+ Inhalt: string
-			+ WikiSeite(wikiSeiteName: string, inhalt: string) <<create>>
-			+ SetzeAktivStatus(aktiv: bool)
-			+ SetzeEditierModus(neuerEditierModus: bool)
+      + InLineList: ObservableCollection<Inline> <<get>> <<set>>
+			+  <<event>> PropertyChanged : PropertyChangedEventHandler? 
+    + Identifier : string <<get>>
+    + IdentifierInteger : int <<get>>
+    + WikiSeiteName : string <<get>> <<set>>
+    + BorderBrush: Brush <<get>>
+    + Inhalt : string <<get>> <<set>>
+    + Durchschein : double <<get>>
+    + WikiSeite(wikiSeiteName:string, inhalt:string, identifier:int)
+    + SetzeAktivStatus(aktiv:bool) : void
+    + SetzeEditierModus(neuerEditierModus:bool) : void
+    + {static} StandardSeitenGeladen() : void
 		}
 	}
 }
@@ -360,11 +434,10 @@ package Model
  Operationen <-- Handlungsschritt
 
 WikiSeite *-- Wiki
+Wiki -->SchwierigkeitsgradEnum
 
 UebungsszeanrioNetzwerkBeitrittInfo <-- NetzwerkClient
  UebungsszeanrioNetzwerkBeitrittInfo <-- NetzwerkHost
  NetzwerkClient --> UebungsszenarioNetzwerk
  NetzwerkHost --> UebungsszenarioNetzwerk
- 
-
 @enduml
